@@ -16,6 +16,21 @@ curated_root: data/curated/bars_1m_rth
 rth_only_default: true
 timezone: America/New_York
 
+raw_timestamp:
+  # Local QQQ IBKR exports use ``ts_ny`` (America/New_York) + ``ts_utc`` (UTC).
+  column: ts_ny
+  timezone_if_naive: America/New_York
+  # Phase 1 audit: treat ``ts_ny`` as **bar START** in US/Eastern for RTH minute indexing.
+  semantics: bar_start
+  curated_semantics: bar_start
+
+ohlcv:
+  open: open
+  high: high
+  low: low
+  close: close
+  volume: volume
+
 # Source metadata
 source: ibkr
 bar_size: "1 min"

@@ -1,0 +1,6 @@
+check,status,detail
+compileall,ok,src
+pytest,ok,55 passed
+ruff,ok,src tests
+validate_curated_qqq_2024h1,ok,no errors
+load_bars_qqq_2024h1,ok,48360 rows

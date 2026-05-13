@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/data/catalog.py,raw inventory + layout inference,yes,source,no,resolved_path column added
+src/intraday/data/inspect.py,raw parquet schema scan,yes,source,no,metadata-first
+src/intraday/data/canonicalize.py,legacy→canonical moves,yes,source,no,dry-run default
+src/intraday/data/normalize.py,raw→curated normalization,yes,source,no,Polars pipeline
+src/intraday/data/loader.py,curated→BarMatrix,yes,source,no,data_hash manifest
+src/intraday/data/validate.py,BarMatrix + curated validation,yes,source,no,DataValidationReport
+src/intraday/data/timestamp_audit.py,timestamp sampling audit,optional,source,no,sample-based
+src/intraday/cli/main.py,CLI wiring,yes,source,no,data subcommands
+src/intraday/cli/data_cmds.py,data command implementations,yes,source,no,
+configs/data/ibkr_qqq_1m.yaml,dataset truth,yes,source,no,ts_ny + semantics
+artifacts/data_foundation_phase1/raw_data_inventory_cli.csv,raw inventory snapshot,yes,generated,yes,local parquet paths
+artifacts/data_foundation_phase1/raw_schema_inspect_stdout.json,inspect output,yes,generated,yes,JSON list of schema rows

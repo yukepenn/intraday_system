@@ -1,0 +1,5 @@
+topic,summary
+infer_raw_layout,Added `layout_root` + suffix matching; inventory includes `resolved_path`.
+validate_raw_data_layout,Passes `base` through to inventory.
+polars_minute_math,Cast hour/minute to Int32 before `hour*60+minute` to avoid u8 overflow.
+session_date,Compute YYYYMMDD using Int64 arithmetic before casting to Int32.

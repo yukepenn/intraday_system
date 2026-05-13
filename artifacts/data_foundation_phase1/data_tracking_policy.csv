@@ -1,0 +1,5 @@
+policy,status
+raw_parquet_committed,no
+curated_parquet_committed,no
+cache_committed,no
+manifests_committed,yes

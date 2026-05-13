@@ -1,0 +1,7 @@
+section,item,metric,value,interpretation
+inventory,raw_files_total,count,104,includes SPY+QQQ months
+layout,qqq_canonical_months,count,76,post-canonicalization
+layout,spy_legacy_months,count,28,not migrated in this phase
+normalize,qqq_2024h1_rows,rows,48360,RTH 1m bars in window
+validation,qqq_2024h1_errors,count,0,validate-curated strict default false
+loader,qqq_2024h1_data_hash,hash,b00d2b8cf0bc183bcbc792a75a3eea3a44c254bd656df672a267c3b39a40050d,example local hash

@@ -11,10 +11,12 @@ RAW_REQUIRED_COLUMNS: tuple[str, ...] = (
     "volume",
 )
 
+CURATED_SCHEMA_VERSION: str = "bars_1m_rth_v1"
+
 CURATED_REQUIRED_COLUMNS: tuple[str, ...] = (
     "ts_utc",
+    "ts_utc_ns",
     "ts_local",
-    "date",
     "session_date",
     "session_id",
     "bar_index",

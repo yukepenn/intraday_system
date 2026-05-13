@@ -44,11 +44,59 @@ def test_build_raw_data_inventory_empty(tmp_path: Path) -> None:
     assert rows == []
 
 
+def test_build_raw_data_inventory_resolved_path_present(tmp_path: Path) -> None:
+    fpath = (
+        tmp_path
+        / "data"
+        / "raw"
+        / "ibkr"
+        / "equity"
+        / "bars_1min"
+        / "symbol=QQQ"
+        / "year=2020"
+        / "month=01"
+    )
+    fpath.mkdir(parents=True)
+    f = fpath / "data.parquet"
+    f.write_bytes(b"PAR1" + b"\x00" * 1024)
+
+    rows = build_raw_data_inventory(tmp_path / "data" / "raw" / "ibkr", base=tmp_path)
+    assert len(rows) == 1
+    assert "resolved_path" in rows[0]
+    assert Path(rows[0]["resolved_path"]).exists()
+
+
+def test_infer_raw_layout_absolute_non_repo_path(tmp_path: Path) -> None:
+    fpath = (
+        tmp_path
+        / "data"
+        / "raw"
+        / "ibkr"
+        / "equity"
+        / "bars_1min"
+        / "symbol=QQQ"
+        / "year=2020"
+        / "month=02"
+    )
+    fpath.mkdir(parents=True)
+    fp = fpath / "data.parquet"
+    fp.write_bytes(b"PAR1" + b"\x00" * 64)
+    info = infer_raw_layout(fp.resolve(), base=None, layout_root=tmp_path / "data" / "raw" / "ibkr")
+    assert info.layout_type == "legacy_qt_like"
+    assert info.symbol == "QQQ"
+
+
 def test_build_raw_data_inventory_with_files(tmp_path: Path) -> None:
     fpath = (
         tmp_path
-        / "data" / "raw" / "ibkr" / "equity" / "bars_1min"
-        / "symbol=QQQ" / "year=2020" / "month=01"
+        / "data"
+        / "raw"
+        / "ibkr"
+        / "equity"
+        / "bars_1min"
+        / "symbol=QQQ"
+        / "year=2020"
+        / "month=01"
     )
     fpath.mkdir(parents=True)
     f = fpath / "data.parquet"

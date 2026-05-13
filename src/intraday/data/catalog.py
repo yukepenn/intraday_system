@@ -8,10 +8,13 @@ from __future__ import annotations
 
 import csv
 import re
-from dataclasses import dataclass, asdict
-from datetime import datetime, timezone
+from collections.abc import Iterable
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Iterable, Literal
+from typing import Literal
+
+from intraday.core.paths import repo_root
 
 LayoutType = Literal["canonical", "legacy_qt_like", "unknown"]
 CommitSafety = Literal[
@@ -32,6 +35,20 @@ _CANONICAL_RE = re.compile(
 
 _LEGACY_QT_LIKE_RE = re.compile(
     r"data/raw/ibkr/(?P<asset>[^/]+)/(?P<timeframe_dir>bars_1min|bars_1m)/"
+    r"symbol=(?P<symbol>[^/]+)/year=(?P<year>\d{4})/month=(?P<month>\d{2})/"
+    r"(?P<filename>[^/]+\.parquet)$"
+)
+
+# When inventory root is ``data/raw/ibkr`` (or a temp mirror), paths are often
+# ``equity/bars_1min/...`` without the ``data/raw/ibkr`` prefix.
+_CANONICAL_SUFFIX_RE = re.compile(
+    r"^(.*/)?asset=(?P<asset>[^/]+)/symbol=(?P<symbol>[^/]+)/"
+    r"timeframe=(?P<timeframe>[^/]+)/year=(?P<year>\d{4})/month=(?P<month>\d{2})/"
+    r"(?P<filename>[^/]+\.parquet)$"
+)
+
+_LEGACY_SUFFIX_RE = re.compile(
+    r"^(.*/)?(?P<asset>[^/]+)/(?P<timeframe_dir>bars_1min|bars_1m)/"
     r"symbol=(?P<symbol>[^/]+)/year=(?P<year>\d{4})/month=(?P<month>\d{2})/"
     r"(?P<filename>[^/]+\.parquet)$"
 )
@@ -64,65 +81,133 @@ def _normalize_rel(rel: Path | str) -> str:
     return Path(rel).as_posix()
 
 
-def infer_raw_layout(path: Path | str, *, base: Path | str | None = None) -> RawLayoutInfo:
-    """Classify a parquet path. ``base`` is the repo root for relpath computation."""
-    p = Path(path)
-    if base is None:
-        rel = _normalize_rel(p)
-    else:
-        try:
-            rel = _normalize_rel(p.resolve().relative_to(Path(base).resolve()))
-        except ValueError:
-            rel = _normalize_rel(p)
-
-    rel_norm = rel.replace("\\", "/")
-
+def _match_canonical(rel_norm: str) -> re.Match[str] | None:
     m = _CANONICAL_RE.search(rel_norm)
     if m:
-        year = int(m.group("year"))
-        month = int(m.group("month"))
-        proposed = (
-            f"data/raw/ibkr/asset={m.group('asset')}/symbol={m.group('symbol')}/"
-            f"timeframe={m.group('timeframe')}/year={year}/month={month:02d}/bars.parquet"
-        )
-        return RawLayoutInfo(
-            relative_path=rel_norm,
-            file_name=p.name,
-            asset=m.group("asset"),
-            symbol=m.group("symbol"),
-            timeframe=m.group("timeframe"),
-            year=year,
-            month=month,
-            layout_type="canonical",
-            proposed_canonical_path=proposed,
-        )
+        return m
+    return _CANONICAL_SUFFIX_RE.match(rel_norm)
 
+
+def _match_legacy(rel_norm: str) -> re.Match[str] | None:
     m = _LEGACY_QT_LIKE_RE.search(rel_norm)
     if m:
-        asset = m.group("asset")
-        timeframe_dir = m.group("timeframe_dir")
-        timeframe = "1m" if timeframe_dir in ("bars_1min", "bars_1m") else timeframe_dir
-        year = int(m.group("year"))
-        month = int(m.group("month"))
-        proposed = (
-            f"data/raw/ibkr/asset={asset}/symbol={m.group('symbol')}/"
-            f"timeframe={timeframe}/year={year}/month={month:02d}/bars.parquet"
-        )
-        return RawLayoutInfo(
-            relative_path=rel_norm,
-            file_name=p.name,
-            asset=asset,
-            symbol=m.group("symbol"),
-            timeframe=timeframe,
-            year=year,
-            month=month,
-            layout_type="legacy_qt_like",
-            proposed_canonical_path=proposed,
-        )
+        return m
+    return _LEGACY_SUFFIX_RE.match(rel_norm)
+
+
+def _info_from_canonical_match(
+    rel_norm: str,
+    file_name: str,
+    m: re.Match[str],
+) -> RawLayoutInfo:
+    year = int(m.group("year"))
+    month = int(m.group("month"))
+    proposed = (
+        f"data/raw/ibkr/asset={m.group('asset')}/symbol={m.group('symbol')}/"
+        f"timeframe={m.group('timeframe')}/year={year}/month={month:02d}/bars.parquet"
+    )
+    return RawLayoutInfo(
+        relative_path=rel_norm,
+        file_name=file_name,
+        asset=m.group("asset"),
+        symbol=m.group("symbol"),
+        timeframe=m.group("timeframe"),
+        year=year,
+        month=month,
+        layout_type="canonical",
+        proposed_canonical_path=proposed,
+    )
+
+
+def _info_from_legacy_match(
+    rel_norm: str,
+    file_name: str,
+    m: re.Match[str],
+) -> RawLayoutInfo:
+    asset = m.group("asset")
+    timeframe_dir = m.group("timeframe_dir")
+    timeframe = "1m" if timeframe_dir in ("bars_1min", "bars_1m") else timeframe_dir
+    year = int(m.group("year"))
+    month = int(m.group("month"))
+    proposed = (
+        f"data/raw/ibkr/asset={asset}/symbol={m.group('symbol')}/"
+        f"timeframe={timeframe}/year={year}/month={month:02d}/bars.parquet"
+    )
+    return RawLayoutInfo(
+        relative_path=rel_norm,
+        file_name=file_name,
+        asset=asset,
+        symbol=m.group("symbol"),
+        timeframe=timeframe,
+        year=year,
+        month=month,
+        layout_type="legacy_qt_like",
+        proposed_canonical_path=proposed,
+    )
+
+
+def infer_raw_layout(
+    path: Path | str,
+    *,
+    base: Path | str | None = None,
+    layout_root: Path | str | None = None,
+) -> RawLayoutInfo:
+    """Classify a parquet path.
+
+    ``base`` is the repo root (or any anchor) for stable relative_path output
+    when the file resolves under ``base``.
+
+    ``layout_root`` is the directory passed to inventory (e.g. ``data/raw/ibkr``).
+    When the resolved path is under ``layout_root``, a virtual path
+    ``data/raw/ibkr/<suffix>`` is used for layout matching if the repo-relative
+    form is not already recognized.
+    """
+    p = Path(path)
+    try:
+        pabs = p.resolve()
+    except OSError:
+        pabs = p
+
+    rel_norm: str
+    if base is not None:
+        base_res = Path(base).resolve()
+        try:
+            rel_norm = _normalize_rel(pabs.relative_to(base_res)).replace("\\", "/")
+        except ValueError:
+            rel_norm = _normalize_rel(pabs).replace("\\", "/")
+    else:
+        rel_norm = _normalize_rel(pabs).replace("\\", "/")
+
+    match_candidates: list[str] = [rel_norm]
+    if layout_root is not None:
+        try:
+            lr = Path(layout_root).resolve()
+            suffix = pabs.relative_to(lr).as_posix().replace("\\", "/")
+            virt = f"data/raw/ibkr/{suffix}"
+            if virt not in match_candidates:
+                match_candidates.insert(0, virt)
+        except ValueError:
+            pass
+
+    if not rel_norm.startswith("data/raw/ibkr/"):
+        idx = rel_norm.find("data/raw/ibkr/")
+        if idx >= 0:
+            tail = rel_norm[idx:]
+            if tail not in match_candidates:
+                match_candidates.insert(0, tail)
+
+    file_name = p.name
+    for cand in match_candidates:
+        m = _match_canonical(cand)
+        if m:
+            return _info_from_canonical_match(rel_norm, file_name, m)
+        m = _match_legacy(cand)
+        if m:
+            return _info_from_legacy_match(rel_norm, file_name, m)
 
     return RawLayoutInfo(
         relative_path=rel_norm,
-        file_name=p.name,
+        file_name=file_name,
         asset=None,
         symbol=None,
         timeframe=None,
@@ -133,12 +218,16 @@ def infer_raw_layout(path: Path | str, *, base: Path | str | None = None) -> Raw
     )
 
 
-def _commit_safety(size_bytes: int) -> CommitSafety:
-    if size_bytes >= TOO_LARGE_BYTES:
-        return "too_large_requires_lfs"
-    if size_bytes >= LARGE_WARN_BYTES:
-        return "large_warn"
-    return "safe_normal_git"
+def _resolve_inventory_base(
+    root: Path,
+    base: Path | str | None,
+) -> Path:
+    if base is not None:
+        return Path(base).resolve()
+    try:
+        return repo_root()
+    except RuntimeError:
+        return root.resolve()
 
 
 def build_raw_data_inventory(
@@ -147,22 +236,24 @@ def build_raw_data_inventory(
     base: Path | str | None = None,
 ) -> list[dict]:
     """Build an inventory list of dicts (one per parquet file) under ``root``."""
-    base_path = Path(base).resolve() if base is not None else Path(root).resolve().parents[1]
-    files = find_parquet_files(root)
+    root_path = Path(root).resolve()
+    base_path = _resolve_inventory_base(root_path, base)
+    files = find_parquet_files(root_path)
     rows: list[dict] = []
-    for p in files:
-        stat = p.stat()
-        info = infer_raw_layout(p, base=base_path)
+    for fp in files:
+        stat = fp.stat()
+        info = infer_raw_layout(fp, base=base_path, layout_root=root_path)
         size_b = int(stat.st_size)
         size_mib = round(size_b / (1024 * 1024), 4)
         mtime_iso = (
-            datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc)
+            datetime.fromtimestamp(stat.st_mtime, tz=UTC)
             .isoformat(timespec="seconds")
             .replace("+00:00", "Z")
         )
         rows.append(
             {
                 **asdict(info),
+                "resolved_path": str(fp.resolve()),
                 "file_size_bytes": size_b,
                 "file_size_mib": size_mib,
                 "modified_time_utc": mtime_iso,
@@ -173,8 +264,17 @@ def build_raw_data_inventory(
     return rows
 
 
+def _commit_safety(size_bytes: int) -> CommitSafety:
+    if size_bytes >= TOO_LARGE_BYTES:
+        return "too_large_requires_lfs"
+    if size_bytes >= LARGE_WARN_BYTES:
+        return "large_warn"
+    return "safe_normal_git"
+
+
 _CSV_FIELDS: tuple[str, ...] = (
     "relative_path",
+    "resolved_path",
     "file_name",
     "asset",
     "symbol",

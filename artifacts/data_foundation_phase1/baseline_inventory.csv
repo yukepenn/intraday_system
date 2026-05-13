@@ -1,0 +1,5 @@
+metric,value
+baseline_git_sha,f29babb49164bc4fa4766c2d13dab5834d5a1ce9
+branch,main
+remote,https://github.com/yukepenn/intraday_system.git
+prior_next_handoff,IMPLEMENT_DATA_FOUNDATION_BARMATRIX_NORMALIZATION

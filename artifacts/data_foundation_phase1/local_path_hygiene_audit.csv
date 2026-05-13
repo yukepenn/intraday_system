@@ -1,0 +1,4 @@
+file_path,matched_pattern,context,classification,action_taken
+artifacts/bootstrap/phase0_1a/baseline_inventory.md,OneDrive,inventory header,local_only_artifact,noted
+artifacts/bootstrap/phase0_1a/raw_data_inventory.md,D:/OneDrive,inventory root line,local_only_artifact,noted
+docs/QT_REFERENCE_POLICY.md,QT path example,QT reference section,general_doc,sanitized_to_placeholder

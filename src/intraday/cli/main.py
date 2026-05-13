@@ -166,11 +166,19 @@ def cmd_data_inventory(root_arg: str, output: str) -> int:
 try:
     import typer  # type: ignore
 
+    from intraday.cli.data_cmds import (
+        cmd_data_canonicalize_raw,
+        cmd_data_inspect,
+        cmd_data_load_bars,
+        cmd_data_normalize,
+        cmd_data_validate_curated,
+    )
+
     app = typer.Typer(
         name="intraday",
         add_completion=False,
         no_args_is_help=True,
-        help="intraday_system CLI (Phase 0/1A skeleton).",
+        help="intraday_system CLI (Layer 0 data foundation + skeleton).",
     )
     data_app = typer.Typer(no_args_is_help=True, help="Data commands.")
     validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")
@@ -191,6 +199,62 @@ try:
         output: str = typer.Option(..., "--output", help="Output CSV path (a .md sibling is also written)."),
     ) -> None:
         raise typer.Exit(code=cmd_data_inventory(root, output))
+
+    @data_app.command("inspect", help="Inspect raw parquet schemas under a dataset's raw_root.")
+    def _typer_data_inspect(
+        dataset: str = typer.Option(..., "--dataset", help="Dataset YAML (repo-relative or absolute)."),
+        symbol: str = typer.Option(..., "--symbol", help="Symbol filter (e.g. QQQ)."),
+    ) -> None:
+        raise typer.Exit(code=cmd_data_inspect(dataset, symbol))
+
+    @data_app.command("canonicalize-raw", help="Plan/apply legacy→canonical raw layout moves.")
+    def _typer_data_canonicalize_raw(
+        root: str = typer.Option(..., "--root", help="Raw IBKR root (usually data/raw/ibkr)."),
+        symbol: str = typer.Option(..., "--symbol", help="Symbol to filter (e.g. QQQ)."),
+        write: bool = typer.Option(False, "--write", help="Apply moves (default dry-run)."),
+    ) -> None:
+        raise typer.Exit(code=cmd_data_canonicalize_raw(root, symbol, write=write))
+
+    @data_app.command("normalize", help="Normalize raw IBKR parquet to curated RTH parquet.")
+    def _typer_data_normalize(
+        dataset: str = typer.Option(..., "--dataset", help="Dataset YAML."),
+        symbol: str = typer.Option(..., "--symbol", help="Symbol (e.g. QQQ)."),
+        start: str | None = typer.Option(None, "--start", help="YYYY-MM-DD inclusive."),
+        end: str | None = typer.Option(None, "--end", help="YYYY-MM-DD inclusive."),
+        write: bool = typer.Option(False, "--write", help="Write curated parquet (default dry-run)."),
+        all_available: bool = typer.Option(False, "--all-available", help="Infer date span from inventory."),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_data_normalize(
+                dataset,
+                symbol,
+                start=start,
+                end=end,
+                write=write,
+                all_available=all_available,
+            )
+        )
+
+    @data_app.command("validate-curated", help="Validate curated parquet for a window.")
+    def _typer_data_validate_curated(
+        symbol: str = typer.Option(..., "--symbol"),
+        start: str = typer.Option(..., "--start"),
+        end: str = typer.Option(..., "--end"),
+        data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
+        strict: bool = typer.Option(False, "--strict"),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_data_validate_curated(symbol, start, end, data_root=data_root, strict=strict)
+        )
+
+    @data_app.command("load-bars", help="Load curated parquet into a BarMatrix and print summary JSON.")
+    def _typer_data_load_bars(
+        symbol: str = typer.Option(..., "--symbol"),
+        start: str = typer.Option(..., "--start"),
+        end: str = typer.Option(..., "--end"),
+        data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
+    ) -> None:
+        raise typer.Exit(code=cmd_data_load_bars(symbol, start, end, data_root=data_root))
 
     HAS_TYPER = True
 

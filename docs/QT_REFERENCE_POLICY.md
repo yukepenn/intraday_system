@@ -4,7 +4,7 @@ How `QT/` (the legacy research archive) relates to this repo.
 
 ## 1. QT is read-only reference
 
-`QT/` lives outside this repo (`D:\OneDrive - Washington University in St. Louis\QT`). It contains years of strategy/feature research and Layer1/Layer2/Layer3 vocabulary.
+`QT/` lives outside this repo at **`<qt-reference-root>`** (local-only on your machine). It contains years of strategy/feature research and Layer1/Layer2/Layer3 vocabulary.
 
 `intraday_system/` is the clean final system. It is independent of QT at runtime.
 
@@ -23,7 +23,7 @@ How `QT/` (the legacy research archive) relates to this repo.
 - The legacy archive folder structure.
 - Old Numba PnL as active truth (we re-derive reference truth).
 - Research CSV/MD as runtime config (configs are YAML-only here).
-- `D:\` drive assumptions.
+- Hard-coded absolute drive assumptions.
 - Multiple competing engines.
 - Compressed one-line modules.
 - Broad scripts without central config.

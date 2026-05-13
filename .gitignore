@@ -37,6 +37,10 @@ desktop.ini
 *.pkl
 *.feather
 
+# --- Local parquet datasets (default: manifests only) ---
+data/raw/**/*.parquet
+data/curated/**/*.parquet
+
 # --- Cache (always local-only) ---
 data/cache/**
 # Allow the README documenting the cache layout to be tracked.

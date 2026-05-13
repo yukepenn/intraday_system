@@ -18,7 +18,7 @@ data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=YYYY/month=MM/bars.parqu
 data/raw/ibkr/equity/bars_1min/symbol=QQQ/year=YYYY/month=MM/data.parquet
 ```
 
-Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonicalization (folder rename + file rename) is part of the Phase 1 data-foundation work.
+Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonicalization (folder rename + file rename) is part of the Phase 1 data-foundation work (see `intraday.data.canonicalize` + `data canonicalize-raw`).
 
 **Raw data rules**:
 
@@ -27,18 +27,37 @@ Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonical
 - Do not silently dedupe or overwrite.
 - One parquet per `(asset, symbol, timeframe, year, month)` partition.
 
+**Observed local QQQ IBKR raw columns (Phase 1 audit)**:
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `ts_utc` | timestamp[ns, tz=UTC] | Vendor UTC clock |
+| `ts_ny` | timestamp[ns, tz=America/New_York] | Vendor local clock |
+| `open` / `high` / `low` / `close` / `volume` | float64 | OHLCV |
+| `useRTH` | bool | Present in vendor export; normalization still applies explicit RTH window |
+| extras | varies | e.g. `asset`, `source`, `bar_size`, `average`, `barCount`, `symbol` |
+
+**Accepted raw timestamp column names** (dataset config `raw_timestamp.column`):
+
+- Preferred when present: `ts_ny` (America/New_York) or `ts_utc` (UTC).
+- Legacy / synthetic: `timestamp` (naive or tz-aware).
+
+**Accepted OHLCV column names** (defaults overridable via dataset `ohlcv` mapping):
+
+- `open`, `high`, `low`, `close`, `volume`.
+
 **Raw schema (minimum)**:
 
 | Column | Type | Notes |
 | --- | --- | --- |
-| `timestamp` | timestamp ns (UTC or local) | Bar end-time as provided by vendor |
+| one of `ts_ny` / `ts_utc` / `timestamp` | datetime | Interpretation controlled by dataset YAML |
 | `open` | float64 | |
 | `high` | float64 | |
 | `low` | float64 | |
 | `close` | float64 | |
 | `volume` | float64 | |
 
-Vendor-specific extras (e.g. `barCount`, `wap`) may appear but are not required.
+Normalization **standardizes** vendor raw schema into the curated schema below (UTC + NY bar-start semantics, `session_date`, `minute_of_session`, etc.).
 
 ## 2. Curated data
 
@@ -50,26 +69,32 @@ Curated data is normalized, session-tagged, RTH-filtered, and backtest-ready.
 data/curated/bars_1m_rth/asset=equity/symbol=QQQ/year=YYYY/month=MM/bars.parquet
 ```
 
-**Curated schema (target — implemented in Phase 1)**:
+**Curated schema (Phase 1 — implemented)**:
 
 | Column | Type | Notes |
 | --- | --- | --- |
-| `ts_utc` | timestamp[ns, UTC] (or int64 ns) | Canonical UTC instant |
-| `ts_local` | timestamp[ns, America/New_York] | For audit |
-| `date` | date | Local trading date |
-| `session_date` | int32 | `YYYYMMDD` |
-| `session_id` | int32 | Monotonic per session in window |
-| `bar_index` | int64 | Monotonic per file/window |
-| `minute_of_session` | int16 | `0..389` for RTH 1-min equity |
+| `ts_utc` | timestamp[ns, UTC] | Bar **start** instant in UTC |
+| `ts_utc_ns` | int64 | `ts_utc` as epoch nanoseconds |
+| `ts_local` | timestamp[ns, America/New_York] | Bar **start** in US/Eastern |
+| `session_date` | int32 | `YYYYMMDD` (NY session date) |
+| `session_id` | int32 | Dense rank of `session_date` within the normalized window |
+| `bar_index` | int64 | Row index after global `ts_utc_ns` sort |
+| `minute_of_session` | int16 | Minutes since 09:30 NY inclusive; full RTH runs `0..389` |
 | `open` | float64 | |
 | `high` | float64 | |
 | `low` | float64 | |
 | `close` | float64 | |
 | `volume` | float64 | |
-| `source` | string | `"ibkr"` |
+| `source` | string | e.g. `ibkr` |
 | `is_rth` | bool | Always `true` in `bars_1m_rth/...` |
 
-Critical fields for the fast engine: `session_id`, `session_date`, `minute_of_session`, `bar_index`.
+**Timestamp semantics**:
+
+- Curated `ts_utc` / `ts_local` always represent **bar START**.
+- If raw timestamps are **bar END** (dataset `raw_timestamp.semantics: bar_end`), normalization subtracts **one minute** (in NY) before assigning `minute_of_session`.
+- RTH filter uses bar-start local time: **09:30 ≤ bar_start \< 16:00** (`America/New_York`).
+- `minute_of_session` = minutes since 09:30 NY, based on bar-start time.
+- EOD minute convention for downstream engines continues to treat the last full RTH minute index as **389**.
 
 ## 3. Hot arrays — `BarMatrix`
 
