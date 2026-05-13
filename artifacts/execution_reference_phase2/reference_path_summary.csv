@@ -1,0 +1,6 @@
+step,policy
+intrabar,stop/target from high/low
+same_bar,stop_first or target_first or conservative==stop_first
+eod_vs_maxhold,EOD evaluated first on same bar
+session_change,exit prior close as EOD
+truncated_end,last bar close EOD

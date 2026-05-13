@@ -76,11 +76,13 @@ python -m pytest -q
 
 ## Project status
 
-Phase **0/1A** bootstrap is complete. Phase **1** (Layer 0 data foundation: inventory, schema inspection, canonicalization, IBKR→curated normalization, BarMatrix load, validation, `data` CLI) is implemented.
+Phase **0/1A** bootstrap is complete. Phase **1** and **1B** (Layer 0 data foundation, normalization, `BarMatrix`, validation, `data` CLI) are complete.
 
-The current hardening pass is **Phase 1B** (data foundation repair, documentation sync, schema/window/session-id contracts, and review artifacts). No execution, PnL, or strategy work runs in this phase.
+Phase **2** — **reference execution engine** — is implemented: `materialize_trade` and `simulate_trade_path_reference` under `src/intraday/execution/` with synthetic unit and smoke tests (no committed parquet; tests do not require local QQQ files).
 
-**Next planned phase:** Phase **2** — reference execution engine — after Phase 1B passes review.
+The **Numba fast path** (`execution.fast`) remains a **non-active placeholder** until Phase **3** parity work.
+
+**Next planned phase:** Phase **3** — fast execution skeleton + parity vs reference.
 
 See:
 

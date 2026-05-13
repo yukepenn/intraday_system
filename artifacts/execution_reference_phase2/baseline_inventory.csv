@@ -1,0 +1,2 @@
+branch,local_head_sha,remote_main_sha,local_remote_matched,working_tree_clean_start,next_handoff_decision_start,next_handoff_recommended_next_start,notes
+main,7110c1f503152f1b1287e3f20670d6906ec04ed0,7110c1f503152f1b1287e3f20670d6906ec04ed0,yes,yes,DATA_FOUNDATION_PHASE1B_COMPLETE,IMPLEMENT_REFERENCE_EXECUTION_ENGINE,Baseline before Phase 2 patch; origin https://github.com/yukepenn/intraday_system.git

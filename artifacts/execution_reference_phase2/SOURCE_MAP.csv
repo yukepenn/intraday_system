@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/execution/spec.py,ExecutionSpec + YAML load,yes,source,no,
+src/intraday/execution/intent.py,TradeIntent,yes,source,no,
+src/intraday/execution/records.py,TradeResult factories,yes,source,no,
+src/intraday/execution/cost.py,slippage PnL R helpers,yes,source,no,
+src/intraday/execution/materialize.py,next-open materialization,yes,source,no,
+src/intraday/execution/reference.py,canonical simulator,yes,source,no,
+src/intraday/execution/fast.py,Numba placeholder,no,source,no,Phase 3
+docs/EXECUTION_CONTRACT.md,normative semantics,yes,source,no,
+artifacts/execution_reference_phase2/*.md,handoff evidence,yes,generated,no,committed summaries
+tests/helpers/bars.py,synthetic BarMatrix,no,source,no,
+tests/unit/test_execution_*.py,unit coverage,yes,source,no,
+configs/execution/intraday_default.yaml,defaults,yes,source,no,

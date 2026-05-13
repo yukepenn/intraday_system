@@ -2,6 +2,7 @@
 
 Chronological log of meaningful progress milestones.
 
+- [2026-05-13] Phase 2 reference execution — `ExecutionSpec` validation + YAML load, `TradeIntent`/`TradeResult` contracts, `materialize_trade`, `simulate_trade_path_reference` (next-open, session guard, slippage, stop/target/EOD/max-hold, same-bar policy, costs, R-multiple), synthetic `BarMatrix` test helpers, execution unit/smoke tests; data README + raw schema constant clarification; docs/contracts/status handoff refresh; `artifacts/execution_reference_phase2/` review bundle.
 - [2026-05-13] Phase 1B data foundation hardening — raw timestamp contract (`ts_ny`/`ts_utc`/… + YAML `raw_timestamp.column`), exact `session_date` window filtering, safe partial-month **write** guard, BarMatrix `session_id` recomputation, stronger validation invariants, `data timestamp-audit` / `data session-coverage`, inventory CSV path sanitization, doc/status sync, Phase 1B review artifacts.
 - [2026-05-13] Phase 1 data foundation — raw schema/timestamp config, guarded raw canonicalization, IBKR→curated RTH normalization, BarMatrix loader, validation reports, expanded `data` CLI, and tests (synthetic + local QQQ 2024H1 smoke).
 - [2026-05-12] Bootstrap intraday_system architecture skeleton (Phase 0/1A):

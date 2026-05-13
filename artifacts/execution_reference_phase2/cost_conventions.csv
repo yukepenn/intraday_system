@@ -1,0 +1,4 @@
+formula,definition
+gross_pnl,side*(exit-entry)*qty
+net_pnl,gross_pnl-commission
+r_multiple,net_pnl/(risk_per_share*qty)

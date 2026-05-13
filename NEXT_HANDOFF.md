@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-13** (Phase 1B data foundation hardening).
+Last updated: **2026-05-13** (Phase 2 reference execution engine).
 
 ---
 
@@ -8,118 +8,85 @@ Last updated: **2026-05-13** (Phase 1B data foundation hardening).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-commit baseline was recorded in `artifacts/data_foundation_phase1b/baseline_inventory.*`).
+- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-Phase-2 baseline was `7110c1f` in `artifacts/execution_reference_phase2/baseline_inventory.*`).
 - Windows: `git config --global --add safe.directory <repo>` if Git reports “dubious ownership”.
 
 ## B. Task scope
 
-Phase **1B** only: Layer 0 **repair / hardening** — docs sync, Ruff readability, raw timestamp contract, normalization exact window + safe writes, BarMatrix `session_id` determinism, timestamp/session evidence CLI + artifacts, expanded tests, path hygiene in committed artifacts.
+Phase **2** only: **reference execution truth** in Python — `TradeIntent` + `BarMatrix` + `ExecutionSpec` → `TradeResult` via `materialize_trade` and `simulate_trade_path_reference`.
 
-**Out of scope (unchanged):** reference execution, Numba fast path, feature kernels, strategy logic, Layer1/2/3, candidate YAML, portfolio sizing, PnL / R-multiple logic.
+**In scope:** next-open entry, session-boundary guard, entry/exit slippage, stop/risk/min-risk validation, fixed-R target from actual entry, intrabar stop/target, same-bar policy, EOD and max-hold ordering, truncated-window and session-roll defensive exits, gross/net PnL, R-multiple, reject/exit reasons, synthetic tests.
 
-## C. Status/docs synchronization
+**Out of scope (unchanged):** Numba fast path (beyond placeholder), feature kernels, strategy logic, Layer1/2/3, candidate YAML, portfolio sizing, management overlays inside execution, research sweeps.
 
-- `README.md` — project status reflects Phase 0/1 complete, Phase 1B current, Phase 2 next.
-- `PROJECT_STATUS.md` — Phase 1B + decision `DATA_FOUNDATION_PHASE1B_COMPLETE`.
-- `PROGRESS.md` — chronological Phase 1B entry.
-- `CHANGES.md` — Phase 1 + 1B summaries; latest decision is Phase 1B (not stale bootstrap-only).
-- `docs/PHASE_PLAN.md` — Phase 0/1 complete; Phase 1B gate; Phase 1 acceptance no longer implies a cache round-trip.
-- `docs/DATA_CONTRACT.md` — timestamp candidates, window filter, write guard, BarMatrix `session_id` semantics.
-- `configs/data/ibkr_qqq_1m.yaml` — comments: local raw, canonical QQQ expected, legacy support, SPY note.
+## C. Execution contract
 
-See `artifacts/data_foundation_phase1b/status_sync.*`.
+- `ExecutionSpec` validates all numeric bounds and enums; `from_config` / `load_execution_spec` / `to_dict`.
+- `TradeIntent.validate_shape` + materialization rejects for session/window/stop/risk/short.
+- `TradeResult.rejected` / `accepted_trade` convention documented in `docs/EXECUTION_CONTRACT.md`.
+- New `RejectReason.INVALID_INTENT` — see `artifacts/execution_reference_phase2/execution_contract_changes.md`.
 
-## D. Formatting/readability
+## D. Materialization semantics
 
-`python -m ruff format src tests` applied; `ruff format --check` and `ruff check src tests` pass.
+- `entry_bar = signal_bar + 1`; `NO_NEXT_BAR`, `CROSS_SESSION_ENTRY`, `OUTSIDE_TRADING_WINDOW` (when `minute[entry_bar] > eod_exit_minute`), `SHORT_NOT_ALLOWED`, `INVALID_STOP`, `RISK_TOO_SMALL`.
+- Entry slippage adverse per side; target from slippaged entry and `target_r`.
+- Max-hold: intent `> 0` wins; else `max_hold_bars_default`; else unlimited.
 
-See `artifacts/data_foundation_phase1b/formatting_readability.*`.
+## E. Reference path semantics
 
-## E. Raw schema contract
+- Per bar: intrabar stop/target → EOD (`minute >= eod_exit_minute`) → max-hold; **EOD before max-hold** on the same bar.
+- `conservative` same-bar policy equals `stop_first`.
+- Session change while open → exit prior bar close as `EOD`; end-of-matrix fallback → last bar close `EOD`.
+- `management_plan != None` → `IntradaySystemError`.
 
-- Accepted timestamp column **names**: `ts_ny`, `ts_utc`, `timestamp`, `date`, `datetime` (`intraday.data.schema.RAW_TIMESTAMP_ACCEPTED_COLUMNS`).
-- Inspection requires Arrow **temporal** types; dataset `raw_timestamp.column` must exist and be accepted when provided.
-- QQQ uses `raw_timestamp.column: ts_ny` (dataset YAML).
-- OHLCV mapping remains YAML-driven with defaults `open/high/low/close/volume`.
+## F. Cost / R conventions
 
-See `artifacts/data_foundation_phase1b/schema_contract_repair.*` and `raw_schema_audit.*`.
+- `cost.py`: `apply_entry_slippage`, `apply_exit_slippage`, `compute_gross_pnl`, `compute_net_pnl`, `compute_r_multiple`; `apply_slippage` = entry alias.
 
-## F. Normalization exact-window behavior
-
-- After RTH + dedupe: filter `start_session_key <= session_date <= end_session_key` using NY `session_date` (from bar-start `ts_local`).
-- `write=True` to canonical monthly curated paths: **raises `ConfigError`** unless `[start,end]` spans full calendar months (start = first-of-month, end = last day of end month). Dry-run (default without `--write`) still reports exact filtered rows for partial windows.
-
-See `artifacts/data_foundation_phase1b/normalization_window_filtering.*` and `normalization_result.*`.
-
-## G. BarMatrix session_id determinism
-
-`load_bars_from_curated` drops curated file `session_id`, joins dense ranks from sorted unique `session_date` after load/filter/sort. `validate_bar_matrix` checks monotone `session_id`, `session_date` consistency on jumps, and `minute==0` at session starts.
-
-See `artifacts/data_foundation_phase1b/session_id_determinism.*`.
-
-## H. Timestamp/session audit
-
-- CLI: `python -m intraday.cli.main data timestamp-audit --dataset configs/data/ibkr_qqq_1m.yaml --symbol QQQ --output-dir artifacts/data_foundation_phase1b`
-- Artifacts: `timestamp_semantics_audit.csv` / `.md` (samples: earliest/latest/March/November/2024 month when present).
-- Session coverage (2024H1): `session_coverage_summary.csv` / `.md`.
-
-## I. Local QQQ 2024H1 validation
-
-- Rows: **48360**
-- Sessions: **124**
-- Minute range: **0..389**
-- `data validate-curated`: **no errors**
-- `data load-bars` `data_hash`: `b00d2b8cf0bc183bcbc792a75a3eea3a44c254bd656df672a267c3b39a40050d`
-
-See `curated_validation.*`, `barmatrix_load_smoke.*`.
-
-## J. Tests / validation
+## G. Tests / validation
 
 - `python -m compileall -q src` — pass
-- `pytest -q` — **73** passed
+- `pytest -q` — **127** passed (synthetic execution tests; no QQQ in unit tests)
 - Ruff format/check — pass
 - CLI: `--help`, `doctor`, `validate structure` — pass
-- Data CLI: inventory, inspect, normalize (dry-run), timestamp-audit, validate-curated, load-bars, session-coverage — pass locally with QQQ data
+- Data smoke (local curated present): `data validate-curated` + `data load-bars` QQQ 2024H1 — pass
 
-See `artifacts/data_foundation_phase1b/validation_results.*` and `commands_run.*`.
+See `artifacts/execution_reference_phase2/validation_results.*`.
+
+## H. Explicit non-implemented items
+
+- `execution.fast` Numba batch simulator (placeholder only).
+- Feature engine, strategies, Layer1 runner, Layer2 router, Layer3 validation.
+- Management overlays (scale-out, trailing, no-followthrough) and portfolio sizing.
+
+## I. Risks / blockers
+
+- **Git safe.directory** on some Windows setups.
+- **SPY** legacy raw layout until migrated.
+- **Early-close / exchange calendar** heuristics unchanged from Phase 1B.
+
+## J. Files changed (high level)
+
+- `src/intraday/execution/{spec,intent,records,cost,materialize,reference,__init__}.py`
+- `src/intraday/core/types.py` (`INVALID_INTENT`)
+- `src/intraday/data/schema.py` (OHLCV constant rename / alias)
+- `data/**/README.md`, `docs/{EXECUTION_CONTRACT,PHASE_PLAN,LAYER_FLOW}.md`
+- `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
+- `tests/helpers/bars.py`, `tests/unit/test_execution_*.py`, `tests/smoke/test_execution_reference_smoke.py`
+- `artifacts/execution_reference_phase2/*`
 
 ## K. Artifact hygiene
 
 - No raw/curated parquet, cache, npy/npz/memmap, or forbidden paths **staged**.
-- Inventory CSV/MD use `<repo-root>/...` for `resolved_path` when under repo base; CLI summaries avoid dumping absolute roots in JSON where updated.
 
-See `artifacts/data_foundation_phase1b/local_path_hygiene.*`.
+## L. Optional CLI
 
-## L. Explicit non-implemented items
+- No `execution smoke` subcommand (skipped to avoid CLI scope creep); synthetic coverage lives under `tests/`.
 
-- Reference execution simulator, Numba fast path, feature kernels, strategy logic.
-- Layer1 runner, candidate generation, Layer2 router, Layer3 validation, management modes, portfolio sizing, PnL / R-multiple logic.
+## M. Decision
 
-## M. Risks / blockers
+`REFERENCE_EXECUTION_ENGINE_COMPLETE`
 
-- **Git safe.directory** on some Windows setups.
-- **SPY** may remain legacy raw layout until migrated.
-- **Exchange calendar perfection** (early closes): session coverage flags `short_session` / `invalid` heuristically; not full calendar truth yet.
+## N. Recommended next step
 
-## N. Files changed (high level)
-
-- `src/intraday/data/{schema,inspect,normalize,loader,validate,timestamp_audit,catalog}.py`
-- `src/intraday/cli/{data_cmds,main,data}.py`
-- `configs/data/ibkr_qqq_1m.yaml`
-- `docs/{DATA_CONTRACT,PHASE_PLAN}.md`
-- `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
-- `tests/unit/{test_raw_schema_inspection,test_data_normalize,test_data_loader,test_data_validate}.py`
-- `artifacts/data_foundation_phase1b/*`
-
-## O. Local-only artifacts
-
-- Raw + curated parquet under `data/**` (gitignored).
-- Local-only machine paths may still appear in **stdout** when running CLI outside sanitized JSON fields.
-
-## P. Decision
-
-`DATA_FOUNDATION_PHASE1B_COMPLETE`
-
-## Q. Recommended next step
-
-`IMPLEMENT_REFERENCE_EXECUTION_ENGINE`
+`IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`

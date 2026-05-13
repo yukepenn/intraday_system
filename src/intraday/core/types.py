@@ -40,6 +40,8 @@ class RejectReason(IntEnum):
     INVALID_STOP = 4
     SHORT_NOT_ALLOWED = 5
     OUTSIDE_TRADING_WINDOW = 6
+    # Signal index OOB, side not in {LONG, SHORT}, qty <= 0, target_r <= 0, etc.
+    INVALID_INTENT = 7
 
 
 class EngineMode(IntEnum):

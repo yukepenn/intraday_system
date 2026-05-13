@@ -2,29 +2,24 @@
 
 Immutable vendor data. Do not edit files in place. Do not dedupe in place. Do not overwrite silently.
 
+Parquet under this tree is **local-only** and **gitignored** in normal workflows (do not commit raw vendor files).
+
 ## Canonical layout
 
 ```
 data/raw/<vendor>/asset=<asset>/symbol=<symbol>/timeframe=<tf>/year=<YYYY>/month=<MM>/bars.parquet
 ```
 
-For IBKR equity 1-minute QQQ:
+For IBKR equity 1-minute QQQ (example):
 
 ```
 data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2024/month=06/bars.parquet
 ```
 
-## Current local state
+## Legacy layout
 
-The local repo holds parquet under the legacy QT-like layout:
+Some symbols (e.g. **SPY**) may still appear under a legacy QT-like tree until migrated. **QQQ** is expected in the canonical layout after Phase 1/1B.
 
-```
-data/raw/ibkr/equity/bars_1min/symbol=QQQ/year=YYYY/month=MM/data.parquet
-data/raw/ibkr/equity/bars_1min/symbol=SPY/year=YYYY/month=MM/data.parquet
-```
+## Raw timestamps
 
-Phase 0/1A intentionally does NOT move files. Phase 1 will either canonicalize the layout (preserving bytes) or implement a layout-aware loader.
-
-## Tracking decision
-
-All current files are `<1 MiB` and total `~36 MiB`. Safe for normal Git. See `artifacts/bootstrap/phase0_1a/data_tracking_decision.md` for the policy.
+Vendor files may use any accepted timestamp column name: `ts_ny`, `ts_utc`, `timestamp`, `date`, `datetime` — the active column is selected per dataset YAML (`raw_timestamp.column`).

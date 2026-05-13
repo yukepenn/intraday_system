@@ -1,14 +1,12 @@
 # data/raw/ibkr/
 
-IBKR-sourced raw data. One parquet per `(asset, symbol, timeframe, year, month)` partition.
+IBKR-sourced raw data. One parquet per `(asset, symbol, timeframe, year, month)` partition in the canonical layout.
 
-## Current contents
-
-- Equity 1-minute bars for QQQ (Jan 2020 — late 2026 partial), legacy layout.
-- Equity 1-minute bars for SPY (Jan 2020 — Apr 2026 partial), legacy layout.
+Parquet here is **local-only** and **gitignored** — do not commit raw vendor files.
 
 ## Notes
 
-- Raw schema (minimum): `timestamp, open, high, low, close, volume`.
+- Minimum bar columns include **OHLCV**; the timestamp column name is **config-driven** (accepted names include `ts_ny`, `ts_utc`, `timestamp`, `date`, `datetime`). See `intraday.data.schema.RAW_TIMESTAMP_ACCEPTED_COLUMNS`.
 - Vendor extras (e.g. `barCount`, `wap`) may appear.
-- Curated parquet under `data/curated/bars_1m_rth/...` is downstream and generated in Phase 1.
+- **QQQ** is expected under the canonical path after Phase 1/1B; **SPY** may remain on a legacy layout until migrated.
+- Curated parquet under `data/curated/bars_1m_rth/...` is downstream, **local-only**, and gitignored.

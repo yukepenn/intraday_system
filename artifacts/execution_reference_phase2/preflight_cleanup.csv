@@ -1,0 +1,6 @@
+file_path,issue,action_taken,behavior_changed_yes_no,notes
+data/README.md,stale tracking and legacy-only QQQ story,rewrote for gitignored parquet + canonical QQQ + SPY legacy + timestamp names,no,doc only
+data/raw/README.md,legacy-only emphasis,rewrote canonical vs legacy + accepted timestamp columns,no,doc only
+data/raw/ibkr/README.md,fixed timestamp wording,aligned with RAW_TIMESTAMP_ACCEPTED_COLUMNS,no,doc only
+data/curated/README.md,outdated Phase 1 empty note,local-only curated + schema pointer,no,doc only
+src/intraday/data/schema.py,RAW_REQUIRED_COLUMNS listed timestamp,added RAW_REQUIRED_OHLCV_COLUMNS and documented alias,no,constant semantics clarified only

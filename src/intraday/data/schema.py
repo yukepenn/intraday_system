@@ -14,15 +14,20 @@ RAW_TIMESTAMP_ACCEPTED_COLUMNS: frozenset[str] = frozenset(
     }
 )
 
-# Legacy tuple name kept for docs/search compatibility; logical minimum is timestamp + OHLCV.
-RAW_REQUIRED_COLUMNS: tuple[str, ...] = (
-    "timestamp",
+# Minimum OHLCV column names expected on raw bars (names are YAML-mapped).
+# Timestamp column name is **not** fixed: use ``RAW_TIMESTAMP_ACCEPTED_COLUMNS`` and
+# dataset ``raw_timestamp.column`` (e.g. ``ts_ny`` for QQQ).
+RAW_REQUIRED_OHLCV_COLUMNS: tuple[str, ...] = (
     "open",
     "high",
     "low",
     "close",
     "volume",
 )
+
+# Deprecated alias — do not assume a column literally named ``timestamp``; use
+# ``RAW_TIMESTAMP_ACCEPTED_COLUMNS`` for temporal keys.
+RAW_REQUIRED_COLUMNS: tuple[str, ...] = RAW_REQUIRED_OHLCV_COLUMNS
 
 
 def raw_timestamp_column_is_accepted(name: str) -> bool:

@@ -1,0 +1,6 @@
+topic,detail
+ExecutionSpec.entry_timing,next_open only (ConfigError otherwise)
+ExecutionSpec.same_bar_policy,stop_first | target_first | conservative
+ExecutionSpec.bounds,"slippage, commission, min_risk >= 0; eod in [0,389]"
+TradeIntent.pre_trade,INVALID_INTENT for OOB signal bad side qty target_r
+TradeResult.rejected,"NaN prices; exit REJECTED; bars -1/-1/0"

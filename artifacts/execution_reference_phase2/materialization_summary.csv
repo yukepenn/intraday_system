@@ -1,0 +1,7 @@
+rule,reject_or_field
+next_open entry_bar,signal_bar+1
+session guard,CROSS_SESSION_ENTRY
+minute guard,OUTSIDE_TRADING_WINDOW if minute>eod
+entry price,open + slip long / open - slip short
+target,from slippaged entry and risk_per_share
+max_hold,intent then spec default then none

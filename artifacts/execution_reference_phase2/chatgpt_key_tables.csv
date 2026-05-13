@@ -1,0 +1,6 @@
+section,item,metric,value,interpretation
+baseline,local_head,git_sha,7110c1f503152f1b1287e3f20670d6906ec04ed0,start of Phase 2 work matched origin main
+tests,pytest,count,127,all green after Phase 2
+data_smoke,qqq_rows,row_count,48360,validate-curated 2024H1 local
+semantics,same_bar_conservative,policy,equals stop_first,documented in EXECUTION_CONTRACT
+scope,fast_path,status,not implemented,Phase 3 parity

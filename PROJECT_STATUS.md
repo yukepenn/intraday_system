@@ -2,23 +2,23 @@
 
 ## Current phase
 
-**Phase 1B — Data foundation repair and handoff hardening** (this task).
+**Phase 2 — Reference execution engine** (canonical Python trade path).
 
 ## Decision
 
-`DATA_FOUNDATION_PHASE1B_COMPLETE` (local QQQ 2024H1 curated validation + BarMatrix load + tests + artifacts refreshed).
+`REFERENCE_EXECUTION_ENGINE_COMPLETE` — `ExecutionSpec` / `TradeIntent` / `TradeResult` hardened; `materialize_trade` + `simulate_trade_path_reference` implemented and covered by synthetic tests; `execution.fast` remains non-active.
 
 ## Recommended next step
 
-`IMPLEMENT_REFERENCE_EXECUTION_ENGINE`
+`IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Tests: `pytest` green (73) + `ruff format --check` + `ruff check` + `compileall`.
-- Raw parquet: **local-only** (gitignored). QQQ months are **canonical** under `data/raw/ibkr/asset=equity/symbol=QQQ/...`; SPY may remain **legacy_qt_like** until migrated.
-- Curated parquet: **local-only** (gitignored). QQQ **2024-01..2024-06** validated under `data/curated/bars_1m_rth/...`.
-- BarMatrix `session_id` is **recomputed** over the loaded window (deterministic across months).
+- Tests: `pytest` green (`127` at Phase 2 handoff) + `ruff format --check` + `ruff check` + `compileall`.
+- Raw parquet: **local-only** (gitignored). QQQ canonical raw layout expected after Phase 1/1B; SPY may remain legacy until migrated.
+- Curated parquet: **local-only** (gitignored).
+- Execution PnL truth: **`src/intraday/execution/reference.py`** only (Phase 2 scope).
 
-See `NEXT_HANDOFF.md` and `artifacts/data_foundation_phase1b/`.
+See `NEXT_HANDOFF.md` and `artifacts/execution_reference_phase2/`.

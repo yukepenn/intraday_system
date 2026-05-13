@@ -1,0 +1,7 @@
+suite,file,count_notes
+unit,test_execution_spec.py,10 scenarios
+unit,test_execution_contracts.py,5 scenarios
+unit,test_execution_costs.py,8 scenarios
+unit,test_execution_materialize.py,11 scenarios
+unit,test_execution_reference.py,22 scenarios
+smoke,test_execution_reference_smoke.py,2 scenarios

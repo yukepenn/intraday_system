@@ -183,7 +183,7 @@ try:
         name="intraday",
         add_completion=False,
         no_args_is_help=True,
-        help="intraday_system CLI (Layer 0 data foundation + skeleton).",
+        help="intraday_system CLI (Layer 0 data + Phase 2 reference execution).",
     )
     data_app = typer.Typer(no_args_is_help=True, help="Data commands.")
     validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")

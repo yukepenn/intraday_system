@@ -4,6 +4,18 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-13
 
+### Phase 2 — Reference execution engine
+
+- Feat(execution): implement `materialize_trade`, `MaterializedTrade`, and `simulate_trade_path_reference` (intrabar stop/target, same-bar policy, EOD before max-hold, session roll + truncated fallback, entry/exit slippage, commission, gross/net PnL, R-multiple).
+- Feat(execution): harden `ExecutionSpec` (`validate`, `from_config`, `load_execution_spec`, `to_dict`) and `TradeResult.rejected` / `accepted_trade` helpers; `TradeIntent.validate_shape`.
+- Feat(execution): cost helpers `apply_entry_slippage`, `apply_exit_slippage`, `compute_*`; retain `apply_slippage` as entry alias.
+- Feat(types): add `RejectReason.INVALID_INTENT` for malformed intents.
+- Fix(schema): replace misleading `RAW_REQUIRED_COLUMNS` timestamp implication with `RAW_REQUIRED_OHLCV_COLUMNS` + documented alias.
+- Docs: rewrite `EXECUTION_CONTRACT.md` for Phase 2 semantics; update `PHASE_PLAN`, `LAYER_FLOW`, `README`, status handoff files.
+- Chore(data): refresh `data/**/README.md` for local-only parquet + timestamp column names.
+- Test: add `tests/helpers/bars.py`, `tests/unit/test_execution_*.py`, `tests/smoke/test_execution_reference_smoke.py` (synthetic only).
+- Chore(artifacts): add `artifacts/execution_reference_phase2/` Phase 2 review bundle.
+
 ### Phase 1B — Data foundation repair and handoff hardening
 
 - Fix(data): accepted raw timestamp names (`ts_ny`, `ts_utc`, `timestamp`, `date`, `datetime`) with YAML `raw_timestamp.column`; schema inspection validates configured column or accepted temporal columns.
@@ -29,11 +41,11 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ### Intentionally NOT included (still)
 
-- Reference execution simulator, Numba fast path, feature kernels, strategy logic.
-- Layer1/Layer2/Layer3 runners, candidate YAML generation, router/validator.
+- Numba fast path (`execution.fast` active implementation), feature kernels, strategy logic.
+- Layer1/Layer2/Layer3 runners, candidate YAML generation, router/validator, management overlays in execution.
 - No raw/curated parquet or cache files committed.
 
 ### Decision
 
-- `DATA_FOUNDATION_PHASE1B_COMPLETE`
-- Recommended next step: `IMPLEMENT_REFERENCE_EXECUTION_ENGINE`
+- `REFERENCE_EXECUTION_ENGINE_COMPLETE`
+- Recommended next step: `IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`
