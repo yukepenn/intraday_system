@@ -47,11 +47,19 @@ Highlights:
 
 Decision label on success: **`REFERENCE_EXECUTION_ENGINE_COMPLETE`**.
 
-## Phase 3 — Fast execution skeleton + parity — **next**
+## Phase 3 — Fast execution skeleton + parity — **complete**
 
-Goal: discipline-first fast engine (Numba), parity-tested against reference.
+Goal: Numba acceleration path parity-tested against reference; no second PnL truth.
 
-## Phase 4 — Feature engine MVP
+Highlights:
+
+- `simulate_trade_path_fast` + `_simulate_trade_path_fast_kernel` (`@njit(cache=True)`); shared `materialize_trade` with reference.
+- Deterministic finite guards on intent numerics, entry open, scanned OHLC, finalize raw exit; `RejectReason.INVALID_MARKET_DATA`.
+- `parity.py` helpers; `tests/parity/test_execution_fast_parity.py` synthetic matrix (no QQQ dependency for acceptance).
+
+Decision label on success: **`FAST_EXECUTION_PARITY_COMPLETE`**.
+
+## Phase 4 — Feature engine MVP — **next**
 
 Goal: PA-required features cached.
 
@@ -75,10 +83,11 @@ Goal: end-to-end PA candidate factory.
 
 ## Decision labels (recent)
 
+- `FAST_EXECUTION_PARITY_COMPLETE`
 - `REFERENCE_EXECUTION_ENGINE_COMPLETE`
 - `DATA_FOUNDATION_PHASE1B_COMPLETE`
 - `DATA_FOUNDATION_BARMATRIX_COMPLETE` (legacy Phase 1 completion tag)
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Recommended next step after Phase 2: **`IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`**.
+Recommended next step after Phase 3: **`IMPLEMENT_FEATURE_ENGINE_MVP`**.

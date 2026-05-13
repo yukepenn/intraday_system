@@ -1,0 +1,7 @@
+contract_item,reference_behavior,fast_behavior,parity_required,notes
+public_return_type,TradeResult,TradeResult,yes,same dataclass
+management_plan_nonnull,IntradaySystemError,same,yes,same message text as reference
+materialization,Python materialize_trade,Python materialize_trade,yes,shared code path
+post_entry_scan,Python loop,Numba kernel,yes,must match ordering and exits
+same_bar_policy,stop_first/target_first/conservative=stop_first,same codes,yes,
+reject_INVALID_MARKET_DATA,TradeResult.rejected,same,yes,mid-scan and finalize

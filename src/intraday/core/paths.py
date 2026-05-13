@@ -18,9 +18,7 @@ def repo_root(start: Path | None = None) -> Path:
     for candidate in [here, *here.parents]:
         if candidate.is_dir() and any((candidate / m).exists() for m in _REPO_MARKERS):
             return candidate
-    raise RuntimeError(
-        "Could not locate repo root (no pyproject.toml or .git found upward)."
-    )
+    raise RuntimeError("Could not locate repo root (no pyproject.toml or .git found upward).")
 
 
 def relpath(path: Path | str, base: Path | None = None) -> str:

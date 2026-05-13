@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-13
 
+### Phase 3 — Fast execution skeleton + parity
+
+- Feat(execution): add `simulate_trade_path_fast` and Numba `_simulate_trade_path_fast_kernel` (post-entry scan parity vs reference; shared `materialize_trade`).
+- Feat(execution): add `parity.py` (`compare_trade_results`, `assert_trade_results_equal`) and export fast + parity from `execution` package.
+- Feat(types): add `RejectReason.INVALID_MARKET_DATA`; finite checks on `TradeIntent` qty/target_r/stop; finite entry open in `materialize_trade`; finite OHLC/raw-exit guards in reference path.
+- Test: `tests/parity/test_execution_fast_parity.py`, `tests/unit/test_execution_fast_contract.py`, hardening tests in execution unit tests.
+- Docs: `EXECUTION_CONTRACT.md`, `PHASE_PLAN.md`, README/PROJECT_STATUS/NEXT_HANDOFF; Ruff format on a few pre-existing files for green `ruff format --check`.
+- Chore(artifacts): add `artifacts/execution_fast_phase3/` Phase 3 review bundle.
+
 ### Phase 2 — Reference execution engine
 
 - Feat(execution): implement `materialize_trade`, `MaterializedTrade`, and `simulate_trade_path_reference` (intrabar stop/target, same-bar policy, EOD before max-hold, session roll + truncated fallback, entry/exit slippage, commission, gross/net PnL, R-multiple).
@@ -41,11 +50,11 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ### Intentionally NOT included (still)
 
-- Numba fast path (`execution.fast` active implementation), feature kernels, strategy logic.
+- Batch `simulate_trade_paths_fast`, feature kernels, strategy logic.
 - Layer1/Layer2/Layer3 runners, candidate YAML generation, router/validator, management overlays in execution.
 - No raw/curated parquet or cache files committed.
 
 ### Decision
 
-- `REFERENCE_EXECUTION_ENGINE_COMPLETE`
-- Recommended next step: `IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`
+- `FAST_EXECUTION_PARITY_COMPLETE`
+- Recommended next step: `IMPLEMENT_FEATURE_ENGINE_MVP`

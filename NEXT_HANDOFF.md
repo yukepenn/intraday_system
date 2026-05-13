@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-13** (Phase 2 reference execution engine).
+Last updated: **2026-05-13** (Phase 3 fast execution + parity).
 
 ---
 
@@ -8,85 +8,95 @@ Last updated: **2026-05-13** (Phase 2 reference execution engine).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-Phase-2 baseline was `7110c1f` in `artifacts/execution_reference_phase2/baseline_inventory.*`).
+- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-Phase-3 baseline was `a53ca95` in `artifacts/execution_fast_phase3/baseline_inventory.*`).
 - Windows: `git config --global --add safe.directory <repo>` if Git reports “dubious ownership”.
 
 ## B. Task scope
 
-Phase **2** only: **reference execution truth** in Python — `TradeIntent` + `BarMatrix` + `ExecutionSpec` → `TradeResult` via `materialize_trade` and `simulate_trade_path_reference`.
+Phase **3**: **fast execution skeleton + parity** — `TradeIntent` + `BarMatrix` + `ExecutionSpec` → `TradeResult` via `simulate_trade_path_fast`, parity-matched to `simulate_trade_path_reference`.
 
-**In scope:** next-open entry, session-boundary guard, entry/exit slippage, stop/risk/min-risk validation, fixed-R target from actual entry, intrabar stop/target, same-bar policy, EOD and max-hold ordering, truncated-window and session-roll defensive exits, gross/net PnL, R-multiple, reject/exit reasons, synthetic tests.
+**In scope:** Numba post-entry kernel; shared `materialize_trade`; finite guards (`INVALID_MARKET_DATA`, tightened `INVALID_INTENT` / `INVALID_STOP`); parity helpers; synthetic parity matrix under `tests/parity/`; docs and status refresh.
 
-**Out of scope (unchanged):** Numba fast path (beyond placeholder), feature kernels, strategy logic, Layer1/2/3, candidate YAML, portfolio sizing, management overlays inside execution, research sweeps.
+**Out of scope (unchanged):** batch `simulate_trade_paths_fast`, feature kernels, strategy logic, Layer1/2/3, candidate YAML, portfolio sizing, management overlays inside execution, research sweeps.
 
-## C. Execution contract
+## C. Reference hardening
 
-- `ExecutionSpec` validates all numeric bounds and enums; `from_config` / `load_execution_spec` / `to_dict`.
-- `TradeIntent.validate_shape` + materialization rejects for session/window/stop/risk/short.
-- `TradeResult.rejected` / `accepted_trade` convention documented in `docs/EXECUTION_CONTRACT.md`.
-- New `RejectReason.INVALID_INTENT` — see `artifacts/execution_reference_phase2/execution_contract_changes.md`.
+- `TradeIntent.validate_shape`: finite `qty` / `target_r`; finite `raw_stop_price` → `INVALID_STOP`.
+- `materialize_trade`: non-finite `open[entry_bar]` → `INVALID_MARKET_DATA`.
+- `simulate_trade_path_reference`: non-finite `high`/`low` on scan bars; non-finite `close` when used for EOD/max-hold/session roll/end fallback; non-finite raw exit in `finalize` → `INVALID_MARKET_DATA`.
+- Rejected-row convention unchanged (`entry_bar=-1`, `exit_bar=-1`, NaN prices, zero PnL/R).
+- Tests: `tests/unit/test_execution_contracts.py`, `test_execution_materialize.py`, `test_execution_reference.py`, plus parity file for market rejects.
 
-## D. Materialization semantics
+## D. Fast contract
 
-- `entry_bar = signal_bar + 1`; `NO_NEXT_BAR`, `CROSS_SESSION_ENTRY`, `OUTSIDE_TRADING_WINDOW` (when `minute[entry_bar] > eod_exit_minute`), `SHORT_NOT_ALLOWED`, `INVALID_STOP`, `RISK_TOO_SMALL`.
-- Entry slippage adverse per side; target from slippaged entry and `target_r`.
-- Max-hold: intent `> 0` wins; else `max_hold_bars_default`; else unlimited.
+- Public: `simulate_trade_path_fast(bars, intent, spec, management_plan=None) -> TradeResult`.
+- `management_plan != None` → `IntradaySystemError` (same message as reference).
+- Policy codes for kernel: `stop_first`/`conservative` → 0, `target_first` → 1; side `+1`/`-1`.
+- Fixed return tuple from kernel converted to `TradeResult` in Python.
 
-## E. Reference path semantics
+## E. Fast kernel implementation
 
-- Per bar: intrabar stop/target → EOD (`minute >= eod_exit_minute`) → max-hold; **EOD before max-hold** on the same bar.
-- `conservative` same-bar policy equals `stop_first`.
-- Session change while open → exit prior bar close as `EOD`; end-of-matrix fallback → last bar close `EOD`.
-- `management_plan != None` → `IntradaySystemError`.
+- `_simulate_trade_path_fast_kernel` in `fast.py`, `@njit(cache=True)`.
+- Inlines exit slippage, gross/net PnL, R-multiple to match `cost.py` formulas.
+- Materialization not duplicated in Numba (calls `materialize_trade` in wrapper).
 
-## F. Cost / R conventions
+## F. Parity test matrix
 
-- `cost.py`: `apply_entry_slippage`, `apply_exit_slippage`, `compute_gross_pnl`, `compute_net_pnl`, `compute_r_multiple`; `apply_slippage` = entry alias.
+- `tests/parity/test_execution_fast_parity.py` — 35 named scenarios (materialization rejects, long/short paths, same-bar, EOD/max-hold, costs, management error).
+- `tests/unit/test_execution_fast_contract.py` — API smoke + trivial parity.
+- Matrix tables: `artifacts/execution_fast_phase3/parity_test_matrix.*`.
 
-## G. Tests / validation
+## G. Supported / unsupported semantics
+
+**Supported (fast):** Phase 2 fixed-R single-trade semantics mirrored on synthetic tests (next-open via shared materializer, session/cross-session/window rejects, stop/target/EOD/max-hold ordering, same-bar policies, slippage/commission/R, long/short with `allow_short`, session roll, truncation, finite-data rejects).
+
+**Unsupported:** scale-out, trailing, no-followthrough, portfolio sizing, router decisions, batch multi-intent fast API, strategies, Layer1/2/3.
+
+## H. Tests / validation
 
 - `python -m compileall -q src` — pass
-- `pytest -q` — **127** passed (synthetic execution tests; no QQQ in unit tests)
+- `pytest -q` — **171** passed
 - Ruff format/check — pass
 - CLI: `--help`, `doctor`, `validate structure` — pass
 - Data smoke (local curated present): `data validate-curated` + `data load-bars` QQQ 2024H1 — pass
 
-See `artifacts/execution_reference_phase2/validation_results.*`.
+See `artifacts/execution_fast_phase3/validation_results.*`.
 
-## H. Explicit non-implemented items
+## I. Explicit non-implemented items
 
-- `execution.fast` Numba batch simulator (placeholder only).
+- `simulate_trade_paths_fast` batch path.
 - Feature engine, strategies, Layer1 runner, Layer2 router, Layer3 validation.
 - Management overlays (scale-out, trailing, no-followthrough) and portfolio sizing.
 
-## I. Risks / blockers
+## J. Risks / blockers
 
 - **Git safe.directory** on some Windows setups.
 - **SPY** legacy raw layout until migrated.
 - **Early-close / exchange calendar** heuristics unchanged from Phase 1B.
+- **Numba** first-call compile/cache behavior in cold CI (mitigated by tests).
 
-## J. Files changed (high level)
+## K. Files changed (high level)
 
-- `src/intraday/execution/{spec,intent,records,cost,materialize,reference,__init__}.py`
-- `src/intraday/core/types.py` (`INVALID_INTENT`)
-- `src/intraday/data/schema.py` (OHLCV constant rename / alias)
-- `data/**/README.md`, `docs/{EXECUTION_CONTRACT,PHASE_PLAN,LAYER_FLOW}.md`
-- `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
-- `tests/helpers/bars.py`, `tests/unit/test_execution_*.py`, `tests/smoke/test_execution_reference_smoke.py`
-- `artifacts/execution_reference_phase2/*`
+- `src/intraday/execution/{fast,parity,reference,materialize,__init__}.py`, `src/intraday/execution/intent.py`
+- `src/intraday/core/types.py`
+- `src/intraday/cli/main.py` (help string)
+- `docs/{EXECUTION_CONTRACT,PHASE_PLAN}.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
+- `tests/parity/test_execution_fast_parity.py`, `tests/unit/test_execution_fast_contract.py`, `tests/unit/test_execution_{contracts,materialize,reference}.py`
+- Ruff-driven format on: `src/intraday/core/{arrays,config,paths}.py`, `src/intraday/features/engine.py`, `src/intraday/layer1/grid.py`, `tests/smoke/test_data_cli.py`, `tests/unit/test_layer1_grid.py`, `tests/unit/test_timestamp_semantics.py`
+- `artifacts/execution_fast_phase3/*`
 
-## K. Artifact hygiene
+## L. Artifact hygiene
 
 - No raw/curated parquet, cache, npy/npz/memmap, or forbidden paths **staged**.
 
-## L. Optional CLI
+## M. Optional CLI
 
-- No `execution smoke` subcommand (skipped to avoid CLI scope creep); synthetic coverage lives under `tests/`.
+- No `execution smoke` subcommand; synthetic coverage lives under `tests/`.
 
-## M. Decision
+## N. Decision
 
-`REFERENCE_EXECUTION_ENGINE_COMPLETE`
+`FAST_EXECUTION_PARITY_COMPLETE`
 
-## N. Recommended next step
+## O. Recommended next step
 
-`IMPLEMENT_FAST_EXECUTION_SKELETON_AND_PARITY`
+`IMPLEMENT_FEATURE_ENGINE_MVP`

@@ -29,7 +29,17 @@ def test_data_inventory_smoke(tmp_path: Path) -> None:
 
 def test_data_normalize_dry_run_smoke(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.chdir(tmp_path)
-    raw = tmp_path / "data" / "raw" / "ibkr" / "equity" / "bars_1min" / "symbol=QQQ" / "year=2024" / "month=01"
+    raw = (
+        tmp_path
+        / "data"
+        / "raw"
+        / "ibkr"
+        / "equity"
+        / "bars_1min"
+        / "symbol=QQQ"
+        / "year=2024"
+        / "month=01"
+    )
     raw.mkdir(parents=True)
     from datetime import datetime, timedelta
 
@@ -62,7 +72,13 @@ def test_data_normalize_dry_run_smoke(tmp_path: Path, monkeypatch) -> None:
             "semantics": "bar_start",
             "curated_semantics": "bar_start",
         },
-        "ohlcv": {"open": "open", "high": "high", "low": "low", "close": "close", "volume": "volume"},
+        "ohlcv": {
+            "open": "open",
+            "high": "high",
+            "low": "low",
+            "close": "close",
+            "volume": "volume",
+        },
     }
     ds_path = tmp_path / "ds.yaml"
     ds_path.write_text(yaml.safe_dump(ds), encoding="utf-8")

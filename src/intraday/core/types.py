@@ -42,6 +42,8 @@ class RejectReason(IntEnum):
     OUTSIDE_TRADING_WINDOW = 6
     # Signal index OOB, side not in {LONG, SHORT}, qty <= 0, target_r <= 0, etc.
     INVALID_INTENT = 7
+    # Non-finite entry open or non-finite OHLC on a bar required for execution scan.
+    INVALID_MARKET_DATA = 8
 
 
 class EngineMode(IntEnum):

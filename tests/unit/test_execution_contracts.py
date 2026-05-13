@@ -41,6 +41,25 @@ def test_trade_intent_validate_shape_oob() -> None:
     assert it.validate_shape(n_bars=10) == int(RejectReason.INVALID_INTENT)
 
 
+def test_trade_intent_nonfinite_qty() -> None:
+    it = _intent(qty=float("nan"))
+    assert it.validate_shape(n_bars=10) == int(RejectReason.INVALID_INTENT)
+    it2 = _intent(qty=float("inf"))
+    assert it2.validate_shape(n_bars=10) == int(RejectReason.INVALID_INTENT)
+
+
+def test_trade_intent_nonfinite_target_r() -> None:
+    it = _intent(target_r=float("nan"))
+    assert it.validate_shape(n_bars=10) == int(RejectReason.INVALID_INTENT)
+    it2 = _intent(target_r=float("inf"))
+    assert it2.validate_shape(n_bars=10) == int(RejectReason.INVALID_INTENT)
+
+
+def test_trade_intent_nan_raw_stop() -> None:
+    it = _intent(raw_stop_price=float("nan"))
+    assert it.validate_shape(n_bars=10) == int(RejectReason.INVALID_STOP)
+
+
 def test_rejected_trade_result_convention() -> None:
     r = TradeResult.rejected(
         reject_reason=int(RejectReason.NO_NEXT_BAR),

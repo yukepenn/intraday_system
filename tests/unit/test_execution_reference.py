@@ -424,3 +424,50 @@ def test_session_roll_exit_eod_at_prior_close() -> None:
     assert r.exit_bar == 1
     assert r.exit_reason == int(ExitReason.EOD)
     assert r.exit_price == pytest.approx(100.0)
+
+
+def test_nan_qty_rejects_end_to_end() -> None:
+    bars = make_bar_matrix(
+        [100.0, 100.0],
+        [100.0, 100.0],
+        [100.0, 99.9],
+        [100.0, 100.0],
+        minute=[0, 1],
+        session_id=[0, 0],
+    )
+    spec = _spec(slippage_per_share=0.0, min_risk_per_share=0.01)
+    it = _long_intent()
+    it_bad = TradeIntent(
+        candidate_id=it.candidate_id,
+        signal_bar=it.signal_bar,
+        side=it.side,
+        qty=float("nan"),
+        raw_stop_price=it.raw_stop_price,
+        target_r=it.target_r,
+        max_hold_bars=it.max_hold_bars,
+        score=it.score,
+        setup_code=it.setup_code,
+    )
+    r = simulate_trade_path_reference(bars, it_bad, spec)
+    assert not r.accepted
+    assert r.reject_reason == int(RejectReason.INVALID_INTENT)
+
+
+def test_nan_high_during_scan_rejects_market_data() -> None:
+    bars = make_bar_matrix(
+        [100.0, 100.0, 100.0],
+        [100.0, 100.0, float("nan")],
+        [100.0, 99.9, 99.9],
+        [100.0, 100.0, 100.0],
+        minute=[0, 1, 2],
+        session_id=[0, 0, 0],
+    )
+    spec = _spec(
+        eod_exit_minute=389,
+        slippage_per_share=0.0,
+        min_risk_per_share=0.01,
+    )
+    it = _long_intent(stop=90.0, target_r=10.0)
+    r = simulate_trade_path_reference(bars, it, spec)
+    assert not r.accepted
+    assert r.reject_reason == int(RejectReason.INVALID_MARKET_DATA)

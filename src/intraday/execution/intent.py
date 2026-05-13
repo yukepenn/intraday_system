@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from intraday.core.types import RejectReason, Side
@@ -27,8 +28,10 @@ class TradeIntent:
             return int(RejectReason.INVALID_INTENT)
         if self.side not in (int(Side.LONG), int(Side.SHORT)):
             return int(RejectReason.INVALID_INTENT)
-        if self.qty <= 0.0:
+        if not math.isfinite(self.qty) or self.qty <= 0.0:
             return int(RejectReason.INVALID_INTENT)
-        if self.target_r <= 0.0:
+        if not math.isfinite(self.target_r) or self.target_r <= 0.0:
             return int(RejectReason.INVALID_INTENT)
+        if not math.isfinite(self.raw_stop_price):
+            return int(RejectReason.INVALID_STOP)
         return None

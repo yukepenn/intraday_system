@@ -94,9 +94,7 @@ def expand_grid(grid: Mapping[str, Any]) -> list[dict[tuple[str, ...], Any]]:
         if not isinstance(key, str):
             raise TypeError(f"grid keys must be strings, got {type(key)!r}")
         if not isinstance(values, list):
-            raise TypeError(
-                f"grid axis values must be a list, got {type(values)!r} for {key!r}"
-            )
+            raise TypeError(f"grid axis values must be a list, got {type(values)!r} for {key!r}")
         if not values:
             raise ValueError(f"grid axis {key!r} has empty value list")
         path = tuple(p for p in key.split(".") if p)
@@ -118,9 +116,7 @@ def _check_overlap(
     overlap = sorted(fixed_paths & grid_paths)
     if overlap:
         names = [".".join(p) for p in overlap]
-        raise ValueError(
-            f"fixed/grid key overlap is forbidden: {names!r}"
-        )
+        raise ValueError(f"fixed/grid key overlap is forbidden: {names!r}")
 
 
 def resolve_grid_document(

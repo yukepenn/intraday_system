@@ -301,3 +301,31 @@ def test_max_hold_from_spec_default() -> None:
     m = materialize_trade(bars, it, spec)
     assert not isinstance(m, TradeResult)
     assert m.max_hold_bars == 4
+
+
+def test_nan_entry_open_rejects_invalid_market_data() -> None:
+    bars = make_bar_matrix(
+        [100.0, float("nan")],
+        [101.0, 101.0],
+        [99.0, 99.0],
+        [100.0, 100.0],
+        minute=[0, 1],
+        session_id=[0, 0],
+    )
+    spec = _spec(slippage_per_share=0.0, min_risk_per_share=0.01)
+    from intraday.execution.intent import TradeIntent
+
+    it = TradeIntent(
+        candidate_id=1,
+        signal_bar=0,
+        side=int(Side.LONG),
+        qty=1.0,
+        raw_stop_price=99.0,
+        target_r=1.0,
+        max_hold_bars=0,
+        score=0.0,
+        setup_code=0,
+    )
+    r = materialize_trade(bars, it, spec)
+    assert isinstance(r, TradeResult)
+    assert r.reject_reason == int(RejectReason.INVALID_MARKET_DATA)

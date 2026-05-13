@@ -1,0 +1,8 @@
+item,behavior_before,behavior_after,reject_reason,tests_added,notes
+nonfinite_qty,NaN qty could pass qty<=0 check,reject,INVALID_INTENT,test_execution_contracts.py;test_execution_reference.py,math.isfinite guard
+nonfinite_target_r,NaN could pass target_r<=0 check,reject,INVALID_INTENT,test_execution_contracts.py,same
+nonfinite_raw_stop,unchecked,reject,INVALID_STOP,test_execution_contracts.py,
+nan_entry_open,NaN propagated into entry,reject,INVALID_MARKET_DATA,test_execution_materialize.py;parity nan entry,
+nan_scan_high,undefined intrabar,reject,INVALID_MARKET_DATA,test_execution_reference.py;parity scanned ohlc,
+nan_scan_low_close,same as high for path used,reject,INVALID_MARKET_DATA,parity test_parity_nan_scanned_ohlc_rejects,
+nonfinite_finalize_raw,same,reject,INVALID_MARKET_DATA,reference finalize check,

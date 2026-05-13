@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 from intraday.core.arrays import BarMatrix
@@ -92,6 +93,14 @@ def materialize_trade(
         )
 
     raw_open = float(bars.open[entry_bar])
+    if not math.isfinite(raw_open):
+        return TradeResult.rejected(
+            reject_reason=int(RejectReason.INVALID_MARKET_DATA),
+            candidate_id=intent.candidate_id,
+            signal_bar=intent.signal_bar,
+            side=side,
+            qty=float(intent.qty),
+        )
     entry_price = apply_entry_slippage(raw_open, side, spec.slippage_per_share)
     stop_price = float(intent.raw_stop_price)
 

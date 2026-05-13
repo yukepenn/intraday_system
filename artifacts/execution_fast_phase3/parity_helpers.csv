@@ -1,0 +1,3 @@
+helper,policy,notes
+compare_trade_results,exact ints + float atol with nan pairing,returns mismatch strings
+assert_trade_results_equal,raises AssertionError on mismatch,used in tests

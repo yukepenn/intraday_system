@@ -5,9 +5,11 @@ The reference engine is the canonical PnL truth. See docs/EXECUTION_CONTRACT.md.
 
 from __future__ import annotations
 
+import math
+
 from intraday.core.arrays import BarMatrix
 from intraday.core.errors import IntradaySystemError
-from intraday.core.types import ExitReason, Side
+from intraday.core.types import ExitReason, RejectReason, Side
 from intraday.execution.cost import (
     apply_exit_slippage,
     compute_gross_pnl,
@@ -23,6 +25,16 @@ from intraday.execution.spec import ExecutionSpec
 def _same_bar_is_stop_first(policy: str) -> bool:
     """``conservative`` is defined as stop-first (same as ``stop_first``)."""
     return policy in ("stop_first", "conservative")
+
+
+def _reject_invalid_market_data(mt: MaterializedTrade) -> TradeResult:
+    return TradeResult.rejected(
+        reject_reason=int(RejectReason.INVALID_MARKET_DATA),
+        candidate_id=mt.candidate_id,
+        signal_bar=mt.signal_bar,
+        side=mt.side,
+        qty=mt.qty,
+    )
 
 
 def simulate_trade_path_reference(
@@ -62,6 +74,8 @@ def simulate_trade_path_reference(
         raw_exit: float,
         exit_reason: int,
     ) -> TradeResult:
+        if not math.isfinite(raw_exit):
+            return _reject_invalid_market_data(mt)
         exit_fill = apply_exit_slippage(raw_exit, side, slip)
         gross = compute_gross_pnl(side, entry_price, exit_fill, qty)
         net = compute_net_pnl(gross, commission)
@@ -95,6 +109,8 @@ def simulate_trade_path_reference(
 
         hi = float(bars.high[i])
         lo = float(bars.low[i])
+        if not (math.isfinite(hi) and math.isfinite(lo)):
+            return _reject_invalid_market_data(mt)
         minute = int(bars.minute[i])
         bars_held = i - entry_bar + 1
 

@@ -43,14 +43,21 @@ class BarMatrix:
 
     def __post_init__(self) -> None:
         n = self.open.shape[0]
-        for name in ("open", "high", "low", "close", "volume",
-                     "session_id", "session_date", "minute", "ts_ns"):
+        for name in (
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "session_id",
+            "session_date",
+            "minute",
+            "ts_ns",
+        ):
             arr = getattr(self, name)
             _ensure_1d(name, arr)
             if arr.shape[0] != n:
-                raise ValueError(
-                    f"BarMatrix length mismatch: open={n} {name}={arr.shape[0]}"
-                )
+                raise ValueError(f"BarMatrix length mismatch: open={n} {name}={arr.shape[0]}")
 
     @property
     def n_bars(self) -> int:
@@ -87,9 +94,7 @@ class FeatureMatrix:
         n_cols_arr = self.values.shape[1]
         n_cols_map = len(self.columns)
         if n_cols_arr != n_cols_map:
-            raise ValueError(
-                f"columns map size {n_cols_map} != values columns {n_cols_arr}"
-            )
+            raise ValueError(f"columns map size {n_cols_map} != values columns {n_cols_arr}")
         idxs = sorted(self.columns.values())
         if idxs != list(range(n_cols_arr)):
             raise ValueError("columns indices must be a contiguous 0..K-1 set")
@@ -131,9 +136,7 @@ class SignalMatrix:
             arr = getattr(self, name)
             _ensure_1d(name, arr)
             if arr.shape[0] != n:
-                raise ValueError(
-                    f"SignalMatrix length mismatch: entry={n} {name}={arr.shape[0]}"
-                )
+                raise ValueError(f"SignalMatrix length mismatch: entry={n} {name}={arr.shape[0]}")
 
     @property
     def n_bars(self) -> int:
@@ -160,9 +163,18 @@ class TradeRecordArray:
     def __post_init__(self) -> None:
         m = self.entry_bar.shape[0]
         for name in (
-            "entry_bar", "exit_bar", "side", "qty",
-            "entry_price", "exit_price", "stop_price", "target_price",
-            "pnl", "r_multiple", "exit_reason", "candidate_id",
+            "entry_bar",
+            "exit_bar",
+            "side",
+            "qty",
+            "entry_price",
+            "exit_price",
+            "stop_price",
+            "target_price",
+            "pnl",
+            "r_multiple",
+            "exit_reason",
+            "candidate_id",
         ):
             arr = getattr(self, name)
             _ensure_1d(name, arr)

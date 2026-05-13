@@ -17,6 +17,4 @@ def build_feature_matrix(
     mode: Literal["reference", "fast"] = "fast",
 ) -> FeatureMatrix:
     """Build a FeatureMatrix. NOT YET IMPLEMENTED (Phase 4)."""
-    raise IntradaySystemError(
-        "build_feature_matrix is not implemented yet (Phase 4)."
-    )
+    raise IntradaySystemError("build_feature_matrix is not implemented yet (Phase 4).")

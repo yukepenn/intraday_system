@@ -1,0 +1,7 @@
+section,item,metric,value,interpretation
+git,baseline_head_sha,string,a53ca95,pre-work local equals remote main
+tests,pytest_total,count,171,includes new parity + hardening
+tests,parity_file_tests,count,35,synthetic scenarios in test_execution_fast_parity
+execution,numba_kernel,bool,true,_simulate_trade_path_fast_kernel cached njit
+decision,phase3_label,enum,FAST_EXECUTION_PARITY_COMPLETE,parity matrix green
+next,roadmap,string,IMPLEMENT_FEATURE_ENGINE_MVP,Phase 4 per master plan

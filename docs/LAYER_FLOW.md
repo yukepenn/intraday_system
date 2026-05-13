@@ -46,7 +46,7 @@ data → features → strategy signals → execution → Layer1 candidates → L
             v
    +-----------------------------------------+
    | execution.reference (Phase 2 truth)     |   ExecutionSpec (+ ManagementPlan in later phases)
-   | execution.fast (Phase 3+, parity)       |
+   | execution.fast (Phase 3 parity)         |
    +-----------------+-----------------------+
                      |
                      v

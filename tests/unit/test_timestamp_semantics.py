@@ -46,7 +46,17 @@ def test_bar_end_shifts_back_one_minute() -> None:
 def test_audit_timestamp_semantics_sample_runs(tmp_path: Path) -> None:
     from intraday.data.timestamp_audit import audit_timestamp_semantics_sample
 
-    root = tmp_path / "data" / "raw" / "ibkr" / "equity" / "bars_1min" / "symbol=QQQ" / "year=2024" / "month=01"
+    root = (
+        tmp_path
+        / "data"
+        / "raw"
+        / "ibkr"
+        / "equity"
+        / "bars_1min"
+        / "symbol=QQQ"
+        / "year=2024"
+        / "month=01"
+    )
     root.mkdir(parents=True)
     pl.DataFrame(
         {

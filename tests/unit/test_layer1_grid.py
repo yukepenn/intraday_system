@@ -53,12 +53,18 @@ def test_resolve_grid_only() -> None:
 
 
 def test_resolve_fixed_and_grid() -> None:
-    base = {"strategy": "pa", "risk": {"target_r": 1.0, "max_trades_per_day": 1}, "backtest": {"max_hold_minutes": 30}}
-    out = list(resolve_grid_document(
-        base,
-        {"risk.max_trades_per_day": 2},
-        {"risk.target_r": [1.0, 1.5], "backtest.max_hold_minutes": [40, 60]},
-    ))
+    base = {
+        "strategy": "pa",
+        "risk": {"target_r": 1.0, "max_trades_per_day": 1},
+        "backtest": {"max_hold_minutes": 30},
+    }
+    out = list(
+        resolve_grid_document(
+            base,
+            {"risk.max_trades_per_day": 2},
+            {"risk.target_r": [1.0, 1.5], "backtest.max_hold_minutes": [40, 60]},
+        )
+    )
     assert len(out) == 2 * 2
     for cfg in out:
         assert cfg["risk"]["max_trades_per_day"] == 2
@@ -69,20 +75,24 @@ def test_resolve_fixed_and_grid() -> None:
 def test_resolve_overlap_raises() -> None:
     base = {"risk": {"target_r": 1.0}}
     with pytest.raises(ValueError) as exc:
-        list(resolve_grid_document(
-            base,
-            {"risk.target_r": 1.0},
-            {"risk.target_r": [1.0, 1.5]},
-        ))
+        list(
+            resolve_grid_document(
+                base,
+                {"risk.target_r": 1.0},
+                {"risk.target_r": [1.0, 1.5]},
+            )
+        )
     assert "risk.target_r" in str(exc.value)
 
 
 def test_list_values_remain_leaves() -> None:
     base = {"features": {"vol_windows": [5, 15, 30]}}
-    out = list(resolve_grid_document(
-        base,
-        {"features.vol_windows": [10, 20, 40]},
-        None,
-    ))
+    out = list(
+        resolve_grid_document(
+            base,
+            {"features.vol_windows": [10, 20, 40]},
+            None,
+        )
+    )
     assert len(out) == 1
     assert out[0]["features"]["vol_windows"] == [10, 20, 40]

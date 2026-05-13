@@ -1,0 +1,16 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/core/types.py,RejectReason.INVALID_MARKET_DATA,yes,source,no,
+src/intraday/execution/intent.py,finite intent validation,yes,source,no,
+src/intraday/execution/materialize.py,finite entry open reject,yes,source,no,
+src/intraday/execution/reference.py,finite scan + finalize guards,yes,source,no,
+src/intraday/execution/fast.py,fast API + Numba kernel,yes,source,no,depends numba
+src/intraday/execution/parity.py,parity comparison helpers,yes,source,no,
+src/intraday/execution/__init__.py,exports,yes,source,no,
+tests/parity/test_execution_fast_parity.py,synthetic parity matrix,yes,source,no,
+tests/unit/test_execution_fast_contract.py,API smoke,yes,source,no,
+tests/unit/test_execution_contracts.py,intent hardening tests,yes,source,no,
+tests/unit/test_execution_materialize.py,nan entry test,yes,source,no,
+tests/unit/test_execution_reference.py,scan nan test,yes,source,no,
+docs/EXECUTION_CONTRACT.md,Phase 3 contract text,yes,source,no,
+artifacts/execution_fast_phase3/*.md,review narrative,yes,generated,no,
+artifacts/execution_fast_phase3/*.csv,tabular evidence,yes,generated,no,

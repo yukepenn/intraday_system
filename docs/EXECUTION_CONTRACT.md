@@ -6,7 +6,7 @@ Execution is the only PnL accounting truth. Strategies never compute PnL.
 
 `src/intraday/execution/reference.py` defines the canonical fill / stop / target / EOD / max-hold / R-multiple semantics. The `simulate_trade_path_reference` function is the single source of truth for what a trade is and what its PnL is.
 
-`src/intraday/execution/fast.py` is the Numba-accelerated mirror (**Phase 3**). Until parity work lands, the fast path remains **non-active** (raises `IntradaySystemError`).
+`src/intraday/execution/fast.py` provides **`simulate_trade_path_fast`**, a Numba-accelerated mirror for the **same** `TradeIntent` + `BarMatrix` + `ExecutionSpec` → `TradeResult` contract. It uses the **same** `materialize_trade` implementation as reference, then a Numba kernel for the post-entry scan. **Fast output is not a second accounting truth**; it is valid research acceleration **only where parity tests pass** (`tests/parity/test_execution_fast_parity.py`).
 
 ## 2. ExecutionSpec (canonical fields)
 
@@ -52,7 +52,9 @@ class TradeIntent:
 
 - `signal_bar` must satisfy `0 <= signal_bar < n_bars`; else `RejectReason.INVALID_INTENT`.
 - `side` must be `LONG` or `SHORT`; else `INVALID_INTENT`.
-- `qty > 0` and `target_r > 0`; else `INVALID_INTENT`.
+- `qty` must be finite and `> 0`; else `INVALID_INTENT`.
+- `target_r` must be finite and `> 0`; else `INVALID_INTENT`.
+- `raw_stop_price` must be finite; else `INVALID_STOP` (non-finite stop is not a valid risk anchor).
 
 Strategies emit `TradeIntent`s (one per fired signal bar). Execution consumes them.
 
@@ -94,23 +96,25 @@ class TradeResult:
 - **Cross-session entry**: if `session_id[entry_bar] != session_id[signal_bar]` → `CROSS_SESSION_ENTRY`.
 - **Outside trading window**: if `minute[entry_bar] > eod_exit_minute` → `OUTSIDE_TRADING_WINDOW` (strict `>`; entry **on** the EOD minute is allowed).
 - **Short guard**: `SHORT_NOT_ALLOWED` when `side==SHORT` and `allow_short` is false.
-- **Entry price**: raw reference `open[entry_bar]`; **adverse entry slippage** — long: `+slippage_per_share`, short: `-slippage_per_share`.
+- **Entry price**: raw reference `open[entry_bar]` must be **finite**; else `RejectReason.INVALID_MARKET_DATA`. Otherwise **adverse entry slippage** — long: `+slippage_per_share`, short: `-slippage_per_share`.
 - **Stop / risk**: `stop_price = raw_stop_price`. Long requires `stop < entry`; short requires `stop > entry`. `risk_per_share = |entry - stop|` in the profitable-stop direction. If `risk_per_share <= 0` → `INVALID_STOP`. If `risk_per_share < min_risk_per_share` → `RISK_TOO_SMALL`.
 - **Target**: `target_r` must be `> 0` (intent validation). `target_price = entry +/- target_r * risk_per_share` (long `+`, short `-`). Targets are **never** computed outside execution.
 - **Max hold**: if `intent.max_hold_bars > 0`, use it; else if `spec.max_hold_bars_default` is not `None`, use that; else **no** max-hold cap. **Definition**: `bars_held = exit_bar - entry_bar + 1`. `max_hold_bars == 1` allows exit at the **close of the entry bar** if no stop/target/EOD fired first on that bar’s ordering.
 
 ## 6. Phase 2 — Reference path (`simulate_trade_path_reference`)
 
-**Management**: `management_plan` must be `None`. A non-`None` value raises `IntradaySystemError` (Phase 2 does not implement overlays).
+**Truth rule:** `simulate_trade_path_reference` remains the canonical specification of post-entry behavior. The fast path must parity-match it on all covered scenarios.
 
-**Session rule**: simulation only walks bars with `session_id == session_id[entry_bar]`. If the index advances into a **new session** while the trade is still open, the engine exits at the **prior bar’s close** with `ExitReason.EOD` (session roll / defensive close).
+**Management**: `management_plan` must be `None`. A non-`None` value raises `IntradaySystemError` (Phase 2 does not implement overlays). The fast wrapper uses the **same** error class and message.
+
+**Session rule**: simulation only walks bars with `session_id == session_id[entry_bar]`. If the index advances into a **new session** while the trade is still open, the engine exits at the **prior bar’s close** with `ExitReason.EOD` (session roll / defensive close). The prior bar’s close must be finite; else `INVALID_MARKET_DATA`.
 
 **Per-bar ordering** (same bar `i`):
 
-1. Intrabar **stop** and **target** using `high[i]` / `low[i]` vs trigger levels.
+1. Intrabar **stop** and **target** using `high[i]` / `low[i]` vs trigger levels. `high[i]` and `low[i]` must be finite; else `INVALID_MARKET_DATA` (rejected row convention).
 2. If both touched: `stop_first` or `conservative` → **STOP**; `target_first` → **TARGET**.
-3. Else if `minute[i] >= eod_exit_minute` → **EOD** at `close[i]` (after adverse exit slippage).
-4. Else if max-hold active and `bars_held >= max_hold_bars` → **MAX_HOLD** at `close[i]`.
+3. Else if `minute[i] >= eod_exit_minute` → **EOD** at `close[i]` (after adverse exit slippage). `close[i]` must be finite; else `INVALID_MARKET_DATA`.
+4. Else if max-hold active and `bars_held >= max_hold_bars` → **MAX_HOLD** at `close[i]` (finite `close` required).
 5. Else continue.
 
 **EOD vs max-hold**: on the same bar, **EOD is evaluated before max-hold**; if both would apply, **EOD wins**.
@@ -120,9 +124,9 @@ class TradeResult:
 - Long: stop if `low <= stop_price`; target if `high >= target_price`.
 - Short: stop if `high >= stop_price`; target if `low <= target_price`.
 
-**Exit slippage** (adverse): long exit `raw_exit - slippage_per_share`; short exit `raw_exit + slippage_per_share`. Applies to STOP, TARGET, EOD, MAX_HOLD, and session-roll exits.
+**Exit slippage** (adverse): long exit `raw_exit - slippage_per_share`; short exit `raw_exit + slippage_per_share`. Applies to STOP, TARGET, EOD, MAX_HOLD, and session-roll exits. Raw exit price must be finite before slippage; otherwise `INVALID_MARKET_DATA`.
 
-**Truncated data / end of window**: if the scan reaches the end of the `BarMatrix` while still in the entry session without a prior exit, exit at the **last available bar’s close** with `ExitReason.EOD` (defensive fallback).
+**Truncated data / end of window**: if the scan reaches the end of the `BarMatrix` while still in the entry session without a prior exit, exit at the **last available bar’s close** with `ExitReason.EOD` (defensive fallback). Non-finite last close → `INVALID_MARKET_DATA`.
 
 ## 7. Costs and R-multiple
 
@@ -134,22 +138,28 @@ Helpers live in `src/intraday/execution/cost.py`.
 
 ## 8. Fast path (Phase 3)
 
-Same responsibilities as reference, implemented as Numba kernels operating on flat NumPy arrays. **Not implemented** in Phase 2.
+- **Active API:** `simulate_trade_path_fast` returns `TradeResult` with the same materialization and post-entry semantics as reference on the Phase 2 fixed-R single-trade surface.
+- **Implementation:** shared `materialize_trade`; `@njit(cache=True)` kernel `_simulate_trade_path_fast_kernel` on packed NumPy slices (`high`/`low`/`close`/`session_id`/`minute`).
+- **Unsupported in Phase 3:** batch `simulate_trade_paths_fast` (still raises `IntradaySystemError`); any `management_plan` overlay; strategy or Layer1/2/3 logic.
 
-## 9. Parity rule (Phase 3)
+**Supported fast semantics (must match reference):** next-open entry (via shared materializer), cross-session entry rejection, stop/target/EOD/max-hold ordering, same-bar policies (`conservative` = `stop_first` for both touched), min-risk rejection, slippage and commission, fixed-R target from actual (slippaged) entry, long and short when `allow_short`, session roll and truncated-window EOD fallback, deterministic rejects including `INVALID_MARKET_DATA` for non-finite required prices during materialization or scan.
 
-Every execution behavior must have a parity test once the fast path exists. `tests/parity/test_execution_fast_parity.py` is reserved for Phase 3.
+**Unsupported semantics (not in execution fast path):** scale-out, trailing, no-followthrough, portfolio sizing, router decisions, multi-intent batch simulation.
+
+## 9. Parity rule
+
+Every covered execution behavior has a synthetic parity test: `tests/parity/test_execution_fast_parity.py`. Helpers: `src/intraday/execution/parity.py` (`compare_trade_results`, `assert_trade_results_equal`). **Do not treat fast output as valid for research if these tests fail or are bypassed.**
 
 ## 10. Ownership boundaries
 
 Execution **does not**:
 
 - Generate signals.
-- Read strategy configs (consumes `ExecutionSpec` + `TradeIntent` only in Phase 2).
+- Read strategy configs (consumes `ExecutionSpec` + `TradeIntent` only).
 - Apply portfolio sizing (Layer2 / portfolio).
 - Apply daily risk state (Layer2 / portfolio).
 - Resolve conflicts between candidates (Layer2).
-- Apply **management overlays** (scale-out, trailing, no-followthrough) in Phase 2.
+- Apply **management overlays** (scale-out, trailing, no-followthrough) in reference or fast single-trade paths.
 
 Strategies **do not**:
 
@@ -161,9 +171,10 @@ Strategies **do not**:
 
 `semantics_version` (e.g. `"execution_v1"`) participates in `execution_spec_hash`. Any change to fill semantics increments this version. Cached candidate metrics built against an older hash are invalidated by hash mismatch.
 
-## 12. RejectReason extensions (Phase 2)
+## 12. RejectReason extensions
 
-- `INVALID_INTENT` — invalid `signal_bar` OOB, `side` not long/short, `qty <= 0`, or `target_r <= 0`.
+- `INVALID_INTENT` — invalid `signal_bar` OOB, `side` not long/short, non-finite or `<= 0` `qty`, or non-finite or `<= 0` `target_r`.
+- `INVALID_MARKET_DATA` — non-finite `open[entry_bar]` at materialization, or non-finite `high`/`low`/`close` on a bar when that value is required for the reference scan / finalize path.
 
 ## 13. Forbidden
 

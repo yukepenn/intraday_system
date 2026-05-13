@@ -1,0 +1,10 @@
+semantic,implemented_yes_no,reference_source,fast_source,test_name,notes
+next_open_entry,yes,materialize_trade,materialize_trade,parity materialization scenarios,shared Python
+session_roll_EOD,yes,reference loop,kernel,parity session roll,
+truncated_EOD,yes,reference,kernel,parity truncated fallback,
+stop_target_intrabar,yes,reference,kernel,parity long/short stop target,
+same_bar_policy,yes,reference,kernel,parity stop_first/target_first/conservative,
+EOD_before_max_hold,yes,reference,kernel,parity EOD priority,
+slippage_commission_R,yes,cost + reference,kernel inlined,parity slippage/commission/R,
+finite_guards,yes,reference,kernel,parity nan ohlc / contracts,
+management_overlays,no,N/A,N/A,parity management raises,Layer2 future

@@ -25,9 +25,7 @@ def load_yaml(path: Path | str) -> dict[str, Any]:
     if data is None:
         return {}
     if not isinstance(data, dict):
-        raise ConfigError(
-            f"YAML root must be a mapping, got {type(data).__name__}: {p}"
-        )
+        raise ConfigError(f"YAML root must be a mapping, got {type(data).__name__}: {p}")
     return data
 
 
@@ -54,9 +52,7 @@ def require_keys(
     """Raise ConfigError if any of ``keys`` is missing from ``config``."""
     missing = [k for k in keys if k not in config]
     if missing:
-        raise ConfigError(
-            f"missing required keys in {where}: {missing!r}"
-        )
+        raise ConfigError(f"missing required keys in {where}: {missing!r}")
 
 
 def resolve_path(value: str | Path, base: Path | str | None = None) -> Path:
