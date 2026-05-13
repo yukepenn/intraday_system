@@ -1,0 +1,7 @@
+# Canonical root paths. All paths are RELATIVE to repo root.
+# No absolute D:\ paths are allowed here.
+
+raw_ibkr_root: data/raw/ibkr
+curated_bars_root: data/curated/bars_1m_rth
+cache_root: data/cache
+artifact_root: artifacts

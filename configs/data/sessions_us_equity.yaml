@@ -1,0 +1,24 @@
+# US equity session windows.
+# All times are local America/New_York unless otherwise noted.
+
+calendar: XNYS
+timezone: America/New_York
+
+rth:
+  open_time: "09:30"
+  close_time: "16:00"
+  minutes: 390
+  minute_of_session_range: [0, 389]
+
+eth:
+  premarket_open_time: "04:00"
+  premarket_close_time: "09:30"
+  afterhours_open_time: "16:00"
+  afterhours_close_time: "20:00"
+
+half_days:
+  close_time: "13:00"
+  minutes: 210
+
+# minute index = (bar_time - session_open) // 60 seconds, clamped to [0, 389]
+# eod_exit_minute defaults to 389 (last RTH bar).

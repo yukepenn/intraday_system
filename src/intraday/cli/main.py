@@ -1,0 +1,261 @@
+"""Top-level ``intraday`` CLI.
+
+Uses Typer when available; falls back to argparse if Typer is not installed.
+This keeps Phase 0/1A's smoke tests working in either environment.
+"""
+
+from __future__ import annotations
+
+import argparse
+import importlib
+import sys
+from pathlib import Path
+
+import intraday
+from intraday.core.paths import repo_root
+
+REQUIRED_TOP_LEVEL: tuple[str, ...] = (
+    "docs",
+    "configs",
+    "data",
+    "artifacts",
+    "src/intraday",
+    "tests",
+)
+
+REQUIRED_FILES: tuple[str, ...] = (
+    "pyproject.toml",
+    "README.md",
+    "Makefile",
+    ".gitignore",
+    ".gitattributes",
+    "PROJECT_STATUS.md",
+    "PROGRESS.md",
+    "CHANGES.md",
+    "NEXT_HANDOFF.md",
+    "docs/ARCHITECTURE.md",
+    "docs/DATA_CONTRACT.md",
+    "docs/CONFIG_CONTRACT.md",
+    "docs/CACHE_CONTRACT.md",
+    "docs/EXECUTION_CONTRACT.md",
+    "docs/LAYER_FLOW.md",
+    "docs/PHASE_PLAN.md",
+    "docs/PROJECT_STRUCTURE.md",
+    "docs/QT_REFERENCE_POLICY.md",
+    "docs/DEVELOPMENT_WORKFLOW.md",
+    "docs/DESIGN_BASELINE.md",
+    "configs/data/data_roots.yaml",
+    "configs/data/ibkr_qqq_1m.yaml",
+    "configs/data/symbols.yaml",
+    "configs/data/sessions_us_equity.yaml",
+    "configs/execution/intraday_default.yaml",
+    "src/intraday/__init__.py",
+    "src/intraday/cli/main.py",
+)
+
+
+# ---------------------------------------------------------------------------
+# subcommand implementations (used by both Typer and argparse paths)
+# ---------------------------------------------------------------------------
+
+def cmd_doctor() -> int:
+    print("intraday_system doctor")
+    print(f"  package version: {intraday.__version__}")
+    print(f"  python: {sys.version.split()[0]} ({sys.executable})")
+    try:
+        root = repo_root()
+        print(f"  repo root: {root}")
+    except RuntimeError as exc:
+        print(f"  repo root: ERROR ({exc})")
+        return 1
+
+    print("  --- imports ---")
+    for module_name in (
+        "numpy",
+        "pandas",
+        "yaml",
+        "pyarrow",
+        "polars",
+        "pydantic",
+        "typer",
+        "rich",
+        "numba",
+    ):
+        try:
+            mod = importlib.import_module(module_name)
+            version = getattr(mod, "__version__", "?")
+            print(f"  [ok]   {module_name} {version}")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  [miss] {module_name}: {exc}")
+
+    print("  --- paths ---")
+    for rel in ("configs", "configs/data", "data/raw/ibkr", "data/cache", "artifacts/bootstrap"):
+        p = root / rel
+        print(f"  {'[ok]  ' if p.exists() else '[miss]'} {rel}")
+
+    print("  --- gitignore ---")
+    gi = root / ".gitignore"
+    if gi.exists():
+        text = gi.read_text(encoding="utf-8", errors="ignore")
+        ignored_cache = "data/cache/" in text
+        print(f"  data/cache ignored: {ignored_cache}")
+    else:
+        print("  .gitignore missing")
+    return 0
+
+
+def cmd_validate_structure() -> int:
+    root = repo_root()
+    print(f"validate structure (root: {root})")
+    missing: list[str] = []
+    for rel in REQUIRED_TOP_LEVEL:
+        if not (root / rel).exists():
+            missing.append(rel)
+    for rel in REQUIRED_FILES:
+        if not (root / rel).exists():
+            missing.append(rel)
+    if missing:
+        print(f"  MISSING ({len(missing)}):")
+        for m in missing:
+            print(f"    - {m}")
+        return 1
+    print(f"  all required paths present ({len(REQUIRED_TOP_LEVEL)} dirs + {len(REQUIRED_FILES)} files)")
+    return 0
+
+
+def cmd_data_inventory(root_arg: str, output: str) -> int:
+    from intraday.data.catalog import write_raw_data_inventory
+
+    base = repo_root()
+    root_path = Path(root_arg)
+    if not root_path.is_absolute():
+        root_path = base / root_path
+    output_path = Path(output)
+    if not output_path.is_absolute():
+        output_path = base / output_path
+    md_path = output_path.with_suffix(".md")
+
+    if not root_path.exists():
+        print(f"  data root does not exist: {root_path}")
+        # still write an empty inventory so callers can detect "no data"
+        csv_p, _ = write_raw_data_inventory(
+            root=root_path,
+            output_csv=output_path,
+            output_md=md_path,
+            base=base,
+        )
+        print(f"  wrote (empty): {csv_p}")
+        return 0
+
+    csv_p, md_p = write_raw_data_inventory(
+        root=root_path,
+        output_csv=output_path,
+        output_md=md_path,
+        base=base,
+    )
+    print(f"  wrote CSV: {csv_p}")
+    if md_p is not None:
+        print(f"  wrote MD:  {md_p}")
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Typer surface (preferred)
+# ---------------------------------------------------------------------------
+
+try:
+    import typer  # type: ignore
+
+    app = typer.Typer(
+        name="intraday",
+        add_completion=False,
+        no_args_is_help=True,
+        help="intraday_system CLI (Phase 0/1A skeleton).",
+    )
+    data_app = typer.Typer(no_args_is_help=True, help="Data commands.")
+    validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")
+    app.add_typer(data_app, name="data")
+    app.add_typer(validate_app, name="validate")
+
+    @app.command("doctor", help="Print environment + dependency diagnostics.")
+    def _typer_doctor() -> None:
+        raise typer.Exit(code=cmd_doctor())
+
+    @validate_app.command("structure", help="Check required directories and files exist.")
+    def _typer_validate_structure() -> None:
+        raise typer.Exit(code=cmd_validate_structure())
+
+    @data_app.command("inventory", help="Write a raw-data parquet inventory.")
+    def _typer_data_inventory(
+        root: str = typer.Option(..., "--root", help="Raw root path (relative to repo root or absolute)."),
+        output: str = typer.Option(..., "--output", help="Output CSV path (a .md sibling is also written)."),
+    ) -> None:
+        raise typer.Exit(code=cmd_data_inventory(root, output))
+
+    HAS_TYPER = True
+
+except ImportError:  # pragma: no cover - argparse fallback
+    HAS_TYPER = False
+    app = None  # type: ignore
+
+
+# ---------------------------------------------------------------------------
+# argparse fallback
+# ---------------------------------------------------------------------------
+
+def _build_argparse() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="intraday",
+        description="intraday_system CLI (Phase 0/1A skeleton).",
+    )
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    sub.add_parser("doctor", help="Print environment + dependency diagnostics.")
+
+    p_validate = sub.add_parser("validate", help="Validation commands.")
+    p_validate_sub = p_validate.add_subparsers(dest="subcmd", required=True)
+    p_validate_sub.add_parser("structure", help="Check required directories and files exist.")
+
+    p_data = sub.add_parser("data", help="Data commands.")
+    p_data_sub = p_data.add_subparsers(dest="subcmd", required=True)
+    p_data_inv = p_data_sub.add_parser("inventory", help="Write a raw-data parquet inventory.")
+    p_data_inv.add_argument("--root", required=True)
+    p_data_inv.add_argument("--output", required=True)
+
+    return parser
+
+
+def _argparse_dispatch(argv: list[str]) -> int:
+    parser = _build_argparse()
+    args = parser.parse_args(argv)
+    if args.cmd == "doctor":
+        return cmd_doctor()
+    if args.cmd == "validate" and args.subcmd == "structure":
+        return cmd_validate_structure()
+    if args.cmd == "data" and args.subcmd == "inventory":
+        return cmd_data_inventory(args.root, args.output)
+    parser.error("unknown command")
+    return 2  # pragma: no cover
+
+
+def main(argv: list[str] | None = None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if HAS_TYPER and app is not None:
+        try:
+            app(args=argv, standalone_mode=False)
+            return 0
+        except SystemExit as exc:
+            return int(exc.code or 0)
+        except Exception as exc:  # noqa: BLE001
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+    return _argparse_dispatch(argv)
+
+
+def app_entrypoint() -> None:
+    """Console-script entrypoint."""
+    raise SystemExit(main())
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

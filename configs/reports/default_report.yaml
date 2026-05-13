@@ -1,0 +1,16 @@
+# Default report rendering spec (skeleton).
+# Phase 6+ will populate. This file exists so report config paths resolve from now on.
+
+report_id: default_report
+version: v1
+
+include_sections:
+  - run_summary
+  - sweep_overview
+  - selection_table
+  - rejects_summary
+
+format:
+  markdown: true
+  csv: true
+  html: false

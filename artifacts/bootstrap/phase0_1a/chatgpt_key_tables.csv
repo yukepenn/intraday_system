@@ -1,0 +1,45 @@
+section,item,metric,value,interpretation
+git,branch,name,main,canonical branch
+git,remote,url,https://github.com/yukepenn/intraday_system.git,origin
+git,initial_state,was_repo,no,initialized in this session
+git,push_status,deferred,verify_at_commit,actual push status recorded in NEXT_HANDOFF.md
+scope,strategy_research,present,no,intentional non-goal
+scope,layer1_runner,present,no,intentional non-goal
+scope,execution_simulator,present,no,intentional non-goal
+scope,bootstrap_skeleton,present,yes,delivered
+architecture,layer_0_doc,present,yes,docs/ARCHITECTURE.md
+architecture,layer_1_doc,present,yes,docs/ARCHITECTURE.md
+architecture,layer_2_doc,present,yes,docs/ARCHITECTURE.md
+architecture,layer_3_doc,present,yes,docs/ARCHITECTURE.md
+architecture,reference_truth_doc,present,yes,docs/EXECUTION_CONTRACT.md
+architecture,fast_acceleration_doc,present,yes,docs/EXECUTION_CONTRACT.md
+architecture,yaml_runtime_config_doc,present,yes,docs/CONFIG_CONTRACT.md
+architecture,csv_md_audit_doc,present,yes,docs/CONFIG_CONTRACT.md
+data,raw_data_files,count,104,QQQ + SPY equity 1m parquet
+data,raw_data_total_mib,size,34.264,well under 50 MiB threshold
+data,raw_data_largest_mib,size,0.407,well under 50 MiB threshold
+data,raw_data_layout,classification,legacy_qt_like_100pct,canonical 0
+data,raw_data_canonicalized,result,no,deferred to Phase 1
+data,parquet_files_moved,count,0,no bytes touched
+data,git_tracking_decision,policy,manifest_only_for_phase_0_1a,raw parquet not staged in this commit
+data,git_lfs_enabled,state,no,not needed at current sizes
+code,core_modules_implemented,result,8,types/arrays/hashing/config/paths/errors/registry/constants
+code,data_catalog_implemented,result,yes,build_raw_data_inventory used by CLI
+code,layer1_grid_implemented,result,yes,with 10 unit tests
+code,execution_dataclasses_implemented,result,yes,ExecutionSpec/TradeIntent/TradeResult
+code,execution_simulators_implemented,result,no,skeletons raise NotImplementedError
+code,feature_kernels_implemented,result,no,skeletons raise NotImplementedError
+code,strategy_logic_implemented,result,no,skeletons + contracts only
+code,cli_commands_implemented,result,4,--help / doctor / validate-structure / data-inventory
+validation,compileall,result,pass,exit 0
+validation,pytest,count,40,40 / 40 pass
+validation,ruff,result,pass,all checks passed
+validation,cli_help,result,pass,exit 0
+validation,cli_doctor,result,pass,all 9 deps importable
+validation,cli_validate_structure,result,pass,6 dirs + 27 files present
+validation,cli_data_inventory,result,pass,wrote CSV + MD
+hygiene,forbidden_staged_check,result,verified_at_commit,
+hygiene,cache_tracked,result,no,
+hygiene,parquet_tracking,result,not_staged_in_phase_0_1a_commit,manifest committed
+decision,label,value,BOOTSTRAP_PHASE0_1A_COMPLETE,
+next_step,label,value,IMPLEMENT_DATA_FOUNDATION_BARMATRIX_NORMALIZATION,

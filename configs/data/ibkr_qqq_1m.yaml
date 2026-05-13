@@ -1,0 +1,22 @@
+# Dataset spec for IBKR QQQ 1-minute bars.
+# This is config truth. Runtime resolves paths against repo root.
+
+dataset_id: ibkr_qqq_1m
+asset: equity
+symbol: QQQ
+timeframe: 1m
+
+raw_root: data/raw/ibkr
+canonical_raw_layout: "data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=YYYY/month=MM/bars.parquet"
+# NOTE: Local data is currently in the legacy QT-like layout
+# (data/raw/ibkr/equity/bars_1min/symbol=QQQ/year=YYYY/month=MM/data.parquet).
+# Phase 1 will either canonicalize the layout or implement a layout-aware loader.
+
+curated_root: data/curated/bars_1m_rth
+rth_only_default: true
+timezone: America/New_York
+
+# Source metadata
+source: ibkr
+bar_size: "1 min"
+what_to_show: TRADES

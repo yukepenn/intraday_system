@@ -1,0 +1,2096 @@
+Yes — let’s start the new project directly.
+The new project name can be:
+intraday_system/
+And the core idea should be:
+QT = strategy/feature logic reference + historical research archive
+intraday_system = clean, centralized, fast intraday research engine
+We do not need to finish the current QT milestone first. We can start the new system now and use QT only as a source of logic, examples, configs, and expected behavior.
+The design goal is:
+A professional intraday systematic research engine
+that can discover strong single-strategy candidates,
+combine them intelligently,
+route between them like a disciplined trader,
+validate frozen systems out-of-sample,
+and eventually run very fast with NumPy/Numba.
+________________________________________
+1. High-level architecture
+The new system should be built around these layers:
+Layer 0 = data, calendar, feature store, signal store, cache system
+Layer 1 = candidate factory
+Layer 2 = candidate competition, router, management, portfolio behavior
+Layer 3 = frozen system validation
+Reference engine = readable truth path
+Fast engine = NumPy/Numba acceleration path
+The most important rule:
+Reference Python is truth.
+Numba is acceleration.
+Never allow two different PnL truths.
+This means we design both engines from the beginning, but the fast engine must always be parity-tested against the reference engine.
+A simple mental model:
+Parquet bars
+→ curated session-aware bars
+→ NumPy BarMatrix
+→ cached FeatureMatrix
+→ cached SignalMatrix
+→ TradeIntent
+→ execution reference/fast
+→ TradeRecord
+→ metrics
+→ candidates
+→ router/combiner
+→ frozen validation
+________________________________________
+2. Why this architecture is right
+We want the repo to make future research easy:
+Add new feature    → write feature kernel + config + test
+Add new strategy   → write signal function + base config + grid + test
+Add new sweep      → write YAML config, not new engine code
+Add new router     → write router rule/config, not new PnL logic
+Add new management → write management builder, not new backtest engine
+The system should not require custom scripts everywhere.
+Most future work should be done through:
+intraday layer1 run --config ...
+intraday layer1 promote --run-id ...
+intraday layer2 run --config ...
+intraday layer3 run --config ...
+intraday validate parity
+That is the centralized style we want.
+________________________________________
+3. External framework ideas to mimic
+We should not fully adopt vectorbt, LEAN, backtrader, or Zipline, because your project has a specialized 1-minute intraday research architecture. But we should borrow specific ideas.
+From vectorbt, mimic the array-first model: signals, orders, trades, logs, and metrics should be represented as structured arrays, with Numba used for speed-sensitive simulation. Vectorbt’s portfolio package is built around portfolio modules and Numba-backed internals, which is the right performance mindset for large sweeps. (VectorBT)
+From QuantConnect LEAN, mimic modularity: data, algorithm logic, execution, portfolio, brokerage, and result handling are separate engine components. LEAN is described as an open-source algorithmic trading engine for research, backtesting, and live trading. (QuantConnect)
+From backtrader, mimic the “central orchestrator” idea. Backtrader’s Cerebro gathers data feeds, strategies, observers, analyzers, writers, executes backtesting/live flow, and returns results. We should create our own cleaner intraday equivalent through a central CLI/runner, not through scattered scripts. (backtrader.com)
+From Zipline, mimic event discipline and calendar-aware backtesting. Zipline is described as a Pythonic event-driven backtesting system, and event discipline is useful for intraday session boundaries, EOD handling, and next-bar entry semantics. (GitHub)
+For data access, keep Parquet as cold storage and use Polars or DuckDB for efficient scans. Polars scan_parquet supports lazy reads with predicate/projection pushdown, and DuckDB’s Parquet reader supports pushing filters and projections into scans. (Polars User Guide)
+For hot computation, use NumPy arrays + Numba. Numba’s performance guidance explicitly supports writing loop-style numerical code when compiled properly, which matches trade-path simulation very well. (Numba Documentation)
+________________________________________
+4. Top-level project structure
+This should be the new repo:
+intraday_system/
+  pyproject.toml
+  README.md
+  Makefile
+  .gitignore
+  .pre-commit-config.yaml
+
+  configs/
+    data/
+    execution/
+    features/
+    strategies/
+    candidates/
+    layer1/
+    layer2/
+    layer3/
+    reports/
+
+  data/
+    raw/
+    curated/
+    cache/
+
+  artifacts/
+    layer1/
+    layer2/
+    layer3/
+    diagnostics/
+    reports/
+    logs/
+
+  notebooks/
+    exploration_only/
+
+  scripts/
+    bootstrap_from_qt.py
+    ingest_ibkr.py
+    validate_repo.py
+
+  src/
+    intraday/
+      core/
+      data/
+      features/
+      strategies/
+      execution/
+      management/
+      backtest/
+      layer1/
+      layer2/
+      layer3/
+      portfolio/
+      reports/
+      research/
+      cli/
+      utils/
+
+  tests/
+    unit/
+    parity/
+    integration/
+    regression/
+    smoke/
+The rule:
+src/intraday/ = code
+configs/      = runtime truth
+data/         = raw/curated/cache data
+artifacts/    = generated research outputs
+notebooks/    = human exploration only
+scripts/      = thin bootstrap helpers only
+tests/        = correctness and parity
+No runtime system should depend on markdown or CSV as config truth.
+________________________________________
+5. Full detailed project tree
+intraday_system/
+  pyproject.toml
+  README.md
+  Makefile
+  .gitignore
+  .pre-commit-config.yaml
+
+  configs/
+    data/
+      ibkr_qqq_1m.yaml
+      symbols.yaml
+      sessions_us_equity.yaml
+      data_roots.yaml
+
+    execution/
+      intraday_default.yaml
+      intraday_reference.yaml
+      intraday_fast.yaml
+      cost_model_default.yaml
+
+    features/
+      pa_core_v1.yaml
+      gap_core_v1.yaml
+      cci_core_v1.yaml
+      vwap_orb_core_v1.yaml
+      full_intraday_core_v1.yaml
+
+    strategies/
+      base/
+        pa_buy_sell_close_trend.yaml
+        gap_acceptance_failure.yaml
+        cci_extreme_snapback.yaml
+        vwap_reclaim_reject.yaml
+        vwap_trend_pullback.yaml
+        failed_orb.yaml
+        orb_continuation.yaml
+
+      grids/
+        pa_buy_sell_close_trend_focused.yaml
+        gap_acceptance_failure_focused.yaml
+        cci_extreme_snapback_focused.yaml
+        pa_buy_sell_close_trend_controlled64.yaml
+        gap_acceptance_failure_controlled64.yaml
+
+      metadata/
+        pa_buy_sell_close_trend.yaml
+        gap_acceptance_failure.yaml
+        cci_extreme_snapback.yaml
+        vwap_reclaim_reject.yaml
+        failed_orb.yaml
+
+    layer1/
+      smoke_pa_qqq_2024h1.yaml
+      controlled_qqq_2023_2024.yaml
+      broad_qqq_later.yaml
+
+    candidates/
+      l1_controlled_qqq_v1/
+        README.md
+        candidate_index.csv
+        PA_BUY_SELL_CLOSE_TREND_L1E_001.yaml
+        GAP_ACCEPTANCE_FAILURE_L1E_001.yaml
+        CCI_EXTREME_SNAPBACK_L1E_001.yaml
+
+    layer2/
+      smoke_pa_only.yaml
+      controlled_pa_only.yaml
+      controlled_pa_gap.yaml
+      controlled_pa_gap_cci.yaml
+      router_grid_small.yaml
+
+    layer3/
+      folds_2020_2026.yaml
+      fixed_system_qqq_l2_v1.yaml
+      oos_smoke.yaml
+
+    reports/
+      default_report.yaml
+
+  data/
+    raw/
+      ibkr/
+        asset=equity/
+          symbol=QQQ/
+            timeframe=1m/
+              year=2024/
+                month=01/
+                  bars.parquet
+
+    curated/
+      bars_1m_rth/
+        asset=equity/
+          symbol=QQQ/
+            year=2024/
+              month=01/
+                bars.parquet
+
+    cache/
+      arrays/
+      features/
+      signals/
+      layer2_precompute/
+
+  artifacts/
+    layer1/
+      runs/
+      selected_candidates/
+      reports/
+
+    layer2/
+      runs/
+      reports/
+
+    layer3/
+      runs/
+      reports/
+
+    diagnostics/
+      parity/
+      data_validation/
+      performance/
+
+    reports/
+
+  notebooks/
+    exploration_only/
+      README.md
+
+  scripts/
+    bootstrap_from_qt.py
+    ingest_ibkr.py
+    validate_repo.py
+
+  src/
+    intraday/
+      __init__.py
+
+      core/
+        __init__.py
+        types.py
+        arrays.py
+        config.py
+        hashing.py
+        registry.py
+        clock.py
+        errors.py
+        paths.py
+        constants.py
+
+      data/
+        __init__.py
+        ingest_ibkr.py
+        schema.py
+        catalog.py
+        loader.py
+        sessions.py
+        normalize.py
+        validate.py
+        calendar.py
+
+      features/
+        __init__.py
+        base.py
+        registry.py
+        engine.py
+        store.py
+        specs.py
+        cache_key.py
+        kernels/
+          __init__.py
+          vwap.py
+          orb.py
+          levels.py
+          regime.py
+          price_action.py
+          indicators.py
+          channels.py
+          volatility.py
+          volume.py
+
+      strategies/
+        __init__.py
+        base.py
+        registry.py
+        loader.py
+        contracts.py
+        config_validation.py
+
+        pa/
+          __init__.py
+          buy_sell_close_trend.py
+
+        gap/
+          __init__.py
+          acceptance_failure.py
+
+        cci/
+          __init__.py
+          extreme_snapback.py
+
+        vwap/
+          __init__.py
+          reclaim_reject.py
+          trend_pullback.py
+
+        orb/
+          __init__.py
+          failed_orb.py
+          continuation.py
+
+      execution/
+        __init__.py
+        spec.py
+        intent.py
+        reference.py
+        fast.py
+        kernels.py
+        materialize.py
+        fills.py
+        exits.py
+        records.py
+        parity.py
+        cost.py
+
+      management/
+        __init__.py
+        modes.py
+        fixed_r.py
+        scaleout.py
+        trailing.py
+        no_followthrough.py
+        builders.py
+
+      backtest/
+        __init__.py
+        engine.py
+        sweep.py
+        metrics.py
+        records.py
+        costs.py
+        result_store.py
+        explain.py
+
+      layer1/
+        __init__.py
+        config.py
+        grid.py
+        runner.py
+        factory.py
+        selection.py
+        candidate.py
+        promotion.py
+        reports.py
+
+      layer2/
+        __init__.py
+        config.py
+        signal_cache.py
+        precompute.py
+        router.py
+        permissions.py
+        quality.py
+        conflict.py
+        state.py
+        simulator_reference.py
+        simulator_fast.py
+        selection.py
+        metrics.py
+        reports.py
+
+      layer3/
+        __init__.py
+        folds.py
+        frozen_system.py
+        runner.py
+        evaluator.py
+        reports.py
+        decisions.py
+
+      portfolio/
+        __init__.py
+        sizing.py
+        risk.py
+        equity.py
+        limits.py
+
+      reports/
+        __init__.py
+        tables.py
+        plots.py
+        markdown.py
+        html.py
+
+      research/
+        __init__.py
+        artifacts.py
+        validate_artifacts.py
+        summaries.py
+
+      cli/
+        __init__.py
+        main.py
+        data.py
+        features.py
+        layer1.py
+        layer2.py
+        layer3.py
+        validate.py
+
+      utils/
+        __init__.py
+        io.py
+        yaml.py
+        time.py
+        logging.py
+
+  tests/
+    unit/
+      test_config.py
+      test_hashing.py
+      test_data_loader.py
+      test_feature_engine.py
+      test_strategy_contracts.py
+      test_execution_reference.py
+      test_layer1_grid.py
+      test_candidate_schema.py
+
+    parity/
+      test_execution_fast_parity.py
+      test_feature_fast_parity.py
+      test_strategy_fast_parity.py
+      test_layer2_fast_parity.py
+
+    integration/
+      test_layer1_pa_smoke.py
+      test_layer2_pa_only_smoke.py
+      test_layer3_frozen_smoke.py
+
+    regression/
+      test_qt_pa_signal_reference.py
+      test_qt_gap_signal_reference.py
+      test_qt_cci_signal_reference.py
+
+    smoke/
+      test_cli_help.py
+      test_repo_bootstrap.py
+________________________________________
+6. README principle
+At the top of the README, write this:
+intraday_system is an intraday research engine.
+
+Strategies produce signals.
+Execution produces trades.
+Layer1 produces candidates.
+Layer2 selects between candidates.
+Layer3 validates frozen systems.
+
+Parquet is storage.
+NumPy arrays are computation.
+Reference Python is truth.
+Numba is acceleration.
+YAML is runtime config.
+CSV/MD are audit artifacts.
+This is the clean version of what QT was moving toward.
+________________________________________
+7. Data architecture
+Data should have three states:
+Raw data
+Curated data
+Hot arrays
+7.1 Raw data
+Raw data is exactly what came from IBKR.
+data/raw/ibkr/
+  asset=equity/
+    symbol=QQQ/
+      timeframe=1m/
+        year=2024/
+          month=01/
+            bars.parquet
+Rules:
+Raw data is immutable.
+Do not edit raw files.
+Do not dedupe raw files in place.
+Do not overwrite raw files silently.
+7.2 Curated data
+Curated data is normalized, cleaned, session-tagged, and backtest-ready.
+data/curated/bars_1m_rth/
+  asset=equity/
+    symbol=QQQ/
+      year=2024/
+        month=01/
+          bars.parquet
+Curated schema:
+ts_utc                timestamp[ns, UTC] or int64 ns
+ts_local              timestamp[ns, America/New_York]
+date                  date
+session_date          int32 YYYYMMDD
+session_id            int32
+bar_index             int64
+minute_of_session     int16, 0..389
+open                  float64
+high                  float64
+low                   float64
+close                 float64
+volume                float64
+source                string
+is_rth                bool
+Critical fields:
+session_id
+session_date
+minute_of_session
+bar_index
+Those make execution and Numba logic clean.
+7.3 Hot arrays
+The backtest engine should not operate on Parquet directly. Parquet is storage. The engine should operate on arrays.
+@dataclass(frozen=True)
+class BarMatrix:
+    open: np.ndarray
+    high: np.ndarray
+    low: np.ndarray
+    close: np.ndarray
+    volume: np.ndarray
+    session_id: np.ndarray
+    session_date: np.ndarray
+    minute: np.ndarray
+    ts_ns: np.ndarray
+    symbol_id: int
+    data_hash: str
+This object is used by:
+feature engine
+strategy engine
+execution engine
+Layer2 router
+Layer3 validator
+7.4 Data package functions
+# src/intraday/data/ingest_ibkr.py
+pull_ibkr_1m(
+    symbol: str,
+    start: str,
+    end: str,
+    output_root: Path,
+    *,
+    bar_size: str = "1 min",
+    what_to_show: str = "TRADES",
+) -> list[Path]
+# src/intraday/data/normalize.py
+normalize_raw_ibkr_to_curated(
+    raw_root: Path,
+    curated_root: Path,
+    symbol: str,
+    start: str,
+    end: str,
+    *,
+    calendar: str = "XNYS",
+    rth_only: bool = True,
+) -> list[Path]
+# src/intraday/data/loader.py
+load_bars(
+    symbol: str,
+    start: str,
+    end: str,
+    *,
+    data_root: Path,
+    columns: list[str] | None = None,
+) -> BarMatrix
+# src/intraday/data/validate.py
+validate_bar_data(
+    bars: BarMatrix,
+    *,
+    expected_minutes_per_session: int = 390,
+) -> DataValidationReport
+________________________________________
+8. Cache system
+The cache system is central. It should prevent repeated computation.
+8.1 Cache layers
+data cache      = BarMatrix arrays
+feature cache   = FeatureMatrix
+signal cache    = SignalMatrix per candidate
+Layer2 cache    = candidate signal matrix + router-ready arrays
+metrics cache   = optional summary outputs
+8.2 Cache keys
+Every cache key should be deterministic:
+data_hash
+feature_config_hash
+strategy_config_hash
+execution_spec_hash
+candidate_hash
+router_config_hash
+layer2_config_hash
+fold_hash
+Example:
+cache_key = hash_config({
+    "symbol": "QQQ",
+    "start": "2023-01-01",
+    "end": "2024-12-31",
+    "data_hash": bars.data_hash,
+    "feature_config": feature_config,
+})
+8.3 Feature cache
+data/cache/features/
+  feature_hash=<hash>/
+    data_hash=<hash>/
+      matrix.npz
+      columns.json
+      meta.json
+8.4 Signal cache
+data/cache/signals/
+  candidate_hash=<hash>/
+    data_hash=<hash>/
+      signal_matrix.npz
+      meta.json
+8.5 Layer2 precompute cache
+data/cache/layer2_precompute/
+  layer2_config_hash=<hash>/
+    data_hash=<hash>/
+      candidate_signals.npz
+      candidate_meta.json
+      router_context.npz
+8.6 Cache rule
+Changing a strategy threshold should not rebuild VWAP/ORB/ATR features.
+Changing a router rule should not rebuild Layer1 signals.
+Changing execution cost should not rebuild features/signals.
+________________________________________
+9. Core types
+core/ is the shared foundation.
+src/intraday/core/
+  types.py
+  arrays.py
+  config.py
+  hashing.py
+  registry.py
+  clock.py
+  errors.py
+  paths.py
+  constants.py
+9.1 core/types.py
+class Side(IntEnum):
+    FLAT = 0
+    LONG = 1
+    SHORT = -1
+class ExitReason(IntEnum):
+    NONE = 0
+    STOP = 1
+    TARGET = 2
+    EOD = 3
+    MAX_HOLD = 4
+    SCALE_OUT = 5
+    TRAILING_STOP = 6
+    NO_FOLLOWTHROUGH = 7
+    REJECTED = 8
+class RejectReason(IntEnum):
+    NONE = 0
+    RISK_TOO_SMALL = 1
+    NO_NEXT_BAR = 2
+    CROSS_SESSION_ENTRY = 3
+    INVALID_STOP = 4
+    SHORT_NOT_ALLOWED = 5
+    OUTSIDE_TRADING_WINDOW = 6
+9.2 core/arrays.py
+@dataclass(frozen=True)
+class FeatureMatrix:
+    values: np.ndarray
+    columns: dict[str, int]
+    feature_hash: str
+@dataclass(frozen=True)
+class SignalMatrix:
+    entry: np.ndarray
+    side: np.ndarray
+    stop: np.ndarray
+    target_r: np.ndarray
+    score: np.ndarray
+    setup_code: np.ndarray
+    signal_hash: str
+@dataclass(frozen=True)
+class TradeRecordArray:
+    entry_bar: np.ndarray
+    exit_bar: np.ndarray
+    side: np.ndarray
+    qty: np.ndarray
+    entry_price: np.ndarray
+    exit_price: np.ndarray
+    stop_price: np.ndarray
+    target_price: np.ndarray
+    pnl: np.ndarray
+    r_multiple: np.ndarray
+    exit_reason: np.ndarray
+    candidate_id: np.ndarray
+9.3 core/config.py
+load_yaml(path: Path) -> dict
+resolve_config_refs(config: dict) -> dict
+validate_config(config: dict, schema: type) -> None
+9.4 core/hashing.py
+hash_config(config: Mapping[str, Any]) -> str
+hash_file(path: Path) -> str
+hash_data_manifest(paths: list[Path]) -> str
+hash_array_schema(arrays: Mapping[str, np.ndarray]) -> str
+All hashes should be stable and sorted.
+________________________________________
+10. Config system
+Configs are runtime truth.
+configs/
+  data/
+  execution/
+  features/
+  strategies/
+  candidates/
+  layer1/
+  layer2/
+  layer3/
+10.1 Strategy base config
+# configs/strategies/base/pa_buy_sell_close_trend.yaml
+
+strategy: pa_buy_sell_close_trend
+version: strategy_v1
+
+features:
+  feature_set: pa_core_v1
+  orb_open_minutes: 15
+  vwap_bands: [1.0, 2.0]
+  vol_windows: [5, 15, 20, 30]
+  price_action_windows: [3, 5, 10, 20, 30, 60]
+  volume_windows: [20, 30]
+  pa:
+    swing_windows: [10, 20, 30, 60]
+    regime_windows: [20, 30, 60]
+    atr_window: 20
+
+signal:
+  side: long_only
+  atr_column: atr_like_20
+  entry_start_minute: 60
+  entry_end_minute: 300
+  body_pct_min: 0.52
+  trend_score_min: 0.35
+  require_vwap_side: false
+  block_climax: true
+  climax_score_max: 0.75
+
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.2
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+
+backtest:
+  eod_exit_minute: 389
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  max_hold_minutes: 50
+10.2 Strategy grid config
+# configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml
+
+strategy: pa_buy_sell_close_trend
+base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+
+fixed:
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+
+grid:
+  signal.entry_start_minute: [60, 90]
+  signal.entry_end_minute: [210, 300]
+  signal.body_pct_min: [0.48, 0.56]
+  signal.trend_score_min: [0.28, 0.42]
+  risk.target_r: [1.0, 1.35, 1.7]
+  risk.stop_mode: [signal_low, atr_buffer, swing_low]
+  backtest.max_hold_minutes: [40, 55, 70]
+Rules:
+base config
+→ fixed overrides
+→ grid combo
+No silent overlap:
+If fixed and grid use the same key, raise error.
+10.3 Layer1 run config
+# configs/layer1/controlled_qqq_2023_2024.yaml
+
+run_id: L1_QQQ_CONTROLLED_2023_2024_V1
+
+symbol: QQQ
+asset: equity
+timeframe: 1m
+data_root: data/curated/bars_1m_rth
+start: "2023-01-01"
+end: "2024-12-31"
+
+execution_config: configs/execution/intraday_default.yaml
+
+strategies:
+  - name: pa_buy_sell_close_trend
+    grid: configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml
+
+  - name: gap_acceptance_failure
+    grid: configs/strategies/grids/gap_acceptance_failure_focused.yaml
+
+  - name: cci_extreme_snapback
+    grid: configs/strategies/grids/cci_extreme_snapback_focused.yaml
+
+selection:
+  max_per_strategy: 3
+  min_trades: 20
+  min_profit_factor_r: 1.05
+  min_total_r: 0.0
+  gate_label: L1_CONTROLLED_STRICT_V1
+
+output:
+  artifact_root: artifacts/layer1/runs
+  candidate_root: configs/candidates/l1_controlled_qqq_v1
+  save_trade_records: false
+10.4 Layer2 config
+# configs/layer2/controlled_pa_gap_cci.yaml
+
+run_id: L2_QQQ_PA_GAP_CCI_V1
+
+symbol: QQQ
+start: "2023-01-01"
+end: "2024-12-31"
+
+candidate_root: configs/candidates/l1_controlled_qqq_v1
+execution_config: configs/execution/intraday_default.yaml
+
+router:
+  mode: priority_with_regime_permissions
+
+  conflict_policy:
+    max_open_positions: 1
+    same_bar_conflict: highest_quality
+    same_family_conflict: highest_score
+    cross_family_conflict: priority_then_score
+
+  family_priority:
+    gap: 90
+    pa: 80
+    cci: 60
+
+  permissions:
+    time_windows:
+      allow_entry_start_minute: 5
+      allow_entry_end_minute: 360
+
+    regime_filters:
+      use_vwap_regime: true
+      use_volatility_regime: true
+
+  daily_risk:
+    max_trades_per_day: 3
+    max_daily_loss_r: -2.0
+    cooldown_after_loss_bars: 20
+
+management:
+  default_mode: fixed_r
+10.5 Layer3 frozen system config
+# configs/layer3/fixed_system_qqq_l2_v1.yaml
+
+system_id: QQQ_INTRADAY_L2_V1
+
+frozen_at_git_sha: "<sha>"
+candidate_root: configs/candidates/l1_controlled_qqq_v1
+layer2_config: configs/layer2/controlled_pa_gap_cci.yaml
+execution_config: configs/execution/intraday_default.yaml
+
+folds_config: configs/layer3/folds_2020_2026.yaml
+
+validation_rules:
+  no_tuning_on_oos: true
+  require_candidate_root_frozen: true
+  require_execution_hash_match: true
+________________________________________
+11. Feature system
+Features should be centralized and cached.
+src/intraday/features/
+  base.py
+  registry.py
+  engine.py
+  store.py
+  specs.py
+  kernels/
+11.1 Feature principle
+Features are market facts.
+Good features:
+VWAP
+ORB high/low
+ATR-like range
+swing high/low
+trend score ingredients
+volume z-score
+CCI
+RSI
+distance from VWAP
+gap size
+gap fill progress
+regime labels
+channels
+Bad features:
+enter long now
+candidate wins
+take profit now
+router chooses PA
+11.2 Feature definition
+@dataclass(frozen=True)
+class FeatureDef:
+    name: str
+    version: str
+    required_inputs: tuple[str, ...]
+    outputs: tuple[str, ...]
+    compute_reference: Callable
+    compute_fast: Callable | None
+11.3 Feature engine
+def build_feature_matrix(
+    bars: BarMatrix,
+    feature_config: Mapping[str, Any],
+    *,
+    store: FeatureStore | None = None,
+    mode: Literal["reference", "fast"] = "fast",
+) -> FeatureMatrix:
+    ...
+Responsibilities:
+1. Resolve feature config.
+2. Compute feature_config_hash.
+3. Check cache.
+4. Build only needed features.
+5. Return NumPy matrix + column map.
+6. Save cache if enabled.
+11.4 Feature store
+class FeatureStore:
+    def get(self, data_hash: str, feature_hash: str) -> FeatureMatrix | None:
+        ...
+
+    def put(self, data_hash: str, feature_hash: str, matrix: FeatureMatrix) -> None:
+        ...
+11.5 Feature kernels
+features/kernels/vwap.py
+  compute_vwap_reference
+  compute_vwap_fast
+
+features/kernels/orb.py
+  compute_orb_reference
+  compute_orb_fast
+
+features/kernels/price_action.py
+  compute_swing_high_low
+  compute_body_pct
+  compute_trend_score_inputs
+  compute_climax_score
+
+features/kernels/regime.py
+  compute_vwap_regime
+  compute_trend_regime
+  compute_volatility_regime
+
+features/kernels/indicators.py
+  compute_cci
+  compute_rsi
+  compute_macd_later
+Each fast kernel should be Numba-compatible where useful.
+________________________________________
+12. Strategy system
+Strategies produce signals only.
+src/intraday/strategies/
+  base.py
+  registry.py
+  loader.py
+  contracts.py
+  pa/
+  gap/
+  cci/
+  vwap/
+  orb/
+12.1 Strategy output contract
+Every strategy must output a standard SignalMatrix:
+entry          bool/int8
+side           int8
+stop_price     float64
+target_r       float64
+score          float64
+setup_code     int16
+valid          bool/int8
+The execution engine should not know strategy-specific columns.
+12.2 Strategy definition
+@dataclass(frozen=True)
+class StrategyDef:
+    name: str
+    family: str
+    version: str
+    required_feature_set: str
+    signal_contract_version: str
+    generate_reference: Callable
+    generate_fast: Callable | None
+    validate_config: Callable
+12.3 Example strategy function
+def generate_pa_buy_sell_close_trend_signals(
+    bars: BarMatrix,
+    features: FeatureMatrix,
+    config: Mapping[str, Any],
+    *,
+    mode: Literal["reference", "fast"] = "fast",
+) -> SignalMatrix:
+    ...
+12.4 Strategy registry
+register_strategy(
+    StrategyDef(
+        name="pa_buy_sell_close_trend",
+        family="pa",
+        version="strategy_v1",
+        required_feature_set="pa_core_v1",
+        signal_contract_version="signal_v1",
+        generate_reference=generate_pa_reference,
+        generate_fast=generate_pa_fast,
+        validate_config=validate_pa_config,
+    )
+)
+12.5 Strategy loader
+def load_strategy_config(path: Path) -> dict:
+    ...
+
+def load_strategy_grid(path: Path) -> StrategyGrid:
+    ...
+
+def resolve_strategy_combo(base_config: dict, fixed: dict, combo: dict) -> dict:
+    ...
+________________________________________
+13. Execution engine
+Execution is the accounting truth.
+src/intraday/execution/
+  spec.py
+  intent.py
+  reference.py
+  fast.py
+  kernels.py
+  materialize.py
+  fills.py
+  exits.py
+  records.py
+  parity.py
+  cost.py
+13.1 Execution spec
+@dataclass(frozen=True)
+class ExecutionSpec:
+    entry_timing: Literal["next_open"]
+    same_bar_policy: Literal["stop_first", "target_first", "conservative"]
+    slippage_per_share: float
+    commission_per_trade: float
+    min_risk_per_share: float
+    eod_exit_minute: int
+    allow_short: bool
+    max_hold_bars_default: int | None
+    semantics_version: str
+13.2 TradeIntent
+@dataclass(frozen=True)
+class TradeIntent:
+    candidate_id: int
+    signal_bar: int
+    side: int
+    qty: float
+    raw_stop_price: float
+    target_r: float
+    max_hold_bars: int
+    score: float
+    setup_code: int
+13.3 TradeResult
+@dataclass(frozen=True)
+class TradeResult:
+    accepted: bool
+    reject_reason: int
+    candidate_id: int
+    signal_bar: int
+    entry_bar: int
+    exit_bar: int
+    side: int
+    qty: float
+    entry_price: float
+    stop_price: float
+    target_price: float
+    exit_price: float
+    gross_pnl: float
+    net_pnl: float
+    r_multiple: float
+    exit_reason: int
+    bars_held: int
+13.4 Reference path
+def simulate_trade_path_reference(
+    bars: BarMatrix,
+    intent: TradeIntent,
+    spec: ExecutionSpec,
+    management_plan: ManagementPlan | None = None,
+) -> TradeResult:
+    ...
+Reference path responsibilities:
+next-bar entry
+session-boundary guard
+entry slippage
+stop materialization
+risk validation
+target materialization from actual entry
+EOD exit
+max-hold exit
+stop/target ordering
+scale-out events
+trailing stop events
+no-followthrough exit
+commission/slippage
+R-multiple
+reject reasons
+13.5 Fast path
+@njit
+def simulate_trade_paths_fast_kernel(
+    open_: np.ndarray,
+    high: np.ndarray,
+    low: np.ndarray,
+    close: np.ndarray,
+    session_id: np.ndarray,
+    minute: np.ndarray,
+    intents: np.ndarray,
+    spec_array: np.ndarray,
+    management_array: np.ndarray,
+) -> np.ndarray:
+    ...
+13.6 Parity rule
+Every execution behavior must have a parity test:
+reference result == fast result
+Scenarios:
+normal target
+normal stop
+same-bar stop/target
+EOD exit
+max-hold exit
+risk too small
+cross-session entry reject
+long trade
+short trade later
+scale-out 50% then 50% of remaining
+trailing stop
+no-followthrough
+commission/slippage
+________________________________________
+14. Management / partial trades
+Management should be separate from strategy signals.
+src/intraday/management/
+  modes.py
+  fixed_r.py
+  scaleout.py
+  trailing.py
+  no_followthrough.py
+  builders.py
+14.1 ManagementPlan
+@dataclass(frozen=True)
+class ScaleOutRule:
+    trigger_r: float
+    exit_fraction: float  # fraction of remaining quantity
+
+@dataclass(frozen=True)
+class TrailingRule:
+    activate_after_r: float
+    trail_distance_r: float
+
+@dataclass(frozen=True)
+class NoFollowThroughRule:
+    check_after_bars: int
+    min_favorable_r: float
+    exit_fraction: float
+
+@dataclass(frozen=True)
+class ManagementPlan:
+    mode: str
+    scale_outs: tuple[ScaleOutRule, ...]
+    trailing: TrailingRule | None
+    no_followthrough: NoFollowThroughRule | None
+14.2 Management config
+management:
+  mode: fixed_r
+  params:
+    target_r: 1.35
+    max_hold_minutes: 55
+Later:
+management:
+  mode: scaleout_trail
+  params:
+    scaleouts:
+      - trigger_r: 1.0
+        exit_fraction: 0.5
+      - trigger_r: 1.8
+        exit_fraction: 0.5
+    trailing:
+      activate_after_r: 1.2
+      trail_distance_r: 0.5
+    no_followthrough:
+      check_after_bars: 8
+      min_favorable_r: 0.15
+      exit_fraction: 1.0
+Rule:
+Strategy suggests setup.
+Management decides how to manage.
+Execution calculates actual trade result.
+________________________________________
+15. Backtest package
+src/intraday/backtest/
+  engine.py
+  sweep.py
+  metrics.py
+  records.py
+  costs.py
+  result_store.py
+  explain.py
+15.1 Candidate backtest
+def run_candidate_backtest(
+    bars: BarMatrix,
+    features: FeatureMatrix,
+    strategy_def: StrategyDef,
+    strategy_config: dict,
+    execution_spec: ExecutionSpec,
+    *,
+    mode: Literal["reference", "fast"],
+) -> BacktestResult:
+    ...
+Flow:
+generate signals
+→ convert signals to intents
+→ simulate intents
+→ enforce max trades/day/cooldown
+→ collect trade records
+→ compute metrics
+15.2 Grid sweep
+def run_grid_sweep(
+    run_config: Layer1RunConfig,
+    *,
+    mode: Literal["reference", "fast"],
+) -> SweepResult:
+    ...
+Rules:
+No prefix-biased max-combos.
+No silent fixed/grid overlap.
+No runtime dependence on CSV/MD.
+No PnL logic outside execution.
+15.3 Metrics
+def summarize_trades(records: TradeRecordArray) -> MetricsSummary:
+    ...
+Metrics:
+total_r
+avg_r
+median_r
+profit_factor_r
+win_rate
+trade_count
+max_drawdown_r
+avg_bars_held
+trades_per_month
+monthly_r
+monthly_hit_rate
+exit_reason_distribution
+cost_stress
+time_of_day_distribution
+strategy_concentration
+________________________________________
+16. Layer 1: candidate factory
+src/intraday/layer1/
+  config.py
+  grid.py
+  runner.py
+  factory.py
+  selection.py
+  candidate.py
+  promotion.py
+  reports.py
+16.1 Layer1 job
+Layer1 answers:
+For one strategy idea and one parameter set,
+is this a tradable candidate under canonical execution?
+Layer1 does not choose between different strategies in live conflict. That belongs to Layer2.
+16.2 Layer1 flow
+Layer1RunConfig
+→ load bars once
+→ compute data_hash
+→ for each strategy:
+    resolve base config
+    resolve grid
+    build/cache features
+    run each combo
+    compute metrics
+→ select candidates
+→ write candidate YAMLs
+→ write audit reports
+16.3 Layer1 runner
+def run_layer1(
+    config_path: Path,
+    *,
+    mode: Literal["reference", "fast"] = "fast",
+) -> Layer1RunResult:
+    ...
+16.4 Candidate selection
+def select_candidates(
+    sweep_results: pd.DataFrame,
+    selection_config: SelectionConfig,
+) -> SelectionResult:
+    ...
+Gates:
+min_trades
+min_profit_factor_r
+min_total_r
+max_drawdown_r floor
+min_months_active
+max_monthly_concentration
+min_avg_r
+avoid tiny-N artifacts
+16.5 Candidate YAML
+schema_version: layer1_candidate_v1
+
+candidate_id: PA_BUY_SELL_CLOSE_TREND_L1E_001
+strategy: pa_buy_sell_close_trend
+family: pa
+symbol: QQQ
+asset: equity
+timeframe: 1m
+side: long_only
+candidate_rank: 1
+
+config:
+  features: ...
+  signal: ...
+  risk: ...
+  backtest: ...
+
+execution:
+  engine_used_for_selection: execution_fast
+  reference_engine: execution_reference
+  semantics_version: execution_v1
+  execution_spec_hash: abc123
+
+source:
+  layer1_run_id: L1_QQQ_CONTROLLED_2023_2024_V1
+  base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+  grid_config: configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml
+  combo_id: combo_00031
+  data_root: data/curated/bars_1m_rth
+  data_window:
+    start: "2023-01-01"
+    end: "2024-12-31"
+  data_hash: abc123
+  git_sha: abc123
+
+hashes:
+  feature_config_hash: abc123
+  strategy_config_hash: abc123
+  candidate_hash: abc123
+
+metrics:
+  total_r: 12.3
+  avg_r: 0.14
+  profit_factor_r: 1.34
+  win_rate: 0.48
+  trade_count: 88
+  max_drawdown_r: -4.2
+
+metadata:
+  conflict_group: QQQ_directional
+  default_priority: 80
+  default_management_mode: fixed_r
+  default_active_start_minute: 60
+  default_active_end_minute: 300
+
+selection:
+  gate_label: L1_CONTROLLED_STRICT_V1
+  score: 72.4
+  selected_at_utc: "2026-05-13T00:00:00Z"
+________________________________________
+17. Layer 2: router / combiner
+src/intraday/layer2/
+  config.py
+  signal_cache.py
+  precompute.py
+  router.py
+  permissions.py
+  quality.py
+  conflict.py
+  state.py
+  simulator_reference.py
+  simulator_fast.py
+  selection.py
+  metrics.py
+  reports.py
+17.1 Layer2 job
+Layer2 answers:
+When multiple candidates fire,
+which one should trade,
+which one should be blocked,
+what management mode should apply,
+and how should daily/session state affect permissions?
+Layer2 is the “professional trader” layer.
+17.2 Layer2 flow
+Layer2 config
+→ load candidate YAMLs
+→ load bars
+→ build shared features
+→ precompute candidate SignalMatrix
+→ build router context arrays
+→ simulate bar-by-bar routing
+→ produce selected TradeIntent stream
+→ execute trades
+→ compute portfolio/system metrics
+17.3 Router inputs
+candidate signal
+candidate score
+candidate family
+candidate priority
+time of day
+VWAP regime
+trend regime
+volatility regime
+gap regime
+daily realized R
+trades today
+loss streak
+cooldown state
+open position state
+candidate recent quality
+17.4 Router outputs
+allow_trade: bool
+selected_candidate_id
+block_reason
+management_mode
+size_multiplier
+risk_permission
+17.5 Router modes
+Start simple:
+priority_router_v1
+quality_router_v1
+regime_permission_router_v1
+Do not start with AI/ML router.
+17.6 Controlled Layer2 configs
+configs/layer2/smoke_pa_only.yaml
+configs/layer2/controlled_pa_only.yaml
+configs/layer2/controlled_pa_gap.yaml
+configs/layer2/controlled_pa_gap_cci.yaml
+Do not start with:
+all candidates
+all routers
+all management modes
+all folds
+Layer2 should expand gradually.
+________________________________________
+18. Layer 3: frozen validation
+src/intraday/layer3/
+  folds.py
+  frozen_system.py
+  runner.py
+  evaluator.py
+  reports.py
+  decisions.py
+18.1 Layer3 job
+Layer3 answers:
+If we freeze the Layer2 system,
+does it survive unseen periods?
+Layer3 does not tune.
+18.2 Layer3 rules
+No tuning on OOS.
+No changing candidate set after seeing OOS.
+No changing router after seeing OOS.
+No changing management after seeing OOS.
+No cherry-picking folds.
+18.3 Fold config
+folds:
+  - name: early_oos
+    start: "2020-01-01"
+    end: "2021-12-31"
+
+  - name: insample_reference
+    start: "2022-01-01"
+    end: "2023-12-31"
+
+  - name: late_oos
+    start: "2024-01-01"
+    end: "2025-12-31"
+
+  - name: full_available
+    start: "2020-01-01"
+    end: "2025-12-31"
+18.4 Layer3 outputs
+fold_metrics.csv
+monthly_metrics.csv
+drawdown_table.csv
+candidate_contribution.csv
+router_decision_distribution.csv
+regime_split.csv
+failure_report.md
+layer3_decision.md
+Decision labels:
+PROMOTE_TO_PAPER_SMOKE
+REVIEW_LAYER2_ROUTER
+REVIEW_LAYER1_CANDIDATES
+REJECT_SYSTEM
+HOLD_AND_REVIEW
+________________________________________
+19. Portfolio and risk
+src/intraday/portfolio/
+  sizing.py
+  risk.py
+  equity.py
+  limits.py
+19.1 Sizing
+Start simple:
+def fixed_quantity(qty: float) -> float:
+    ...
+Then:
+def fixed_risk_sizing(
+    account_equity: float,
+    risk_fraction: float,
+    risk_per_share: float,
+) -> float:
+    ...
+19.2 Daily risk
+@dataclass
+class DailyRiskState:
+    session_id: int
+    trades_today: int
+    realized_r_today: float
+    loss_streak: int
+    cooldown_until_bar: int
+19.3 Risk limits
+max trades per day
+max daily loss R
+max consecutive losses
+cooldown after loss
+max open positions
+max same-family exposure
+Portfolio state belongs to Layer2/portfolio, not Layer1.
+________________________________________
+20. CLI design
+Use one central CLI.
+intraday data ingest-ibkr
+intraday data normalize
+intraday data validate
+
+intraday features build
+intraday features inspect
+
+intraday strategies list
+intraday strategies validate --strategy pa_buy_sell_close_trend
+
+intraday layer1 run --config configs/layer1/controlled_qqq_2023_2024.yaml
+intraday layer1 promote --run-id L1_QQQ_CONTROLLED_2023_2024_V1
+intraday layer1 report --run-id L1_QQQ_CONTROLLED_2023_2024_V1
+
+intraday layer2 run --config configs/layer2/controlled_pa_gap_cci.yaml
+intraday layer2 report --run-id L2_QQQ_PA_GAP_CCI_V1
+
+intraday layer3 run --config configs/layer3/fixed_system_qqq_l2_v1.yaml
+intraday layer3 report --run-id QQQ_INTRADAY_L2_V1
+
+intraday validate artifacts
+intraday validate candidates --root configs/candidates/l1_controlled_qqq_v1
+intraday validate parity
+Implementation:
+src/intraday/cli/main.py
+Use Typer or argparse. I would use Typer for readability, but argparse is fine if you want fewer dependencies.
+________________________________________
+21. Reporting and artifacts
+Artifacts are generated outputs.
+artifacts/
+  layer1/
+    runs/
+      L1_QQQ_CONTROLLED_2023_2024_V1/
+        run_config.yaml
+        sweep_results.parquet
+        sweep_results.csv
+        selected_candidates_summary.csv
+        candidate_rejects_summary.csv
+        feature_inventory.csv
+        grid_inventory.csv
+        run_summary.md
+        source_map.csv
+
+  layer2/
+    runs/
+      L2_QQQ_PA_GAP_CCI_V1/
+        layer2_metrics.csv
+        trade_records.parquet
+        router_decisions.parquet
+        candidate_contribution.csv
+        run_summary.md
+
+  layer3/
+    runs/
+      QQQ_INTRADAY_L2_V1/
+        fold_metrics.csv
+        monthly_metrics.csv
+        regime_split.csv
+        layer3_decision.md
+Rules:
+Big row-level artifacts can be Parquet and local-only.
+Curated summaries can be CSV/MD.
+Runtime configs are YAML.
+________________________________________
+22. Testing system
+Testing should be serious from day one.
+tests/unit/
+tests/parity/
+tests/integration/
+tests/regression/
+tests/smoke/
+22.1 Unit tests
+config loading
+fixed/grid merge
+hash stability
+data schema validation
+feature output shape
+strategy output contract
+candidate schema
+metrics math
+22.2 Parity tests
+reference execution vs fast execution
+reference feature vs fast feature
+reference strategy vs fast strategy
+Layer2 reference vs fast
+22.3 Regression tests against QT
+Use QT as a reference source.
+For a small window:
+QT PA signal count ≈ intraday_system PA signal count
+QT PA trade count ≈ intraday_system PA trade count
+QT execution result exactly matches when semantics are identical
+Not every number must match forever, but early porting should compare.
+22.4 Smoke tests
+intraday --help
+intraday data validate small sample
+intraday layer1 run PA one combo
+intraday layer2 run PA-only tiny window
+intraday layer3 dry-run
+________________________________________
+23. Performance model
+The performance model should be designed from day one:
+Parquet cold store
+→ Polars/DuckDB filtered scan
+→ BarMatrix arrays
+→ FeatureMatrix cache
+→ SignalMatrix cache
+→ Numba execution
+→ compact TradeRecordArray
+→ metrics
+Avoid:
+read full Parquet every combo
+build full pandas DataFrame every combo
+strategy writes arbitrary DataFrame columns every combo
+Python loops over bars for every candidate forever
+23.1 Fast path stages
+Stage 1:
+Reference execution only
+NumPy arrays already used
+Stage 2:
+Fast execution Numba kernel
+Stage 3:
+Fast strategy signal generation for PA/GAP/CCI
+Stage 4:
+Layer2 router fast kernel
+Stage 5:
+Layer3 WFO fast batch runner
+________________________________________
+24. What to copy from QT
+Copy ideas and logic, not the messy structure.
+Copy:
+PA strategy logic
+GAP strategy logic
+CCI strategy logic
+VWAP/ORB/price-action feature concepts
+strategy YAML fields
+Layer1/Layer2/Layer3 vocabulary
+execution-backed truth principle
+candidate YAML concept
+artifact validation discipline
+Do not copy:
+legacy archive structure
+old Numba PnL as active truth
+research CSV/MD as runtime config
+D: drive assumptions
+multiple competing engines
+compressed one-line modules
+broad scripts without central config
+QT becomes:
+reference source
+not architecture source
+________________________________________
+25. Build phases starting now
+Since you want to start directly, I would use this build plan.
+Phase 0 — New repo bootstrap
+Goal:
+Create intraday_system repo skeleton.
+No real research yet.
+Tasks:
+Create project tree.
+Add pyproject.toml.
+Add README principle.
+Add CLI skeleton.
+Add config loader.
+Add hashing utilities.
+Add artifact directories.
+Add tests for import/help.
+Deliverables:
+intraday_system/
+README.md
+pyproject.toml
+src/intraday/...
+tests/smoke/test_cli_help.py
+Decision:
+BOOTSTRAP_COMPLETE
+________________________________________
+Phase 1 — Data foundation
+Goal:
+Load existing IBKR Parquet into clean BarMatrix.
+Tasks:
+Port or rewrite IBKR ingestion wrapper.
+Create raw data schema.
+Create curated data schema.
+Normalize timestamps.
+Assign session_id.
+Assign minute_of_session.
+Filter RTH.
+Write curated Parquet.
+Load curated Parquet into BarMatrix.
+Validate missing/duplicate bars.
+Deliverables:
+configs/data/ibkr_qqq_1m.yaml
+src/intraday/data/loader.py
+src/intraday/data/normalize.py
+src/intraday/data/validate.py
+tests/unit/test_data_loader.py
+Acceptance:
+Can load QQQ 2024H1 into BarMatrix.
+BarMatrix has correct shape and session/minute arrays.
+________________________________________
+Phase 2 — Reference execution engine
+Goal:
+Build the clean accounting truth.
+Tasks:
+Define ExecutionSpec.
+Define TradeIntent.
+Define TradeResult.
+Implement next-open entry.
+Implement stop/target/EOD/max-hold.
+Implement min_risk_per_share.
+Implement commission/slippage.
+Implement session-boundary guard.
+Implement R-multiple.
+Implement reject reasons.
+Deliverables:
+src/intraday/execution/spec.py
+src/intraday/execution/intent.py
+src/intraday/execution/reference.py
+src/intraday/execution/records.py
+tests/unit/test_execution_reference.py
+Acceptance:
+All execution unit scenarios pass.
+________________________________________
+Phase 3 — Fast execution skeleton and parity
+Goal:
+Set up fast engine discipline early.
+Tasks:
+Create fast.py.
+Create Numba kernel skeleton.
+Implement simple long trade target/stop path.
+Create parity tests.
+Add more scenarios gradually.
+Deliverables:
+src/intraday/execution/fast.py
+src/intraday/execution/parity.py
+tests/parity/test_execution_fast_parity.py
+Acceptance:
+Fast engine matches reference for basic scenarios.
+This phase can start small. The important thing is the pattern.
+________________________________________
+Phase 4 — Feature engine MVP
+Goal:
+Build centralized feature computation and cache.
+Start with PA-required features:
+VWAP
+ORB
+ATR-like range
+price-action body/wick
+swing high/low
+volume windows
+trend/regime inputs
+Tasks:
+Create FeatureDef.
+Create feature registry.
+Create feature config loader.
+Create FeatureMatrix.
+Create FeatureStore.
+Implement VWAP kernel.
+Implement ORB kernel.
+Implement ATR-like kernel.
+Implement price-action kernels.
+Deliverables:
+configs/features/pa_core_v1.yaml
+src/intraday/features/engine.py
+src/intraday/features/store.py
+src/intraday/features/kernels/vwap.py
+src/intraday/features/kernels/orb.py
+src/intraday/features/kernels/price_action.py
+Acceptance:
+Build PA feature matrix for QQQ 2024H1.
+Cache hit works.
+Column map stable.
+________________________________________
+Phase 5 — Strategy system MVP: PA first
+Goal:
+Port pa_buy_sell_close_trend as the first strategy.
+Tasks:
+Create StrategyDef.
+Create strategy registry.
+Create strategy config schema.
+Port PA signal logic from QT.
+Generate standard SignalMatrix.
+Validate strategy config.
+Create base config.
+Create focused grid config.
+Deliverables:
+configs/strategies/base/pa_buy_sell_close_trend.yaml
+configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml
+configs/strategies/metadata/pa_buy_sell_close_trend.yaml
+src/intraday/strategies/pa/buy_sell_close_trend.py
+tests/unit/test_strategy_pa.py
+Acceptance:
+PA strategy generates SignalMatrix.
+No PnL in strategy.
+Signal contract passes.
+________________________________________
+Phase 6 — Layer1 one-strategy run
+Goal:
+Run PA candidate factory end-to-end.
+Tasks:
+Implement grid resolver.
+Implement fixed/grid overlap validation.
+Implement Layer1RunConfig.
+Implement run_layer1.
+Implement metrics summary.
+Implement candidate selection.
+Implement candidate YAML writing.
+Deliverables:
+configs/layer1/smoke_pa_qqq_2024h1.yaml
+src/intraday/layer1/grid.py
+src/intraday/layer1/runner.py
+src/intraday/layer1/selection.py
+src/intraday/layer1/candidate.py
+src/intraday/layer1/promotion.py
+Acceptance:
+intraday layer1 run --config configs/layer1/smoke_pa_qqq_2024h1.yaml
+writes sweep summary and candidate YAML.
+________________________________________
+Phase 7 — Port GAP and CCI
+Goal:
+Bring in the first multi-strategy set.
+Tasks:
+Port gap_acceptance_failure.
+Port cci_extreme_snapback.
+Add required feature kernels.
+Add base configs.
+Add grid configs.
+Add tests.
+Run Layer1 controlled PA/GAP/CCI.
+Deliverables:
+configs/strategies/base/gap_acceptance_failure.yaml
+configs/strategies/base/cci_extreme_snapback.yaml
+src/intraday/strategies/gap/acceptance_failure.py
+src/intraday/strategies/cci/extreme_snapback.py
+configs/layer1/controlled_qqq_2023_2024.yaml
+Acceptance:
+Layer1 produces candidates for at least one family.
+Candidate root validates.
+________________________________________
+Phase 8 — Layer2 controlled router
+Goal:
+Create first professional-trader layer.
+Tasks:
+Load candidate YAMLs.
+Precompute candidate signals.
+Create router context.
+Implement priority router.
+Implement conflict resolution.
+Implement daily risk state.
+Implement cooldown.
+Implement max trades/day.
+Simulate selected intents.
+Compute Layer2 metrics.
+Deliverables:
+configs/layer2/controlled_pa_only.yaml
+configs/layer2/controlled_pa_gap.yaml
+configs/layer2/controlled_pa_gap_cci.yaml
+src/intraday/layer2/router.py
+src/intraday/layer2/state.py
+src/intraday/layer2/simulator_reference.py
+Acceptance:
+Layer2 PA-only works.
+Layer2 PA+GAP works.
+Layer2 PA+GAP+CCI works.
+________________________________________
+Phase 9 — Management modes
+Goal:
+Add partial trade and advanced management cleanly.
+Tasks:
+Implement fixed_r mode.
+Implement scale-out mode.
+Implement trailing mode.
+Implement no-followthrough mode.
+Add execution parity tests.
+Allow Layer2 to select management mode.
+Deliverables:
+src/intraday/management/fixed_r.py
+src/intraday/management/scaleout.py
+src/intraday/management/trailing.py
+src/intraday/management/no_followthrough.py
+Acceptance:
+Partial exits work in reference and fast parity tests.
+Layer2 can assign management mode.
+________________________________________
+Phase 10 — Layer3 frozen validation
+Goal:
+Validate frozen systems strictly.
+Tasks:
+Implement fold config.
+Implement frozen system loader.
+Run Layer2 system across folds.
+Generate fold reports.
+Generate decision doc.
+Deliverables:
+configs/layer3/folds_2020_2026.yaml
+configs/layer3/fixed_system_qqq_l2_v1.yaml
+src/intraday/layer3/runner.py
+src/intraday/layer3/evaluator.py
+Acceptance:
+Layer3 produces fold metrics and decision.
+No tuning during OOS.
+________________________________________
+Phase 11 — Scale and speed
+Goal:
+Make the system fast enough for broad research.
+Tasks:
+Expand Numba execution parity.
+Fast feature kernels.
+Fast strategy kernels for PA/GAP/CCI.
+Fast Layer2 router simulation.
+Batch WFO runner.
+Benchmark reports.
+Deliverables:
+artifacts/diagnostics/performance/
+tests/parity/
+Acceptance:
+Fast mode matches reference mode.
+Fast mode materially reduces Layer1/Layer2 runtime.
+________________________________________
+26. First concrete implementation milestone
+The first real milestone should be:
+MILESTONE 0.1 — PA smoke system
+Scope:
+QQQ only
+2024H1 only
+PA strategy only
+reference execution
+basic feature cache
+small grid
+candidate YAML output
+Command should work:
+intraday layer1 run --config configs/layer1/smoke_pa_qqq_2024h1.yaml
+It should produce:
+artifacts/layer1/runs/L1_PA_QQQ_2024H1_SMOKE/
+  run_config.yaml
+  sweep_results.csv
+  selected_candidates_summary.csv
+  candidate_rejects_summary.csv
+  run_summary.md
+
+configs/candidates/l1_pa_smoke/
+  README.md
+  PA_BUY_SELL_CLOSE_TREND_L1E_001.yaml
+  candidate_index.csv
+That is the first “vertical slice.”
+________________________________________
+27. Second milestone
+MILESTONE 0.2 — Fast execution parity
+Scope:
+same PA smoke
+reference execution
+fast execution
+parity test
+same metrics
+Commands:
+intraday validate parity
+intraday layer1 run --config configs/layer1/smoke_pa_qqq_2024h1.yaml --mode reference
+intraday layer1 run --config configs/layer1/smoke_pa_qqq_2024h1.yaml --mode fast
+Acceptance:
+fast and reference match within defined tolerance
+________________________________________
+28. Third milestone
+MILESTONE 0.3 — PA/GAP/CCI candidate factory
+Scope:
+QQQ 2023–2024
+PA/GAP/CCI
+feature cache
+fast execution if parity complete
+candidate root
+Output:
+configs/candidates/l1_controlled_qqq_v1/
+________________________________________
+29. Fourth milestone
+MILESTONE 0.4 — Layer2 controlled router
+Scope:
+PA-only
+PA+GAP
+PA+GAP+CCI
+priority router
+daily risk state
+cooldown
+one open position
+Output:
+artifacts/layer2/runs/L2_QQQ_PA_GAP_CCI_V1/
+________________________________________
+30. Fifth milestone
+MILESTONE 0.5 — Layer3 frozen validation
+Scope:
+freeze candidate root
+freeze Layer2 config
+run folds
+produce decision
+Output:
+artifacts/layer3/runs/QQQ_INTRADAY_L2_V1/
+________________________________________
+31. Summary of the new system
+The new project should be:
+centralized
+config-driven
+array-first
+cache-first
+reference-truth
+Numba-accelerated
+Layer1/Layer2/Layer3 clean
+strategy logic separated from execution
+execution separated from router
+router separated from validation
+YAML runtime truth
+CSV/MD audit only
+The architecture in one line:
+data → features → strategies → execution → Layer1 candidates → Layer2 router/management → Layer3 frozen validation
+And the operating philosophy:
+Start small.
+Build vertical slices.
+Keep contracts strict.
+Cache everything expensive.
+Use reference for truth.
+Use Numba for speed.
+Never let research artifacts become runtime truth.
+This is the clean foundation I would build for intraday_system/.
+

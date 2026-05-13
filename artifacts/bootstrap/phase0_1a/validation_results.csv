@@ -1,0 +1,10 @@
+check,result,detail
+compileall,pass,no_output
+pytest,pass,40_passed
+ruff,pass,all_checks_passed
+cli_help,pass,exit_0
+cli_doctor,pass,exit_0_all_deps_importable
+cli_validate_structure,pass,all_paths_present_6_dirs_27_files
+cli_data_inventory,pass,104_files_34.264_mib_legacy_qt_like
+forbidden_staged,pending_commit,checked_at_commit_time
+tracked_forbidden,pending_commit,checked_at_commit_time

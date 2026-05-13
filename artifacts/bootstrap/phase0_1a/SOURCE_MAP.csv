@@ -1,0 +1,65 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+README.md,top-level repo readme,yes,source,no,principle statement + quickstart
+pyproject.toml,package metadata + deps,yes,source,no,defines `intraday` console script
+Makefile,convenience commands,no,source,no,wraps pytest/ruff/CLI
+.gitignore,ignore rules,yes,source,no,blocks cache and hot artifacts
+.gitattributes,line/binary handling,no,source,no,no LFS rules enabled
+PROJECT_STATUS.md,current phase + decision,yes,source,no,
+PROGRESS.md,chronological log,yes,source,no,
+CHANGES.md,curated changelog,yes,source,no,
+NEXT_HANDOFF.md,full handoff for next session,yes,source,no,
+docs/ARCHITECTURE.md,normative architecture,yes,source,no,
+docs/PROJECT_STRUCTURE.md,canonical tree,yes,source,no,
+docs/DATA_CONTRACT.md,raw/curated/BarMatrix contract,yes,source,no,
+docs/CONFIG_CONTRACT.md,YAML runtime truth rules,yes,source,no,
+docs/CACHE_CONTRACT.md,hashing + cache invalidation rules,yes,source,no,
+docs/EXECUTION_CONTRACT.md,reference vs fast execution,yes,source,no,
+docs/LAYER_FLOW.md,end-to-end data flow,yes,source,no,
+docs/PHASE_PLAN.md,phase roadmap,yes,source,no,
+docs/QT_REFERENCE_POLICY.md,how QT is referenced,yes,source,QT_local_dir,QT path is local-only reference
+docs/DEVELOPMENT_WORKFLOW.md,plan->execute->review->commit loop,yes,source,no,
+docs/DESIGN_BASELINE.md,canonical principles (north star),yes,source,no,
+configs/data/data_roots.yaml,relative roots,yes,source,no,
+configs/data/ibkr_qqq_1m.yaml,dataset spec,yes,source,no,
+configs/data/symbols.yaml,symbol registry,yes,source,no,
+configs/data/sessions_us_equity.yaml,session windows,yes,source,no,
+configs/execution/intraday_default.yaml,default ExecutionSpec,yes,source,no,
+configs/features/pa_core_v1.yaml,feature spec skeleton,no,source,no,Phase 4 finalizes
+configs/features/gap_core_v1.yaml,feature spec skeleton,no,source,no,Phase 7 finalizes
+configs/features/cci_core_v1.yaml,feature spec skeleton,no,source,no,Phase 7 finalizes
+configs/reports/default_report.yaml,report config skeleton,no,source,no,
+src/intraday/core/types.py,enums (Side/ExitReason/RejectReason/EngineMode),yes,source,no,Numba-compatible IntEnums
+src/intraday/core/arrays.py,BarMatrix/FeatureMatrix/SignalMatrix/TradeRecordArray,yes,source,no,frozen dataclasses with shape validation
+src/intraday/core/hashing.py,stable hashing utilities,yes,source,no,SHA-256 over sorted-key JSON
+src/intraday/core/config.py,YAML helpers,yes,source,no,
+src/intraday/core/paths.py,repo root detection,no,source,no,
+src/intraday/core/errors.py,exception hierarchy,no,source,no,
+src/intraday/core/registry.py,generic Registry,no,source,no,
+src/intraday/core/constants.py,RTH constants,no,source,no,
+src/intraday/data/catalog.py,raw data inventory + layout audit,yes,source,no,used by CLI inventory
+src/intraday/data/schema.py,raw/curated schema constants,no,source,no,
+src/intraday/layer1/grid.py,fixed/grid resolver,yes,source,no,fully implemented + 10 unit tests
+src/intraday/execution/spec.py,ExecutionSpec dataclass,yes,source,no,
+src/intraday/execution/intent.py,TradeIntent dataclass,yes,source,no,
+src/intraday/execution/records.py,TradeResult dataclass,yes,source,no,
+src/intraday/management/modes.py,ManagementPlan + rule types,yes,source,no,
+src/intraday/cli/main.py,CLI entrypoint,yes,source,no,Typer + argparse fallback
+.github/workflows/ci.yml,CI workflow,no,source,no,
+artifacts/bootstrap/phase0_1a/raw_data_inventory.csv,raw parquet inventory (per file),yes,generated,no,CLI output
+artifacts/bootstrap/phase0_1a/raw_data_inventory.md,raw parquet inventory (summary),yes,generated,no,CLI output
+artifacts/bootstrap/phase0_1a/baseline_inventory.md,git/data baseline at task start,yes,source,no,
+artifacts/bootstrap/phase0_1a/baseline_inventory.csv,same as MD; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/design_baseline_summary.md,distilled design principles,yes,source,no,
+artifacts/bootstrap/phase0_1a/design_baseline_summary.csv,same; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/data_tracking_decision.md,git tracking rationale,yes,source,no,
+artifacts/bootstrap/phase0_1a/data_tracking_decision.csv,same; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/structure_created.md,enum of created files,yes,source,no,
+artifacts/bootstrap/phase0_1a/structure_created.csv,same; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/validation_results.md,validation outcomes,yes,source,no,
+artifacts/bootstrap/phase0_1a/validation_results.csv,same; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/bootstrap_summary.md,bootstrap outcome curated,yes,source,no,
+artifacts/bootstrap/phase0_1a/bootstrap_summary.csv,same; tabular,yes,source,no,
+artifacts/bootstrap/phase0_1a/bootstrap_decision.md,decision rationale,yes,source,no,
+artifacts/bootstrap/phase0_1a/SOURCE_MAP.csv,this file,yes,source,no,
+artifacts/bootstrap/phase0_1a/chatgpt_key_tables.csv,review tables,yes,source,no,
+artifacts/bootstrap/phase0_1a/CHATGPT_REVIEW_BUNDLE.md,review bundle,yes,source,no,start here

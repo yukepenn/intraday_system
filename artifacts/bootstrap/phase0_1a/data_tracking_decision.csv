@@ -1,0 +1,14 @@
+item,value
+total_files,104
+total_size_bytes,35927994
+total_size_mib,34.264
+largest_file_mib,0.407
+git_lfs_available,yes
+git_lfs_enabled_by_this_phase,no
+all_files_safe_normal_git,yes
+raw_parquet_staged_in_phase0_1a_commit,no
+cache_tracked,no
+hot_numpy_tracked,no
+large_warn_count,0
+too_large_requires_lfs_count,0
+local_only_recommended_count,0

@@ -1,0 +1,36 @@
+# PA-required feature set (skeleton — fields are intentionally illustrative).
+# Phase 4 will finalize and implement kernels.
+
+feature_set: pa_core_v1
+version: v1
+
+inputs:
+  bars: rth_1m
+
+windows:
+  vol_windows: [5, 15, 20, 30]
+  price_action_windows: [3, 5, 10, 20, 30, 60]
+  volume_windows: [20, 30]
+
+vwap:
+  enable: true
+  bands: [1.0, 2.0]
+
+orb:
+  enable: true
+  open_minutes: [15]
+
+price_action:
+  swing_windows: [10, 20, 30, 60]
+  body_pct: true
+  trend_score_inputs: true
+  climax_score: true
+
+regime:
+  use_vwap_regime: true
+  use_volatility_regime: true
+
+atr_like:
+  windows: [20]
+
+# Skeleton only. Implementations live in src/intraday/features/kernels/.

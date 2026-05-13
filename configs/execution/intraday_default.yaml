@@ -1,0 +1,12 @@
+# Default ExecutionSpec for US equity intraday RTH 1-minute research.
+# See docs/EXECUTION_CONTRACT.md for the full contract.
+
+entry_timing: next_open
+same_bar_policy: stop_first
+slippage_per_share: 0.01
+commission_per_trade: 0.0
+min_risk_per_share: 0.03
+eod_exit_minute: 389
+allow_short: false
+max_hold_bars_default: null
+semantics_version: execution_v1

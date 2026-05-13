@@ -1,0 +1,20 @@
+# CCI-required feature set (skeleton — fields are intentionally illustrative).
+# Phase 7 will finalize and implement kernels.
+
+feature_set: cci_core_v1
+version: v1
+
+inputs:
+  bars: rth_1m
+
+cci:
+  windows: [14, 20, 30]
+  extreme_levels: [100, 150, 200]
+
+vwap:
+  enable: true
+
+regime:
+  use_volatility_regime: true
+
+# Skeleton only. Implementations live in src/intraday/features/kernels/.

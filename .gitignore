@@ -1,0 +1,63 @@
+# intraday_system .gitignore
+# Goal: keep repository inspectable. Generated/hot artifacts stay local.
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+build/
+dist/
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+
+# --- Tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Hot/heavy artifacts (never committed) ---
+*.npy
+*.npz
+*.memmap
+*.pkl
+*.feather
+
+# --- Cache (always local-only) ---
+data/cache/**
+# Allow the README documenting the cache layout to be tracked.
+!data/cache/README.md
+
+# --- Local-only artifact subtrees ---
+artifacts/**/local/
+artifacts/**/tmp/
+artifacts/**/logs/
+
+# --- Logs ---
+*.log
+
+# Allow committing markdown/CSV inside artifacts/bootstrap/phase0_1a/
+!artifacts/bootstrap/
+!artifacts/bootstrap/**
+
+# --- Notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- Misc ---
+*.tmp
+*.swp
+*.swo

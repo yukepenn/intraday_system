@@ -1,0 +1,17 @@
+# Symbol registry. Stable integer ids are assigned for fast-path lookups.
+# Add symbols here as datasets are introduced.
+
+symbols:
+  - symbol: QQQ
+    symbol_id: 1
+    asset: equity
+    exchange: NASDAQ
+    sector: tech_etf
+    notes: "Primary research symbol"
+
+  - symbol: SPY
+    symbol_id: 2
+    asset: equity
+    exchange: NYSEARCA
+    sector: broad_market_etf
+    notes: "Secondary research symbol"

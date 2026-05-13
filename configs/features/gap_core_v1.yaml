@@ -1,0 +1,27 @@
+# GAP-required feature set (skeleton — fields are intentionally illustrative).
+# Phase 7 will finalize and implement kernels.
+
+feature_set: gap_core_v1
+version: v1
+
+inputs:
+  bars: rth_1m
+
+gap:
+  enable: true
+  reference: prior_close
+  size_buckets: [0.0, 0.25, 0.5, 1.0]
+  acceptance_window_minutes: 30
+
+vwap:
+  enable: true
+
+orb:
+  enable: true
+  open_minutes: [15]
+
+regime:
+  use_gap_regime: true
+  use_vwap_regime: true
+
+# Skeleton only. Implementations live in src/intraday/features/kernels/.

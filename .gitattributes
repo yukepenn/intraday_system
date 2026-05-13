@@ -1,0 +1,32 @@
+# intraday_system .gitattributes
+# Normalize text files; mark binaries; do not introduce LFS unless explicitly enabled.
+
+* text=auto eol=lf
+
+*.py     text diff=python
+*.pyi    text diff=python
+*.yaml   text
+*.yml    text
+*.toml   text
+*.md     text
+*.csv    text
+*.json   text
+*.cfg    text
+*.ini    text
+*.txt    text
+
+Makefile text
+*.mk     text
+*.sh     text eol=lf
+
+# Binary parquet/arrow/numpy/pickle artifacts
+*.parquet binary
+*.arrow   binary
+*.npy     binary
+*.npz     binary
+*.memmap  binary
+*.pkl     binary
+
+# NOTE: Git LFS is intentionally NOT enabled by default. Phase 0/1A audit
+# determined raw QQQ/SPY parquet files are small (<1 MiB each, ~36 MiB total)
+# and safe for normal Git tracking. Revisit if larger datasets are added.
