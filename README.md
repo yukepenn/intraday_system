@@ -76,7 +76,13 @@ python -m pytest -q
 
 ## Project status
 
-Phase 0/1A — bootstrap skeleton. See:
+Phase **0/1A** bootstrap is complete. Phase **1** (Layer 0 data foundation: inventory, schema inspection, canonicalization, IBKR→curated normalization, BarMatrix load, validation, `data` CLI) is implemented.
+
+The current hardening pass is **Phase 1B** (data foundation repair, documentation sync, schema/window/session-id contracts, and review artifacts). No execution, PnL, or strategy work runs in this phase.
+
+**Next planned phase:** Phase **2** — reference execution engine — after Phase 1B passes review.
+
+See:
 
 - [`PROJECT_STATUS.md`](PROJECT_STATUS.md)
 - [`PROGRESS.md`](PROGRESS.md)

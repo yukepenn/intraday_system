@@ -1,0 +1,3 @@
+command,exit_status,pass_fail,notes
+pytest -q,0,pass,73 tests
+validate-curated QQQ 2024H1,0,pass,no errors

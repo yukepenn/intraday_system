@@ -1,0 +1,13 @@
+# Timestamp semantics audit
+
+Dataset: `configs/data/ibkr_qqq_1m.yaml`
+Symbol: `QQQ`
+Timestamp column: `ts_ny`
+
+| raw_path | row_count | timestamp_column | dtype | timezone_evidence | first_raw_timestamp | last_raw_timestamp | first_local_date | last_local_date | first_rth_local_timestamp | last_rth_local_timestamp | first_minute_of_session | last_minute_of_session | premarket_row_count | afterhours_row_count | inferred_rth_only_status | inferred_timestamp_semantics | evidence_notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| <repo-root>/data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2020/month=01/bars.parquet | 8190 | ts_ny | Datetime(time_unit='ns', time_zone='America/New_York') | America/New_York | 2020-01-02 09:30:00-05:00 | 2020-01-31 15:59:00-05:00 | 2020-01-02 | 2020-01-31 | 2020-01-02 09:30:00-05:00 | 2020-01-31 15:59:00-05:00 | 0 | 389 | 0 | 0 | likely_rth_only | bar_start | sample_full_month_file_polars_read |
+| <repo-root>/data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2026/month=04/bars.parquet | 8190 | ts_ny | Datetime(time_unit='ns', time_zone='America/New_York') | America/New_York | 2026-04-01 09:30:00-04:00 | 2026-04-30 15:59:00-04:00 | 2026-04-01 | 2026-04-30 | 2026-04-01 09:30:00-04:00 | 2026-04-30 15:59:00-04:00 | 0 | 389 | 0 | 0 | likely_rth_only | bar_start | sample_full_month_file_polars_read |
+| <repo-root>/data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2020/month=03/bars.parquet | 8580 | ts_ny | Datetime(time_unit='ns', time_zone='America/New_York') | America/New_York | 2020-03-02 09:30:00-05:00 | 2020-03-31 15:59:00-04:00 | 2020-03-02 | 2020-03-31 | 2020-03-02 09:30:00-05:00 | 2020-03-31 15:59:00-04:00 | 0 | 389 | 0 | 0 | likely_rth_only | bar_start | sample_full_month_file_polars_read |
+| <repo-root>/data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2020/month=11/bars.parquet | 7620 | ts_ny | Datetime(time_unit='ns', time_zone='America/New_York') | America/New_York | 2020-11-02 09:30:00-05:00 | 2020-11-30 15:59:00-05:00 | 2020-11-02 | 2020-11-30 | 2020-11-02 09:30:00-05:00 | 2020-11-30 15:59:00-05:00 | 0 | 389 | 0 | 0 | likely_rth_only | bar_start | sample_full_month_file_polars_read |
+| <repo-root>/data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=2024/month=01/bars.parquet | 8190 | ts_ny | Datetime(time_unit='ns', time_zone='America/New_York') | America/New_York | 2024-01-02 09:30:00-05:00 | 2024-01-31 15:59:00-05:00 | 2024-01-02 | 2024-01-31 | 2024-01-02 09:30:00-05:00 | 2024-01-31 15:59:00-05:00 | 0 | 389 | 0 | 0 | likely_rth_only | bar_start | sample_full_month_file_polars_read |

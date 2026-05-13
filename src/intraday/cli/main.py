@@ -58,6 +58,7 @@ REQUIRED_FILES: tuple[str, ...] = (
 # subcommand implementations (used by both Typer and argparse paths)
 # ---------------------------------------------------------------------------
 
+
 def cmd_doctor() -> int:
     print("intraday_system doctor")
     print(f"  package version: {intraday.__version__}")
@@ -119,7 +120,9 @@ def cmd_validate_structure() -> int:
         for m in missing:
             print(f"    - {m}")
         return 1
-    print(f"  all required paths present ({len(REQUIRED_TOP_LEVEL)} dirs + {len(REQUIRED_FILES)} files)")
+    print(
+        f"  all required paths present ({len(REQUIRED_TOP_LEVEL)} dirs + {len(REQUIRED_FILES)} files)"
+    )
     return 0
 
 
@@ -171,6 +174,8 @@ try:
         cmd_data_inspect,
         cmd_data_load_bars,
         cmd_data_normalize,
+        cmd_data_session_coverage,
+        cmd_data_timestamp_audit,
         cmd_data_validate_curated,
     )
 
@@ -195,14 +200,20 @@ try:
 
     @data_app.command("inventory", help="Write a raw-data parquet inventory.")
     def _typer_data_inventory(
-        root: str = typer.Option(..., "--root", help="Raw root path (relative to repo root or absolute)."),
-        output: str = typer.Option(..., "--output", help="Output CSV path (a .md sibling is also written)."),
+        root: str = typer.Option(
+            ..., "--root", help="Raw root path (relative to repo root or absolute)."
+        ),
+        output: str = typer.Option(
+            ..., "--output", help="Output CSV path (a .md sibling is also written)."
+        ),
     ) -> None:
         raise typer.Exit(code=cmd_data_inventory(root, output))
 
     @data_app.command("inspect", help="Inspect raw parquet schemas under a dataset's raw_root.")
     def _typer_data_inspect(
-        dataset: str = typer.Option(..., "--dataset", help="Dataset YAML (repo-relative or absolute)."),
+        dataset: str = typer.Option(
+            ..., "--dataset", help="Dataset YAML (repo-relative or absolute)."
+        ),
         symbol: str = typer.Option(..., "--symbol", help="Symbol filter (e.g. QQQ)."),
     ) -> None:
         raise typer.Exit(code=cmd_data_inspect(dataset, symbol))
@@ -221,8 +232,12 @@ try:
         symbol: str = typer.Option(..., "--symbol", help="Symbol (e.g. QQQ)."),
         start: str | None = typer.Option(None, "--start", help="YYYY-MM-DD inclusive."),
         end: str | None = typer.Option(None, "--end", help="YYYY-MM-DD inclusive."),
-        write: bool = typer.Option(False, "--write", help="Write curated parquet (default dry-run)."),
-        all_available: bool = typer.Option(False, "--all-available", help="Infer date span from inventory."),
+        write: bool = typer.Option(
+            False, "--write", help="Write curated parquet (default dry-run)."
+        ),
+        all_available: bool = typer.Option(
+            False, "--all-available", help="Infer date span from inventory."
+        ),
     ) -> None:
         raise typer.Exit(
             code=cmd_data_normalize(
@@ -247,7 +262,9 @@ try:
             code=cmd_data_validate_curated(symbol, start, end, data_root=data_root, strict=strict)
         )
 
-    @data_app.command("load-bars", help="Load curated parquet into a BarMatrix and print summary JSON.")
+    @data_app.command(
+        "load-bars", help="Load curated parquet into a BarMatrix and print summary JSON."
+    )
     def _typer_data_load_bars(
         symbol: str = typer.Option(..., "--symbol"),
         start: str = typer.Option(..., "--start"),
@@ -255,6 +272,38 @@ try:
         data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
     ) -> None:
         raise typer.Exit(code=cmd_data_load_bars(symbol, start, end, data_root=data_root))
+
+    @data_app.command(
+        "timestamp-audit",
+        help="Sample raw months and write timestamp_semantics_audit CSV/MD under output-dir.",
+    )
+    def _typer_data_timestamp_audit(
+        dataset: str = typer.Option(..., "--dataset"),
+        symbol: str = typer.Option(..., "--symbol"),
+        output_dir: str = typer.Option(..., "--output-dir"),
+    ) -> None:
+        raise typer.Exit(code=cmd_data_timestamp_audit(dataset, symbol, output_dir=output_dir))
+
+    @data_app.command(
+        "session-coverage",
+        help="Summarize per-session row counts and minute gaps for curated data (writes CSV/MD).",
+    )
+    def _typer_data_session_coverage(
+        symbol: str = typer.Option(..., "--symbol"),
+        start: str = typer.Option(..., "--start"),
+        end: str = typer.Option(..., "--end"),
+        data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
+        output_dir: str = typer.Option(..., "--output-dir"),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_data_session_coverage(
+                symbol,
+                start,
+                end,
+                data_root=data_root,
+                output_dir=output_dir,
+            )
+        )
 
     HAS_TYPER = True
 
@@ -266,6 +315,7 @@ except ImportError:  # pragma: no cover - argparse fallback
 # ---------------------------------------------------------------------------
 # argparse fallback
 # ---------------------------------------------------------------------------
+
 
 def _build_argparse() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(

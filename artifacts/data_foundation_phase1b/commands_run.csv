@@ -1,0 +1,3 @@
+command,exit_status,notes
+pytest -q,0,73 passed
+ruff check src tests,0,

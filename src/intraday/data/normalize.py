@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import calendar
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -9,8 +10,9 @@ from typing import Literal
 
 import polars as pl
 
-from intraday.core.errors import DataContractError
+from intraday.core.errors import ConfigError, DataContractError
 from intraday.data.catalog import build_raw_data_inventory
+from intraday.data.schema import raw_timestamp_column_is_accepted
 
 TimestampSemantics = Literal["bar_start", "bar_end"]
 
@@ -24,6 +26,20 @@ def _month_in_range(y: int, m: int, start_d: date, end_d: date) -> bool:
     start_m = date(start_d.year, start_d.month, 1)
     end_m = date(end_d.year, end_d.month, 1)
     return start_m <= cur <= end_m
+
+
+def _covers_full_calendar_month_window(start_d: date, end_d: date) -> bool:
+    """True when ``start_d`` is the first calendar day of its month and ``end_d`` the last."""
+    if start_d.day != 1:
+        return False
+    last = calendar.monthrange(end_d.year, end_d.month)[1]
+    if end_d.day != last:
+        return False
+    return True
+
+
+def _session_date_key(d: date) -> int:
+    return d.year * 10_000 + d.month * 100 + d.day
 
 
 @dataclass
@@ -82,8 +98,11 @@ def _to_ny_bar_start(
 ) -> pl.Series:
     """Interpret raw timestamps as America/New_York wall clock; return bar-start NY."""
     dtype = series.dtype
+    if dtype == pl.Date:
+        series = series.cast(pl.Datetime("ns"))
+        dtype = series.dtype
     if not isinstance(dtype, pl.Datetime):
-        raise DataContractError(f"timestamp column must be Datetime, got {dtype}")
+        raise DataContractError(f"timestamp column must be Datetime or Date, got {dtype}")
     tz = dtype.time_zone
     if tz is None:
         s = series.cast(pl.Datetime("ns")).dt.replace_time_zone(tz_if_naive)
@@ -111,9 +130,7 @@ def _dedupe_timestamps(
         conflict_expr = conflict_expr | (pl.col(f"nu_{c}") > 1)
     conflict = g.filter((pl.col("_n") > 1) & conflict_expr)
     if len(conflict) > 0:
-        raise DataContractError(
-            f"conflicting duplicate timestamps: {conflict.head(5).to_dicts()}"
-        )
+        raise DataContractError(f"conflicting duplicate timestamps: {conflict.head(5).to_dicts()}")
     dup_groups = g.filter(pl.col("_n") > 1)
     identical_dropped = (
         int(dup_groups.select((pl.col("_n") - 1).sum()).item()) if len(dup_groups) else 0
@@ -147,6 +164,22 @@ def normalize_raw_ibkr_to_curated(
     ``timestamp_semantics`` is ``bar_end``, one minute is subtracted in NY
     before UTC conversion and session/minute assignment.
     """
+    start_d = _parse_iso_date(start)
+    end_d = _parse_iso_date(end)
+    if write and not _covers_full_calendar_month_window(start_d, end_d):
+        raise ConfigError(
+            "write mode refuses partial calendar-month windows for canonical monthly "
+            "curated partitions (would risk overwriting a full month with a truncated "
+            f"subset). Requested {start!r}..{end!r}. Use --dry-run, expand to full "
+            "months (start on month-first, end on month-last), or add an explicit "
+            "partial-output curated root when supported."
+        )
+    if not raw_timestamp_column_is_accepted(timestamp_column):
+        raise DataContractError(
+            f"timestamp column {timestamp_column!r} is not in accepted raw names "
+            "(see intraday.data.schema.RAW_TIMESTAMP_ACCEPTED_COLUMNS)."
+        )
+
     ohlcv = ohlcv or {}
     o = ohlcv.get("open", "open")
     h = ohlcv.get("high", "high")
@@ -262,12 +295,15 @@ def normalize_raw_ibkr_to_curated(
     )
     result.duplicate_identical_count = dup_ident
 
-    sess = (
-        out.select("session_date")
-        .unique()
-        .sort("session_date")
-        .with_row_index("session_id")
-    )
+    n_pre_session_filter = len(out)
+    start_key = _session_date_key(start_d)
+    end_key = _session_date_key(end_d)
+    out = out.filter((pl.col("session_date") >= start_key) & (pl.col("session_date") <= end_key))
+    dropped = n_pre_session_filter - len(out)
+    if dropped > 0:
+        result.warnings.append(f"session_date_filter_dropped_rows={dropped}")
+
+    sess = out.select("session_date").unique().sort("session_date").with_row_index("session_id")
     out = out.join(sess, on="session_date", how="left").with_columns(
         pl.col("session_id").cast(pl.Int32),
     )
@@ -300,8 +336,6 @@ def normalize_raw_ibkr_to_curated(
     )
     keys = out.select(["_y", "_m"]).unique().sort(["_y", "_m"])
     planned_paths: list[str] = []
-    start_d = _parse_iso_date(start)
-    end_d = _parse_iso_date(end)
     for row in keys.iter_rows(named=True):
         y, m = int(row["_y"]), int(row["_m"])
         if not _month_in_range(y, m, start_d, end_d):

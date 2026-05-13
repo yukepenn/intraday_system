@@ -2,6 +2,7 @@
 
 Chronological log of meaningful progress milestones.
 
+- [2026-05-13] Phase 1B data foundation hardening — raw timestamp contract (`ts_ny`/`ts_utc`/… + YAML `raw_timestamp.column`), exact `session_date` window filtering, safe partial-month **write** guard, BarMatrix `session_id` recomputation, stronger validation invariants, `data timestamp-audit` / `data session-coverage`, inventory CSV path sanitization, doc/status sync, Phase 1B review artifacts.
 - [2026-05-13] Phase 1 data foundation — raw schema/timestamp config, guarded raw canonicalization, IBKR→curated RTH normalization, BarMatrix loader, validation reports, expanded `data` CLI, and tests (synthetic + local QQQ 2024H1 smoke).
 - [2026-05-12] Bootstrap intraday_system architecture skeleton (Phase 0/1A):
   - Initialized Git repo on `main`, remote `https://github.com/yukepenn/intraday_system.git`.

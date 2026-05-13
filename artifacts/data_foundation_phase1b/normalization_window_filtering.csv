@@ -1,0 +1,3 @@
+rule,status
+session_date inclusive filter,implemented
+partial-month write guard,ConfigError

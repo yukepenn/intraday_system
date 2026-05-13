@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-13** (Phase 1 data foundation).
+Last updated: **2026-05-13** (Phase 1B data foundation hardening).
 
 ---
 
@@ -8,110 +8,118 @@ Last updated: **2026-05-13** (Phase 1 data foundation).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Baseline (pre-Phase1) bootstrap SHA on remote: `f29babb49164bc4fa4766c2d13dab5834d5a1ce9`
-- Phase 1 commit: **use `git log -1 --oneline` after pulling** (this handoff is authored alongside the Phase 1 commit).
-- Note: Windows may require `git config --global --add safe.directory <repo>` if Git reports “dubious ownership”.
+- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-commit baseline was recorded in `artifacts/data_foundation_phase1b/baseline_inventory.*`).
+- Windows: `git config --global --add safe.directory <repo>` if Git reports “dubious ownership”.
 
-## B. Task scope (Phase 1)
+## B. Task scope
 
-Implemented Layer 0 data foundation only:
+Phase **1B** only: Layer 0 **repair / hardening** — docs sync, Ruff readability, raw timestamp contract, normalization exact window + safe writes, BarMatrix `session_id` determinism, timestamp/session evidence CLI + artifacts, expanded tests, path hygiene in committed artifacts.
 
-- Robust raw catalog / inventory (`infer_raw_layout(..., layout_root=...)`, `resolved_path` in inventory rows).
-- Raw parquet schema inspection (metadata-first).
-- Timestamp sampling helper (`timestamp_audit.py`) + dataset YAML `raw_timestamp` block.
-- Guarded raw canonicalization (dry-run default; `--write` applies moves; byte-preserving `shutil.move`).
-- `normalize_raw_ibkr_to_curated` (Polars) → curated monthly parquet under `data/curated/bars_1m_rth/...`.
-- `load_bars_from_curated` → `BarMatrix` + deterministic `data_hash`.
-- `DataValidationReport` + `validate_curated_dataset`.
-- Expanded `intraday.cli.main data ...` commands + smoke tests.
+**Out of scope (unchanged):** reference execution, Numba fast path, feature kernels, strategy logic, Layer1/2/3, candidate YAML, portfolio sizing, PnL / R-multiple logic.
 
-**Not implemented (still skeleton / out of scope)**:
+## C. Status/docs synchronization
 
-- Strategy logic, feature kernels, execution simulator / PnL, Numba fast path.
-- Layer1/Layer2/Layer3 runners, candidate YAML generation, router/validator.
+- `README.md` — project status reflects Phase 0/1 complete, Phase 1B current, Phase 2 next.
+- `PROJECT_STATUS.md` — Phase 1B + decision `DATA_FOUNDATION_PHASE1B_COMPLETE`.
+- `PROGRESS.md` — chronological Phase 1B entry.
+- `CHANGES.md` — Phase 1 + 1B summaries; latest decision is Phase 1B (not stale bootstrap-only).
+- `docs/PHASE_PLAN.md` — Phase 0/1 complete; Phase 1B gate; Phase 1 acceptance no longer implies a cache round-trip.
+- `docs/DATA_CONTRACT.md` — timestamp candidates, window filter, write guard, BarMatrix `session_id` semantics.
+- `configs/data/ibkr_qqq_1m.yaml` — comments: local raw, canonical QQQ expected, legacy support, SPY note.
 
-## C. Data inventory
+See `artifacts/data_foundation_phase1b/status_sync.*`.
 
-- Raw root: `data/raw/ibkr` (repo-relative).
-- Latest CLI inventory artifact: `artifacts/data_foundation_phase1/raw_data_inventory_cli.csv` (+ `.md`).
-- After QQQ canonicalization: **76** canonical parquet (QQQ), **28** legacy (`SPY` months still `legacy_qt_like`).
-- Raw parquet remains **gitignored** and **not staged**.
+## D. Formatting/readability
 
-## D. Raw schema audit
+`python -m ruff format src tests` applied; `ruff format --check` and `ruff check src tests` pass.
 
-- Observed QQQ vendor columns (see `artifacts/data_foundation_phase1/raw_schema_inspect_stdout.json` from `data inspect`):
-  - Timestamp columns: `ts_utc` (UTC tz-aware), `ts_ny` (America/New_York tz-aware)
-  - OHLCV: `open/high/low/close/volume` (+ extras like `useRTH`, `barCount`, …)
-- Dataset config uses `raw_timestamp.column: ts_ny` and `semantics: bar_start`.
+See `artifacts/data_foundation_phase1b/formatting_readability.*`.
 
-## E. Timestamp semantics
+## E. Raw schema contract
 
-- Vendor `ts_ny` is tz-aware US/Eastern; used as the primary normalization clock.
-- Decision recorded in `configs/data/ibkr_qqq_1m.yaml`: **`bar_start`** (not `unknown`).
-- Curated contract: `ts_utc` / `ts_local` are **bar START**; if raw were `bar_end`, normalization subtracts 1 minute in NY before minute indexing (implemented).
+- Accepted timestamp column **names**: `ts_ny`, `ts_utc`, `timestamp`, `date`, `datetime` (`intraday.data.schema.RAW_TIMESTAMP_ACCEPTED_COLUMNS`).
+- Inspection requires Arrow **temporal** types; dataset `raw_timestamp.column` must exist and be accepted when provided.
+- QQQ uses `raw_timestamp.column: ts_ny` (dataset YAML).
+- OHLCV mapping remains YAML-driven with defaults `open/high/low/close/volume`.
 
-## F. Raw layout canonicalization
+See `artifacts/data_foundation_phase1b/schema_contract_repair.*` and `raw_schema_audit.*`.
 
-- `data canonicalize-raw --root data/raw/ibkr --symbol QQQ --write` completed successfully for **all QQQ months** (bytes moved; sources removed).
-- `SPY` remains legacy until explicitly migrated (28 files).
+## F. Normalization exact-window behavior
 
-## G. Curated normalization
+- After RTH + dedupe: filter `start_session_key <= session_date <= end_session_key` using NY `session_date` (from bar-start `ts_local`).
+- `write=True` to canonical monthly curated paths: **raises `ConfigError`** unless `[start,end]` spans full calendar months (start = first-of-month, end = last day of end month). Dry-run (default without `--write`) still reports exact filtered rows for partial windows.
 
-- Curated root: `data/curated/bars_1m_rth` (repo-relative).
-- Local run: QQQ **2024-01-01 .. 2024-06-30** written successfully (**48360** rows).
-- Full `2020..2026` “all available” normalization was **not** executed in this session (optional).
+See `artifacts/data_foundation_phase1b/normalization_window_filtering.*` and `normalization_result.*`.
 
-## H. BarMatrix loader
+## G. BarMatrix session_id determinism
 
-- `data load-bars` for QQQ 2024H1 succeeds; `data_hash` example from local run: `b00d2b8cf0bc183bcbc792a75a3eea3a44c254bd656df672a267c3b39a40050d`.
+`load_bars_from_curated` drops curated file `session_id`, joins dense ranks from sorted unique `session_date` after load/filter/sort. `validate_bar_matrix` checks monotone `session_id`, `session_date` consistency on jumps, and `minute==0` at session starts.
 
-## I. Data validation
+See `artifacts/data_foundation_phase1b/session_id_determinism.*`.
 
-- `data validate-curated` for QQQ 2024H1 returns **no errors** (124 sessions; all full 390-minute sessions in that window).
+## H. Timestamp/session audit
 
-## J. CLI / tests
+- CLI: `python -m intraday.cli.main data timestamp-audit --dataset configs/data/ibkr_qqq_1m.yaml --symbol QQQ --output-dir artifacts/data_foundation_phase1b`
+- Artifacts: `timestamp_semantics_audit.csv` / `.md` (samples: earliest/latest/March/November/2024 month when present).
+- Session coverage (2024H1): `session_coverage_summary.csv` / `.md`.
 
-Commands (Typer):
+## I. Local QQQ 2024H1 validation
 
-- `python -m intraday.cli.main data inventory --root data/raw/ibkr --output artifacts/data_foundation_phase1/raw_data_inventory_cli.csv`
-- `python -m intraday.cli.main data inspect --dataset configs/data/ibkr_qqq_1m.yaml --symbol QQQ`
-- `python -m intraday.cli.main data canonicalize-raw --root data/raw/ibkr --symbol QQQ` (dry-run) / `--write`
-- `python -m intraday.cli.main data normalize --dataset configs/data/ibkr_qqq_1m.yaml --symbol QQQ --start 2024-01-01 --end 2024-06-30` / `--write` / `--all-available`
-- `python -m intraday.cli.main data validate-curated --symbol QQQ --start 2024-01-01 --end 2024-06-30 --data-root data/curated/bars_1m_rth`
-- `python -m intraday.cli.main data load-bars --symbol QQQ --start 2024-01-01 --end 2024-06-30 --data-root data/curated/bars_1m_rth`
+- Rows: **48360**
+- Sessions: **124**
+- Minute range: **0..389**
+- `data validate-curated`: **no errors**
+- `data load-bars` `data_hash`: `b00d2b8cf0bc183bcbc792a75a3eea3a44c254bd656df672a267c3b39a40050d`
 
-Tests: **55** passing (`pytest -q`). `ruff check src tests` clean. `python -m compileall -q src` clean.
+See `curated_validation.*`, `barmatrix_load_smoke.*`.
 
-## K. Explicit non-implemented items
+## J. Tests / validation
 
-Same as Section B “Not implemented”.
+- `python -m compileall -q src` — pass
+- `pytest -q` — **73** passed
+- Ruff format/check — pass
+- CLI: `--help`, `doctor`, `validate structure` — pass
+- Data CLI: inventory, inspect, normalize (dry-run), timestamp-audit, validate-curated, load-bars, session-coverage — pass locally with QQQ data
 
-## L. Risks / blockers
+See `artifacts/data_foundation_phase1b/validation_results.*` and `commands_run.*`.
 
-- **Git safe.directory** may block automation on some Windows setups.
-- **SPY raw layout** still legacy; normalization/catalog remain compatible.
-- **DST / half-day nuance**: RTH window is clock-based (`09:30 <= t < 16:00` NY); holiday/early-close handling is “report via warnings”, not exchange-calendar perfect yet.
+## K. Artifact hygiene
 
-## M. Files changed (high level)
+- No raw/curated parquet, cache, npy/npz/memmap, or forbidden paths **staged**.
+- Inventory CSV/MD use `<repo-root>/...` for `resolved_path` when under repo base; CLI summaries avoid dumping absolute roots in JSON where updated.
 
-- `src/intraday/data/{catalog,inspect,canonicalize,normalize,loader,validate,timestamp_audit}.py`
-- `src/intraday/cli/{main,data,data_cmds}.py`
-- `configs/data/ibkr_qqq_1m.yaml`, `.gitignore`
-- `docs/{DATA_CONTRACT,QT_REFERENCE_POLICY}.md`
-- `tests/unit/*data*`, `tests/smoke/test_data_cli.py`
-- `artifacts/data_foundation_phase1/*` (manifests/summaries; no parquet)
+See `artifacts/data_foundation_phase1b/local_path_hygiene.*`.
 
-## N. Local-only artifacts
+## L. Explicit non-implemented items
 
-- Raw + curated parquet under `data/**` (ignored by git).
-- Any machine-local paths in old bootstrap artifacts are called out in `artifacts/data_foundation_phase1/local_path_hygiene_audit.md`.
+- Reference execution simulator, Numba fast path, feature kernels, strategy logic.
+- Layer1 runner, candidate generation, Layer2 router, Layer3 validation, management modes, portfolio sizing, PnL / R-multiple logic.
 
-## O. Recommended next step
+## M. Risks / blockers
+
+- **Git safe.directory** on some Windows setups.
+- **SPY** may remain legacy raw layout until migrated.
+- **Exchange calendar perfection** (early closes): session coverage flags `short_session` / `invalid` heuristically; not full calendar truth yet.
+
+## N. Files changed (high level)
+
+- `src/intraday/data/{schema,inspect,normalize,loader,validate,timestamp_audit,catalog}.py`
+- `src/intraday/cli/{data_cmds,main,data}.py`
+- `configs/data/ibkr_qqq_1m.yaml`
+- `docs/{DATA_CONTRACT,PHASE_PLAN}.md`
+- `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
+- `tests/unit/{test_raw_schema_inspection,test_data_normalize,test_data_loader,test_data_validate}.py`
+- `artifacts/data_foundation_phase1b/*`
+
+## O. Local-only artifacts
+
+- Raw + curated parquet under `data/**` (gitignored).
+- Local-only machine paths may still appear in **stdout** when running CLI outside sanitized JSON fields.
+
+## P. Decision
+
+`DATA_FOUNDATION_PHASE1B_COMPLETE`
+
+## Q. Recommended next step
 
 `IMPLEMENT_REFERENCE_EXECUTION_ENGINE`
-
----
-
-## Decision label (Phase 1)
-
-`DATA_FOUNDATION_BARMATRIX_COMPLETE`

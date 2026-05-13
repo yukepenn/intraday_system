@@ -1,0 +1,3 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/data/normalize.py,IBKR→curated,yes,source,none,
+src/intraday/data/loader.py,BarMatrix load,yes,source,none,

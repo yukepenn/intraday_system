@@ -7,9 +7,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
+import pyarrow as pa
 import pyarrow.parquet as pq
 
 from intraday.data.catalog import build_raw_data_inventory, infer_raw_layout
+from intraday.data.schema import RAW_TIMESTAMP_ACCEPTED_COLUMNS, raw_timestamp_column_is_accepted
 
 SchemaStatus = Literal[
     "usable",
@@ -19,7 +21,12 @@ SchemaStatus = Literal[
     "unknown",
 ]
 
-_TS_HINTS = re.compile(r"(timestamp|date|time|ts_)", re.I)
+
+def _arrow_field_is_temporal(field: pa.Field) -> bool:
+    t = field.type
+    return pa.types.is_timestamp(t) or pa.types.is_date(t)
+
+
 _OHLC_OPEN = re.compile(r"^open$", re.I)
 _OHLC_HIGH = re.compile(r"^high$", re.I)
 _OHLC_LOW = re.compile(r"^low$", re.I)
@@ -54,7 +61,12 @@ def _dtype_str(t: Any) -> str:
     return str(t)
 
 
-def inspect_raw_parquet_schema(path: Path | str, *, base: Path | str | None = None) -> RawParquetSchemaInfo:
+def inspect_raw_parquet_schema(
+    path: Path | str,
+    *,
+    base: Path | str | None = None,
+    configured_timestamp_column: str | None = None,
+) -> RawParquetSchemaInfo:
     """Read Parquet footer/schema only (no row materialization)."""
     p = Path(path)
     stat = p.stat()
@@ -98,7 +110,15 @@ def inspect_raw_parquet_schema(path: Path | str, *, base: Path | str | None = No
             notes=f"parquet_read_error: {exc}",
         )
 
-    ts_cands = tuple(c for c in col_names if _TS_HINTS.search(c))
+    name_to_field = {schema.names[i]: schema.field(i) for i in range(len(schema.names))}
+
+    def temporal_accepted(name: str) -> bool:
+        if name not in RAW_TIMESTAMP_ACCEPTED_COLUMNS:
+            return False
+        fld = name_to_field.get(name)
+        return fld is not None and _arrow_field_is_temporal(fld)
+
+    ts_cands = tuple(c for c in col_names if temporal_accepted(c))
     o_cands = tuple(c for c in col_names if _OHLC_OPEN.match(c))
     h_cands = tuple(c for c in col_names if _OHLC_HIGH.match(c))
     l_cands = tuple(c for c in col_names if _OHLC_LOW.match(c))
@@ -107,9 +127,24 @@ def inspect_raw_parquet_schema(path: Path | str, *, base: Path | str | None = No
 
     notes_parts: list[str] = []
     status: SchemaStatus = "usable"
-    if not ts_cands:
+    if configured_timestamp_column:
+        if configured_timestamp_column not in col_names:
+            status = "missing_timestamp"
+            notes_parts.append(f"configured_timestamp_missing:{configured_timestamp_column}")
+        elif not raw_timestamp_column_is_accepted(configured_timestamp_column):
+            status = "missing_timestamp"
+            notes_parts.append(f"configured_timestamp_not_accepted:{configured_timestamp_column}")
+        else:
+            fld = name_to_field.get(configured_timestamp_column)
+            if fld is None or not _arrow_field_is_temporal(fld):
+                status = "missing_timestamp"
+                notes_parts.append(
+                    f"configured_timestamp_not_temporal:{configured_timestamp_column}"
+                )
+    elif not ts_cands:
         status = "missing_timestamp"
-        notes_parts.append("no_timestamp_like_column")
+        notes_parts.append("no_accepted_temporal_timestamp_column")
+
     if not (o_cands and h_cands and l_cands and c_cands):
         status = "missing_ohlc" if status == "usable" else status
         notes_parts.append("incomplete_ohlc")
@@ -143,6 +178,7 @@ def inspect_raw_dataset_schema(
     *,
     symbol: str | None = None,
     base: Path | str | None = None,
+    raw_timestamp_column: str | None = None,
 ) -> list[dict[str, Any]]:
     """Inspect every parquet under ``root``, optionally filtered by inventory symbol."""
     root_path = Path(root).resolve()
@@ -152,7 +188,11 @@ def inspect_raw_dataset_schema(
         if symbol is not None and inv.get("symbol") != symbol:
             continue
         fp = Path(inv["resolved_path"])
-        info = inspect_raw_parquet_schema(fp, base=base)
+        info = inspect_raw_parquet_schema(
+            fp,
+            base=base,
+            configured_timestamp_column=raw_timestamp_column,
+        )
         out.append(
             {
                 "relative_path": info.relative_path,

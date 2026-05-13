@@ -149,22 +149,25 @@ def validate_bar_matrix(
     if not (bars.session_id[1:] >= bars.session_id[:-1]).all():
         errors.append("session_id_not_monotone")
 
+    sid_jump = np.zeros(n, dtype=np.bool_)
+    sid_jump[1:] = np.diff(bars.session_id.astype(np.int64)) != 0
+    idx = np.flatnonzero(sid_jump)
+    if idx.size > 0:
+        if np.any(bars.session_date[idx] == bars.session_date[idx - 1]):
+            errors.append("session_id_jump_without_session_date_change")
+        if np.any(bars.minute[idx] != 0):
+            errors.append("session_start_minute_not_zero_after_session_id_jump")
+
     bad_minute = (bars.minute < 0) | (bars.minute > 389)
     bad_minute_n = int(np.sum(bad_minute))
     if bad_minute_n:
         msg = f"minute_outside_0_389_count={bad_minute_n}"
         (errors if strict else warnings).append(msg)
 
-    ohlc_bad = (
-        (bars.high < np.maximum.reduce([bars.open, bars.close, bars.low]))
-        | (bars.low > np.minimum.reduce([bars.open, bars.close, bars.high]))
+    ohlc_bad = (bars.high < np.maximum.reduce([bars.open, bars.close, bars.low])) | (
+        bars.low > np.minimum.reduce([bars.open, bars.close, bars.high])
     )
-    ohlc_nan = (
-        np.isnan(bars.open)
-        | np.isnan(bars.high)
-        | np.isnan(bars.low)
-        | np.isnan(bars.close)
-    )
+    ohlc_nan = np.isnan(bars.open) | np.isnan(bars.high) | np.isnan(bars.low) | np.isnan(bars.close)
     ohlc_err = int(np.sum(ohlc_bad | ohlc_nan))
     if ohlc_err:
         errors.append(f"ohlc_violations={ohlc_err}")

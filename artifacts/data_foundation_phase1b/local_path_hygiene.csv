@@ -1,0 +1,2 @@
+file_path,matched_pattern,classification,action_taken,remaining_risk
+inventory writer,resolved_path drive letters,sanitized to <repo-root>,catalog+CLI,low

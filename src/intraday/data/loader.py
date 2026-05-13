@@ -57,7 +57,7 @@ def _month_iter(start_d: date, end_d: date) -> list[tuple[int, int]]:
     return out
 
 
-def _curated_paths_for_range(
+def curated_parquet_paths_for_window(
     data_root: Path,
     *,
     asset: str,
@@ -105,11 +105,9 @@ def load_bars_from_curated(
     dr = Path(data_root)
     if not dr.is_absolute():
         dr = (root / dr).resolve()
-    paths = _curated_paths_for_range(dr, asset=asset, symbol=symbol, start=start, end=end)
+    paths = curated_parquet_paths_for_window(dr, asset=asset, symbol=symbol, start=start, end=end)
     if not paths:
-        raise DataContractError(
-            f"no curated parquet under {dr} for {symbol} in [{start}, {end}]"
-        )
+        raise DataContractError(f"no curated parquet under {dr} for {symbol} in [{start}, {end}]")
     start_key = int(start[:4]) * 10000 + int(start[5:7]) * 100 + int(start[8:10])
     end_key = int(end[:4]) * 10000 + int(end[5:7]) * 100 + int(end[8:10])
 
@@ -123,6 +121,12 @@ def load_bars_from_curated(
     )
     lf = lf.sort("ts_utc_ns")
     df = lf.collect()
+    df = df.sort("ts_utc_ns")
+    if "session_id" in df.columns:
+        df = df.drop("session_id")
+    sess_map = df.select("session_date").unique().sort("session_date").with_row_index("session_id")
+    df = df.join(sess_map, on="session_date", how="left")
+    df = df.with_columns(pl.col("session_id").cast(pl.Int32))
 
     o = df["open"].to_numpy().astype(np.float64, copy=False)
     h = df["high"].to_numpy().astype(np.float64, copy=False)

@@ -18,7 +18,7 @@ data/raw/ibkr/asset=equity/symbol=QQQ/timeframe=1m/year=YYYY/month=MM/bars.parqu
 data/raw/ibkr/equity/bars_1min/symbol=QQQ/year=YYYY/month=MM/data.parquet
 ```
 
-Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonicalization (folder rename + file rename) is part of the Phase 1 data-foundation work (see `intraday.data.canonicalize` + `data canonicalize-raw`).
+Canonicalization (folder rename + file rename) is implemented in Phase 1 (`intraday.data.canonicalize` + `data canonicalize-raw`). QQQ raw months are expected in **canonical** layout when present locally; **legacy** paths may remain for other symbols (e.g. SPY) or during transition.
 
 **Raw data rules**:
 
@@ -37,10 +37,14 @@ Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonical
 | `useRTH` | bool | Present in vendor export; normalization still applies explicit RTH window |
 | extras | varies | e.g. `asset`, `source`, `bar_size`, `average`, `barCount`, `symbol` |
 
-**Accepted raw timestamp column names** (dataset config `raw_timestamp.column`):
+**Accepted raw timestamp column names** (exact strings; dataset YAML `raw_timestamp.column` must be one of these):
 
-- Preferred when present: `ts_ny` (America/New_York) or `ts_utc` (UTC).
-- Legacy / synthetic: `timestamp` (naive or tz-aware).
+- `ts_ny`, `ts_utc` (preferred for IBKR QQQ when present)
+- `timestamp`, `date`, `datetime` (legacy / synthetic / alternate vendors)
+
+Schema inspection requires a **temporal** Arrow type for the configured column (or at least one accepted temporal column when no config override is supplied).
+
+**Current QQQ dataset selection**: `raw_timestamp.column: ts_ny` (see `configs/data/ibkr_qqq_1m.yaml`).
 
 **Accepted OHLCV column names** (defaults overridable via dataset `ohlcv` mapping):
 
@@ -50,14 +54,22 @@ Phase 0/1A documents this drift but does NOT rewrite parquet contents. Canonical
 
 | Column | Type | Notes |
 | --- | --- | --- |
-| one of `ts_ny` / `ts_utc` / `timestamp` | datetime | Interpretation controlled by dataset YAML |
+| one accepted temporal timestamp column | datetime/date | Controlled by dataset YAML |
 | `open` | float64 | |
 | `high` | float64 | |
 | `low` | float64 | |
 | `close` | float64 | |
 | `volume` | float64 | |
 
-Normalization **standardizes** vendor raw schema into the curated schema below (UTC + NY bar-start semantics, `session_date`, `minute_of_session`, etc.).
+Normalization **standardizes** vendor raw schema into the curated schema below (`ts_utc`, `ts_utc_ns`, `ts_local`, `session_date`, `minute_of_session`, …).
+
+**Exact session window (Phase 1B)**:
+
+After RTH filtering and dedupe, normalization keeps rows whose **NY `session_date`** (derived from bar-start `ts_local`) satisfies `start_date ≤ session_date ≤ end_date` for the requested ISO `start`/`end` (inclusive). This prevents partial calendar requests from silently including whole extra session days that spill from overlapped raw month files.
+
+**Write safety (Phase 1B)**:
+
+`normalize` with `write=True` refuses partial calendar-month windows for canonical monthly curated outputs (raises `ConfigError`) unless a dedicated partial-output root exists in the future. Use dry-run (default without `--write`) to preview counts for arbitrary windows.
 
 ## 2. Curated data
 
@@ -77,7 +89,7 @@ data/curated/bars_1m_rth/asset=equity/symbol=QQQ/year=YYYY/month=MM/bars.parquet
 | `ts_utc_ns` | int64 | `ts_utc` as epoch nanoseconds |
 | `ts_local` | timestamp[ns, America/New_York] | Bar **start** in US/Eastern |
 | `session_date` | int32 | `YYYYMMDD` (NY session date) |
-| `session_id` | int32 | Dense rank of `session_date` within the normalized window |
+| `session_id` | int32 | Dense rank of `session_date` **within the normalization output** (per-file ranks may reset monthly; treat as diagnostic when inspecting parquet) |
 | `bar_index` | int64 | Row index after global `ts_utc_ns` sort |
 | `minute_of_session` | int16 | Minutes since 09:30 NY inclusive; full RTH runs `0..389` |
 | `open` | float64 | |
@@ -120,9 +132,13 @@ class BarMatrix:
 
 - Arrays must share the same length.
 - `session_id` must be monotonically non-decreasing.
-- `minute` must reset to 0 at each session start.
+- `minute` must reset to 0 at each session start (first bar of each `session_id` segment).
 - `ts_ns` must be strictly increasing.
 - `data_hash` is the cache key seed for everything downstream.
+
+**BarMatrix `session_id` semantics (Phase 1B)**:
+
+`load_bars_from_curated(...)` **recomputes** `session_id` after concatenating, filtering, and sorting the requested window: unique `session_date` values sorted ascending map to dense IDs `0..N-1`. Execution and downstream features must rely on **BarMatrix** `session_id`, not on parquet-local ranks that may reset across monthly files.
 
 ## 4. RTH and session constants
 

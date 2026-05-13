@@ -290,18 +290,47 @@ _CSV_FIELDS: tuple[str, ...] = (
 )
 
 
-def _write_csv(rows: Iterable[dict], output_csv: Path | str) -> Path:
+def _display_path_under_repo(path: Path, repo_base: Path | None) -> str:
+    if repo_base is None:
+        return path.resolve().as_posix()
+    try:
+        rel = path.resolve().relative_to(repo_base.resolve())
+        return f"<repo-root>/{rel.as_posix()}"
+    except ValueError:
+        return path.resolve().as_posix()
+
+
+def _write_csv(
+    rows: Iterable[dict],
+    output_csv: Path | str,
+    *,
+    repo_base: Path | None = None,
+) -> Path:
     out = Path(output_csv)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=list(_CSV_FIELDS))
         writer.writeheader()
         for row in rows:
-            writer.writerow({k: ("" if row.get(k) is None else row.get(k)) for k in _CSV_FIELDS})
+            out_row = dict(row)
+            if repo_base is not None and out_row.get("resolved_path"):
+                out_row["resolved_path"] = _display_path_under_repo(
+                    Path(str(out_row["resolved_path"])),
+                    repo_base,
+                )
+            writer.writerow(
+                {k: ("" if out_row.get(k) is None else out_row.get(k)) for k in _CSV_FIELDS}
+            )
     return out
 
 
-def _write_md(rows: list[dict], root: Path | str, output_md: Path | str) -> Path:
+def _write_md(
+    rows: list[dict],
+    root: Path | str,
+    output_md: Path | str,
+    *,
+    repo_base: Path | None = None,
+) -> Path:
     out = Path(output_md)
     out.parent.mkdir(parents=True, exist_ok=True)
     total = len(rows)
@@ -328,7 +357,7 @@ def _write_md(rows: list[dict], root: Path | str, output_md: Path | str) -> Path
     lines: list[str] = []
     lines.append("# Raw data inventory")
     lines.append("")
-    lines.append(f"- root: `{Path(root).as_posix()}`")
+    lines.append(f"- root: `{_display_path_under_repo(Path(root), repo_base)}`")
     lines.append(f"- total files: {total}")
     lines.append(f"- total size: {total_mib} MiB ({total_bytes} bytes)")
     lines.append(f"- largest file: {max_mib} MiB")
@@ -364,7 +393,11 @@ def write_raw_data_inventory(
     base: Path | str | None = None,
 ) -> tuple[Path, Path | None]:
     """Build and write the raw data inventory to ``output_csv`` (and optional MD)."""
+    root_path = Path(root).resolve()
+    base_path = _resolve_inventory_base(root_path, base)
     rows = build_raw_data_inventory(root, base=base)
-    csv_path = _write_csv(rows, output_csv)
-    md_path = _write_md(rows, root, output_md) if output_md is not None else None
+    csv_path = _write_csv(rows, output_csv, repo_base=base_path)
+    md_path = (
+        _write_md(rows, root, output_md, repo_base=base_path) if output_md is not None else None
+    )
     return csv_path, md_path

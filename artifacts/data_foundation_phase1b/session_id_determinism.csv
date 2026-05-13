@@ -1,0 +1,3 @@
+component,behavior
+loader,recomputes dense session_id
+validate,session/minute invariants
