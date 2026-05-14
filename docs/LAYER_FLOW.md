@@ -95,10 +95,10 @@ data → features → strategy signals → execution → Layer1 candidates → L
 | Cache | Invalidates on change of |
 | --- | --- |
 | FeatureMatrix | `feature_hash` (resolved config + engine semantic version), `data_hash` |
-
-**Phase 4 note:** Features are **market facts only** (`build_feature_matrix`). Execution does not read `FeatureMatrix`. Future Layer1 calls the feature engine rather than recomputing features ad hoc.
 | SignalMatrix | `strategy_config_hash`, `feature_config_hash`, `data_hash` |
 | Layer2 precompute | `layer2_config_hash`, `data_hash` (and transitively any candidate change) |
+
+**Phase 4 note:** Features are **market facts only** (`build_feature_matrix`). Execution does not read `FeatureMatrix`. Future Layer1 calls the feature engine rather than recomputing features ad hoc.
 
 A router rule change does NOT invalidate features or Layer1 signals.
 
