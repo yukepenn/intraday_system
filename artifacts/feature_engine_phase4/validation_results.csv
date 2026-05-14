@@ -1,0 +1,13 @@
+command,exit_status,key_output,pass_fail,notes
+compileall -q src,0,,pass,
+pytest -q,0,216 passed,pass,
+ruff format --check src tests,0,,pass,
+ruff check src tests,0,,pass,
+intraday.cli.main --help,0,features group,pass,
+intraday.cli.main doctor,0,,pass,
+intraday.cli.main validate structure,0,,pass,
+features list,0,builtin_groups,pass,
+features inspect pa_core_v1.yaml,0,22 columns,pass,
+data validate-curated QQQ 2024H1,0,48360 rows,pass,local curated present
+data load-bars QQQ 2024H1,0,data_hash,pass,
+features build QQQ 2024H1 --no-cache,0,22 features,pass,

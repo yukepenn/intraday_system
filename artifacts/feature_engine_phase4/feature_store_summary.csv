@@ -1,0 +1,4 @@
+item,value
+get_put_roundtrip,yes
+corrupt_meta_raises,yes
+hash_mismatch_put_rejects,yes

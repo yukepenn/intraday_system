@@ -82,7 +82,9 @@ Phase **2** — **reference execution engine** — is implemented: `materialize_
 
 Phase **3** — **fast execution + parity** — is implemented: `simulate_trade_path_fast` (Numba kernel) parity-tested against reference via `tests/parity/test_execution_fast_parity.py` and `execution/parity.py` helpers. Reference remains canonical truth; fast is acceleration only where tests pass.
 
-**Next planned phase:** Phase **4** — feature engine MVP (cached PA-required features).
+Phase **4** — **feature engine MVP** — is implemented: `build_feature_matrix` builds a deterministic `FeatureMatrix` (`float64`, `feature_hash`) from `BarMatrix` + `configs/features/pa_core_v1.yaml` + optional local `FeatureStore`; reference kernels only (`features` CLI: `list` / `inspect` / `build`). See `docs/FEATURE_CONTRACT.md` and `src/intraday/features/`.
+
+**Next planned phase:** Phase **5** — PA strategy MVP (`SignalMatrix` / strategy logic — not yet implemented).
 
 See:
 

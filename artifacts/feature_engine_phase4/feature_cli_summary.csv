@@ -1,0 +1,4 @@
+command,implemented,tests
+features list,yes,smoke
+features inspect,yes,smoke
+features build,yes,manual + local QQQ

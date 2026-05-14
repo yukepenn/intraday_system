@@ -44,6 +44,7 @@ REQUIRED_FILES: tuple[str, ...] = (
     "docs/QT_REFERENCE_POLICY.md",
     "docs/DEVELOPMENT_WORKFLOW.md",
     "docs/DESIGN_BASELINE.md",
+    "docs/FEATURE_CONTRACT.md",
     "configs/data/data_roots.yaml",
     "configs/data/ibkr_qqq_1m.yaml",
     "configs/data/symbols.yaml",
@@ -178,17 +179,24 @@ try:
         cmd_data_timestamp_audit,
         cmd_data_validate_curated,
     )
+    from intraday.cli.feature_cmds import (
+        cmd_features_build,
+        cmd_features_inspect,
+        cmd_features_list,
+    )
 
     app = typer.Typer(
         name="intraday",
         add_completion=False,
         no_args_is_help=True,
-        help="intraday_system CLI (Layer 0 data + reference + fast execution).",
+        help="intraday_system CLI (Layer 0 data + features + reference + fast execution).",
     )
     data_app = typer.Typer(no_args_is_help=True, help="Data commands.")
     validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")
+    features_app = typer.Typer(no_args_is_help=True, help="Feature engine (Phase 4).")
     app.add_typer(data_app, name="data")
     app.add_typer(validate_app, name="validate")
+    app.add_typer(features_app, name="features")
 
     @app.command("doctor", help="Print environment + dependency diagnostics.")
     def _typer_doctor() -> None:
@@ -197,6 +205,50 @@ try:
     @validate_app.command("structure", help="Check required directories and files exist.")
     def _typer_validate_structure() -> None:
         raise typer.Exit(code=cmd_validate_structure())
+
+    @features_app.command("list", help="List built-in feature group names.")
+    def _typer_features_list() -> None:
+        raise typer.Exit(code=cmd_features_list())
+
+    @features_app.command(
+        "inspect",
+        help="Validate feature YAML and print column plan + feature_hash.",
+    )
+    def _typer_features_inspect(
+        config: str = typer.Option(
+            ..., "--config", help="Feature YAML path (repo-relative or absolute)."
+        ),
+    ) -> None:
+        raise typer.Exit(code=cmd_features_inspect(config=config))
+
+    @features_app.command(
+        "build",
+        help="Load curated bars, build FeatureMatrix, print summary JSON (local data only).",
+    )
+    def _typer_features_build(
+        config: str = typer.Option(..., "--config"),
+        symbol: str = typer.Option(..., "--symbol"),
+        start: str = typer.Option(..., "--start"),
+        end: str = typer.Option(..., "--end"),
+        data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
+        no_cache: bool = typer.Option(False, "--no-cache", help="Skip FeatureStore read/write."),
+        cache_root: str | None = typer.Option(
+            None,
+            "--cache-root",
+            help="Override FeatureStore root (default repo data/cache/features).",
+        ),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_features_build(
+                config=config,
+                symbol=symbol,
+                start=start,
+                end=end,
+                data_root=data_root,
+                no_cache=no_cache,
+                cache_root=cache_root,
+            )
+        )
 
     @data_app.command("inventory", help="Write a raw-data parquet inventory.")
     def _typer_data_inventory(

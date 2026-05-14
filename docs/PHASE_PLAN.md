@@ -59,11 +59,22 @@ Highlights:
 
 Decision label on success: **`FAST_EXECUTION_PARITY_COMPLETE`**.
 
-## Phase 4 — Feature engine MVP — **next**
+## Phase 4 — Feature engine MVP — **complete**
 
-Goal: PA-required features cached.
+Goal: centralized session-aware market-fact features: `BarMatrix` + YAML + optional `FeatureStore` → deterministic `FeatureMatrix` (`float64`, `feature_hash`); reference kernels only.
 
-## Phase 5 — PA strategy MVP
+Highlights:
+
+- `intraday.features.engine.build_feature_matrix` (`mode="reference"`; `mode="fast"` rejected in Phase 4).
+- `configs/features/pa_core_v1.yaml` (runtime truth) + `docs/FEATURE_CONTRACT.md`.
+- Kernels: VWAP, ORB, volatility/true range, price action, volume, regime (`src/intraday/features/kernels/`).
+- `FeatureStore` under `data/cache/features/` (local-only; gitignored).
+- CLI: `features list`, `features inspect`, `features build`.
+- Tests: contract/registry/hash/engine/store + per-kernel no-lookahead / session-reset patterns; `pytest` **216** at Phase 4 handoff.
+
+Decision label on success: **`FEATURE_ENGINE_MVP_COMPLETE`**.
+
+## Phase 5 — PA strategy MVP — **next**
 
 Goal: port `pa_buy_sell_close_trend`.
 

@@ -1,0 +1,6 @@
+item,status,tests
+builtin_registration,yes,test_feature_registry
+duplicate_registration_error,yes,test_feature_registry
+unknown_group_error,yes,test_feature_registry
+hash_stable_key_order,yes,test_feature_hashing
+hash_changes_on_edit,yes,test_feature_hashing

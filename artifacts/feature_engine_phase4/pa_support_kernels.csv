@@ -1,0 +1,5 @@
+kernel,outputs_implemented,tests
+volatility,bar_range true_range atr_like range_mean,yes
+price_action,body wicks rolling high/low close_pos,yes
+volume,volume_mean rel_volume,yes
+regime,close_vs_mean trend_slope_like,yes

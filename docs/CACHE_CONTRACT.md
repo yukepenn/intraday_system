@@ -35,14 +35,18 @@ Hashing utilities live in `src/intraday/core/hashing.py`. The canonical serializ
 
 ### 3.1 Feature cache
 
+Phase 4 on-disk layout (implemented by `FeatureStore`):
+
 ```
 data/cache/features/
-  feature_hash=<hash>/
-    data_hash=<hash>/
+  data_hash=<data_hash>/
+    feature_hash=<feature_hash>/
       matrix.npz
       columns.json
       meta.json
 ```
+
+`matrix.npz` contains array `values` (`float64`, shape `N × K`). `meta.json` records `data_hash`, `feature_hash`, row/column counts, and `feature_engine_semantic_version`.
 
 ### 3.2 Signal cache
 
@@ -74,21 +78,21 @@ data/cache/layer2_precompute/
 
 If a cache miss occurs, the engine recomputes and writes the cache (when caching is enabled). If a cache hit occurs, the loaded artifact's `meta.json` must match the expected hashes — mismatch is a hard error.
 
-## 5. `meta.json` shape (target)
+## 5. `meta.json` shape (FeatureStore, Phase 4)
 
 ```json
 {
   "kind": "feature_matrix",
-  "feature_config_hash": "...",
   "data_hash": "...",
-  "feature_set": "pa_core_v1",
-  "rows": 123456,
-  "columns": ["vwap", "atr_like_20", "..."],
-  "built_at_utc": "2026-05-12T03:14:15Z",
-  "engine": "fast",
-  "git_sha": "..."
+  "feature_hash": "...",
+  "n_bars": 123456,
+  "n_columns": 22,
+  "feature_engine_semantic_version": "feature_engine_mvp_v1",
+  "dtype": "float64"
 }
 ```
+
+`columns.json` is a JSON array of column names in index order (`0..K-1`).
 
 ## 6. Hot path priorities
 

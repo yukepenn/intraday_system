@@ -1,0 +1,6 @@
+section,item,metric,value,interpretation
+summary,pytest,passed_count,216,CI green post Phase 4
+summary,pa_core,column_count,22,PA market facts only
+local,qqq_rows,rows,48360,2024H1 curated window
+local,feature_hash,hex64,facb93387b6460a7f79bfd08a23b71560539d284f5ca2f0e1b565cb224a15498,Deterministic for pa_core_v1
+decision,phase4,label,FEATURE_ENGINE_MVP_COMPLETE,Proceed to PA strategy MVP

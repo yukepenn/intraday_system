@@ -1,0 +1,9 @@
+contract_item,rule,implemented_yes_no,tests,notes
+BarMatrix_input,hot arrays only,yes,test_feature_engine,
+FeatureMatrix_output,float64 2D + columns + feature_hash,yes,test_feature_contract,
+row_count_match,n_bars,yes,test_feature_engine,
+no_lookahead,rows le t,yes,test_features_* no_lookahead,
+session_reset,session_id boundaries,yes,test_features_* session,
+nan_convention,nan not inf,yes,engine sanitize,
+yaml_runtime,configs/features,yes,test_feature_contract smoke,
+mode_reference_only,fast not impl,yes,test_feature_engine,

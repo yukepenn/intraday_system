@@ -47,3 +47,7 @@ class Registry(Generic[T]):
 
     def __len__(self) -> int:
         return len(self._items)
+
+    def clear(self) -> None:
+        """Remove all registrations (primarily for tests)."""
+        self._items.clear()

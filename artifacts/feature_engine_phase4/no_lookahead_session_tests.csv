@@ -1,0 +1,8 @@
+test_area,scenario,test_name,expected_behavior,status,notes
+vwap,future_edit,test_vwap_no_lookahead,prefix stable,pass,
+orb,future_edit,test_orb_no_lookahead,prefix stable,pass,
+volatility,future_edit,test_volatility_no_lookahead,prefix stable,pass,
+price_action,future_edit,test_price_action_no_lookahead,prefix stable,pass,
+volume,future_edit,test_volume_no_lookahead,prefix stable,pass,
+regime,future_edit,test_regime_no_lookahead,prefix stable,pass,
+session_reset,multi_session,test_*_resets_by_session,session boundaries,pass,

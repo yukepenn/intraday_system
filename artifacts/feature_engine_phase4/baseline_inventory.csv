@@ -1,0 +1,8 @@
+section,metric,value
+baseline,local_branch,main
+baseline,local_head_pre_work,723787f
+baseline,remote_main_pre_work,723787f
+baseline,local_remote_matched,yes
+baseline,next_handoff_decision_pre,FAST_EXECUTION_PARITY_COMPLETE
+baseline,next_handoff_recommended_pre,IMPLEMENT_FEATURE_ENGINE_MVP
+baseline,phase3_pytest_passed,171

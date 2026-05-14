@@ -1,0 +1,3 @@
+kernel,key_semantics,tests
+vwap,session_reset cum vol,yes
+orb,minute_gate opening_range,yes

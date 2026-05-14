@@ -4,6 +4,18 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-13
 
+### Phase 4 — Feature engine MVP
+
+- Feat(features): `build_feature_matrix` (reference mode only), `resolve_feature_config`, `hash_feature_config`, canonical column ordering, `inf` → `nan` sanitize.
+- Feat(features): reference kernels — VWAP, ORB, volatility/true range, price action, volume, regime (`kernels/session_ops.py`).
+- Feat(features): `FeatureStore` (`data_hash` / `feature_hash` directory layout) + cache get/put validation.
+- Feat(cli): `features list`, `features inspect`, `features build` (Typer).
+- Feat(config): finalize `configs/features/pa_core_v1.yaml` (22 PA-core market-fact columns).
+- Feat(core): `Registry.clear()` for test isolation.
+- Docs: `FEATURE_CONTRACT.md`; updates to `CACHE_CONTRACT`, `LAYER_FLOW`, `PHASE_PLAN`, `ARCHITECTURE`, README/PROJECT_STATUS/NEXT_HANDOFF.
+- Test: `tests/unit/test_feature_*.py`, `tests/unit/test_features_*.py`, `tests/smoke/test_feature_cli.py`.
+- Chore(artifacts): `artifacts/feature_engine_phase4/` Phase 4 review tables + bundle.
+
 ### Phase 3 — Fast execution skeleton + parity
 
 - Feat(execution): add `simulate_trade_path_fast` and Numba `_simulate_trade_path_fast_kernel` (post-entry scan parity vs reference; shared `materialize_trade`).

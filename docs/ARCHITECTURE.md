@@ -45,7 +45,7 @@ The engine never reads CSV/MD as configuration. The engine never writes a YAML t
 
 | Subsystem | Owns | Does NOT own |
 | --- | --- | --- |
-| `features/` | market facts (VWAP, ORB, ATR, regimes, indicators) | trade decisions, PnL |
+| `features/` | market facts (`FeatureMatrix` from `build_feature_matrix`; VWAP, ORB, volatility, etc.) | trade decisions, PnL |
 | `strategies/` | signal generation (entry, side, stop, target_r, score) | PnL, slippage, fills, EOD |
 | `execution/` | fills, slippage, commission, stop/target/EOD/max-hold, R-multiple | strategy logic, router logic |
 | `management/` | management modes (fixed_r, scaleout, trailing, no_followthrough) | strategy signal logic |
