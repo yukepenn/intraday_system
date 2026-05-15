@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-15** (Phase 6b Layer1 PA controlled grid).
+Last updated: **2026-05-15** (Phase 6c Layer1 PA grid review + CI path validation).
 
 ---
 
@@ -8,86 +8,75 @@ Last updated: **2026-05-15** (Phase 6b Layer1 PA controlled grid).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- **Implementation commit:** `770ba6f89770ea30057f3abe1ccc630bd0555d17` — Layer1: run PA controlled grid
+- **Commit after Phase 6c:** see `git log -1` (message: `Layer1: review PA controlled grid results`)
 
 ## B. Task scope
 
-Phase **6b**: **Layer1 PA controlled grid** — small explicit strategy grid YAML → resolved configs → same Phase 6 plumbing per combo → **one** `Layer1GridRow` / `sweep_results.csv` row per combo — **not** candidate factory, **not** broad research.
+Phase **6c**: **Run and review** the Phase **6b** controlled PA grid; **fix** Linux CI failure on `output.artifact_root` validation; **no** candidate promotion, **no** candidate YAMLs, **no** broad grids, **no** Layer2/3/WFO/overlays/portfolio.
 
-**In scope:** `ResolvedGridCombo` / `resolve_grid_combos`, `Layer1ControlledGridConfig`, `run_layer1_controlled_grid`, `write_layer1_grid_artifacts`, `layer1 grid` / `grid-inspect`, controlled grid + Layer1 YAMLs, `count_rejected_intents` Option A, docs updates, `artifacts/layer1_pa_controlled_grid_phase6b/`.
+## C. CI path validation fix
 
-**Out of scope:** Candidate promotion, candidate YAMLs, GAP/CCI, Layer2/3, WFO, overlays, portfolio sizing, prefix-biased grid slicing, profitability claims.
+- **`is_absolute_path_like`** in `src/intraday/core/paths.py` (POSIX absolute, UNC/`\\` prefix after slash normalize, `PureWindowsPath` absolute / drive / drive-relative).
+- **`load_layer1_smoke_config` / `load_layer1_controlled_grid_config`** use it for `output.artifact_root`.
+- Fixes `tests/unit/test_layer1_config.py::test_absolute_artifact_root_rejected` on Linux (`Path("C:/tmp/abs").is_absolute()` was false).
 
-## C. Preflight fixes
+## D. CI / Ruff validation
 
-- `CHANGES.md` / `docs/PHASE_PLAN.md` — Phase 6b + next-step alignment.
-- **`count_rejected_intents`:** `summarize_trade_results(..., count_rejected_in_metrics=...)`; smoke/grid `skip_counts` distinguish `execution_rejected_included` vs `execution_rejected_excluded`.
+- `ruff check` / `ruff format --check` clean on `src` + `tests`.
+- `pytest` **324** passed locally (full suite).
 
-## D. Controlled-grid contract
+## E. Local data check
 
-- Infrastructure validation only; one PA family; **16** explicit combos in shipped grid YAML.
-- No prefix slicing (`allow_prefix_slicing: false` enforced); hard max **24** combos in validator.
+- QQQ curated **2024-01-01 .. 2024-06-30**: **48 360** rows, **124** sessions, **0** validation errors (`data validate-curated` / `load-bars`).
 
-## E. Grid configs
+## F. Prior-layer smoke
 
-- `configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml`
-- `configs/layer1/controlled_pa_qqq_2024h1.yaml` (`run_id: L1_PA_QQQ_2024H1_CONTROLLED_GRID_V1`, `execution.mode: reference`)
+- `features inspect` (`pa_core_v1`, **22** cols, `feature_hash` stable).
+- `strategies inspect` (`pa_buy_sell_close_trend`).
+- `layer1 run` smoke (`smoke_pa_qqq_2024h1.yaml`) OK.
 
-## F. Grid resolver / hashing
+## G. Controlled grid run
 
-- `load_grid_document`, `normalize_override_mapping`, `expand_grid`, `grid_document_combo_count`, `resolve_grid_combos`
-- Merge: base → fixed → combo; overlap raises `ValueError`.
-- `params_json` = canonical JSON of **grid-axis** nested dict; `config_hash` = `hash_config(resolved_config)`.
+- `layer1 grid-inspect` / `layer1 grid` on `controlled_pa_qqq_2024h1.yaml`: **16** combos, **16** `sweep_results` rows, reference execution; **no** candidates written.
+- Raw grid outputs under gitignored `artifacts/layer1_pa_controlled_grid_phase6b/local_run/` (per `.gitignore`).
 
-## G. Grid runner
+## H. Grid result artifacts
 
-- `run_layer1_controlled_grid` — bars + features **once**; per combo validate → signals → adapter → `layer1_scan_trade_intents` → metrics.
+- Committed, **sanitized** bundle: **`artifacts/layer1_pa_grid_review_phase6c/`** including `sweep_results_review.csv`, `grid_result_summary.*`, distributions, inventories, `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`.
 
-## H. Reports / artifacts
+## I. Grid interpretation
 
-- `write_layer1_grid_artifacts`: `sweep_results.csv`, `controlled_grid_summary.*`, inventories, reason distributions, top-row CSVs (review only).
-
-## I. Local QQQ controlled grid
-
-- **Skipped** in workspace without curated parquet; procedure documented in `artifacts/layer1_pa_controlled_grid_phase6b/local_qqq_controlled_grid.*`.
+- **`GRID_RESULTS_NEED_REVIEW_BEFORE_SELECTION`**: `rolling_low` combos show exploratory positives on QQQ 2024H1; **`signal_low` block** negative on `total_r`; thin sample (**~114–124** trades/combo). **Not** profitability proof.
 
 ## J. Tests / validation
 
-- `python -m compileall -q src` — pass
-- `pytest -q` — **303** passed
-- Ruff format/check — pass
-- CLI: `--help`, `doctor`, `validate structure`, `layer1 grid-inspect` on repo YAML — pass
+- `compileall`, `doctor`, `validate structure`, full `pytest`, Ruff — see `artifacts/layer1_pa_grid_review_phase6c/validation_results.*`.
 
 ## K. Explicit non-implemented items
 
-- Candidate selection, candidate YAML promotion, broad PA grid, GAP/CCI, Layer2 router, Layer3 validation, management overlays, portfolio sizing, WFO, live/paper trading.
+Candidate selection runtime, candidate YAML promotion, broad PA grid, GAP/CCI strategies, Layer2 router, Layer3 validation, WFO, management overlays, portfolio sizing, live/paper trading.
 
 ## L. Risks / blockers
 
-- Grid discipline: keep YAML grids small/explicit; never use prefix slicing as research design.
-- Local-only curated data: infra milestone does not require QQQ parquet if synthetic tests pass.
+- **Single window / single symbol**; ranks unstable with **session-capped** trade counts.
+- Local heavy `local_run` paths are **not** committed.
 
 ## M. Files changed (high level)
 
-- `src/intraday/layer1/{grid.py,config.py,runner.py,reports.py,result.py,__init__.py}`
-- `src/intraday/backtest/metrics.py`
-- `src/intraday/cli/{main.py,layer1_cmds.py}`
-- `configs/layer1/controlled_pa_qqq_2024h1.yaml`, `configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml`
-- `docs/{LAYER1_CONTRACT,BACKTEST_CONTRACT,LAYER_FLOW,PHASE_PLAN,ARCHITECTURE}.md`
-- `tests/unit/test_layer1_grid.py`, `test_layer1_{grid_config,grid_runner,grid_reports}.py`, `test_{backtest_metrics,layer1_runner}.py`, `tests/smoke/test_layer1_grid_cli.py`
-- `artifacts/layer1_pa_controlled_grid_phase6b/*` (review tables; not `local_run/`)
-- Status: `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
-- `.gitignore` (phase6b `local_run/`, `_pytest_*`)
+- `src/intraday/core/paths.py`, `src/intraday/layer1/config.py`
+- `tests/unit/test_core_paths.py`, `tests/unit/test_layer1_config.py`, `tests/unit/test_layer1_grid_config.py`
+- `docs/{CONFIG_CONTRACT,LAYER1_CONTRACT,PHASE_PLAN}.md`, `README.md`, status/changelog
+- `artifacts/layer1_pa_grid_review_phase6c/*`
 
 ## N. Artifact hygiene
 
-- No raw/curated parquet, caches, npy/npz/memmap, or row-level trade dumps staged.
-- `artifacts/layer1_pa_controlled_grid_phase6b/local_run/` gitignored.
+- **No** raw/curated parquet, caches, npy/npz/memmap, or row-level trade dumps staged.
+- `local_run` under controlled grid remains **gitignored**.
 
 ## O. Decision
 
-`LAYER1_PA_CONTROLLED_GRID_COMPLETE`
+`LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
 
 ## P. Recommended next step
 
-`REVIEW_LAYER1_PA_GRID_RESULTS`
+`REVIEW_PA_LOGIC_OR_GRID`

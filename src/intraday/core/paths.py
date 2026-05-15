@@ -7,9 +7,27 @@ explicitly rather than relying on auto-detection.
 
 from __future__ import annotations
 
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 _REPO_MARKERS = ("pyproject.toml", ".git")
+
+
+def is_absolute_path_like(path_value: str | Path) -> bool:
+    """True if *path_value* is absolute or drive-/UNC-qualified on any common OS.
+
+    Used for runtime config validation so Linux CI rejects Windows-style absolute
+    paths (and vice versa quirks) the same way production would expect.
+    """
+    text = str(path_value).strip()
+    if not text:
+        return False
+    if PurePosixPath(text).is_absolute():
+        return True
+    norm_bs = text.replace("/", "\\")
+    if norm_bs.startswith("\\\\"):
+        return True
+    win = PureWindowsPath(text)
+    return bool(Path(text).is_absolute() or win.is_absolute() or win.drive)
 
 
 def repo_root(start: Path | None = None) -> Path:

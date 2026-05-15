@@ -118,6 +118,20 @@ Decision label on success: **`LAYER1_PA_CONTROLLED_GRID_COMPLETE`** (local QQQ g
 
 Recommended next step: **`REVIEW_LAYER1_PA_GRID_RESULTS`**.
 
+## Phase 6c — Layer1 PA grid results review — **complete**
+
+Goal: fix **cross-platform** `artifact_root` validation for Layer1 loaders; run and **review** the shipped **16-combo** QQQ 2024H1 controlled grid when curated data exists; commit **sanitized** CSV/MD only (no `local_run`/parquet/caches).
+
+Highlights:
+
+- `intraday.core.paths.is_absolute_path_like` + Layer1 config wiring; tests `test_core_paths`, extended `test_layer1_config` / `test_layer1_grid_config`
+- Local curated QQQ 2024H1 validation + `layer1 grid` full sweep; `artifacts/layer1_pa_grid_review_phase6c/` review bundle (`CHATGPT_REVIEW_BUNDLE.md`, `sweep_results_review.csv`, etc.)
+- `pytest` **324** at handoff
+
+Decision label on success: **`LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`**.
+
+Recommended next step: **`REVIEW_PA_LOGIC_OR_GRID`** (then, only if economics merit, `DESIGN_LAYER1_PA_CANDIDATE_SELECTION`).
+
 ## Phase 7 — Port GAP and CCI
 
 ## Phase 8 — Layer2 controlled router
@@ -130,6 +144,9 @@ Recommended next step: **`REVIEW_LAYER1_PA_GRID_RESULTS`**.
 
 ## Decision labels (recent)
 
+- `LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
+- `LAYER1_PA_CONTROLLED_GRID_COMPLETE`
+- `LAYER1_PA_SMOKE_COMPLETE`
 - `FAST_EXECUTION_PARITY_COMPLETE`
 - `REFERENCE_EXECUTION_ENGINE_COMPLETE`
 - `DATA_FOUNDATION_PHASE1B_COMPLETE`
@@ -137,4 +154,4 @@ Recommended next step: **`REVIEW_LAYER1_PA_GRID_RESULTS`**.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Recommended next step after Phase 6b: **`REVIEW_LAYER1_PA_GRID_RESULTS`** (then optionally `IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION` if artifacts merit it).
+Phase 6b next step was **`REVIEW_LAYER1_PA_GRID_RESULTS`**; Phase 6c executed that review (+ CI path fix). Further work: **`REVIEW_PA_LOGIC_OR_GRID`** before any candidate-selection design.

@@ -1,0 +1,9 @@
+section,item,metric,value,interpretation
+grid,combos,combo_count,16,Full controlled grid executed
+grid,best row,combo_id,combo_0015,Top total_r and PF on this window (not a promoted candidate)
+grid,best,total_r,8.88035580726522,Exploratory only — QQQ 2024H1
+grid,best,profit_factor_r,1.2328387152640534,Modest PF; thin sample
+grid,axis,signal_low total_r,negative_block,Review stop_mode semantics vs rolling_low
+data,curated,row_count,48360,QQQ RTH half-year present locally
+ci,tests,pytest_total,324,Green after path fix
+handoff,decision,label,LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE,Phase 6c scope satisfied

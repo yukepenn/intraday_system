@@ -1,0 +1,9 @@
+question,answer,interpretation_label
+all_16_combos_run,yes,
+metrics_plausible,yes,
+promising_subset,rolling_low_axis_only_exploratory,GRID_RESULTS_NEED_REVIEW_BEFORE_SELECTION
+trade_counts_adequate_for_claims,no_thin_single_window,
+require_vwap_side_effect,ambiguous,
+stop_mode_effect,strong_signal_low_vs_rolling_low_split,
+target_r_effect,secondary,
+ready_for_candidate_selection,no_review_pa_first,

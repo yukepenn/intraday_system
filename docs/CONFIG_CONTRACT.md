@@ -156,6 +156,7 @@ validation_rules:
 
 - All paths in committed YAML are relative to repo root.
 - No absolute `D:\` paths in committed configs.
+- Layer1 smoke/controlled-grid loaders validate `output.artifact_root` with **`is_absolute_path_like`** (rejects POSIX absolute, Windows drive-qualified, and UNC-style strings even when `Path(...).is_absolute()` is false on Linux).
 - Local-only overrides may live in `artifacts/**/local/` (ignored), never in `configs/`.
 
 ## 10. Validation entrypoints (later phases)

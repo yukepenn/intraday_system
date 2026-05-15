@@ -1,0 +1,9 @@
+case,expected_behavior,implementation,test_name,status
+C:/tmp/abs,reject ConfigError,is_absolute_path_like + layer1 loaders,test_absolute_artifact_root_rejected[...],pass
+D:\TradingData\x,reject,,,pass
+\\server\share\x,reject,,,pass
+/tmp/abs,reject,,,pass
+C:tmp\relative,reject,,,pass
+artifacts/local_run,accept,,test_relative_artifact_roots_accepted,pass
+artifacts\local_run,accept,,,pass
+controlled grid same paths,accept/reject mirror,load_layer1_controlled_grid_config,test_controlled_grid_*,pass

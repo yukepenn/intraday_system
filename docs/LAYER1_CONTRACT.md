@@ -1,4 +1,4 @@
-# Layer1 contract (Phase 6–6b)
+# Layer1 contract (Phase 6–6c)
 
 Layer1 answers: **given one strategy config and one controlled data window**, can the system generate signals, execute under canonical execution, summarize results, and produce small reviewable artifacts?
 
@@ -21,7 +21,7 @@ Layer1 answers: **given one strategy config and one controlled data window**, ca
 
 ## Artifact policy (Phase 6 smoke / 6b grid)
 
-- Summary JSON/MD/CSVs only under a configured relative `artifact_root`.
+- Summary JSON/MD/CSVs only under a configured **repo-relative** `artifact_root`. Loaders reject absolute paths using cross-platform rules (`intraday.core.paths.is_absolute_path_like`) so POSIX absolute, Windows drive/UNC, and drive-relative paths are refused on Linux CI as well as Windows.
 - No row-level heavy trade dumps, caches, or hot array blobs committed.
 - Grid sweep outputs (`sweep_results.csv`, `controlled_grid_summary.*`, distribution CSVs) are **audit/review** artifacts only, not runtime candidate truth.
 

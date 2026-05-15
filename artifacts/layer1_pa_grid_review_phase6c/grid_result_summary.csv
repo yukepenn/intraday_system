@@ -1,0 +1,15 @@
+metric,value
+combo_count,16
+sweep_row_count,16
+best_total_r,8.88035580726522
+best_avg_r,0.07789785795846683
+best_profit_factor_r,1.2328387152640534
+best_max_drawdown_r_lowest_combo,4.193819359948333
+accepted_trades_min,114
+accepted_trades_median,119.5
+accepted_trades_max,124
+signal_entries_min,2773
+signal_entries_max,4380
+unique_config_hash,16
+execution_mode,reference
+candidates_created,no

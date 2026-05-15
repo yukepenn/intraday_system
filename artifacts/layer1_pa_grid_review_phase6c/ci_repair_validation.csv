@@ -1,0 +1,5 @@
+command,exit_status,key_output,pass_fail,notes
+python -m ruff check src tests,0,All checks passed,pass,
+python -m ruff format --check src tests,0,already formatted,pass,
+python -m pytest -q tests/smoke tests/unit,0,passed,pass,
+python -m pytest -q,0,324 passed,pass,

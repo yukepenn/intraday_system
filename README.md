@@ -90,7 +90,9 @@ Phase **6** — **Layer1 PA smoke run** — is implemented: one controlled YAML 
 
 Phase **6b** — **Layer1 PA controlled grid** — is implemented: `configs/layer1/controlled_pa_qqq_2024h1.yaml` + small strategy grid (`configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml`, **16** explicit combos) runs the same scan pipeline per combo with `sweep_results.csv` summaries. CLI: `layer1 grid` / `layer1 grid-inspect`. Not candidate promotion or broad research.
 
-**Next:** review grid outputs (`REVIEW_LAYER1_PA_GRID_RESULTS`); Layer2/3 still out of scope.
+Phase **6c** — **grid results review + CI path-validation fix** — cross-platform `artifact_root` checks (`is_absolute_path_like`); local QQQ 2024H1 controlled grid when curated data exists; review bundle `artifacts/layer1_pa_grid_review_phase6c/`. Decision: **`LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`**.
+
+**Next:** **`REVIEW_PA_LOGIC_OR_GRID`** before candidate-selection design; Layer2/3 still out of scope.
 
 See:
 

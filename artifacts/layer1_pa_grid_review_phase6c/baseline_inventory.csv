@@ -1,0 +1,11 @@
+item,value
+local_branch,main
+local_head_sha_before_phase6c_commit,1b9b7334a8ee99b01615e43a5497327d33de342c
+remote_main_sha,1b9b7334a8ee99b01615e43a5497327d33de342c
+local_remote_matched,yes
+next_handoff_decision_start,LAYER1_PA_CONTROLLED_GRID_COMPLETE
+next_handoff_next_step_start,REVIEW_LAYER1_PA_GRID_RESULTS
+phase6b_combo_count,16
+phase6b_local_grid_status,skipped_in_6b_workspace
+ci_failure_summary_pre_fix,Linux CI Path.is_absolute() misses Windows-style paths for artifact_root
+non_goals,candidate_promotion;broad_grid;layer2_3;gap_cci

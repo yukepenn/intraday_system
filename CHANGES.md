@@ -4,6 +4,14 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-15
 
+### Phase 6c — Layer1 PA grid results review
+
+- Fix(paths): `is_absolute_path_like` for cross-platform absolute / drive / UNC detection; Layer1 smoke + controlled-grid loaders reject non-repo-relative `output.artifact_root` on Linux CI.
+- Test: `tests/unit/test_core_paths.py`; parametrized `artifact_root` cases for smoke + grid loaders.
+- Chore(artifacts): `artifacts/layer1_pa_grid_review_phase6c/` — `sweep_results_review.csv`, summaries, distributions, `CHATGPT_REVIEW_BUNDLE.md`, validation tables.
+- Docs: `CONFIG_CONTRACT`, `LAYER1_CONTRACT`, `PHASE_PLAN`, README, status handoff.
+- `pytest` **324** at handoff.
+
 ### Phase 6b — Layer1 PA controlled grid
 
 - Feat(layer1): `ResolvedGridCombo`, `resolve_grid_combos`, `run_layer1_controlled_grid`, `Layer1GridResult` / `Layer1GridRow`, `load_layer1_controlled_grid_config` + validation (16-combo cap, no prefix slicing).

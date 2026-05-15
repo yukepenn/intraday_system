@@ -1,0 +1,4 @@
+step,exit_status,pass_fail,notes
+features inspect,0,pass,feature_hash facb9338...
+strategies inspect,0,pass,pa_buy_sell_close_trend
+layer1 run smoke,0,pass,124 accepted session-capped trades

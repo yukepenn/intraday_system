@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 from intraday.core.errors import ConfigError
 from intraday.core.paths import repo_root
@@ -149,3 +152,98 @@ output:
     cfg = load_layer1_controlled_grid_config(p)
     with pytest.raises(ConfigError):
         validate_layer1_controlled_grid_config(cfg)
+
+
+@pytest.mark.parametrize(
+    "artifact_root",
+    (
+        "C:/tmp/abs",
+        r"D:\TradingData\x",
+        r"\\server\share\x",
+        "/tmp/abs",
+    ),
+)
+def test_controlled_grid_absolute_artifact_root_rejected(
+    tmp_path: Path, artifact_root: str
+) -> None:
+    p = tmp_path / "bad_art.yaml"
+    p.write_text(
+        f"""
+run_id: X
+description: d
+symbol: QQQ
+start: 2024-01-01
+end: 2024-01-02
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/pa_core_v1.yaml
+  use_cache: false
+strategy:
+  name: pa_buy_sell_close_trend
+  base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+  grid: configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+grid:
+  max_combos: null
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+output:
+  artifact_root: {json.dumps(artifact_root)}
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(ConfigError):
+        load_layer1_controlled_grid_config(p)
+
+
+@pytest.mark.parametrize(
+    "artifact_root",
+    ("artifacts/layer1_pa_controlled_grid_phase6/out", r"artifacts\layer1_grid\out"),
+)
+def test_controlled_grid_relative_artifact_roots_accepted(
+    tmp_path: Path, artifact_root: str
+) -> None:
+    p = tmp_path / "ok_art.yaml"
+    p.write_text(
+        f"""
+run_id: X
+description: d
+symbol: QQQ
+start: 2024-01-01
+end: 2024-01-02
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/pa_core_v1.yaml
+  use_cache: false
+strategy:
+  name: pa_buy_sell_close_trend
+  base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+  grid: configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+grid:
+  max_combos: null
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+output:
+  artifact_root: {json.dumps(artifact_root)}
+""",
+        encoding="utf-8",
+    )
+    cfg = load_layer1_controlled_grid_config(p)
+    assert cfg.artifact_root == artifact_root

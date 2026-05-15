@@ -9,7 +9,7 @@ from typing import Any, Literal
 
 from intraday.core.config import load_yaml
 from intraday.core.errors import ConfigError
-from intraday.core.paths import repo_root
+from intraday.core.paths import is_absolute_path_like, repo_root
 from intraday.layer1.grid import grid_document_combo_count, load_grid_document
 
 ExecutionMode = Literal["reference", "fast", "both"]
@@ -92,7 +92,7 @@ def load_layer1_smoke_config(path: Path | str) -> Layer1SmokeConfig:
     art = str(out.get("artifact_root", "")).strip()
     if not art:
         raise ConfigError("output.artifact_root required")
-    if Path(art).is_absolute():
+    if is_absolute_path_like(art):
         raise ConfigError("output.artifact_root must be a relative repo path")
 
     return Layer1SmokeConfig(
@@ -230,7 +230,7 @@ def load_layer1_controlled_grid_config(path: Path | str) -> Layer1ControlledGrid
     art = str(out.get("artifact_root", "")).strip()
     if not art:
         raise ConfigError("output.artifact_root required")
-    if Path(art).is_absolute():
+    if is_absolute_path_like(art):
         raise ConfigError("output.artifact_root must be a relative repo path")
 
     allow_slice = gsect.get("allow_prefix_slicing", False)
