@@ -1,0 +1,7 @@
+item,status
+layer1_smoke_runner,complete
+signal_adapter,complete
+backtest_metrics,complete
+layer1_cli,complete
+local_qqq_smoke,complete
+tests_pytest,286_passed

@@ -48,6 +48,8 @@ data/cache/**
 
 # --- Local-only artifact subtrees ---
 artifacts/**/local/
+artifacts/layer1_pa_smoke_phase6/local_run/
+artifacts/layer1_pa_smoke_phase6/_pytest_runner*/
 artifacts/**/tmp/
 artifacts/**/logs/
 

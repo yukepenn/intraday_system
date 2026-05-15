@@ -8,8 +8,12 @@ from typing import Any
 import numpy as np
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
+from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
-from intraday.strategies.config_validation import validate_pa_buy_sell_close_trend_config
+from intraday.strategies.config_validation import (
+    parse_bool_like,
+    validate_pa_buy_sell_close_trend_config,
+)
 from intraday.strategies.contracts import (
     LONG_SIDE,
     SIGNAL_CONTRACT_VERSION,
@@ -73,6 +77,9 @@ def generate_pa_buy_sell_close_trend_signals(
 ) -> SignalMatrix:
     """Generate long-only PA trend signals from BarMatrix + FeatureMatrix."""
     validate_pa_buy_sell_close_trend_config(config)
+    score_mode = str(config["signal"].get("score_mode", "simple_pa_v1"))
+    if score_mode != "simple_pa_v1":
+        raise ConfigError(f"unsupported signal.score_mode for {STRATEGY_NAME}: {score_mode!r}")
     require_feature_columns(
         features.columns, PA_REQUIRED_FEATURE_COLUMNS, strategy_name=STRATEGY_NAME
     )
@@ -87,7 +94,7 @@ def generate_pa_buy_sell_close_trend_signals(
     cp_min = float(sig.get("close_position_min", 0))
     trend_min = float(sig.get("trend_slope_min", 0))
     cv_min = float(sig.get("close_vs_mean_min", 0))
-    req_vwap = bool(sig.get("require_vwap_side", False))
+    req_vwap = parse_bool_like(sig.get("require_vwap_side", False), "signal.require_vwap_side")
     stop_mode = str(risk.get("stop_mode", "signal_low"))
     target_r_val = float(risk["target_r"])
     atr_mult = float(risk.get("atr_buffer_mult", 0.35))

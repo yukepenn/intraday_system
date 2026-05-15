@@ -1,0 +1,5 @@
+issue,file_path,action_taken,tests_added,behavior_changed_yes_no,notes
+bool_coercion,src/intraday/strategies/config_validation.py,parse_bool_like for require_vwap_side,test_strategy_config_validation.py,no,String false now false not true
+score_mode,src/intraday/strategies/config_validation.py,reject unknown signal.score_mode,test_strategy_config_validation.py,no,Phase6 only simple_pa_v1
+score_mode_guard,src/intraday/strategies/pa/buy_sell_close_trend.py,ConfigError if not simple_pa_v1 after validate,shared,no,Defensive after validate
+status_docs,CHANGES.md docs/PHASE_PLAN.md,Phase6 entries and scope,n/a,no,Handoff alignment

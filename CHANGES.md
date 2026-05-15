@@ -4,6 +4,18 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-15
 
+### Phase 6 — Layer1 PA smoke run
+
+- Feat(layer1): `run_layer1_smoke`, smoke YAML loader/validation (`configs/layer1/smoke_pa_qqq_2024h1.yaml`), session scan (max trades / skip while open), `Layer1SmokeResult`.
+- Feat(backtest): `signal_adapter` (`SignalAdapterResult`), `summarize_trade_results` / `BacktestMetrics` (TradeResult-only aggregates).
+- Feat(execution): `merge_execution_spec_with_strategy` for strategy `backtest`/`risk` overrides.
+- Feat(cli): `layer1 run`, `layer1 inspect`.
+- Fix(strategies): `parse_bool_like` for `require_vwap_side`; validate `signal.score_mode` (`simple_pa_v1` only for Phase 6).
+- Docs: `LAYER1_CONTRACT.md`, `BACKTEST_CONTRACT.md`; updates to `LAYER_FLOW`, `PHASE_PLAN`, `ARCHITECTURE`, README/status handoff.
+- Test: `test_signal_adapter`, `test_backtest_metrics`, `test_layer1_*`, `test_execution_spec_merge`, `test_layer1_cli`; `pytest` **286** at handoff.
+- Chore(artifacts): `artifacts/layer1_pa_smoke_phase6/` review bundle; gitignore `local_run` + `_pytest_runner*` under that tree.
+- Chore(validate): `cli/main.py` structure check includes new contracts + smoke YAML.
+
 ### Phase 5 — PA strategy signal MVP
 
 - Feat(strategies): `pa_buy_sell_close_trend` signal generator (`BarMatrix` + `FeatureMatrix` → `SignalMatrix`; no parquet/execution/PnL).
@@ -72,11 +84,9 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ### Intentionally NOT included (still)
 
-- Batch `simulate_trade_paths_fast`, feature kernels, strategy logic.
-- Layer1/Layer2/Layer3 runners, candidate YAML generation, router/validator, management overlays in execution.
-- No raw/curated parquet or cache files committed.
+- Broad parameter sweeps / WFO / live-paper; candidate YAML promotion; GAP/CCI strategies; Layer2 router; Layer3 validation; management overlays in execution; portfolio sizing.
 
 ### Decision
 
-- `FAST_EXECUTION_PARITY_COMPLETE`
-- Recommended next step: `IMPLEMENT_FEATURE_ENGINE_MVP`
+- `LAYER1_PA_SMOKE_COMPLETE`
+- Recommended next step: `IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`

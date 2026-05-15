@@ -88,9 +88,24 @@ Highlights:
 
 Decision label on success: **`PA_STRATEGY_MVP_COMPLETE`**.
 
-## Phase 6 — Layer1 PA smoke run — **next**
+## Phase 6 — Layer1 PA smoke run — **complete**
 
-Goal: end-to-end PA candidate factory.
+Goal: first **end-to-end plumbing** check — `BarMatrix` → `FeatureMatrix` → `SignalMatrix` → `TradeIntent` → execution → `TradeResult` → metrics → small artifacts — **not** a candidate factory sweep.
+
+Highlights:
+
+- `configs/layer1/smoke_pa_qqq_2024h1.yaml` + `load_layer1_smoke_config` / `validate_layer1_smoke_config`
+- `intraday.backtest.signal_adapter`, `intraday.backtest.metrics`
+- `run_layer1_smoke` + `layer1` CLI (`run` / `inspect`)
+- `merge_execution_spec_with_strategy`; docs `LAYER1_CONTRACT` + `BACKTEST_CONTRACT`
+- Preflight: `parse_bool_like`, `score_mode` validation
+- `pytest` **286** at Phase 6 handoff
+
+Decision label on success: **`LAYER1_PA_SMOKE_COMPLETE`**.
+
+## Phase 6b — Layer1 PA controlled grid — **next**
+
+Goal: **small**, explicit PA parameter grids behind Layer1 gates (not broad research).
 
 ## Phase 7 — Port GAP and CCI
 
@@ -111,4 +126,4 @@ Goal: end-to-end PA candidate factory.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Recommended next step after Phase 5: **`IMPLEMENT_LAYER1_PA_SMOKE_RUN`**.
+Recommended next step after Phase 6: **`IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`**.

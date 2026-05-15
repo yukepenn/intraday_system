@@ -115,3 +115,45 @@ def load_execution_spec(path: Path | str) -> ExecutionSpec:
     """Load ``ExecutionSpec`` from a YAML file and validate."""
     data = load_yaml(path)
     return ExecutionSpec.from_config(data)
+
+
+def merge_execution_spec_with_strategy(
+    base: ExecutionSpec,
+    strategy_config: Mapping[str, Any],
+) -> ExecutionSpec:
+    """Apply strategy YAML ``risk`` / ``backtest`` overrides onto a base :class:`ExecutionSpec`.
+
+    Central merge rule: execution YAML is primary; explicit strategy numeric fields override
+    slippage, commission, EOD minute, and min risk per share when present.
+    """
+    slippage = base.slippage_per_share
+    commission = base.commission_per_trade
+    eod = base.eod_exit_minute
+    min_risk = base.min_risk_per_share
+
+    bt = strategy_config.get("backtest")
+    if isinstance(bt, Mapping):
+        if "slippage_per_share" in bt:
+            slippage = float(bt["slippage_per_share"])
+        if "commission_per_trade" in bt:
+            commission = float(bt["commission_per_trade"])
+        if "eod_exit_minute" in bt:
+            eod = int(bt["eod_exit_minute"])
+
+    risk = strategy_config.get("risk")
+    if isinstance(risk, Mapping) and "min_risk_per_share" in risk:
+        min_risk = float(risk["min_risk_per_share"])
+
+    out = ExecutionSpec(
+        entry_timing=base.entry_timing,
+        same_bar_policy=base.same_bar_policy,
+        slippage_per_share=slippage,
+        commission_per_trade=commission,
+        min_risk_per_share=min_risk,
+        eod_exit_minute=eod,
+        allow_short=base.allow_short,
+        max_hold_bars_default=base.max_hold_bars_default,
+        semantics_version=base.semantics_version,
+    )
+    out.validate()
+    return out

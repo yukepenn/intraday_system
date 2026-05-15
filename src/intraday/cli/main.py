@@ -46,11 +46,14 @@ REQUIRED_FILES: tuple[str, ...] = (
     "docs/DESIGN_BASELINE.md",
     "docs/FEATURE_CONTRACT.md",
     "docs/STRATEGY_CONTRACT.md",
+    "docs/LAYER1_CONTRACT.md",
+    "docs/BACKTEST_CONTRACT.md",
     "configs/data/data_roots.yaml",
     "configs/data/ibkr_qqq_1m.yaml",
     "configs/data/symbols.yaml",
     "configs/data/sessions_us_equity.yaml",
     "configs/execution/intraday_default.yaml",
+    "configs/layer1/smoke_pa_qqq_2024h1.yaml",
     "src/intraday/__init__.py",
     "src/intraday/cli/main.py",
 )
@@ -185,6 +188,7 @@ try:
         cmd_features_inspect,
         cmd_features_list,
     )
+    from intraday.cli.layer1_cmds import cmd_layer1_inspect, cmd_layer1_run
     from intraday.cli.strategy_cmds import (
         cmd_strategies_generate_smoke,
         cmd_strategies_inspect,
@@ -201,10 +205,14 @@ try:
     validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")
     features_app = typer.Typer(no_args_is_help=True, help="Feature engine (Phase 4).")
     strategies_app = typer.Typer(no_args_is_help=True, help="Strategy signal layer (Phase 5).")
+    layer1_app = typer.Typer(
+        no_args_is_help=True, help="Layer1 smoke / candidate factory (Phase 6+)."
+    )
     app.add_typer(data_app, name="data")
     app.add_typer(validate_app, name="validate")
     app.add_typer(features_app, name="features")
     app.add_typer(strategies_app, name="strategies")
+    app.add_typer(layer1_app, name="layer1")
 
     @app.command("doctor", help="Print environment + dependency diagnostics.")
     def _typer_doctor() -> None:
@@ -293,6 +301,22 @@ try:
                 data_root=data_root,
             )
         )
+
+    @layer1_app.command("run", help="Run Layer1 PA smoke from YAML (Phase 6).")
+    def _typer_layer1_run(
+        config: str = typer.Option(
+            ...,
+            "--config",
+            help="Layer1 smoke YAML (repo-relative or absolute).",
+        ),
+    ) -> None:
+        raise typer.Exit(code=cmd_layer1_run(config=config))
+
+    @layer1_app.command("inspect", help="Validate Layer1 smoke YAML and print a short manifest.")
+    def _typer_layer1_inspect(
+        config: str = typer.Option(..., "--config"),
+    ) -> None:
+        raise typer.Exit(code=cmd_layer1_inspect(config=config))
 
     @data_app.command("inventory", help="Write a raw-data parquet inventory.")
     def _typer_data_inventory(

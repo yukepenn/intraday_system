@@ -1,0 +1,3 @@
+command,implementation_file
+layer1 run,cli/layer1_cmds.py
+layer1 inspect,cli/layer1_cmds.py

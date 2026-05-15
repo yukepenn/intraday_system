@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/backtest/signal_adapter.py,SignalMatrix to TradeIntent,yes,source,no,
+src/intraday/backtest/metrics.py,TradeResult aggregation,yes,source,no,
+src/intraday/layer1/config.py,Smoke YAML loader,yes,source,no,
+src/intraday/layer1/runner.py,Layer1 smoke orchestration,yes,source,no,
+src/intraday/layer1/reports.py,Write summary artifacts,yes,source,no,
+src/intraday/layer1/result.py,Layer1SmokeResult DTO,yes,source,no,
+src/intraday/cli/layer1_cmds.py,layer1 CLI,yes,source,no,
+configs/layer1/smoke_pa_qqq_2024h1.yaml,Runtime smoke config,yes,source,no,
+docs/LAYER1_CONTRACT.md,Layer1 scope,yes,source,no,
+docs/BACKTEST_CONTRACT.md,Backtest vs execution,yes,source,no,
+artifacts/layer1_pa_smoke_phase6/*.md,Phase6 review tables,yes,generated,partially from local QQQ run,
+data/curated/**,QQQ bars,no,local,data not in git

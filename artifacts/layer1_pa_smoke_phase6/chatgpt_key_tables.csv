@@ -1,0 +1,8 @@
+section,item,metric,value,interpretation
+local_smoke,rows,n_bars,48360,QQQ 2024H1 RTH 1m window
+local_smoke,signals,signal_entries,4092,Matches Phase5 signal smoke count
+local_smoke,executed,executed_results,124,One accepted trade per session max
+local_smoke,skip,max_trades_per_session,3859,Remaining intents skipped after first accept
+local_smoke,skip,trade_open,109,Intents while prior session trade still open
+local_smoke,pnl_proxy,total_r,-4.199,Not evaluated for edge quality
+validation,pytest,count,286,Including new Phase6 tests

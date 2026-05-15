@@ -1,0 +1,3 @@
+function,file,notes
+run_layer1_smoke,layer1/runner.py,orchestrates end-to-end smoke
+write_layer1_smoke_artifacts,layer1/reports.py,small outputs only

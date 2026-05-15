@@ -1,0 +1,3 @@
+component,module,coverage,notes
+SignalAdapterResult,backtest/signal_adapter.py,test_signal_adapter.py,frozen dataclass
+intent_mapping,backtest/signal_adapter.py,test_signal_adapter.py,long-only side validation

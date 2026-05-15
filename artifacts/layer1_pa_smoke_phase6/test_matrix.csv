@@ -1,0 +1,8 @@
+category,file,count_estimate
+signal_adapter,tests/unit/test_signal_adapter.py,8
+metrics,tests/unit/test_backtest_metrics.py,7
+layer1_config,tests/unit/test_layer1_config.py,3
+layer1_runner,tests/unit/test_layer1_runner.py,3
+execution_merge,tests/unit/test_execution_spec_merge.py,1
+preflight,tests/unit/test_strategy_config_validation.py,6
+cli_smoke,tests/smoke/test_layer1_cli.py,2

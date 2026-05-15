@@ -1,0 +1,10 @@
+command,exit_status,pass_fail,key_output_notes
+python -m compileall -q src,0,pass,
+python -m pytest -q,0,pass,286 passed
+python -m ruff format --check src tests,0,pass,
+python -m ruff check src tests,0,pass,
+python -m intraday.cli.main --help,0,pass,typer commands include layer1
+python -m intraday.cli.main doctor,0,pass,
+python -m intraday.cli.main validate structure,0,pass,32 files
+python -m intraday.cli.main layer1 --help,0,pass,
+python -m intraday.cli.main layer1 run --config configs/layer1/smoke_pa_qqq_2024h1.yaml,0,pass,124 executed session-limited trades

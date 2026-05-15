@@ -1,0 +1,8 @@
+key,value
+local_branch,main
+local_head_sha_start,68b141bef5ff611f81d51114da1d223b860cd600
+remote_main_sha,68b141bef5ff611f81d51114da1d223b860cd600
+local_remote_matched,yes
+next_handoff_decision_start,PA_STRATEGY_MVP_COMPLETE
+next_handoff_recommended_start,IMPLEMENT_LAYER1_PA_SMOKE_RUN
+phase5_pytest_count,257

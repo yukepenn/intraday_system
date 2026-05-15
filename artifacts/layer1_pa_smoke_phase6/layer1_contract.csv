@@ -1,0 +1,8 @@
+contract_item,rule,implemented_yes_no,tests,notes
+layer1_role,one strategy window signals+execute+metrics,yes,test_layer1_runner mocks,Smoke only
+layer1_not_grid,no broad sweeps,yes,CI guard N/A,Config has single strategy
+execution_ownership,PnL only in execution,yes,metrics tests,summarize_trade_results only
+signal_adapter,entry→intent with diagnostics,yes,test_signal_adapter,
+smoke_scan,max trades per session + skip open,yes,test_layer1_runner,
+metrics_aggregate,BacktestMetrics from TradeResult,yes,test_backtest_metrics,
+artifacts,summary only no row heavy,yes,reports.py,local_run gitignored

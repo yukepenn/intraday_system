@@ -1,0 +1,12 @@
+key,value
+config_path,configs/layer1/smoke_pa_qqq_2024h1.yaml
+run_id,L1_PA_QQQ_2024H1_SMOKE_V1
+symbol,QQQ
+start,2024-01-01
+end,2024-06-30
+feature_config,configs/features/pa_core_v1.yaml
+strategy,pa_buy_sell_close_trend
+strategy_config,configs/strategies/base/pa_buy_sell_close_trend.yaml
+execution_config,configs/execution/intraday_default.yaml
+execution_mode,reference
+max_trades_per_session,1

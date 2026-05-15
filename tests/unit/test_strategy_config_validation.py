@@ -48,3 +48,41 @@ def test_invalid_close_position() -> None:
     cfg["signal"]["close_position_min"] = 1.5
     with pytest.raises(ConfigError):
         validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_require_vwap_side_bool_false() -> None:
+    cfg = _base()
+    cfg["signal"]["require_vwap_side"] = False
+    validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_require_vwap_side_string_false() -> None:
+    cfg = _base()
+    cfg["signal"]["require_vwap_side"] = "false"
+    validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_require_vwap_side_string_true() -> None:
+    cfg = _base()
+    cfg["signal"]["require_vwap_side"] = "true"
+    validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_require_vwap_side_unknown_string() -> None:
+    cfg = _base()
+    cfg["signal"]["require_vwap_side"] = "maybe"
+    with pytest.raises(ConfigError):
+        validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_score_mode_simple_accepted() -> None:
+    cfg = _base()
+    cfg["signal"]["score_mode"] = "simple_pa_v1"
+    validate_pa_buy_sell_close_trend_config(cfg)
+
+
+def test_score_mode_unknown() -> None:
+    cfg = _base()
+    cfg["signal"]["score_mode"] = "bogus"
+    with pytest.raises(ConfigError):
+        validate_pa_buy_sell_close_trend_config(cfg)

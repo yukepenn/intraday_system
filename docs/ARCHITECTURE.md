@@ -49,7 +49,7 @@ The engine never reads CSV/MD as configuration. The engine never writes a YAML t
 | `strategies/` | signal generation (entry, side, stop, target_r, score) | PnL, slippage, fills, EOD |
 | `execution/` | fills, slippage, commission, stop/target/EOD/max-hold, R-multiple | strategy logic, router logic |
 | `management/` | management modes (fixed_r, scaleout, trailing, no_followthrough) | strategy signal logic |
-| `layer1/` | sweeps, selection gates, candidate YAML writing | runtime routing |
+| `layer1/` | Phase 6: smoke run (`run_layer1_smoke`) + YAML validation; future: sweeps, selection gates, candidate YAML writing | runtime Layer2 routing |
 | `layer2/` | router, conflict, permissions, daily-risk state, management assignment | sweep, candidate selection |
 | `layer3/` | folds, frozen-system runner, decision artifacts | tuning anything |
 | `portfolio/` | sizing, risk limits, equity tracking | execution, features |
@@ -66,9 +66,9 @@ parquet (data/raw/...)
   → FeatureMatrix (cached by feature_hash + data_hash)
   → SignalMatrix (cached by strategy_hash + feature_hash + data_hash)
   → TradeIntent[]
-  → execution.reference / execution.fast → TradeRecordArray
-  → metrics
-  → Layer1 sweep table → candidate YAMLs
+  → execution.reference / execution.fast → TradeResult rows (Phase 6 metrics aggregate TradeResult)
+  → metrics (TradeResult-only summaries in Phase 6 smoke)
+  → Layer1 sweep table → candidate YAMLs (future; Phase 6 does not promote candidates)
   → Layer2 router → routed TradeIntents → execution → TradeRecord (Layer2 truth)
   → Layer3 folds → decision doc
 ```

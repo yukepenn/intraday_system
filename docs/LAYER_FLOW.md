@@ -51,12 +51,12 @@ data → features → strategy signals → execution → Layer1 candidates → L
                      |
                      v
             +-----------------+
-            | TradeRecord[]   |
+            | TradeResult[]   |   execution-owned rows (Phase 6 smoke aggregates here)
             +--------+--------+
                      |
                      v
             +-----------------+
-            | metrics         |
+            | backtest metrics|   TradeResult-only summaries (Phase 6)
             +--------+--------+
                      |
                      v

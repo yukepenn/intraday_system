@@ -10,14 +10,19 @@ from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 
 
-def _as_bool(value: Any, field: str) -> bool:
+def parse_bool_like(value: Any, field: str) -> bool:
+    """Strict boolean coercion (no ``bool(string)`` pitfalls)."""
     if isinstance(value, bool):
         return value
     if isinstance(value, int) and value in (0, 1):
         return bool(value)
-    if isinstance(value, str) and value.lower() in ("true", "false"):
-        return value.lower() == "true"
-    raise ConfigError(f"{field} must be bool-like, got {value!r}")
+    if isinstance(value, str):
+        s = value.strip().lower()
+        if s in ("true", "1", "yes"):
+            return True
+        if s in ("false", "0", "no"):
+            return False
+    raise ConfigError(f"{field} must be a boolean-like value, got {value!r}")
 
 
 def _as_float(value: Any, field: str) -> float:
@@ -79,7 +84,11 @@ def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
 
     _as_float(sig.get("trend_slope_min", 0), "signal.trend_slope_min")
     _as_float(sig.get("close_vs_mean_min", 0), "signal.close_vs_mean_min")
-    _as_bool(sig.get("require_vwap_side", False), "signal.require_vwap_side")
+    parse_bool_like(sig.get("require_vwap_side", False), "signal.require_vwap_side")
+
+    score_mode = sig.get("score_mode", "simple_pa_v1")
+    if score_mode != "simple_pa_v1":
+        raise ConfigError(f"signal.score_mode must be simple_pa_v1 in Phase 6, got {score_mode!r}")
 
     risk = config.get("risk")
     if not isinstance(risk, Mapping):
