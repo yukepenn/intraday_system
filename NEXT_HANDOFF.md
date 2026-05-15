@@ -8,7 +8,7 @@ Last updated: **2026-05-15** (Phase 6b Layer1 PA controlled grid).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- **Implementation commit:** after this handoff, read `git log -1 --oneline` / `git rev-parse HEAD` on `main` for the exact SHA (not embedded here to avoid amend workflows).
+- **Implementation commit:** `770ba6f89770ea30057f3abe1ccc630bd0555d17` — Layer1: run PA controlled grid
 
 ## B. Task scope
 
