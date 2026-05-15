@@ -1,0 +1,11 @@
+command,exit_status,pass_fail,notes
+python -m compileall -q src,0,pass,
+python -m pytest -q,0,pass,303 passed
+ruff format --check,0,pass,
+ruff check,0,pass,
+intraday.cli.main --help,0,pass,
+intraday.cli.main doctor,0,pass,
+intraday.cli.main validate structure,0,pass,
+layer1 grid-inspect controlled_pa_qqq_2024h1,0,pass,combo_count=16
+data validate-curated QQQ 2024H1,na,skip,no local parquet
+layer1 grid full run QQQ,na,skip,no local parquet

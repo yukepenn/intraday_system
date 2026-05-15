@@ -1,0 +1,7 @@
+field,value
+layer1_config,configs/layer1/controlled_pa_qqq_2024h1.yaml
+strategy_grid,configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml
+combo_count,16
+execution_mode,reference
+max_trades_per_session,1
+grid_axes,body_pct_min x require_vwap_side x stop_mode x target_r

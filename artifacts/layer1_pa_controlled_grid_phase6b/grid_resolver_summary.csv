@@ -1,0 +1,6 @@
+item,detail
+merge_order,base YAML -> fixed overrides -> grid combo
+overlap,ValueError if fixed and grid share a path,
+params_json,stable JSON; grid axes only; bool/number types preserved,
+config_hash,SHA256 stable_json_dumps(resolved_config),
+combo_id,combo_0001.. deterministic grid key order,

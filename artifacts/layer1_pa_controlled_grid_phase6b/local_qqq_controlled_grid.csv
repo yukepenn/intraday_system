@@ -1,0 +1,3 @@
+item,value
+status,skipped
+reason,No curated QQQ parquet in repo workspace (gitignored / absent),

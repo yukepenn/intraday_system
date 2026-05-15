@@ -103,9 +103,20 @@ Highlights:
 
 Decision label on success: **`LAYER1_PA_SMOKE_COMPLETE`**.
 
-## Phase 6b — Layer1 PA controlled grid — **next**
+## Phase 6b — Layer1 PA controlled grid — **complete**
 
 Goal: **small**, explicit PA parameter grids behind Layer1 gates (not broad research).
+
+Highlights:
+
+- `configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml` (16 explicit combos) + `configs/layer1/controlled_pa_qqq_2024h1.yaml`
+- `load_layer1_controlled_grid_config` / `validate_layer1_controlled_grid_config`; `ResolvedGridCombo`, `resolve_grid_combos`, `run_layer1_controlled_grid`, `Layer1GridResult`
+- `layer1 grid` / `layer1 grid-inspect`; `summarize_trade_results(..., count_rejected_in_metrics=...)` + skip diagnostics `execution_rejected_included` / `execution_rejected_excluded`
+- Tests: `test_layer1_grid*`, `test_layer1_grid_cli`; `pytest` **303** at handoff
+
+Decision label on success: **`LAYER1_PA_CONTROLLED_GRID_COMPLETE`** (local QQQ grid skipped when curated data absent; synthetic tests are acceptance).
+
+Recommended next step: **`REVIEW_LAYER1_PA_GRID_RESULTS`**.
 
 ## Phase 7 — Port GAP and CCI
 
@@ -126,4 +137,4 @@ Goal: **small**, explicit PA parameter grids behind Layer1 gates (not broad rese
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Recommended next step after Phase 6: **`IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`**.
+Recommended next step after Phase 6b: **`REVIEW_LAYER1_PA_GRID_RESULTS`** (then optionally `IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION` if artifacts merit it).

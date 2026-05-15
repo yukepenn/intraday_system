@@ -50,6 +50,9 @@ data/cache/**
 artifacts/**/local/
 artifacts/layer1_pa_smoke_phase6/local_run/
 artifacts/layer1_pa_smoke_phase6/_pytest_runner*/
+artifacts/layer1_pa_controlled_grid_phase6b/local_run/
+artifacts/layer1_pa_controlled_grid_phase6b/_pytest_runner*/
+artifacts/layer1_pa_controlled_grid_phase6b/_pytest_cfg*/
 artifacts/**/tmp/
 artifacts/**/logs/
 

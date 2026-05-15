@@ -1,0 +1,5 @@
+issue,file_path,action_taken,tests_added,behavior_changed_yes_no,notes
+CHANGES/phase labels fresh,CHANGES.md,Document Phase 6b under Unreleased,no,no,Status sync
+PHASE_PLAN 6b recommendation,docs/PHASE_PLAN.md,6b complete + next review,no,no,
+count_rejected_intents semantics,src/intraday/backtest/metrics.py;runner,Option A: metrics include rejects when true,test_backtest_metrics;test_layer1_runner,yes,Skip diagnostics split included/excluded
+grid infrastructure,multiple,implement resolver+runner+reports+CLI,test_layer1_grid*,yes,Phase 6b scope

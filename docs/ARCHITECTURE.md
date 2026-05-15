@@ -49,7 +49,7 @@ The engine never reads CSV/MD as configuration. The engine never writes a YAML t
 | `strategies/` | signal generation (entry, side, stop, target_r, score) | PnL, slippage, fills, EOD |
 | `execution/` | fills, slippage, commission, stop/target/EOD/max-hold, R-multiple | strategy logic, router logic |
 | `management/` | management modes (fixed_r, scaleout, trailing, no_followthrough) | strategy signal logic |
-| `layer1/` | Phase 6: smoke run (`run_layer1_smoke`) + YAML validation; future: sweeps, selection gates, candidate YAML writing | runtime Layer2 routing |
+| `layer1/` | Phase 6 smoke (`run_layer1_smoke`) + Phase 6b controlled grid (`run_layer1_controlled_grid`); YAML validation; future: candidate selection gates + candidate YAML writing | runtime Layer2 routing |
 | `layer2/` | router, conflict, permissions, daily-risk state, management assignment | sweep, candidate selection |
 | `layer3/` | folds, frozen-system runner, decision artifacts | tuning anything |
 | `portfolio/` | sizing, risk limits, equity tracking | execution, features |
@@ -67,8 +67,8 @@ parquet (data/raw/...)
   → SignalMatrix (cached by strategy_hash + feature_hash + data_hash)
   → TradeIntent[]
   → execution.reference / execution.fast → TradeResult rows (Phase 6 metrics aggregate TradeResult)
-  → metrics (TradeResult-only summaries in Phase 6 smoke)
-  → Layer1 sweep table → candidate YAMLs (future; Phase 6 does not promote candidates)
+  → metrics (TradeResult-only summaries; Phase 6 smoke + 6b grid one row per combo)
+  → Layer1 sweep table → candidate YAMLs (future; Phase 6/6b do not promote candidates)
   → Layer2 router → routed TradeIntents → execution → TradeRecord (Layer2 truth)
   → Layer3 folds → decision doc
 ```

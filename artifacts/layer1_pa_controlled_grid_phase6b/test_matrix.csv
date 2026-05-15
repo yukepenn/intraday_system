@@ -1,0 +1,6 @@
+file,category
+tests/unit/test_layer1_grid.py,resolver
+tests/unit/test_layer1_grid_config.py,config
+tests/unit/test_layer1_grid_runner.py,runner
+tests/unit/test_layer1_grid_reports.py,reports
+tests/smoke/test_layer1_grid_cli.py,cli

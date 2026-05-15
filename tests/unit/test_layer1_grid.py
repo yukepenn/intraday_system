@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
+import json
+
 import pytest
+from intraday.core.paths import repo_root
 from intraday.layer1.grid import (
     expand_grid,
+    grid_document_combo_count,
+    load_grid_document,
     normalize_override_mapping,
+    resolve_grid_combos,
     resolve_grid_document,
 )
 
@@ -96,3 +102,40 @@ def test_list_values_remain_leaves() -> None:
     )
     assert len(out) == 1
     assert out[0]["features"]["vol_windows"] == [10, 20, 40]
+
+
+def test_controlled_small_yaml_combo_count() -> None:
+    path = repo_root() / "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml"
+    doc = load_grid_document(path)
+    assert grid_document_combo_count(doc) == 16
+
+
+def test_resolve_grid_combos_controlled_small() -> None:
+    path = repo_root() / "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml"
+    doc = load_grid_document(path)
+    combos = resolve_grid_combos(doc)
+    assert len(combos) == 16
+    assert combos[0].combo_id == "combo_0001"
+    assert combos[-1].combo_id == "combo_0016"
+    assert combos[0].config_hash != combos[1].config_hash
+    params = json.loads(combos[0].params_json)
+    assert "signal" in params
+    assert isinstance(params["signal"]["require_vwap_side"], bool)
+    assert isinstance(params["signal"]["body_pct_min"], float)
+
+
+def test_resolve_grid_combos_hash_stable() -> None:
+    path = repo_root() / "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml"
+    doc = load_grid_document(path)
+    h1 = [c.config_hash for c in resolve_grid_combos(doc)]
+    h2 = [c.config_hash for c in resolve_grid_combos(doc)]
+    assert h1 == h2
+
+
+def test_expand_grid_key_order_deterministic() -> None:
+    g1 = {"a.x": [1, 2], "b.y": [3, 4]}
+    g2 = {"b.y": [3, 4], "a.x": [1, 2]}
+    c1 = expand_grid(g1)
+    c2 = expand_grid(g2)
+    assert len(c1) == len(c2) == 4
+    assert c1 != c2

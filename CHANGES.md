@@ -4,6 +4,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-15
 
+### Phase 6b — Layer1 PA controlled grid
+
+- Feat(layer1): `ResolvedGridCombo`, `resolve_grid_combos`, `run_layer1_controlled_grid`, `Layer1GridResult` / `Layer1GridRow`, `load_layer1_controlled_grid_config` + validation (16-combo cap, no prefix slicing).
+- Feat(layer1): `write_layer1_grid_artifacts` (`sweep_results.csv`, summaries, distributions, top rows).
+- Feat(cli): `layer1 grid`, `layer1 grid-inspect`.
+- Feat(grid): `configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml`, `configs/layer1/controlled_pa_qqq_2024h1.yaml`.
+- Fix(metrics): `summarize_trade_results(..., count_rejected_in_metrics=...)` + smoke/grid skip keys `execution_rejected_included` / `execution_rejected_excluded`.
+- Docs: `LAYER1_CONTRACT`, `BACKTEST_CONTRACT`, `LAYER_FLOW`, `PHASE_PLAN`, `ARCHITECTURE`, README/status.
+- Test: `test_layer1_grid*`, `test_layer1_grid_cli`; `pytest` **303** at handoff.
+- Chore(artifacts): `artifacts/layer1_pa_controlled_grid_phase6b/*` review bundle; gitignore `local_run/` + `_pytest_*` under that tree.
+
 ### Phase 6 — Layer1 PA smoke run
 
 - Feat(layer1): `run_layer1_smoke`, smoke YAML loader/validation (`configs/layer1/smoke_pa_qqq_2024h1.yaml`), session scan (max trades / skip while open), `Layer1SmokeResult`.

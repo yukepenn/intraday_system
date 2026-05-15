@@ -46,7 +46,11 @@ def _max_drawdown_r(cumulative: list[float]) -> float:
     return float(max_dd)
 
 
-def summarize_trade_results(results: Sequence[TradeResult]) -> BacktestMetrics:
+def summarize_trade_results(
+    results: Sequence[TradeResult],
+    *,
+    count_rejected_in_metrics: bool = True,
+) -> BacktestMetrics:
     """Aggregate acceptance, R-multiples, exits, and rejections from ``results`` only.
 
     Conventions (Phase 6):
@@ -59,6 +63,10 @@ def summarize_trade_results(results: Sequence[TradeResult]) -> BacktestMetrics:
       If there are no positive Rs, returns ``0.0``.
     - ``max_drawdown_r`` is the maximum peak-to-trough drop on the **cumulative sum**
       of accepted ``r_multiple`` values (not equity curve dollars).
+
+    If ``count_rejected_in_metrics`` is ``False`` (Layer1 grid/smoke option), rejected
+    rows remain in ``total_results`` but do not populate ``rejected_trades`` or
+    ``reject_reason_counts`` — use runner ``skip_counts`` / diagnostics for rejects.
     """
     seq = tuple(results)
     total_results = len(seq)
@@ -71,16 +79,18 @@ def summarize_trade_results(results: Sequence[TradeResult]) -> BacktestMetrics:
     for r in accepted:
         key = _enum_name(ExitReason, r.exit_reason)
         exit_reason_counts[key] = exit_reason_counts.get(key, 0) + 1
-    for r in rejected:
-        key = _enum_name(RejectReason, r.reject_reason)
-        reject_reason_counts[key] = reject_reason_counts.get(key, 0) + 1
+    if count_rejected_in_metrics:
+        for r in rejected:
+            key = _enum_name(RejectReason, r.reject_reason)
+            reject_reason_counts[key] = reject_reason_counts.get(key, 0) + 1
 
     n_acc = len(accepted)
+    rej_metric_count = len(rejected) if count_rejected_in_metrics else 0
     if n_acc == 0:
         return BacktestMetrics(
             total_results=total_results,
             accepted_trades=0,
-            rejected_trades=len(rejected),
+            rejected_trades=rej_metric_count,
             total_r=0.0,
             avg_r=0.0,
             median_r=0.0,
@@ -120,7 +130,7 @@ def summarize_trade_results(results: Sequence[TradeResult]) -> BacktestMetrics:
     return BacktestMetrics(
         total_results=total_results,
         accepted_trades=n_acc,
-        rejected_trades=len(rejected),
+        rejected_trades=rej_metric_count,
         total_r=float(sum(rs)),
         avg_r=float(sum(rs) / n_acc),
         median_r=float(med),

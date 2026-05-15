@@ -1,0 +1,5 @@
+section,item,metric,value,interpretation
+scope,grid,combo_count,16,balanced 2^4 axes
+tests,pytest,passed,303,
+local,qqq_grid,status,skipped,no curated data
+decision,phase6b,label,LAYER1_PA_CONTROLLED_GRID_COMPLETE,infrastructure complete

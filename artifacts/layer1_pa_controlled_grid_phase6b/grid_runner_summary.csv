@@ -1,0 +1,5 @@
+item,detail
+entrypoint,run_layer1_scan_execute reused via layer1_scan_trade_intents,
+feature_reuse,single build_feature_matrix per run,
+per_combo,validate strategy;signals;adapter;scan;metrics,
+reject_policy,follows count_rejected_intents,

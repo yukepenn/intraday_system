@@ -61,10 +61,10 @@ data → features → strategy signals → execution → Layer1 candidates → L
                      |
                      v
 +----------------------------------------------------+
-| Layer 1: per-strategy sweep + selection            |
-|   sweep_results.parquet/csv                        |
-|   selected_candidates_summary.csv                  |
-|   configs/candidates/<root>/*.yaml  (frozen)       |
+| Layer 1: controlled infrastructure                 |
+|   Phase 6b: small explicit YAML grid → combo rows  |
+|   sweep_results.csv (one row per combo; audit)     |
+|   (later: selection, candidate YAML promotion)     |
 +----------------+-----------------------------------+
                  |
                  v

@@ -1,0 +1,9 @@
+branch,main
+local_head_before_work,8ed49ff1d7f9ed5fe0013c335155010a8a36d8ce
+remote_main_at_preflight,8ed49ff1d7f9ed5fe0013c335155010a8a36d8ce
+local_remote_matched,yes
+working_tree,clean_at_phase0_preflight
+next_handoff_decision_phase0,LAYER1_PA_SMOKE_COMPLETE
+next_handoff_recommended,IMPLEMENT_LAYER1_PA_CONTROLLED_GRID
+phase6_smoke_pytest,286
+notes,See baseline_inventory.md

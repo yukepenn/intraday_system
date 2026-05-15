@@ -1,0 +1,24 @@
+strategy: pa_buy_sell_close_trend
+base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+description: Small balanced PA controlled grid for Phase 6b Layer1 infrastructure validation.
+
+fixed:
+  signal.side: long_only
+  signal.entry_start_minute: 60
+  signal.entry_end_minute: 300
+  signal.close_position_min: 0.60
+  signal.score_mode: simple_pa_v1
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+  backtest.max_hold_minutes: 50
+
+grid:
+  signal.body_pct_min: [0.48, 0.56]
+  signal.require_vwap_side: [false, true]
+  risk.stop_mode: [signal_low, rolling_low]
+  risk.target_r: [1.0, 1.35]

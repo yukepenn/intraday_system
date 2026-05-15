@@ -1,0 +1,9 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/layer1/grid.py,grid resolver,yes,source,no,
+src/intraday/layer1/config.py,YAML loaders,yes,source,no,
+src/intraday/layer1/runner.py,smoke+grid runner,yes,source,no,
+src/intraday/layer1/reports.py,artifact writers,yes,source,no,
+src/intraday/backtest/metrics.py,TradeResult metrics,yes,source,no,
+configs/layer1/controlled_pa_qqq_2024h1.yaml,runtime grid config,yes,source,no,
+configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml,16-combo grid,yes,source,no,
+artifacts/layer1_pa_controlled_grid_phase6b/local_run/,local outputs,no,generated,yes,gitignored

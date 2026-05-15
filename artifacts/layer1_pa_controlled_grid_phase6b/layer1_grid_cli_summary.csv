@@ -1,0 +1,3 @@
+command,notes
+layer1 grid --config,runs controlled grid
+layer1 grid-inspect --config,combo count manifest,

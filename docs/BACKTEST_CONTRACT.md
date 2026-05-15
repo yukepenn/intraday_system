@@ -2,7 +2,7 @@
 
 ## Role
 
-Backtest orchestration (Layer1 smoke runner in Phase 6) **may**:
+Backtest orchestration (Layer1 smoke runner in Phase 6, controlled grid runner in Phase 6b) **may**:
 
 - Load bars from curated data.
 - Build `FeatureMatrix` from feature YAML.
@@ -26,7 +26,7 @@ Orchestration **must not**:
 
 ## Metrics
 
-- `BacktestMetrics` / `summarize_trade_results` use **only** `TradeResult` fields (including execution-provided `r_multiple`, `exit_reason`, `reject_reason`).
+- `BacktestMetrics` / `summarize_trade_results` use **only** `TradeResult` fields (including execution-provided `r_multiple`, `exit_reason`, `reject_reason`). The optional `count_rejected_in_metrics` flag controls whether rejected rows populate `rejected_trades` and `reject_reason_counts`; when `False`, use Layer1 skip diagnostics for reject tallies.
 
 ## Reference
 

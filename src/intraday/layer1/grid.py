@@ -1,7 +1,6 @@
 """Layer1 grid resolver.
 
-Pure config logic. Central to the build plan, so it is implemented now (Phase 0/1A)
-and unit-tested in tests/unit/test_layer1_grid.py.
+Pure config logic for controlled parameter grids (Phase 6b).
 
 Rules (from configs/strategies/grids/*):
   base config -> fixed overrides -> per-combo grid overrides
@@ -16,13 +15,40 @@ from __future__ import annotations
 import copy
 import itertools
 from collections.abc import Iterator, Mapping
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
+from intraday.core.config import load_yaml
+from intraday.core.hashing import hash_config, stable_json_dumps
+from intraday.core.paths import repo_root
+
 __all__ = [
+    "ResolvedGridCombo",
     "expand_grid",
+    "load_grid_document",
     "normalize_override_mapping",
+    "resolve_grid_combos",
     "resolve_grid_document",
 ]
+
+
+@dataclass(frozen=True)
+class ResolvedGridCombo:
+    """One fully-resolved strategy config from a grid document."""
+
+    combo_id: str
+    overrides: dict[str, Any]
+    fixed_overrides: dict[str, Any]
+    grid_overrides: dict[str, Any]
+    resolved_config: dict[str, Any]
+    params_json: str
+    config_hash: str
+
+
+def load_grid_document(path: Path | str) -> dict[str, Any]:
+    """Load a strategy grid YAML document (runtime)."""
+    return load_yaml(path)
 
 
 def normalize_override_mapping(mapping: Mapping[str, Any]) -> dict[tuple[str, ...], Any]:
@@ -61,6 +87,31 @@ def normalize_override_mapping(mapping: Mapping[str, Any]) -> dict[tuple[str, ..
     return result
 
 
+def _paths_to_nested(path_values: Mapping[tuple[str, ...], Any]) -> dict[str, Any]:
+    """Build a nested dict from dotted-path keys."""
+    root: dict[str, Any] = {}
+    for path, val in path_values.items():
+        cursor: dict[str, Any] = root
+        for segment in path[:-1]:
+            nxt = cursor.get(segment)
+            if not isinstance(nxt, dict):
+                nxt = {}
+                cursor[segment] = nxt
+            cursor = nxt
+        cursor[path[-1]] = copy.deepcopy(val)
+    return root
+
+
+def _deep_merge_dicts(a: Mapping[str, Any], b: Mapping[str, Any]) -> dict[str, Any]:
+    out = copy.deepcopy(dict(a))
+    for k, v in b.items():
+        if k in out and isinstance(out[k], dict) and isinstance(v, dict):
+            out[k] = _deep_merge_dicts(out[k], v)
+        else:
+            out[k] = copy.deepcopy(v)
+    return out
+
+
 def _apply_overrides(
     base: dict[str, Any],
     overrides: dict[tuple[str, ...], Any],
@@ -86,6 +137,7 @@ def expand_grid(grid: Mapping[str, Any]) -> list[dict[tuple[str, ...], Any]]:
     of leaf values. The cartesian product produces one combo per output entry.
 
     Empty grid returns ``[{}]`` (one combo: no axes).
+    Key order follows the mapping iteration order (YAML insertion order).
     """
     if not grid:
         return [{}]
@@ -103,7 +155,7 @@ def expand_grid(grid: Mapping[str, Any]) -> list[dict[tuple[str, ...], Any]]:
     combos: list[dict[tuple[str, ...], Any]] = []
     for product in itertools.product(*(vals for _, vals in axes)):
         combo: dict[tuple[str, ...], Any] = {}
-        for (path, _), val in zip(axes, product, strict=False):
+        for (path, _), val in zip(axes, product, strict=True):
             combo[path] = val
         combos.append(combo)
     return combos
@@ -145,3 +197,68 @@ def resolve_grid_document(
         merged = _apply_overrides(base_dict, fixed_overrides)
         merged = _apply_overrides(merged, combo)
         yield merged
+
+
+def grid_document_combo_count(doc: Mapping[str, Any]) -> int:
+    """Return the number of cartesian combos implied by ``doc['grid']``."""
+    grid = doc.get("grid") or {}
+    if not isinstance(grid, Mapping):
+        raise TypeError("grid document 'grid' must be a mapping")
+    return len(expand_grid(grid))
+
+
+def resolve_grid_combos(
+    doc: Mapping[str, Any],
+    *,
+    repo_base: Path | None = None,
+) -> list[ResolvedGridCombo]:
+    """Load base strategy config from ``doc['base_config']`` and expand grid combos.
+
+    ``doc`` must include ``base_config`` (repo-relative path), optional ``fixed``,
+    and optional ``grid`` mappings (grid axis lists).
+    """
+    root = repo_base or repo_root()
+    base_rel = str(doc.get("base_config", "")).strip()
+    if not base_rel:
+        raise ValueError("grid document requires base_config")
+    base_path = Path(base_rel)
+    if not base_path.is_absolute():
+        base_path = root / base_path
+    base_raw = load_yaml(base_path)
+    base_dict = dict(base_raw)
+
+    fixed = doc.get("fixed") or {}
+    grid = doc.get("grid") or {}
+    if not isinstance(fixed, Mapping):
+        raise TypeError("grid document 'fixed' must be a mapping when present")
+    if not isinstance(grid, Mapping):
+        raise TypeError("grid document 'grid' must be a mapping when present")
+
+    fixed_overrides = normalize_override_mapping(fixed)
+    combos = expand_grid(grid)
+    grid_paths: set[tuple[str, ...]] = set()
+    for combo in combos:
+        grid_paths.update(combo.keys())
+    _check_overlap(set(fixed_overrides.keys()), grid_paths)
+
+    fixed_nested = _paths_to_nested(fixed_overrides)
+    resolved: list[ResolvedGridCombo] = []
+    for i, combo in enumerate(combos, start=1):
+        grid_nested = _paths_to_nested(combo)
+        merged_cfg = _apply_overrides(base_dict, fixed_overrides)
+        merged_cfg = _apply_overrides(merged_cfg, combo)
+        ov = _deep_merge_dicts(fixed_nested, grid_nested)
+        params_json = stable_json_dumps(grid_nested)
+        h = hash_config(merged_cfg)
+        resolved.append(
+            ResolvedGridCombo(
+                combo_id=f"combo_{i:04d}",
+                overrides=ov,
+                fixed_overrides=copy.deepcopy(fixed_nested),
+                grid_overrides=copy.deepcopy(grid_nested),
+                resolved_config=merged_cfg,
+                params_json=params_json,
+                config_hash=h,
+            )
+        )
+    return resolved

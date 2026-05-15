@@ -218,5 +218,78 @@ def test_execution_rejected_counts(mock_bars, mock_fm, mock_sim) -> None:
     with patch("intraday.layer1.runner.get_strategy", return_value=mock_defn):
         res = run_layer1_smoke(cfgp)
 
-    assert res.skip_counts["execution_rejected"] == 1
+    assert res.skip_counts["execution_rejected_included"] == 1
     assert res.metrics.rejected_trades == 1
+
+
+@patch("intraday.layer1.runner.simulate_trade_path_reference")
+@patch("intraday.layer1.runner.build_feature_matrix")
+@patch("intraday.layer1.runner.load_bars_from_curated")
+def test_execution_rejected_excluded_from_metrics(mock_bars, mock_fm, mock_sim) -> None:
+    root = repo_root()
+    art = root / "artifacts" / "layer1_pa_controlled_grid_phase6b" / "_pytest_runner_rej_excl"
+    cfgp = art / "smoke_unit.yaml"
+    art.mkdir(parents=True, exist_ok=True)
+    rel = art.relative_to(root).as_posix()
+    text = f"""
+run_id: UNIT_LAYER1_REJ_EXCL
+description: unit
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: 2024-01-01
+end: 2024-01-03
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/pa_core_v1.yaml
+  use_cache: false
+strategy:
+  name: pa_buy_sell_close_trend
+  config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 2
+  skip_while_trade_open: true
+  count_rejected_intents: false
+  save_row_level_trades: false
+output:
+  artifact_root: {rel}
+"""
+    cfgp.write_text(text, encoding="utf-8")
+
+    bars = make_bar_matrix(
+        [100.0] * 8,
+        [101.0] * 8,
+        [99.0] * 8,
+        [100.0] * 8,
+        session_id=[0] * 8,
+        minute=list(range(8)),
+    )
+    mock_bars.return_value = bars
+    mock_fm.return_value = FeatureMatrix(
+        values=np.zeros((bars.n_bars, 1)),
+        columns={"x": 0},
+        feature_hash="fh",
+    )
+    sigs = _signal_matrix(8, [0])
+    mock_defn = MagicMock()
+    mock_defn.generate_reference = lambda b, f, c: sigs  # noqa: ARG005
+
+    mock_sim.return_value = TradeResult.rejected(
+        reject_reason=7,
+        candidate_id=1,
+        signal_bar=0,
+        side=int(Side.LONG),
+        qty=1.0,
+    )
+
+    with patch("intraday.layer1.runner.get_strategy", return_value=mock_defn):
+        res = run_layer1_smoke(cfgp)
+
+    assert res.skip_counts["execution_rejected_excluded"] == 1
+    assert res.skip_counts["execution_rejected_included"] == 0
+    assert res.metrics.rejected_trades == 0
+    assert res.metrics.reject_reason_counts == {}

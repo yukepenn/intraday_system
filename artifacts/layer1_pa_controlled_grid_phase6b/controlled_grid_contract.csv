@@ -1,0 +1,7 @@
+contract_item,rule,implemented_yes_no,tests,notes
+role,small explicit grid; one metrics row per combo,yes,test_layer1_grid_runner,
+non_goals,no promotion;broad grid;prefix slice,yes,test_layer1_grid_config,allow_prefix_slicing=false enforced
+flow,base->fixed->grid combo->signals->execution->metrics,yes,integration tests,
+features,BarMatrix once;FeatureMatrix once if same feature cfg,yes,test_layer1_grid_runner mock,
+execution,reference canonical for 6b config,yes,configs/layer1/controlled_pa_qqq_2024h1.yaml,
+artifacts,summaries only;no row-level trade dumps,yes,reports.py,

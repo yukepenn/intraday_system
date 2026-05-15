@@ -54,6 +54,8 @@ REQUIRED_FILES: tuple[str, ...] = (
     "configs/data/sessions_us_equity.yaml",
     "configs/execution/intraday_default.yaml",
     "configs/layer1/smoke_pa_qqq_2024h1.yaml",
+    "configs/layer1/controlled_pa_qqq_2024h1.yaml",
+    "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml",
     "src/intraday/__init__.py",
     "src/intraday/cli/main.py",
 )
@@ -188,7 +190,12 @@ try:
         cmd_features_inspect,
         cmd_features_list,
     )
-    from intraday.cli.layer1_cmds import cmd_layer1_inspect, cmd_layer1_run
+    from intraday.cli.layer1_cmds import (
+        cmd_layer1_grid,
+        cmd_layer1_grid_inspect,
+        cmd_layer1_inspect,
+        cmd_layer1_run,
+    )
     from intraday.cli.strategy_cmds import (
         cmd_strategies_generate_smoke,
         cmd_strategies_inspect,
@@ -317,6 +324,22 @@ try:
         config: str = typer.Option(..., "--config"),
     ) -> None:
         raise typer.Exit(code=cmd_layer1_inspect(config=config))
+
+    @layer1_app.command("grid", help="Run Layer1 controlled PA grid from YAML (Phase 6b).")
+    def _typer_layer1_grid(
+        config: str = typer.Option(
+            ...,
+            "--config",
+            help="Layer1 controlled grid YAML (repo-relative or absolute).",
+        ),
+    ) -> None:
+        raise typer.Exit(code=cmd_layer1_grid(config=config))
+
+    @layer1_app.command("grid-inspect", help="Validate controlled grid YAML and print combo count.")
+    def _typer_layer1_grid_inspect(
+        config: str = typer.Option(..., "--config"),
+    ) -> None:
+        raise typer.Exit(code=cmd_layer1_grid_inspect(config=config))
 
     @data_app.command("inventory", help="Write a raw-data parquet inventory.")
     def _typer_data_inventory(

@@ -86,9 +86,11 @@ Phase **4** — **feature engine MVP** — is implemented: `build_feature_matrix
 
 Phase **5** — **PA strategy signal MVP** — is implemented: `pa_buy_sell_close_trend` consumes `BarMatrix` + `FeatureMatrix` and emits `SignalMatrix` (no execution/PnL). Registry, loader, validation, PA configs, and `strategies` CLI (`list` / `inspect` / `generate-smoke`). See `docs/STRATEGY_CONTRACT.md` and `src/intraday/strategies/`.
 
-Phase **6** — **Layer1 PA smoke run** — is implemented: one controlled YAML (`configs/layer1/smoke_pa_qqq_2024h1.yaml`) drives `BarMatrix` → `FeatureMatrix` → `SignalMatrix` → `TradeIntent` → reference execution → `TradeResult` → `BacktestMetrics` and small artifacts. CLI: `layer1 run` / `layer1 inspect`. See `docs/LAYER1_CONTRACT.md`, `docs/BACKTEST_CONTRACT.md`, and `src/intraday/layer1/`.
+Phase **6** — **Layer1 PA smoke run** — is implemented: one controlled YAML (`configs/layer1/smoke_pa_qqq_2024h1.yaml`) drives `BarMatrix` → `FeatureMatrix` → `SignalMatrix` → `TradeIntent` → reference execution → `TradeResult` → `BacktestMetrics` and small artifacts. CLI: `layer1 run` / `layer1 inspect`.
 
-**Next planned phase:** Phase **6b** — controlled Layer1 PA grid (`IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`) when ready; Layer2/3 still out of scope.
+Phase **6b** — **Layer1 PA controlled grid** — is implemented: `configs/layer1/controlled_pa_qqq_2024h1.yaml` + small strategy grid (`configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml`, **16** explicit combos) runs the same scan pipeline per combo with `sweep_results.csv` summaries. CLI: `layer1 grid` / `layer1 grid-inspect`. Not candidate promotion or broad research.
+
+**Next:** review grid outputs (`REVIEW_LAYER1_PA_GRID_RESULTS`); Layer2/3 still out of scope.
 
 See:
 

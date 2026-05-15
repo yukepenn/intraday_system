@@ -1,0 +1,8 @@
+artifact,purpose
+sweep_results.csv,one row per combo
+controlled_grid_summary.md/csv,run-level rollup
+config_inventory.csv,"combo_id,hash,params"
+grid_inventory.csv,+ signal_hash
+exit/reject/skip reason CSVs,aggregated counts
+top_rows_by_total_r.csv,human review only
+top_rows_by_profit_factor.csv,human review only

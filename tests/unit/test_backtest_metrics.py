@@ -94,9 +94,23 @@ def test_exit_and_reject_distribution_keys_use_enum_names() -> None:
     assert m.reject_reason_counts.get("NO_NEXT_BAR", 0) == 1
 
 
+def test_metrics_rejects_omitted_when_configured() -> None:
+    r = TradeResult.rejected(
+        reject_reason=int(RejectReason.INVALID_STOP),
+        candidate_id=1,
+        signal_bar=3,
+        side=int(Side.LONG),
+        qty=1.0,
+    )
+    m = summarize_trade_results([r], count_rejected_in_metrics=False)
+    assert m.total_results == 1
+    assert m.rejected_trades == 0
+    assert m.reject_reason_counts == {}
+
+
 def test_metrics_use_trade_result_fields_only() -> None:
     """Sanity: summarize_trade_results has no bar-matrix parameters (API shape)."""
     import inspect
 
     sig = inspect.signature(summarize_trade_results)
-    assert len(sig.parameters) == 1
+    assert "count_rejected_in_metrics" in sig.parameters
