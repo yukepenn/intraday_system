@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-13** (Phase 4 feature engine MVP).
+Last updated: **2026-05-15** (Phase 5 PA strategy signal MVP).
 
 ---
 
@@ -8,92 +8,102 @@ Last updated: **2026-05-13** (Phase 4 feature engine MVP).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- After this task’s commit: use `git log -1 --oneline` and `git rev-parse HEAD` for the authoritative SHA (pre-Phase-4 baseline was `723787f` in `artifacts/feature_engine_phase4/baseline_inventory.*`).
-- Windows: `git config --global --add safe.directory <repo>` if Git reports “dubious ownership”.
+- Pre-Phase-5 baseline: `ef7dcd34c2c22cda6679d7ca2df19d852bfe2474`
+- After commit: `git log -1 --oneline` / `git rev-parse HEAD`
+- Windows: `git config --global --add safe.directory <repo>` if needed
 
 ## B. Task scope
 
-Phase **4**: **feature engine MVP** — `BarMatrix` + feature YAML + optional `FeatureStore` → deterministic `FeatureMatrix` (market facts only; `float64`; `feature_hash`).
+Phase **5**: **PA strategy signal MVP** — `BarMatrix` + `FeatureMatrix` + strategy YAML → `SignalMatrix` (no execution, no PnL, no Layer1).
 
-**In scope:** `resolve_feature_config` / `hash_feature_config`, builtin registry, reference kernels (VWAP, ORB, volatility, price action, volume, regime), `build_feature_matrix`, `FeatureStore`, `features` CLI (`list`, `inspect`, `build`), `docs/FEATURE_CONTRACT.md`, `configs/features/pa_core_v1.yaml`, synthetic + local QQQ smoke tests, `artifacts/feature_engine_phase4/` review bundle.
+**In scope:** `docs/STRATEGY_CONTRACT.md`, `SignalMatrix` validation + `signal_hash`, strategy registry/loader/validation, `pa_buy_sell_close_trend`, PA base/metadata/grid YAML, `strategies` CLI, synthetic + no-lookahead tests, `artifacts/strategy_pa_phase5/`.
 
-**Out of scope:** PA/GAP/CCI strategy signals, Layer1/2/3, candidate YAML, router, management overlays, portfolio sizing, sweeps, feature **fast** kernels, execution semantic changes.
+**Out of scope:** Layer1/2/3, backtests, PnL, execution calls from strategy, GAP/CCI/VWAP/ORB strategies, candidate YAML, grid sweeps, management, portfolio sizing, strategy fast kernels.
 
-## C. Feature contract
+## C. Strategy contract
 
-- Inputs: `BarMatrix`, YAML or dict (`feature_set_id`, `version`, `features`), optional `FeatureStore`.
-- Output: `FeatureMatrix` (`values` `(N,K)` `float64`, `columns` map, `feature_hash`).
-- No-lookahead: bar `t` uses indices `<= t` only; current bar allowed; rolling resets on `session_id`.
-- NaN for undefined / zero denominators; `inf` stripped in engine.
-- Normative: `docs/FEATURE_CONTRACT.md`.
+- Inputs: `BarMatrix`, `FeatureMatrix`, strategy config; no parquet.
+- Output: `SignalMatrix` only (`signal_v1`).
+- Non-entry: `side=0`, NaN stop/target_r/score, `setup_code=0`.
+- Entry (Phase 5 long-only): `side=+1`, finite stop `< close`, `target_r>0`, finite score, setup code `1001`.
+- Timing: signal at bar close; current-bar features allowed; no future bars.
+- Missing feature columns → `ConfigError`.
+- Normative: `docs/STRATEGY_CONTRACT.md`.
 
-## D. Feature config
+## D. Strategy configs / metadata / grid
 
-- **`configs/features/pa_core_v1.yaml`** — PA-core market facts (22 columns): VWAP + distances, ORB 15m, volatility (incl. `atr_like_20`, `range_mean_20`), price action (20-bar rolling), volume (20), regime (20).
+- **Base:** `configs/strategies/base/pa_buy_sell_close_trend.yaml`
+- **Metadata:** `configs/strategies/metadata/pa_buy_sell_close_trend.yaml`
+- **Grid skeleton:** `configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml` (not run in Phase 5)
 
-## E. Feature registry / hashing
+## E. Registry / loader / validation
 
-- `register_builtin_features()` registers six groups (`vwap`, `orb`, `volatility`, `price_action`, `volume`, `regime`).
-- `hash_feature_config` = SHA-256 over `{feature_engine_semantic_version, resolved}` via `hash_config` (sorted JSON).
+- `register_builtin_strategies()` → `pa_buy_sell_close_trend`
+- `load_strategy_config` / `load_strategy_metadata` / `load_strategy_grid` / `validate_strategy_config`
+- PA validation: entry window 0..389, `long_only`, stop modes, `target_r>0`
 
-## F. Feature engine
+## F. PA signal logic
 
-- `build_feature_matrix(..., mode="reference")` — `mode="fast"` raises `IntradaySystemError`.
-- Column order: canonical group order; duplicate names rejected at resolve/collect.
-- Cache: if `use_cache` and `store`, `get(data_hash, feature_hash)` then `put` on miss.
+- Module: `src/intraday/strategies/pa/buy_sell_close_trend.py`
+- Required features: `body_pct`, `close_position_in_range`, `trend_slope_like_20`, `close_vs_rolling_mean_20`, `vwap_side`, `atr_like_20`, `rolling_low_20`, `bar_range`
+- Stop modes: `signal_low`, `rolling_low`, `atr_buffer`
+- Score: `simple_pa_v1`
+- Not QT-exact (no climax/CBC3 filters)
 
-## G. Kernels implemented
+## G. SignalMatrix semantics
 
-- VWAP (session), ORB (minute gate), true range + `atr_like` / `range_mean`, price-action ratios + rolling high/low, volume mean / rel volume, regime deltas / lag slope — all reference NumPy.
+- `validate_signal_matrix` in `intraday.strategies.contracts`
+- `compute_signal_hash` includes strategy version, config hash, feature_hash
 
-## H. FeatureStore / cache
+## H. No-lookahead tests
 
-- Root default `data/cache/features/`; layout `data_hash=…/feature_hash=…/{matrix.npz,columns.json,meta.json}`.
-- Local-only; not runtime truth; gitignored; corrupt reads raise `IntradaySystemError`.
+- `tests/unit/test_strategy_pa_buy_sell_close_trend.py` — future feature/bar mutations + current-bar rule
+- Artifact: `artifacts/strategy_pa_phase5/no_lookahead_tests.*`
 
-## I. CLI / local QQQ smoke
+## I. Local QQQ signal smoke
 
-- `features list`, `features inspect`, `features build` (Typer).
-- Local QQQ 2024H1 (when curated present): 48360 rows × 22 features; `feature_hash` `facb93387b6460a7f79bfd08a23b71560539d284f5ca2f0e1b565cb224a15498`; `--no-cache` smoke documented under `artifacts/feature_engine_phase4/local_qqq_feature_build.*`.
+- QQQ 2024-01-01..2024-06-30: 48360 rows, 4092 entries, `signal_hash` `ad0aa021cdd2001d687652328d5ef6bc772a1455b632eaf55d842df1275149cc`
+- `--no-cache` / `cache_used: false`; no row-level signal files written
+- See `artifacts/strategy_pa_phase5/local_qqq_signal_smoke.*`
 
 ## J. Tests / validation
 
 - `python -m compileall -q src` — pass
-- `pytest -q` — **216** passed
+- `pytest -q` — **257** passed
 - Ruff format/check — pass
-- CLI: `--help`, `doctor`, `validate structure`, `features list`, `features inspect` — pass
-- Data smoke (local curated present): `data validate-curated` + `data load-bars` QQQ 2024H1 — pass
+- CLI: `--help`, `doctor`, `validate structure`, `strategies list|inspect|generate-smoke` — pass
+- Data/feature smoke (local curated): pass
 
-See `artifacts/feature_engine_phase4/validation_results.*`.
+See `artifacts/strategy_pa_phase5/validation_results.*`.
 
 ## K. Explicit non-implemented items
 
-- PA/GAP/CCI strategy signals; Layer1 runner; candidate generation; Layer2 router; Layer3 validation; management overlays; portfolio sizing; broad sweeps; **feature fast kernels**; batch execution fast API.
+- Layer1 runner; backtest sweep; candidate generation; GAP/CCI strategies; Layer2 router; Layer3 validation; management overlays; portfolio sizing; broad sweeps; strategy fast kernels; PnL outside execution; `max_trades_per_day` enforcement in signal generator.
 
 ## L. Risks / blockers
 
-- **ORB** kernel is O(n²) per `open_minutes` list entry — fine for MVP; profile before huge windows.
-- **Git safe.directory** on some Windows setups.
-- **SPY** legacy raw layout until migrated.
+- PA MVP ≠ full QT parity.
+- High local entry count not validated for edge quality.
+- Git `safe.directory` on some Windows setups.
 
 ## M. Files changed (high level)
 
-- `src/intraday/features/{engine,specs,registry,store,base,__init__}.py`, `src/intraday/features/kernels/*.py`
-- `src/intraday/cli/{main,feature_cmds}.py`, `src/intraday/core/registry.py` (`clear()`)
-- `configs/features/pa_core_v1.yaml`
-- `docs/{FEATURE_CONTRACT,CACHE_CONTRACT,LAYER_FLOW,PHASE_PLAN,ARCHITECTURE}.md`
-- `tests/unit/test_feature_*.py`, `tests/unit/test_features_*.py`, `tests/smoke/test_feature_cli.py`
-- `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
-- `artifacts/feature_engine_phase4/*`
+- `src/intraday/strategies/{contracts,registry,loader,config_validation,pa/buy_sell_close_trend.py}`
+- `src/intraday/cli/{main,strategy_cmds}.py`
+- `configs/strategies/{base,metadata,grids}/pa_buy_sell_close_trend*.yaml`
+- `docs/STRATEGY_CONTRACT.md`, `docs/{LAYER_FLOW,PHASE_PLAN}.md`
+- `tests/unit/test_strategy_*.py`, `tests/smoke/test_strategy_cli.py`, `tests/helpers/strategy.py`
+- Status: `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `NEXT_HANDOFF.md`
+- `artifacts/strategy_pa_phase5/*`
 
 ## N. Artifact hygiene
 
-- No raw/curated parquet, cache, npy/npz/memmap, or forbidden paths **staged**.
+- No raw/curated parquet, feature/signal cache, npy/npz/memmap, or row-level signals staged.
 
 ## O. Decision
 
-`FEATURE_ENGINE_MVP_COMPLETE`
+`PA_STRATEGY_MVP_COMPLETE`
 
 ## P. Recommended next step
 
-`IMPLEMENT_PA_STRATEGY_MVP`
+`IMPLEMENT_LAYER1_PA_SMOKE_RUN`

@@ -1,0 +1,7 @@
+test_area,scenario,test_name,expected_behavior,status,notes
+body_pct,future mutation,test_no_lookahead_future_body_pct,unchanged <=k,pass,
+trend_slope,future mutation,test_no_lookahead_future_trend_slope,unchanged <=k,pass,
+rolling_low,future mutation,test_no_lookahead_future_rolling_low,unchanged <=k,pass,
+vwap_side,future mutation,test_no_lookahead_future_vwap_side,unchanged <=k,pass,
+bar OHLC,future mutation,test_no_lookahead_future_bar_close,unchanged <=k,pass,
+current bar,change at t,test_current_bar_feature_change_may_change_signal_at_t,may change at t,pass,bar-close rule

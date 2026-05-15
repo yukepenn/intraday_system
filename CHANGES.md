@@ -2,7 +2,17 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
-## [Unreleased] – 2026-05-13
+## [Unreleased] – 2026-05-15
+
+### Phase 5 — PA strategy signal MVP
+
+- Feat(strategies): `pa_buy_sell_close_trend` signal generator (`BarMatrix` + `FeatureMatrix` → `SignalMatrix`; no parquet/execution/PnL).
+- Feat(strategies): registry, loader, PA config validation, deterministic `signal_hash`.
+- Feat(cli): `strategies list`, `strategies inspect`, `strategies generate-smoke`.
+- Feat(config): PA base/metadata/grid YAML under `configs/strategies/`.
+- Docs: `STRATEGY_CONTRACT.md`; updates to `LAYER_FLOW`, `PHASE_PLAN`, `ARCHITECTURE`, README/status handoff.
+- Test: `tests/unit/test_strategy_*.py`, `tests/smoke/test_strategy_cli.py`, `tests/helpers/strategy.py`.
+- Chore(artifacts): `artifacts/strategy_pa_phase5/` Phase 5 review bundle.
 
 ### Phase 4 — Feature engine MVP
 

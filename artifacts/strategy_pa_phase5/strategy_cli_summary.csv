@@ -1,0 +1,4 @@
+command,implemented_yes_no,notes
+strategies list,yes,JSON
+strategies inspect,yes,config validation
+strategies generate-smoke,yes,no row-level output

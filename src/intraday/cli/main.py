@@ -45,6 +45,7 @@ REQUIRED_FILES: tuple[str, ...] = (
     "docs/DEVELOPMENT_WORKFLOW.md",
     "docs/DESIGN_BASELINE.md",
     "docs/FEATURE_CONTRACT.md",
+    "docs/STRATEGY_CONTRACT.md",
     "configs/data/data_roots.yaml",
     "configs/data/ibkr_qqq_1m.yaml",
     "configs/data/symbols.yaml",
@@ -184,19 +185,26 @@ try:
         cmd_features_inspect,
         cmd_features_list,
     )
+    from intraday.cli.strategy_cmds import (
+        cmd_strategies_generate_smoke,
+        cmd_strategies_inspect,
+        cmd_strategies_list,
+    )
 
     app = typer.Typer(
         name="intraday",
         add_completion=False,
         no_args_is_help=True,
-        help="intraday_system CLI (Layer 0 data + features + reference + fast execution).",
+        help="intraday_system CLI (Layer 0 data + features + strategies + execution).",
     )
     data_app = typer.Typer(no_args_is_help=True, help="Data commands.")
     validate_app = typer.Typer(no_args_is_help=True, help="Validation commands.")
     features_app = typer.Typer(no_args_is_help=True, help="Feature engine (Phase 4).")
+    strategies_app = typer.Typer(no_args_is_help=True, help="Strategy signal layer (Phase 5).")
     app.add_typer(data_app, name="data")
     app.add_typer(validate_app, name="validate")
     app.add_typer(features_app, name="features")
+    app.add_typer(strategies_app, name="strategies")
 
     @app.command("doctor", help="Print environment + dependency diagnostics.")
     def _typer_doctor() -> None:
@@ -247,6 +255,42 @@ try:
                 data_root=data_root,
                 no_cache=no_cache,
                 cache_root=cache_root,
+            )
+        )
+
+    @strategies_app.command("list", help="List built-in strategy names.")
+    def _typer_strategies_list() -> None:
+        raise typer.Exit(code=cmd_strategies_list())
+
+    @strategies_app.command("inspect", help="Inspect strategy definition and config.")
+    def _typer_strategies_inspect(
+        strategy: str = typer.Option(..., "--strategy"),
+        config: str = typer.Option(..., "--config"),
+    ) -> None:
+        raise typer.Exit(code=cmd_strategies_inspect(strategy=strategy, config=config))
+
+    @strategies_app.command(
+        "generate-smoke",
+        help="Load bars+features, generate SignalMatrix summary JSON (no execution/PnL).",
+    )
+    def _typer_strategies_generate_smoke(
+        strategy: str = typer.Option(..., "--strategy"),
+        config: str = typer.Option(..., "--config"),
+        feature_config: str = typer.Option(..., "--feature-config"),
+        symbol: str = typer.Option(..., "--symbol"),
+        start: str = typer.Option(..., "--start"),
+        end: str = typer.Option(..., "--end"),
+        data_root: str = typer.Option("data/curated/bars_1m_rth", "--data-root"),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_strategies_generate_smoke(
+                strategy=strategy,
+                config=config,
+                feature_config=feature_config,
+                symbol=symbol,
+                start=start,
+                end=end,
+                data_root=data_root,
             )
         )
 

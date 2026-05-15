@@ -1,0 +1,9 @@
+contract_item,rule,implemented_yes_no,tests,notes
+inputs,BarMatrix + FeatureMatrix + config,yes,PA generator tests,
+output,SignalMatrix only,yes,contract tests,
+non-entry,side=0 nan fields setup_code=0,yes,validate_signal_matrix,
+entry long,side=+1 finite stop target_r score,yes,PA tests,
+missing features,ConfigError,yes,test_missing_feature_column,
+signal_hash,deterministic SHA-256,yes,hash stability tests,
+no execution,strategy does not call execution,yes,code review,
+timing,bar close current features allowed,yes,no-lookahead tests,

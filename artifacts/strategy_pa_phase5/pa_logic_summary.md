@@ -1,0 +1,17 @@
+# PA buy_sell_close_trend logic summary
+
+| logic_item | rule | implemented | test |
+|------------|------|-------------|------|
+| minute window | entry_start <= minute <= entry_end | yes | time window tests |
+| body_pct | >= body_pct_min | yes | test_body_threshold_blocks |
+| close_position | >= close_position_min | yes | test_close_position_threshold_blocks |
+| trend_slope | >= trend_slope_min | yes | test_trend_slope_threshold_blocks |
+| close_vs_mean | >= close_vs_mean_min | yes | test_close_vs_mean_threshold_blocks |
+| vwap_side | optional > 0 | yes | test_require_vwap_side_blocks |
+| stop signal_low | bars.low | yes | test_stop_mode_signal_low |
+| stop rolling_low | rolling_low_20 | yes | test_stop_mode_rolling_low |
+| stop atr_buffer | close - mult*atr | yes | test_stop_mode_atr_buffer |
+| invalid stop | suppress entry | yes | test_invalid_stop_suppresses_entry |
+| target_r | risk.target_r on entries | yes | test_entry_when_all_thresholds_pass |
+| setup_code | 1001 on entry | yes | test_entry_when_all_thresholds_pass |
+| score | simple_pa_v1 | yes | test_entry_when_all_thresholds_pass |

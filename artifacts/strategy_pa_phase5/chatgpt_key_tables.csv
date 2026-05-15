@@ -1,0 +1,8 @@
+section,item,metric,value,interpretation
+validation,pytest,passed,257,full suite green
+validation,decision,label,PA_STRATEGY_MVP_COMPLETE,Phase 5 acceptance
+qqq_smoke,rows,bars,48360,QQQ 2024H1 RTH
+qqq_smoke,entries,signals,4092,~8.5% entry rate
+qqq_smoke,signal_hash,hex,ad0aa021cdd2001d687652328d5ef6bc772a1455b632eaf55d842df1275149cc,deterministic cache key seed
+contract,strategy,shipped,pa_buy_sell_close_trend,first MVP strategy
+non_impl,layer1,status,not implemented,next phase

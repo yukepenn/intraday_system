@@ -1,0 +1,9 @@
+strategy: pa_buy_sell_close_trend
+family: pa
+description: Strong price-action trend-continuation long setup.
+side: long_only
+required_feature_set: pa_core_v1
+setup_codes:
+  1001: PA_BUY_SELL_CLOSE_TREND_LONG
+conflict_group: QQQ_directional
+default_priority: 80

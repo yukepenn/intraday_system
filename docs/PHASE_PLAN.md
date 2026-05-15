@@ -74,11 +74,21 @@ Highlights:
 
 Decision label on success: **`FEATURE_ENGINE_MVP_COMPLETE`**.
 
-## Phase 5 — PA strategy MVP — **next**
+## Phase 5 — PA strategy MVP — **complete**
 
-Goal: port `pa_buy_sell_close_trend`.
+Goal: first strategy signal layer — `BarMatrix` + `FeatureMatrix` + strategy YAML → `SignalMatrix` (no execution/PnL).
 
-## Phase 6 — Layer1 PA smoke run
+Highlights:
+
+- `docs/STRATEGY_CONTRACT.md` + `validate_signal_matrix` / `compute_signal_hash`.
+- `pa_buy_sell_close_trend` (long-only; `pa_core_v1` features; stop modes `signal_low` / `rolling_low` / `atr_buffer`).
+- Registry, loader, PA config validation; PA base/metadata/grid YAML (grid not swept in Phase 5).
+- CLI: `strategies list`, `strategies inspect`, `strategies generate-smoke`.
+- Tests: synthetic + no-lookahead; `pytest` **257** at Phase 5 handoff.
+
+Decision label on success: **`PA_STRATEGY_MVP_COMPLETE`**.
+
+## Phase 6 — Layer1 PA smoke run — **next**
 
 Goal: end-to-end PA candidate factory.
 
@@ -101,4 +111,4 @@ Goal: end-to-end PA candidate factory.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Recommended next step after Phase 3: **`IMPLEMENT_FEATURE_ENGINE_MVP`**.
+Recommended next step after Phase 5: **`IMPLEMENT_LAYER1_PA_SMOKE_RUN`**.

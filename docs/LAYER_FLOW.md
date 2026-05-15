@@ -98,7 +98,9 @@ data → features → strategy signals → execution → Layer1 candidates → L
 | SignalMatrix | `strategy_config_hash`, `feature_config_hash`, `data_hash` |
 | Layer2 precompute | `layer2_config_hash`, `data_hash` (and transitively any candidate change) |
 
-**Phase 4 note:** Features are **market facts only** (`build_feature_matrix`). Execution does not read `FeatureMatrix`. Future Layer1 calls the feature engine rather than recomputing features ad hoc.
+**Phase 4 note:** Features are **market facts only** (`build_feature_matrix`). Execution does not read `FeatureMatrix`. Layer1 and strategies call the feature engine rather than recomputing features ad hoc.
+
+**Phase 5 note:** Strategies consume `BarMatrix` + `FeatureMatrix` and emit `SignalMatrix` at bar close (current-bar features allowed; no future bars). Execution enters next bar open. Strategies do not call execution or compute PnL. Phase 5 ships `pa_buy_sell_close_trend` only (long-only MVP).
 
 A router rule change does NOT invalidate features or Layer1 signals.
 

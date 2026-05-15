@@ -1,0 +1,16 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+docs/STRATEGY_CONTRACT.md,normative strategy contract,yes,source,no,
+src/intraday/strategies/contracts.py,SignalMatrix validation + signal_hash,yes,source,no,
+src/intraday/strategies/registry.py,strategy registry,yes,source,no,
+src/intraday/strategies/loader.py,config loader,yes,source,no,
+src/intraday/strategies/config_validation.py,PA config validation,yes,source,no,
+src/intraday/strategies/pa/buy_sell_close_trend.py,PA signal generator,yes,source,no,
+src/intraday/cli/strategy_cmds.py,strategies CLI,yes,source,no,
+configs/strategies/base/pa_buy_sell_close_trend.yaml,runtime config,yes,source,no,
+configs/strategies/metadata/pa_buy_sell_close_trend.yaml,metadata,yes,source,no,
+configs/strategies/grids/pa_buy_sell_close_trend_focused.yaml,grid skeleton,yes,source,no,
+tests/unit/test_strategy_*.py,unit tests,yes,source,no,
+tests/smoke/test_strategy_cli.py,CLI smoke,yes,source,no,
+artifacts/strategy_pa_phase5/CHATGPT_REVIEW_BUNDLE.md,review bundle,yes,generated,no,
+artifacts/strategy_pa_phase5/local_qqq_signal_smoke.md,local smoke evidence,no,generated,yes,QQQ curated local
+data/curated/bars_1m_rth,curated bars,no,local,yes,not committed

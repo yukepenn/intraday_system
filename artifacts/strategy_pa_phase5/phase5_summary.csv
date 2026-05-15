@@ -1,0 +1,7 @@
+item,value
+decision,PA_STRATEGY_MVP_COMPLETE
+next_step,IMPLEMENT_LAYER1_PA_SMOKE_RUN
+strategies_shipped,pa_buy_sell_close_trend
+pytest_total,257
+qqq_entry_count,4092
+qqq_rows,48360

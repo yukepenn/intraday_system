@@ -1,0 +1,9 @@
+component,status,tests
+register_strategy,yes,test_duplicate_registration_raises
+get_strategy,yes,test_unknown_strategy_raises
+list_strategies,yes,test_builtin_pa_registered
+register_builtin_strategies,yes,test_builtin_pa_registered
+load_strategy_config,yes,test_pa_base_config_loads
+load_strategy_metadata,yes,test_pa_metadata_loads
+load_strategy_grid,yes,test_pa_grid_loads
+validate_strategy_config,yes,test_pa_base_config_loads_and_validates

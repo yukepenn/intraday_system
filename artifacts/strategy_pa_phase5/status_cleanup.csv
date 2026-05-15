@@ -1,0 +1,7 @@
+file_path,issue,action_taken,behavior_changed_yes_no,notes
+README.md,Phase 5 listed as not implemented,Updated Phase 5 complete and Phase 6 next,yes,
+PROJECT_STATUS.md,Phase 4 current phase,Set Phase 5 PA_STRATEGY_MVP_COMPLETE,yes,
+PROGRESS.md,No Phase 5 milestone,Added 2026-05-15 entry,no,audit only
+CHANGES.md,Missing Phase 5,Added Phase 5 unreleased section,no,audit only
+docs/PHASE_PLAN.md,Phase 5 next + stale recommendation,Marked Phase 5 complete,yes,
+docs/LAYER_FLOW.md,No strategy timing note,Added Phase 5 note,no,contract clarification

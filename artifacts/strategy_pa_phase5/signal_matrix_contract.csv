@@ -1,0 +1,8 @@
+field,dtype,non_entry,entry,notes
+entry,bool,False,True,
+side,int8,0,+1,long-only Phase 5
+stop,float64,nan,finite below close,
+target_r,float64,nan,finite >0,
+score,float64,nan,finite,
+setup_code,int16,0,1001 PA long,
+signal_hash,str,constant per run,hash of config+features,
