@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+NEXT_HANDOFF.md,Authoritative directional handoff,true,source,no,Phase 10 refresh
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,Canonical 16-row grid metrics,true,generated,no,Sanitized commit bundle
+artifacts/pa_logic_grid_review_phase6d/*.md,Paid diagnostic narratives,true,generated,no,Rendered from repo analysis session
+artifacts/pa_logic_grid_review_phase6d/*.csv,Tidy machine tables,true,generated,no,Portable for plotting
+configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml,Swept axes + fixed block definition,true,source,no,Deterministic combo ancestry
+configs/layer1/controlled_pa_qqq_2024h1.yaml,Layer1 driver manifest contextual reference,true,source,data paths local-only parquet
+configs/strategies/base/pa_buy_sell_close_trend.yaml,Underlying strategy economics defaults,true,source,Must accompany grid delta for promo
+src/intraday/strategies/pa/buy_sell_close_trend.py,Signal semantics reference,true,source,Risk stop geometry authority
+src/intraday/layer1/grid.py,Combo resolution mechanics,true,source,Explains params_json derivation
+src/intraday/layer1/reports.py,Sweep serialization fields,true,source,Promotion schema discussion baseline
+configs/features/pa_core_v1.yaml,Feature column canonical list,optional_context,source,Feature hash reproducibility
+artifacts/layer1_pa_controlled_grid_phase6b/local_run/**,Potential raw rerun outputs,if_present,generated,yes,Oft gitignored heavyweight tree

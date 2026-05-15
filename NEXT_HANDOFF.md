@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-15** (Phase 6c Layer1 PA grid review + CI path validation).
+Last updated: **2026-05-15** (`REVIEW_PA_LOGIC_OR_GRID` / Phase **6d** closed).
 
 ---
 
@@ -8,75 +8,154 @@ Last updated: **2026-05-15** (Phase 6c Layer1 PA grid review + CI path validatio
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- **Commit after Phase 6c:** see `git log -1` (message: `Layer1: review PA controlled grid results`)
+- **Phase 6d commit:** see local `git log -1`
+- HEAD should match **`origin/main`** after push (**non-force** only)
 
-## B. Task scope
+_(Post-push verification commands: `git status -sb`, `git log -1 --oneline`, `git ls-remote origin refs/heads/main`.)_
 
-Phase **6c**: **Run and review** the Phase **6b** controlled PA grid; **fix** Linux CI failure on `output.artifact_root` validation; **no** candidate promotion, **no** candidate YAMLs, **no** broad grids, **no** Layer2/3/WFO/overlays/portfolio.
+---
 
-## C. CI path validation fix
+## B. Task scope (Phase `REVIEW_PA_LOGIC_OR_GRID` / Phase 6d)
 
-- **`is_absolute_path_like`** in `src/intraday/core/paths.py` (POSIX absolute, UNC/`\\` prefix after slash normalize, `PureWindowsPath` absolute / drive / drive-relative).
-- **`load_layer1_smoke_config` / `load_layer1_controlled_grid_config`** use it for `output.artifact_root`.
-- Fixes `tests/unit/test_layer1_config.py::test_absolute_artifact_root_rejected` on Linux (`Path("C:/tmp/abs").is_absolute()` was false).
+- Re-analyze **committed** Phase **6c** controlled-grid sweep (`artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv`).
+- Produce **marginal & interaction diagnostics**, exit/skip commentary, MVP logic coherence review (**no covert strategy edits**).
+- Decide **trustworthiness + readiness for candidate-selection *design docs*** (explicitly distinct from YAML promotion/runtime selection).
+- **Did not rerun** Layer1 `$grid` backtest (**Phase 6c** numerical inputs reused).
+- **Did not emit** promotion YAMLs nor selection runtime implementations.
 
-## D. CI / Ruff validation
+---
 
-- `ruff check` / `ruff format --check` clean on `src` + `tests`.
-- `pytest` **324** passed locally (full suite).
+## C. Artifact validation
 
-## E. Local data check
+✅ Sweep file present — **16** rows, distinct `combo_id` + **`config_hash`**, JSON-safe `params_json`, required headline metrics columns enumerated in audit CSV.
 
-- QQQ curated **2024-01-01 .. 2024-06-30**: **48 360** rows, **124** sessions, **0** validation errors (`data validate-curated` / `load-bars`).
+⚠ Companion pooled distribution snapshots remain **sums across combos**; **per-row JSON blobs** authoritative for nuanced interpretation.
 
-## F. Prior-layer smoke
+(Machine evidence: `artifacts/pa_logic_grid_review_phase6d/artifact_validation.*`)
 
-- `features inspect` (`pa_core_v1`, **22** cols, `feature_hash` stable).
-- `strategies inspect` (`pa_buy_sell_close_trend`).
-- `layer1 run` smoke (`smoke_pa_qqq_2024h1.yaml`) OK.
+---
 
-## G. Controlled grid run
+## D. Parameter-axis diagnostics
 
-- `layer1 grid-inspect` / `layer1 grid` on `controlled_pa_qqq_2024h1.yaml`: **16** combos, **16** `sweep_results` rows, reference execution; **no** candidates written.
-- Raw grid outputs under gitignored `artifacts/layer1_pa_controlled_grid_phase6b/local_run/` (per `.gitignore`).
+Dominant statistically descriptive pattern on **QQQ 2024 H1**:
 
-## H. Grid result artifacts
+| Axis bucket | Observation |
+| --- | --- |
+| `risk.stop_mode = signal_low` | **Mean `total_r` ≈ −11.84R** (`n = 8`); **0** combos with PF > 1 |
+| `risk.stop_mode = rolling_low` | **Mean `total_r` ≈ +5.57R**; **all 8 combos** PF ≥ 1 on this snapshot |
 
-- Committed, **sanitized** bundle: **`artifacts/layer1_pa_grid_review_phase6c/`** including `sweep_results_review.csv`, `grid_result_summary.*`, distributions, inventories, `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`.
+Remaining axes (`target_r`, `body_pct_min`, `require_vwap_side`) exhibit **secondary / interaction-heavy** modulation only.
 
-## I. Grid interpretation
+(Table source: `parameter_axis_summary.csv`.)
 
-- **`GRID_RESULTS_NEED_REVIEW_BEFORE_SELECTION`**: `rolling_low` combos show exploratory positives on QQQ 2024H1; **`signal_low` block** negative on `total_r`; thin sample (**~114–124** trades/combo). **Not** profitability proof.
+---
 
-## J. Tests / validation
+## E. Exit / reject / skip diagnostics
 
-- `compileall`, `doctor`, `validate structure`, full `pytest`, Ruff — see `artifacts/layer1_pa_grid_review_phase6c/validation_results.*`.
+- Exit mix reallocates materially by stop family (`MAX_HOLD` emerges only meaningfully via rolling path averages).
+- Reject aggregates empty ⇒ no meaningful intent rejection avalanche for this sanitized window (still revisit on other symbols/times).
+- Skips overwhelmingly explained by **`max_trades_per_session`** cap (+ non-trivial `trade_open` concurrency suppression).
 
-## K. Explicit non-implemented items
+(Read: `exit_skip_diagnostics.md`.)
 
-Candidate selection runtime, candidate YAML promotion, broad PA grid, GAP/CCI strategies, Layer2 router, Layer3 validation, WFO, management overlays, portfolio sizing, live/paper trading.
+---
 
-## L. Risks / blockers
+## F. PA logic / risk-stop review
 
-- **Single window / single symbol**; ranks unstable with **session-capped** trade counts.
-- Local heavy `local_run` paths are **not** committed.
+- Architectural alignment with MVP (**FeatureMatrix-declared surfaces only**) maintained.
+- `atr_buffer` **implemented yet intentionally absent from controlled YAML** → backlog diagnostic only.
+- **No reproducible deterministic bug flagged** ⇒ **strategy code untouched**.
+- Comparative richness gap vs QT legacy acknowledged as **research debt**, **not infra defect**.
 
-## M. Files changed (high level)
+(Matrix: `pa_logic_review.*`.)
 
-- `src/intraday/core/paths.py`, `src/intraday/layer1/config.py`
-- `tests/unit/test_core_paths.py`, `tests/unit/test_layer1_config.py`, `tests/unit/test_layer1_grid_config.py`
-- `docs/{CONFIG_CONTRACT,LAYER1_CONTRACT,PHASE_PLAN}.md`, `README.md`, status/changelog
-- `artifacts/layer1_pa_grid_review_phase6c/*`
+---
 
-## N. Artifact hygiene
+## G. Candidate-readiness assessment
 
-- **No** raw/curated parquet, caches, npy/npz/memmap, or row-level trade dumps staged.
-- `local_run` under controlled grid remains **gitignored**.
+Formal label (**design documentation scope**): **`READY_TO_DESIGN_SELECTION`**.
 
-## O. Decision
+Interpretation safeguards:
 
-`LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
+| Still thin / caveat | Guidance |
+| --- | --- |
+| Sample window cardinality | DESIGN must prescribe multi-window / stability posture |
+| Single-axis dominance (`stop_mode`) | Avoid naive argmax across CSV without robustness scaffolding |
+| Trade counts (`114–124` accepted) | OK for scaffolding / plumbing + coarse axis detection only |
 
-## P. Recommended next step
+(Read: `candidate_readiness_assessment.*`.)
 
-`REVIEW_PA_LOGIC_OR_GRID`
+---
+
+## H. Resolved-config reconstruction audit
+
+`params_json` = **serialized grid deltas** only (see `grid.py` commentary). **`fixed` economics not duplicated per sweep row.**
+
+**Promotion risk tier:** escalate via **`FIX_GRID_REPORTING_SCHEMA`** if candidate YAML tooling naïvely consumes `params_json` alone.
+
+Remediation options captured in **`resolved_config_reconstruction_audit.*`**.
+
+---
+
+## I. Tests / validation snapshot (Phase 6d rerun)
+
+| Check | Status |
+| --- | --- |
+| `compileall src` | PASS |
+| `pytest` (`-q`) | **324 passed** |
+| Ruff (`format --check`, `check`) | PASS |
+| CLI (`doctor`, `validate structure`) | PASS |
+| `layer1 grid-inspect` | PASS (`combo_count: 16`) |
+| Repeat `layer1 grid` numeric run | **Skipped** (**Phase 6c** reuse policy) |
+
+(Full ledger: `validation_results.csv`.)
+
+---
+
+## J. Explicit still-not-implemented items
+
+Candidate selection runtime, candidate YAML promotion, broad PA grids, GAP/CCI strategies, Layer2 router, Layer3 validation, WFO, management overlays, portfolio sizing, live/paper trading integrations.
+
+Design authorship (**next milestone**) precedes activating any of these.
+
+---
+
+## K. Risks / blockers
+
+| Risk | Mitigation / posture |
+| --- | --- |
+| Single-window hallucination risk | DESIGN encodes obligatory cross-sample stability review |
+| Stop-mode instability | Diagnostics already flag bifurcation; selection doc must degrade gracefully |
+| Serialization drift blocking promotion safety | **`resolved_config_json` or tested reconstruction helper BEFORE coding promotion** |
+
+**No hard HOLD** surfaced for authoring selection doctrine — **economics disclaimers enforced**.
+
+---
+
+## L. Files changed (high-level)
+
+Phase **6d** introduced `artifacts/pa_logic_grid_review_phase6d/**`; refreshed `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `README.md`, `CHANGES.md`, `docs/{PHASE_PLAN,LAYER1_CONTRACT}.md` (exact list see `git show --stat`).
+
+---
+
+## M. Artifact hygiene
+
+- ✅ No parquet / caches / `.npy` / memmap dumps added to git.
+- ✅ No row-level trade ledger exports created.
+- ✅ No candidate YAMLs minted under `configs/**` tracked tree.
+
+Staging must remain **explicit** (`NO git add .`).
+
+---
+
+## N. Decision (exactly one label)
+
+### `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
+
+---
+
+## O. Recommended next step (exactly one)
+
+### `DESIGN_LAYER1_PA_CANDIDATE_SELECTION`
+
+(Author procedural gates + reproducibility scaffolding **before** any promotion YAML engineering.)

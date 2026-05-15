@@ -1,0 +1,13 @@
+artifact_path,check,expected,actual,status,notes
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,file_exists,present,present,PASS,
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,row_count,16,16,PASS,
+sweep_results_review.csv,combo_id_unique,16,16,PASS,
+sweep_results_review.csv,config_hash_unique_count,16,16,PASS,
+sweep_results_review.csv,params_json_valid_json,all_valid,all_valid,PASS,
+sweep_results_review.csv,expected_grid_dimensions_in_params_json,4 nested keys,ok,PASS,"risk.stop_mode,risk.target_r,signal.body_pct_min,signal.require_vwap_side"
+sweep_results_review.csv,metrics_fields_present,all,all,PASS,
+sweep_results_review.csv,no_absolute_local_paths_in_sanitized_fields,false,False,PASS,
+repo scan,no_candidate_yaml_under_artifacts_or_configs,0,0,PASS,
+artifacts\layer1_pa_grid_review_phase6c\grid_result_summary.csv,companion_artifact_exists,present,present,PASS,
+artifacts\layer1_pa_grid_review_phase6c\grid_result_summary.md,companion_artifact_exists,present,present,PASS,
+artifacts\layer1_pa_grid_review_phase6c\grid_results_interpretation.md,companion_artifact_exists,present,present,PASS,

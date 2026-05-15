@@ -1,0 +1,6 @@
+proposal_id,purpose,grid_changes,expected_combo_count,why_needed,would_block_selection_yes_no,recommendation
+PG1,Expose volatility-buffer stop interplay,Add axis risk.stop_mode atr_buffer optionally narrow other knobs,8-12,Completes geometric stop triangle beyond signal / rolling variants,no,Run after DESIGN enumerates hypotheses
+PG2,Target ladder under rolling freeze,risk.stop_mode fixed rolling_low; risk.target_r 0.8 1.0 1.2 optional VWAP duplication,<=12,Isolates payoff elasticity away from brittle signal_low,no,Optional post-design
+PG3,close_position_min deltas,±0.05 around 0.60 with narrowed axes,<=9,Cleanliness vs density trade orthogonal to VWAP,no,Defer
+PG4,max_hold_minutes sweep,Variants 40 50 60 subject to liquidity notes,<=9,Rolling path uses MAX_HOLD; horizon shifts remap exits,no,Pair with diagnostics
+PG5,Alternate calendar window replication,Separate Layer1 window e.g. 2023H2 repeating factorial,16,Mitigate sample uniqueness / argmax leakage before eventual promotion,only_if_unscoped,Treat as methodological requirement in DESIGN not automatic run now

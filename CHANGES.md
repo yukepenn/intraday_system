@@ -4,6 +4,12 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-15
 
+### Phase 6d — PA logic / controlled-grid diagnostics (pre–selection design)
+
+- Docs/artifacts: `artifacts/pa_logic_grid_review_phase6d/` Phase 6d review bundle (parameter-axis diagnostics, exit/skip review, readiness label, serialization audit proposals, GitHub-renderable bundle).
+- Status: PROJECT_STATUS/NEXT_HANDOFF/README/PHASE_PLAN/LAYER1_CONTRACT aligned to Phase **6d** completion and **candidate selection design next** (`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`).
+- Validation: `compileall`; `pytest` **324 passed**; `ruff format/check`; CLI (`doctor`, `validate structure`, `layer1 grid-inspect`).
+
 ### Phase 6c — Layer1 PA grid results review
 
 - Fix(paths): `is_absolute_path_like` for cross-platform absolute / drive / UNC detection; Layer1 smoke + controlled-grid loaders reject non-repo-relative `output.artifact_root` on Linux CI.
@@ -105,7 +111,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 - Broad parameter sweeps / WFO / live-paper; candidate YAML promotion; GAP/CCI strategies; Layer2 router; Layer3 validation; management overlays in execution; portfolio sizing.
 
-### Decision
+### Decision — Phase 6d (latest)
 
-- `LAYER1_PA_SMOKE_COMPLETE`
-- Recommended next step: `IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`
+- `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
+- Recommended singular next procedural step (authoring/design only): **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**
+
+### Earlier historical anchors (prior phases)
+
+| Phase tag | Meaning |
+| --- | --- |
+| `LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE` | Phase **6c** CI + sanitized grid bundle merge milestone |
+| `LAYER1_PA_CONTROLLED_GRID_COMPLETE` | Phase **6b** grid infrastructure milestone |
+| `LAYER1_PA_SMOKE_COMPLETE` | Phase **6** smoke plumbing milestone |
+
+Legacy directional note retained for archaeology only: **`IMPLEMENT_LAYER1_PA_CONTROLLED_GRID`** already satisfied upstream of Phase **6b–6d**.

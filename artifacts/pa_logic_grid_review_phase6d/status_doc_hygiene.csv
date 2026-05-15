@@ -1,0 +1,8 @@
+file_path,issue,action_taken,behavior_changed_yes_no,notes
+CHANGES.md,Stale bottom 'Decision' block still referenced Phase 6 smoke/next grid instead of Phase 6c–6d.,Replaced Decision/Intentionally-not section tail to reflect Phase 6d diagnostics and deferred selection design.,yes,Preserves Keep-a-Changelog style; Unreleased dated 2026-05-15 extended.
+PROJECT_STATUS.md,Listed Phase 6c as current phase without Phase 6d diagnostic task.,Updated current phase/decision/next step for Phase 6d completion payload.,yes,Points to new artifacts folder.
+PROGRESS.md,Missing Phase 6d milestone row.,Append single dated line for Phase 6d PA logic/grid diagnostics.,yes,Single-line scope statement.
+README.md,Project status 'Next' still Phase 6c handoff step.,Bump to Phase 6d bundle + DESIGN_LAYER1_PA_CANDIDATE_SELECTION as next documented step.,yes,No architectural changes.
+docs/PHASE_PLAN.md,Ended at Phase 6c without Phase 6d row.,Inserted Phase 6d section + refreshed decision-label list excerpt.,yes,Phase 7+ remain placeholders.
+NEXT_HANDOFF.md,Still reflected Phase 6c closure without consolidated Phase 6d checklist narrative.,Rewrote NEXT_HANDOFF to Phase 6d A–O scaffold + validation pointers.,yes,Canonical remote URL enumerated for operators.
+docs/LAYER1_CONTRACT.md,Lacked explicit note about sweep `params_json` scope vs promotion.,Added short reconciliation / promotion caveat paragraph.,yes,Documentation only.

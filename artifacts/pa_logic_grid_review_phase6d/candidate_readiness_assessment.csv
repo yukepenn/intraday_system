@@ -1,0 +1,9 @@
+dimension,assessment_detail,readiness_support,notes
+trade_count_adequacy,Accepted trades per combo range **114–124** (session cap 1 / half-year).,Partial,"Adequate for plumbing + axis pivot detection; **not** adequate for distributional confidence on tail risk."
+performance_stability,8/16 combos positive `total_r`; all positives share `rolling_low`; `signal_low` universally negative here.,Low_to_moderate,"Strong **structural sensitivity** — any selection policy must surface stop-mode robustness."
+drawdown_risk,`signal_low` mean `max_drawdown_r` ~19 vs `rolling_low` ~5.8 (axis means).,Moderate,"Relative tail behavior diverges sharply between stop families."
+parameter_sensitivity,Stop mode >> target_r > body > VWAP (qual ordering).,High,"Dominant axis simplifies some analyses but flags **brittleness** if production uses mixed stops."
+artifact_completeness,Validated Phase6c sweep file + hash uniqueness + JSON blobs.,High,"Sufficient for reproducible design references."
+reconstruction_promotion_risk ,`params_json` stores grid slice only—not full resolved YAML.,Elevated_before_promotion,See `resolved_config_reconstruction_audit.md`; mitigations precede YAML promotion—not selection authoring.
+selection_process_risk,Single-symbol / single-window; argmax leakage likely without multi-window rituals.,High,"Recommend explicit multi-window veto + archival of supporting artifacts in design—not execution here."
+overall_label,READY_TO_DESIGN_SELECTION,N/A,"Readiness pertains to **designing procedural gates + documentation**, not proclaiming profitability or promoting YAML."

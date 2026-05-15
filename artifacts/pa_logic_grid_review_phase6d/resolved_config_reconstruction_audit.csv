@@ -1,0 +1,10 @@
+audit_question,answer,severity,notes
+Row includes combo_id?,Yes (combo_id).,none,
+Row includes config_hash?,Yes (config_hash).,none,
+params_json scope,Grid deltas only nested subtree from YAML grid axes stable_json_dumps(grid_nested).,elevated_promotion,See grid.py context in audit MD
+fixed_overrides in sweep CSV?,No (only in authored grid YAML + runtime object).,high,Human must cite YAML artifact pair
+full resolved_config serialized in sweep CSV?,No transient object only unless future schema additions.,high,
+Reconstruction via resolve_grid_combos,Deterministic modulo repo + YAML versioning; hashes must match rows.,moderate,Operational recipe required
+Promote via params_json alone,Unsafe omission of merged economics (fixed block).,severe,Promotion blocked until schema uplift
+Recommend resolved_config_json column,Strongly advisable before YAML promotion authoring.,n/a,Mitigates drift
+fixed_overrides_json alternative,Acceptable minimalist parallel column.,n/a,

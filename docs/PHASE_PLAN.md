@@ -130,7 +130,21 @@ Highlights:
 
 Decision label on success: **`LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`**.
 
-Recommended next step: **`REVIEW_PA_LOGIC_OR_GRID`** (then, only if economics merit, `DESIGN_LAYER1_PA_CANDIDATE_SELECTION`).
+## Phase 6d — PA logic / controlled-grid diagnostics — **complete**
+
+Goal: quantify **axes + interactions**, exit/skip pathologies, MVP logic sanity, and promotion serialization hygiene using **existing** Phase **6c** sweep artifacts (**no rerun unless missing**).
+
+Highlights:
+
+- `artifacts/pa_logic_grid_review_phase6d/` Markdown + tidy CSV summaries (artifact validation checklist, marginal + pairwise parameter tables, readiness label, serialization audit memo, GitHub-renderable bundle).
+- Reaffirms dominant sensitivity to **`risk.stop_mode`** partition on sampled window; reinforces single-window caveat.
+- Policy: **`READY_TO_DESIGN_SELECTION`** pertains to authoring selection doctrine — **distinct** from asserting tradable expectancy or activating promotion code paths.
+
+Decision label on success: **`PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`**.
+
+Recommended next step: **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**.
+
+Promotion engineering remains gated by sweep schema uplift (`FIX_GRID_REPORTING_SCHEMA` posture) until **`resolved_config_json`** (or equivalent deterministic helper) closes drift risk documented in artifacts.
 
 ## Phase 7 — Port GAP and CCI
 
@@ -144,6 +158,7 @@ Recommended next step: **`REVIEW_PA_LOGIC_OR_GRID`** (then, only if economics me
 
 ## Decision labels (recent)
 
+- `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
 - `LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
 - `LAYER1_PA_CONTROLLED_GRID_COMPLETE`
 - `LAYER1_PA_SMOKE_COMPLETE`
@@ -154,4 +169,4 @@ Recommended next step: **`REVIEW_PA_LOGIC_OR_GRID`** (then, only if economics me
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase 6b next step was **`REVIEW_LAYER1_PA_GRID_RESULTS`**; Phase 6c executed that review (+ CI path fix). Further work: **`REVIEW_PA_LOGIC_OR_GRID`** before any candidate-selection design.
+Phase **6d** executes **`REVIEW_PA_LOGIC_OR_GRID`** using sanitized Phase **6c** bundles. Subsequent documented work: **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`** ahead of eventual promotion tooling.

@@ -1,0 +1,17 @@
+artifact,description
+baseline_inventory.*,Git parity + NEXT_HANDOFF decision snapshot inputs
+status_doc_hygiene.*,Doc deltas performed pre-review
+artifact_validation.*,Formal Phase6c completeness gate
+parameter_axis_summary.*,Marginal sensitivities (`stop_mode`,`target_r`,body,VWAP)
+parameter_interaction_summary.*,Interaction tables (factorial partitions)
+exit_skip_diagnostics.*,Reads on skip + exit mixtures incl per-row richness
+pa_logic_review.*,Strategy/risk QA matrix (no silent code edits)
+candidate_readiness_assessment.*,Label `READY_TO_DESIGN_SELECTION`
+proposed_next_grid.*,"Optional grids (proposal only)"
+resolved_config_reconstruction_audit.*,"Promotion blocker analysis (`params_json` scope)"
+validation_results.*,"compileall/pytest324/ruff/CLI confirmations"
+phase6d_summary.*,Rolling index (this CSV + counterpart MD)
+pa_logic_grid_review_phase6d_decision.md,Binary decision prose
+CHATGPT_REVIEW_BUNDLE.md,GitHub-renderable aggregator
+SOURCE_MAP.csv,Human navigation aid
+chatgpt_key_tables.csv,Executive metric snapshot

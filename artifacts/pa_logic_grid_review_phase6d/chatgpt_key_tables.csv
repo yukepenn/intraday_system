@@ -1,0 +1,14 @@
+section,item,metric,value,interpretation
+artifact_gate,sweep row count,count,16,Complete factorial grid persisted for QQQ2024H1 review bundle
+artifact_gate,unique_hashes,count,16,No unintended duplicate combos
+axis_stop_mode,signal_low_mean_total,r,-11.839,Systematic negative exploratory window aggregate
+axis_stop_mode,rolling_low_mean_total,r,+5.570,Opposite partition remains nonnegative across all eight combos
+axis_target_r,delta_vs_stop,ordering,dependent,Secondary vs dominant stop pivot interaction documented
+interaction,rolling_low_target1_mean,r,+6.750,Healthy quadrant exploratory only
+interaction,signal_low_any_target,performance,negative,Target tweaks fail to rehabilitate ultra-tight lows
+risk_drawdown,avg_max_dd_signal_low,max_drawdown_R,~19,Large vs rolling cluster ~5.8 avg
+risk_drawdown,avg_max_dd_rolling_low,max_drawdown_R,~5.8,Structural stop geometry moderates tails here
+trade_sample,accepted_trades_range,count,114-124,Compatible with capped sessions + filters
+trade_sample,skipped_max_trades_per_session_aggregate,count,48469 summed,Expected mass under max-trades/session policy
+serialization,params_json_scope,truth,grid-only,Promotion requires supplementary fixed/base YAML pinning or schema uplift
+readiness_overall,SIGNAL_SUMMARY,text,READY_TO_DESIGN_SELECTION,Author selection doctrine not economic certification
