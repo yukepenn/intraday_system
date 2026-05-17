@@ -1,0 +1,10 @@
+item,value
+decision,LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE
+recommended_next_step,IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN
+grid_rows,16
+dry_run_hard_pass,7
+dry_run_hold,7
+dry_run_reject,9
+top_preview_combo,combo_0015
+reconstruction_16_of_16,pass
+promotion_allowed_now,false

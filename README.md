@@ -94,7 +94,9 @@ Phase **6c** — **grid results review + CI path-validation fix** — cross-plat
 
 Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction diagnostics + readiness labeling + serialization audit posture over the Phase **6c** sanitized sweep (`artifacts/pa_logic_grid_review_phase6d/`). Decision tag: **`PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`**.
 
-**Next:** **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`** (documentation + gate design — **still not** YAML promotion/runtime selection). Layer2/3 remain out of scope.
+**Phase 7 complete:** Layer1 PA candidate-selection **design** (`LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`). Dry-run gates + reconstruction helper; **no** runtime candidate YAMLs.
+
+**Next:** **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`** (repeatable dry-run tooling — **still not** YAML promotion). Layer2/3 remain out of scope.
 
 See:
 

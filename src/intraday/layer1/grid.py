@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from intraday.core.config import load_yaml
+from intraday.core.errors import ConfigError
 from intraday.core.hashing import hash_config, stable_json_dumps
 from intraday.core.paths import repo_root
 
@@ -28,6 +29,7 @@ __all__ = [
     "expand_grid",
     "load_grid_document",
     "normalize_override_mapping",
+    "reconstruct_resolved_config_for_combo",
     "resolve_grid_combos",
     "resolve_grid_document",
 ]
@@ -260,5 +262,57 @@ def resolve_grid_combos(
                 params_json=params_json,
                 config_hash=h,
             )
+        )
+    return resolved
+
+
+def reconstruct_resolved_config_for_combo(
+    *,
+    base_config_path: Path | str,
+    grid_config_path: Path | str,
+    combo_id: str,
+    expected_config_hash: str | None = None,
+    repo_base: Path | None = None,
+) -> dict[str, Any]:
+    """Reconstruct the full resolved strategy config for one grid combo.
+
+    Loads ``base_config_path`` and ``grid_config_path``, resolves combos via
+    ``resolve_grid_combos``, and returns the merged config (fixed + grid axes).
+
+    When ``expected_config_hash`` is provided, raises ``ConfigError`` if
+    ``hash_config(resolved)`` does not match.
+    """
+    root = repo_base or repo_root()
+    base_path = Path(base_config_path)
+    grid_path = Path(grid_config_path)
+    if not base_path.is_absolute():
+        base_path = root / base_path
+    if not grid_path.is_absolute():
+        grid_path = root / grid_path
+
+    grid_doc = load_grid_document(grid_path)
+    base_rel = str(grid_doc.get("base_config", "")).strip()
+    if not base_rel:
+        raise ConfigError("grid document requires base_config")
+    expected_base = Path(base_rel)
+    if not expected_base.is_absolute():
+        expected_base = root / expected_base
+    if base_path.resolve() != expected_base.resolve():
+        raise ConfigError(
+            f"base_config_path {base_path!s} does not match grid base_config {expected_base!s}"
+        )
+
+    combos = resolve_grid_combos(grid_doc, repo_base=root)
+    match = [c for c in combos if c.combo_id == combo_id]
+    if not match:
+        known = ", ".join(c.combo_id for c in combos[:5])
+        suffix = "..." if len(combos) > 5 else ""
+        raise ConfigError(f"unknown combo_id {combo_id!r}; known include {known}{suffix}")
+    resolved = match[0].resolved_config
+    actual_hash = hash_config(resolved)
+    if expected_config_hash is not None and actual_hash != expected_config_hash:
+        raise ConfigError(
+            f"config_hash mismatch for {combo_id!r}: "
+            f"expected {expected_config_hash!r}, got {actual_hash!r}"
         )
     return resolved

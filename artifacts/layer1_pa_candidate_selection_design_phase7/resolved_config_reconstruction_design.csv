@@ -1,0 +1,7 @@
+reconstruction_item,current_state,design_decision,implementation_status,test_name,notes
+params_json_scope,grid deltas only,Do not use alone for promotion,documented,test_params_json_alone_is_grid_deltas_only,
+fixed_overrides_in_sweep,not per row,Reconstruct from grid YAML,implemented,test_fixed_overrides_present_in_reconstructed_config,
+reconstruct_helper,missing before Phase 7,reconstruct_resolved_config_for_combo,implemented,test_reconstruct_combo_0001_hash,
+hash_verify,config_hash in CSV,optional expected_config_hash raises on mismatch,implemented,test_reconstruct_wrong_hash_raises,
+all_16_combos,Phase 6c hashes,loop verify,implemented,test_reconstruct_all_controlled_combos_match_hashes,
+future_sweep_column,no resolved_config_json,Recommend add in FIX_GRID_REPORTING_SCHEMA,planned,n/a,Before promotion

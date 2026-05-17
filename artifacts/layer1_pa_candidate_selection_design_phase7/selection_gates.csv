@@ -1,0 +1,10 @@
+gate_name,gate_type,threshold,rationale,current_grid_observation,blocks_selection_yes_no,notes
+min_accepted_trades,hard,>=100,Current combos 114-124 accepted,all rows >=114,yes,Design default
+profit_factor_r,hard,>=1.05,Marginal edge filter,8 rolling_low combos >=1.05; signal_low all below,yes,
+total_r,hard,>0,Positive window R,8 combos positive (rolling_low),yes,
+max_drawdown_r,hard,<=10.0,Positive DD magnitude cap,rolling_low max ~7.1R,yes,
+execution_rejection_anomaly,hard,rejected_trades==0,No rejection avalanche,all rows rejected_trades=0,yes,
+config_reconstruction_safe,hard,hash verify helper,params_json insufficient alone,16/16 reconstruct OK,yes,Implemented Phase 7
+single_window_only,soft,always warn on 2024H1,Anti-overfit,all 16 rows,yes,Adds HOLD
+stop_mode_dominance,soft,warn rolling_low pass,Axis bifurcation in 6d,7 hard-pass rows rolling_low,yes,
+needs_multi_window_validation,soft,required before promotion,Confirmation window deferred,all rows,yes,

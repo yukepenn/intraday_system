@@ -1,0 +1,8 @@
+doctrine_item,rule,rationale,source_evidence,blocks_promotion_yes_no,notes
+selection_vs_promotion,Selection design defines gates and review artifacts; promotion writes runtime YAML later.,Prevents premature candidate roots.,Phase 6d readiness assessment,yes,
+no_single_window_argmax,Do not pick best total_r or PF alone on one grid.,QQQ 2024H1 is diagnostic not proof.,parameter_axis_summary.csv,yes,
+multi_metric_review,Use trades PF DD exit mix and axis stability.,Reduces overfit to one headline.,Phase 6c sweep + 6d diagnostics,yes,
+full_resolved_config,Future YAML config must be full merge not params_json alone.,params_json is grid deltas only.,resolved_config_reconstruction_audit.csv,yes,
+reject_and_warn_taxonomy,Every row pass fail or hold with reasons.,Explainable governance.,LAYER1_CANDIDATE_SELECTION_CONTRACT.md,yes,
+layer1_boundary_only,No Layer2 router WFO Layer3 live.,Architecture preservation.,LAYER_FLOW.md,no,
+phase7_dry_run_only,CSV MD artifacts only; promotion_allowed_now false.,Phase 7 scope.,This phase decision,yes,

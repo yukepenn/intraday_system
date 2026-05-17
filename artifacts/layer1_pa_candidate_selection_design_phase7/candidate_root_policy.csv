@@ -1,0 +1,6 @@
+item,policy_value,phase7_state,notes
+future_root,configs/candidates/l1_pa_controlled_v1/,README only,
+runtime_yaml_allowed,false,enforced,
+sample_yaml_location,artifacts/.../sample_candidate_schema.yaml,SAMPLE ONLY,
+csv_md_in_root,forbidden,audit under artifacts,
+direct_yaml_files,future one per candidate_id,,

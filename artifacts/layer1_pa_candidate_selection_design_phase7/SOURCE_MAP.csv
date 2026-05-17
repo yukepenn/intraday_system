@@ -1,0 +1,9 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md,Selection doctrine and schema contract,yes,source,no,
+src/intraday/layer1/grid.py,Grid resolver + reconstruction helper,yes,source,no,
+src/intraday/layer1/selection.py,Pure gate evaluator,yes,source,no,
+artifacts/.../dry_run_selection_results.csv,Dry-run per-row decisions,yes,generated,no,
+artifacts/.../sample_candidate_schema.yaml,Sample YAML schema only,yes,generated,no,NOT runtime
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,Input metrics,yes,source,no,
+artifacts/pa_logic_grid_review_phase6d/parameter_axis_summary.csv,Axis context,yes,source,no,
+configs/candidates/l1_pa_controlled_v1/README.md,Future candidate root policy,yes,source,no,README only

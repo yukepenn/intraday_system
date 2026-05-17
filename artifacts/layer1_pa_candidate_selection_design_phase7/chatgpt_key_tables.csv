@@ -1,0 +1,8 @@
+section,item,metric,value,interpretation
+dry_run,total_rows,count,16,Full Phase 6c controlled grid
+dry_run,hard_pass,count,7,All rolling_low with PF>=1.05 and positive R
+dry_run,hold,count,7,Hard pass + single-window warnings
+dry_run,reject,count,9,All signal_low plus combo_0008 weak PF
+dry_run,top_preview,combo_id,combo_0015,Highest PF among hold rows
+reconstruction,verified_combos,ratio,16/16,Safe for design; promotion still blocked
+promotion,promotion_allowed_now,bool,false,By Phase 7 policy

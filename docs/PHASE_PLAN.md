@@ -146,18 +146,34 @@ Recommended next step: **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**.
 
 Promotion engineering remains gated by sweep schema uplift (`FIX_GRID_REPORTING_SCHEMA` posture) until **`resolved_config_json`** (or equivalent deterministic helper) closes drift risk documented in artifacts.
 
-## Phase 7 — Port GAP and CCI
+## Phase 7 — Layer1 PA candidate selection design — **complete**
 
-## Phase 8 — Layer2 controlled router
+Goal: selection doctrine, future candidate YAML schema, reconstruction helper, provisional gates, dry-run tables — **no** runtime candidate promotion.
 
-## Phase 9 — Management modes
+Highlights:
 
-## Phase 10 — Layer3 frozen validation
+- `docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md`; `reconstruct_resolved_config_for_combo`; `evaluate_selection_gates` (`PA_L1_SELECTION_DESIGN_V1`)
+- Dry-run on Phase **6c** sweep: **7** hold / **9** reject; `promotion_allowed_now=false` everywhere
+- `artifacts/layer1_pa_candidate_selection_design_phase7/` bundle; `configs/candidates/l1_pa_controlled_v1/README.md` only
+- `pytest` **340** at handoff
 
-## Phase 11 — Scale and speed
+Decision label on success: **`LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`**.
+
+Recommended next step: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`**.
+
+## Phase 8 — Port GAP and CCI
+
+## Phase 9 — Layer2 controlled router
+
+## Phase 10 — Management modes
+
+## Phase 11 — Layer3 frozen validation
+
+## Phase 12 — Scale and speed
 
 ## Decision labels (recent)
 
+- `LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`
 - `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
 - `LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
 - `LAYER1_PA_CONTROLLED_GRID_COMPLETE`
@@ -169,4 +185,4 @@ Promotion engineering remains gated by sweep schema uplift (`FIX_GRID_REPORTING_
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **6d** executes **`REVIEW_PA_LOGIC_OR_GRID`** using sanitized Phase **6c** bundles. Subsequent documented work: **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`** ahead of eventual promotion tooling.
+Phase **7** completes **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**. Next: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`** (repeatable tooling, still no YAML promotion).

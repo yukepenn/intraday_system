@@ -1,0 +1,6 @@
+component,path,status,writes_yaml,promotion_side_effects,notes
+reconstruct_resolved_config_for_combo,src/intraday/layer1/grid.py,implemented,no,no,Hash verify optional
+evaluate_selection_gates,src/intraday/layer1/selection.py,implemented,no,no,promotion_allowed_now always false
+CandidateSpec,src/intraday/layer1/candidate.py,skeleton,no,no,Future promotion populates
+promotion module,src/intraday/layer1/promotion.py,skeleton,no,no,Not activated
+dry_run_generator,scripts/generate_phase7_dry_run.py,artifact tool,no,no,Review bundle only

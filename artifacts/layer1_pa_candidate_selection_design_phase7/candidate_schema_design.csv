@@ -1,0 +1,9 @@
+section,field,required,notes
+top,schema_version,yes,layer1_candidate_v2 design
+top,candidate_id,yes,stable at promotion not preview_*
+top,config.full_resolved,yes,not params_json alone
+source,config_hash,yes,must match grid row
+source,resolved_config_hash,yes,equal to config_hash
+selection,gate_label,yes,PA_L1_SELECTION_DESIGN_V1
+selection,promotion_allowed_now,yes,false in Phase 7
+metrics,headline_r_metrics,yes,from execution truth

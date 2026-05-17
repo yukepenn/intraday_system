@@ -11,6 +11,7 @@ from intraday.layer1.grid import (
     grid_document_combo_count,
     load_grid_document,
     normalize_override_mapping,
+    reconstruct_resolved_config_for_combo,
     resolve_grid_combos,
     resolve_grid_document,
 )
@@ -130,6 +131,20 @@ def test_resolve_grid_combos_hash_stable() -> None:
     h1 = [c.config_hash for c in resolve_grid_combos(doc)]
     h2 = [c.config_hash for c in resolve_grid_combos(doc)]
     assert h1 == h2
+
+
+def test_reconstruct_all_controlled_combos_match_hashes() -> None:
+    base = "configs/strategies/base/pa_buy_sell_close_trend.yaml"
+    grid = "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml"
+    doc = load_grid_document(repo_root() / grid)
+    for combo in resolve_grid_combos(doc):
+        resolved = reconstruct_resolved_config_for_combo(
+            base_config_path=base,
+            grid_config_path=grid,
+            combo_id=combo.combo_id,
+            expected_config_hash=combo.config_hash,
+        )
+        assert isinstance(resolved["signal"]["require_vwap_side"], bool)
 
 
 def test_expand_grid_key_order_deterministic() -> None:

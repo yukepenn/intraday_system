@@ -2,7 +2,15 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
-## [Unreleased] – 2026-05-15
+## [Unreleased] – 2026-05-17
+
+### Phase 7 — Layer1 PA candidate selection design
+
+- Feat(layer1): `reconstruct_resolved_config_for_combo`; `evaluate_selection_gates` (`PA_L1_SELECTION_DESIGN_V1`, `promotion_allowed_now=false`).
+- Docs: `docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md`; `configs/candidates/l1_pa_controlled_v1/README.md`; candidate root README refresh.
+- Chore(artifacts): `artifacts/layer1_pa_candidate_selection_design_phase7/` — doctrine, gates, dry-run tables, sample schema (SAMPLE ONLY), review bundle.
+- Test: `test_layer1_candidate_selection_design.py`, `test_layer1_selection_gates.py`; grid reconstruction tests.
+- Validation: `pytest` **340 passed**; Ruff; CLI smoke + `layer1 grid-inspect`.
 
 ### Phase 6d — PA logic / controlled-grid diagnostics (pre–selection design)
 

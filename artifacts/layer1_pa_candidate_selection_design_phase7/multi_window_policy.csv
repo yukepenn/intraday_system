@@ -1,0 +1,6 @@
+policy_item,window,role,required_for_promotion,label,notes
+design_window,QQQ 2024-01-01..2024-06-30,Axis detection and gate scaffolding,yes,SINGLE_WINDOW_DESIGN_ONLY,Current 16-combo grid
+confirmation_window,QQQ 2024H2 or 2023H2,Robustness check before promotion,yes,NEEDS_CONFIRMATION_WINDOW,Not run in Phase 7
+oos_layer3,deferred,frozen validation,no,MULTI_WINDOW_READY_LATER,Layer3 not started
+degrade_strong_weak,strong design + weak confirm,hold not promote,yes,HOLD_FOR_REVIEW,
+stop_mode_fragile,rolling_low only on design,hold/review,yes,stop_mode_dominance,

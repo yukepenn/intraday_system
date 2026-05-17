@@ -1,0 +1,6 @@
+recommendation,answer,priority,blocks_promotion,notes
+add_resolved_config_json,Yes — preferred,high,yes,Human audit simplicity
+add_fixed_overrides_json,Optional parallel,medium,no,Minimalist alternative
+dry_run_rely_on,Reconstruction helper + hash verify now,implemented,no,All 16 combos pass
+future_promotion_must_verify,config_hash == resolved_config_hash,yes,yes,
+min_schema_patch_before_promotion,resolved_config_json or manifest column,high,yes,FIX_GRID_REPORTING_SCHEMA phase

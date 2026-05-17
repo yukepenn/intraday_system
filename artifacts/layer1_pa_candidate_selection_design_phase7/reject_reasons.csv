@@ -1,0 +1,11 @@
+reject_reason,meaning,hard_or_soft,example,notes
+insufficient_trades,accepted_trades below min,hard,hypothetical <100,
+negative_total_r,total_r not positive,hard,signal_low combos,
+weak_profit_factor,profit_factor_r below threshold,hard,combo_0008 PF~1.00,
+excessive_drawdown,max_drawdown_r above cap,hard,hypothetical >10R,
+config_reconstruction_failed,hash verify or combo lookup failed,hard,mismatch expected hash,
+unstable_parameter_axis,axis too sensitive for promotion,soft,stop_mode bifurcation,
+single_window_hold,design window only insufficient,soft,all QQQ 2024H1 rows,
+artifact_missing,required input CSV missing,hard,blocked if sweep missing,
+invalid_metrics,negative or NaN metrics,hard,guard in evaluator,
+manual_review_required,execution rejection anomaly,hard,high rejected ratio,

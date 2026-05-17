@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-15** (`REVIEW_PA_LOGIC_OR_GRID` / Phase **6d** closed).
+Last updated: **2026-05-17** (`DESIGN_LAYER1_PA_CANDIDATE_SELECTION` / Phase **7** closed).
 
 ---
 
@@ -8,154 +8,141 @@ Last updated: **2026-05-15** (`REVIEW_PA_LOGIC_OR_GRID` / Phase **6d** closed).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- **Phase 6d commit:** see local `git log -1`
+- Phase 7 commit: see local `git log -1`
 - HEAD should match **`origin/main`** after push (**non-force** only)
 
-_(Post-push verification commands: `git status -sb`, `git log -1 --oneline`, `git ls-remote origin refs/heads/main`.)_
+---
+
+## B. Task scope (Phase `DESIGN_LAYER1_PA_CANDIDATE_SELECTION` / Phase 7)
+
+- Authored Layer1 PA **candidate-selection design** (doctrine, schema, gates, multi-window policy).
+- Implemented `reconstruct_resolved_config_for_combo` + pure `evaluate_selection_gates` (no promotion side effects).
+- Dry-run selection on Phase **6c** 16-row sweep (**7** hold, **9** reject; top preview `combo_0015`).
+- Sample candidate YAML under **`artifacts/` only** (SAMPLE ONLY).
+- **Did not** write runtime candidate YAMLs, promote candidates, or implement Layer2/3.
 
 ---
 
-## B. Task scope (Phase `REVIEW_PA_LOGIC_OR_GRID` / Phase 6d)
+## C. Candidate-selection doctrine
 
-- Re-analyze **committed** Phase **6c** controlled-grid sweep (`artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv`).
-- Produce **marginal & interaction diagnostics**, exit/skip commentary, MVP logic coherence review (**no covert strategy edits**).
-- Decide **trustworthiness + readiness for candidate-selection *design docs*** (explicitly distinct from YAML promotion/runtime selection).
-- **Did not rerun** Layer1 `$grid` backtest (**Phase 6c** numerical inputs reused).
-- **Did not emit** promotion YAMLs nor selection runtime implementations.
-
----
-
-## C. Artifact validation
-
-✅ Sweep file present — **16** rows, distinct `combo_id` + **`config_hash`**, JSON-safe `params_json`, required headline metrics columns enumerated in audit CSV.
-
-⚠ Companion pooled distribution snapshots remain **sums across combos**; **per-row JSON blobs** authoritative for nuanced interpretation.
-
-(Machine evidence: `artifacts/pa_logic_grid_review_phase6d/artifact_validation.*`)
+- Selection ≠ promotion; CSV/MD dry-run only in Phase 7.
+- No single-window argmax; QQQ 2024H1 is diagnostic.
+- Full resolved config required in future YAML; `params_json` is grid deltas only.
+- See `docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md` + `artifacts/layer1_pa_candidate_selection_design_phase7/selection_doctrine.*`
 
 ---
 
-## D. Parameter-axis diagnostics
+## D. Candidate YAML schema design
 
-Dominant statistically descriptive pattern on **QQQ 2024 H1**:
+- Design schema `layer1_candidate_v2` documented; sample: `artifacts/.../sample_candidate_schema.yaml` (**NOT runtime**).
+- Future root: `configs/candidates/l1_pa_controlled_v1/` (README only now).
 
-| Axis bucket | Observation |
+---
+
+## E. Resolved-config reconstruction
+
+- `reconstruct_resolved_config_for_combo` in `intraday.layer1.grid` — **16/16** combos hash-verify against Phase 6c CSV.
+- Recommend `resolved_config_json` in sweep CSV before promotion (`FIX_GRID_REPORTING_SCHEMA`).
+
+---
+
+## F. Selection gates / reject reasons
+
+- Gate label: **`PA_L1_SELECTION_DESIGN_V1`**
+- Hard: trades≥100, PF≥1.05, total_r>0, max_dd≤10R, reconstruction safe
+- Soft: `single_window_only`, `stop_mode_dominance`, `needs_multi_window_validation`
+- `promotion_allowed_now=false` for every dry-run row
+
+---
+
+## G. Dry-run selection table
+
+| Metric | Value |
 | --- | --- |
-| `risk.stop_mode = signal_low` | **Mean `total_r` ≈ −11.84R** (`n = 8`); **0** combos with PF > 1 |
-| `risk.stop_mode = rolling_low` | **Mean `total_r` ≈ +5.57R**; **all 8 combos** PF ≥ 1 on this snapshot |
+| Rows | 16 |
+| Hard pass | 7 |
+| HOLD | 7 |
+| REJECT | 9 |
+| Top preview | `combo_0015` (rank 1) |
 
-Remaining axes (`target_r`, `body_pct_min`, `require_vwap_side`) exhibit **secondary / interaction-heavy** modulation only.
-
-(Table source: `parameter_axis_summary.csv`.)
-
----
-
-## E. Exit / reject / skip diagnostics
-
-- Exit mix reallocates materially by stop family (`MAX_HOLD` emerges only meaningfully via rolling path averages).
-- Reject aggregates empty ⇒ no meaningful intent rejection avalanche for this sanitized window (still revisit on other symbols/times).
-- Skips overwhelmingly explained by **`max_trades_per_session`** cap (+ non-trivial `trade_open` concurrency suppression).
-
-(Read: `exit_skip_diagnostics.md`.)
+Artifacts: `dry_run_selection_results.csv`, `dry_run_selection_summary.md`
 
 ---
 
-## F. PA logic / risk-stop review
+## H. Multi-window / anti-overfit policy
 
-- Architectural alignment with MVP (**FeatureMatrix-declared surfaces only**) maintained.
-- `atr_buffer` **implemented yet intentionally absent from controlled YAML** → backlog diagnostic only.
-- **No reproducible deterministic bug flagged** ⇒ **strategy code untouched**.
-- Comparative richness gap vs QT legacy acknowledged as **research debt**, **not infra defect**.
-
-(Matrix: `pa_logic_review.*`.)
+- Design window: QQQ 2024H1 — `SINGLE_WINDOW_DESIGN_ONLY`
+- Confirmation required before promotion — `NEEDS_CONFIRMATION_WINDOW`
+- No Layer3/WFO/live in this phase
 
 ---
 
-## G. Candidate-readiness assessment
+## I. Candidate root policy
 
-Formal label (**design documentation scope**): **`READY_TO_DESIGN_SELECTION`**.
-
-Interpretation safeguards:
-
-| Still thin / caveat | Guidance |
-| --- | --- |
-| Sample window cardinality | DESIGN must prescribe multi-window / stability posture |
-| Single-axis dominance (`stop_mode`) | Avoid naive argmax across CSV without robustness scaffolding |
-| Trade counts (`114–124` accepted) | OK for scaffolding / plumbing + coarse axis detection only |
-
-(Read: `candidate_readiness_assessment.*`.)
+- `configs/candidates/l1_pa_controlled_v1/README.md` — placeholder only
+- No `.yaml` under `configs/candidates/` except README trees
 
 ---
 
-## H. Resolved-config reconstruction audit
+## J. Grid reporting schema recommendation
 
-`params_json` = **serialized grid deltas** only (see `grid.py` commentary). **`fixed` economics not duplicated per sweep row.**
-
-**Promotion risk tier:** escalate via **`FIX_GRID_REPORTING_SCHEMA`** if candidate YAML tooling naïvely consumes `params_json` alone.
-
-Remediation options captured in **`resolved_config_reconstruction_audit.*`**.
+- Implement reconstruction helper now (done).
+- Add `resolved_config_json` per sweep row before runtime promotion.
+- Promotion must verify `config_hash` equality.
 
 ---
 
-## I. Tests / validation snapshot (Phase 6d rerun)
+## K. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | `compileall src` | PASS |
-| `pytest` (`-q`) | **324 passed** |
-| Ruff (`format --check`, `check`) | PASS |
-| CLI (`doctor`, `validate structure`) | PASS |
-| `layer1 grid-inspect` | PASS (`combo_count: 16`) |
-| Repeat `layer1 grid` numeric run | **Skipped** (**Phase 6c** reuse policy) |
-
-(Full ledger: `validation_results.csv`.)
+| `pytest` (`-q`) | **340 passed** |
+| Ruff format/check | PASS |
+| CLI (`doctor`, `validate structure`, `layer1 grid-inspect`) | PASS |
+| Repeat `layer1 grid` | **Skipped** (Phase 6c reuse) |
 
 ---
 
-## J. Explicit still-not-implemented items
+## L. Explicit still-not-implemented
 
-Candidate selection runtime, candidate YAML promotion, broad PA grids, GAP/CCI strategies, Layer2 router, Layer3 validation, WFO, management overlays, portfolio sizing, live/paper trading integrations.
-
-Design authorship (**next milestone**) precedes activating any of these.
+Real candidate YAML promotion, runtime promotion code, Layer2 candidate loading/router, Layer3 validation, GAP/CCI strategies, broad PA grids, WFO, management overlays, portfolio sizing, live/paper trading.
 
 ---
 
-## K. Risks / blockers
+## M. Risks / blockers
 
-| Risk | Mitigation / posture |
+| Risk | Mitigation |
 | --- | --- |
-| Single-window hallucination risk | DESIGN encodes obligatory cross-sample stability review |
-| Stop-mode instability | Diagnostics already flag bifurcation; selection doc must degrade gracefully |
-| Serialization drift blocking promotion safety | **`resolved_config_json` or tested reconstruction helper BEFORE coding promotion** |
+| Single-window overfit | HOLD + confirmation window required |
+| Stop-mode dominance | Warn on rolling_low-only hard-pass cluster |
+| Serialization drift | Reconstruction helper + future `resolved_config_json` |
 
-**No hard HOLD** surfaced for authoring selection doctrine — **economics disclaimers enforced**.
-
----
-
-## L. Files changed (high-level)
-
-Phase **6d** introduced `artifacts/pa_logic_grid_review_phase6d/**`; refreshed `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `README.md`, `CHANGES.md`, `docs/{PHASE_PLAN,LAYER1_CONTRACT}.md` (exact list see `git show --stat`).
+No hard HOLD for implementing dry-run CLI path.
 
 ---
 
-## M. Artifact hygiene
+## N. Files changed (high-level)
 
-- ✅ No parquet / caches / `.npy` / memmap dumps added to git.
-- ✅ No row-level trade ledger exports created.
-- ✅ No candidate YAMLs minted under `configs/**` tracked tree.
-
-Staging must remain **explicit** (`NO git add .`).
+`docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md`, `src/intraday/layer1/{grid,selection}.py`, tests, `configs/candidates/**/README.md`, `artifacts/layer1_pa_candidate_selection_design_phase7/**`, status docs.
 
 ---
 
-## N. Decision (exactly one label)
+## O. Artifact hygiene
 
-### `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
+- No parquet/cache/npy/candidate YAML under `configs/candidates/`
+- Sample YAML artifacts-only with SAMPLE header
 
 ---
 
-## O. Recommended next step (exactly one)
+## P. Decision (exactly one)
 
-### `DESIGN_LAYER1_PA_CANDIDATE_SELECTION`
+### `LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`
 
-(Author procedural gates + reproducibility scaffolding **before** any promotion YAML engineering.)
+---
+
+## Q. Recommended next step (exactly one)
+
+### `IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`
+
+(Repeatable CLI/report for selection dry-run — still no runtime YAML promotion.)

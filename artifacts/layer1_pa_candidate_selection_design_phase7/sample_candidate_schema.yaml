@@ -1,0 +1,106 @@
+# SAMPLE ONLY — NOT A RUNTIME CANDIDATE
+# Do not load this file as selected candidate truth.
+# This file lives under artifacts only.
+
+schema_version: layer1_candidate_v2
+candidate_id: SAMPLE_DO_NOT_LOAD
+strategy: pa_buy_sell_close_trend
+family: pa
+symbol: QQQ
+asset: equity
+timeframe: 1m
+side: long_only
+candidate_rank: 1
+active: false
+
+config:
+  strategy: pa_buy_sell_close_trend
+  family: pa
+  required_feature_set: pa_core_v1
+  signal:
+    side: long_only
+    entry_start_minute: 60
+    entry_end_minute: 300
+    body_pct_min: 0.56
+    close_position_min: 0.60
+    require_vwap_side: true
+    score_mode: simple_pa_v1
+  risk:
+    stop_mode: rolling_low
+    target_mode: fixed_r
+    target_r: 1.0
+    min_risk_per_share: 0.03
+    max_trades_per_day: 1
+  backtest:
+    eod_exit_minute: 389
+    quantity: 1.0
+    commission_per_trade: 0.0
+    slippage_per_share: 0.01
+    max_hold_minutes: 50
+
+execution:
+  execution_config_path: configs/execution/intraday_default.yaml
+  execution_semantics_version: intraday_default_v1
+  execution_mode_used_for_selection: reference
+  slippage_per_share: 0.01
+  commission_per_trade: 0.0
+  min_risk_per_share: 0.03
+  eod_exit_minute: 389
+
+source:
+  layer1_run_id: L1_PA_QQQ_2024H1_CONTROLLED_GRID_V1
+  source_phase: layer1_controlled_grid
+  grid_result_path: artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv
+  combo_id: combo_0015
+  base_config_path: configs/strategies/base/pa_buy_sell_close_trend.yaml
+  grid_config_path: configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml
+  layer1_config_path: configs/layer1/controlled_pa_qqq_2024h1.yaml
+  repo_commit_sha: PLACEHOLDER_AT_PROMOTION_TIME
+  data_window: "2024-01-01..2024-06-30"
+  feature_config_path: configs/features/pa_core_v1.yaml
+  feature_hash: facb93387b6460a7f79bfd08a23b71560539d284f5ca2f0e1b565cb224a15498
+  signal_hash: 973d867347414e9203d515ce1f72141823d785795d6bcfa3ad22be42316487be
+  config_hash: 4191510f9bfe5a0d24e11becee259479f7b244d66342ea1cb29a3b66b2d9bf89
+  resolved_config_hash: 4191510f9bfe5a0d24e11becee259479f7b244d66342ea1cb29a3b66b2d9bf89
+  params_json: '{"risk":{"stop_mode":"rolling_low","target_r":1.0},"signal":{"body_pct_min":0.56,"require_vwap_side":true}}'
+  fixed_overrides_json: null
+  grid_overrides_json: null
+
+metrics:
+  total_r: 8.88035580726522
+  avg_r: 0.07789785795846683
+  median_r: 0.07509674034235803
+  win_rate: 0.5175438596491229
+  profit_factor_r: 1.2328387152640534
+  max_drawdown_r: 4.64792736167611
+  accepted_trades: 114
+  rejected_trades: 0
+  signal_entries: 2773
+  avg_bars_held: 33.1578947368421
+  exit_reason_counts: {MAX_HOLD: 48, STOP: 29, TARGET: 37}
+  reject_reason_counts: {}
+  skip_reason_counts: {max_trades_per_session: 2088, trade_open: 571}
+
+selection:
+  gate_label: PA_L1_SELECTION_DESIGN_V1
+  decision: HOLD_FOR_REVIEW
+  rank: 1
+  selected_at: null
+  selection_phase: phase7_design_dry_run
+  reject_reasons: []
+  warning_flags:
+    - single_window_only
+    - needs_multi_window_validation
+    - stop_mode_dominance
+    - NEEDS_CONFIRMATION_WINDOW
+  reviewer_notes: Sample schema for design review only.
+
+metadata:
+  conflict_group: pa_qqq_long_v1
+  default_priority: 100
+  expected_side: long_only
+  setup_code: pa_buy_sell_close_trend
+  setup_name: PA Buy/Sell Close Trend
+  tags: [pa, qqq, controlled_grid, design_sample]
+
+candidate_hash: SAMPLE_ONLY_DO_NOT_HASH_FOR_RUNTIME
