@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-17
 
+### Phase 8 — Layer1 PA confirmation window (partial; data blocker)
+
+- Fix(tests): `select-dry-run --help` smoke — CliRunner + robust subprocess env (CI).
+- Fix(layer1): `parse_finite_float` / `parse_finite_int`; per-row `invalid_metrics` fail-closed.
+- Fix(cli): `validate_selection_dry_run_output_root` — `artifacts/` only; reject absolute + `configs/candidates/`.
+- Feat(config): `configs/layer1/controlled_pa_qqq_2024h2.yaml` (same grid; confirmation dates).
+- Chore(artifacts): `artifacts/layer1_pa_confirmation_window_phase8/` — repairs + data skip documented.
+- Validation: **352** `pytest` smoke+unit; confirmation grid **skipped** (no curated parquet).
+
 ### Phase 7b — Layer1 PA candidate-selection dry-run (repeatable)
 
 - Feat(layer1): `parse_bool_like` for selection gates; `run_layer1_candidate_selection_dry_run`; `write_layer1_candidate_selection_dry_run_artifacts`.

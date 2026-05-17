@@ -2,22 +2,22 @@
 
 ## Current phase
 
-**Phase 7b — Layer1 PA candidate-selection dry-run (`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`)** — repeatable CLI + library path; reads Phase **6c** sweep as audit input; **no** runtime candidate YAMLs.
+**Phase 8 — Layer1 PA confirmation window (`RUN_LAYER1_PA_CONFIRMATION_WINDOW_AND_FIX_CI`)** — CI/help + selection hardening complete; confirmation grid **blocked** on missing local curated QQQ data.
 
 ## Decision
 
-**`LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`** — `layer1 select-dry-run` on 16-row sweep; **16/16** reconstruction pass; **7** hold / **9** reject; `promotion_allowed_now=false` for all rows; Codex bool-parsing warning addressed.
+**`FIX_LOCAL_CURATED_DATA`** — Confirmation-window grid and dry-run were not executed (no parquet under `data/curated/bars_1m_rth`). Infrastructure fixes (CI help, finite metric parsing, output-root guardrail) are complete.
 
 ## Recommended next step (exactly one)
 
-**`RUN_LAYER1_PA_CONFIRMATION_WINDOW`** — Add out-of-sample window before promotion schema or YAML writes.
+**`FIX_LOCAL_CURATED_DATA`** — Curate QQQ 2024H2 (preferred), then re-run confirmation grid + `select-dry-run` + design-vs-confirmation comparison without retuning.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Latest validation (Phase 7b): **`pytest 371`** + Ruff + CLI (`doctor`, `validate structure`, `layer1 grid-inspect`, `layer1 select-dry-run`)
-- Bundle: `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`
-- Dry-run: 7 hold / 9 reject; top preview `combo_0015`; reconstruction 16/16
+- Latest validation: **`pytest 352`** (smoke+unit) + Ruff + CLI help
+- Bundle: `artifacts/layer1_pa_confirmation_window_phase8/`
+- Confirmation config ready: `configs/layer1/controlled_pa_qqq_2024h2.yaml` (`grid-inspect` → 16 combos)
 
 See `NEXT_HANDOFF.md` for full checklist.

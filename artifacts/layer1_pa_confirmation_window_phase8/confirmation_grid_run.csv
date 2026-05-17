@@ -1,0 +1,4 @@
+step,status,combo_count,notes
+grid-inspect,PASS,16,config valid
+grid run,SKIPPED,,no curated parquet for QQQ confirmation windows
+select-dry-run,SKIPPED,,no sweep_results.csv

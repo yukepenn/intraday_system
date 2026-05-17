@@ -1,0 +1,2 @@
+issue,root_cause,file_path,fix,test_name,status,notes
+CI test_select_dry_run_help,Subprocess-only help check brittle vs Typer/Click CliRunner; optional stderr capture mismatch,tests/smoke/test_layer1_selection_cli.py,CliRunner help assertions + NO_COLOR/TERM/COLUMNS subprocess env; assert sweep-results/base-config/grid-config/output-root,test_select_dry_run_help,PASS,Also hardened output-root rejection tests

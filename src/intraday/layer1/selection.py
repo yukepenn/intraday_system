@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import uuid
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -49,6 +50,8 @@ __all__ = [
     "SelectionGateResult",
     "evaluate_selection_gates",
     "parse_bool_like",
+    "parse_finite_float",
+    "parse_finite_int",
     "preview_candidate_id",
     "run_layer1_candidate_selection_dry_run",
 ]
@@ -57,6 +60,40 @@ __all__ = [
 def parse_bool_like(value: Any, *, field_name: str) -> bool:
     """Strict boolean coercion for selection inputs (no ``bool(string)`` pitfalls)."""
     return _parse_bool_like(value, field_name)
+
+
+def parse_finite_float(value: Any, *, field_name: str) -> float:
+    """Parse a finite float from CSV/metric inputs; reject missing, malformed, and non-finite."""
+    if value is None:
+        raise ConfigError(f"{field_name}: missing value")
+    if isinstance(value, str):
+        text = value.strip()
+        if text == "":
+            raise ConfigError(f"{field_name}: empty value")
+        lowered = text.lower()
+        if lowered in {"nan", "inf", "-inf", "+inf", "infinity", "-infinity"}:
+            raise ConfigError(f"{field_name}: non-finite value {text!r}")
+        try:
+            parsed = float(text)
+        except ValueError as exc:
+            raise ConfigError(f"{field_name}: malformed numeric value {text!r}") from exc
+    elif isinstance(value, bool):
+        raise ConfigError(f"{field_name}: boolean is not a numeric metric")
+    elif isinstance(value, int | float):
+        parsed = float(value)
+    else:
+        raise ConfigError(f"{field_name}: unsupported type {type(value).__name__}")
+    if not math.isfinite(parsed):
+        raise ConfigError(f"{field_name}: non-finite value {parsed!r}")
+    return parsed
+
+
+def parse_finite_int(value: Any, *, field_name: str) -> int:
+    """Parse a finite integer metric; numeric strings like ``124`` are accepted."""
+    parsed = parse_finite_float(value, field_name=field_name)
+    if parsed != int(parsed):
+        raise ConfigError(f"{field_name}: expected integer value, got {parsed!r}")
+    return int(parsed)
 
 
 @dataclass(frozen=True)
@@ -120,14 +157,41 @@ def _float_metric(row: Mapping[str, Any], key: str, default: float = 0.0) -> flo
     raw = row.get(key)
     if raw is None or raw == "":
         return default
-    return float(raw)
+    try:
+        return parse_finite_float(raw, field_name=key)
+    except ConfigError:
+        return default
 
 
 def _int_metric(row: Mapping[str, Any], key: str, default: int = 0) -> int:
     raw = row.get(key)
     if raw is None or raw == "":
         return default
-    return int(raw)
+    try:
+        return parse_finite_int(raw, field_name=key)
+    except ConfigError:
+        return default
+
+
+def _parse_row_metrics(
+    row: Mapping[str, Any],
+) -> tuple[dict[str, float | int] | None, tuple[str, ...]]:
+    """Parse required sweep metrics; return ``(metrics, error_fields)``."""
+    metrics: dict[str, float | int] = {}
+    errors: list[str] = []
+    for key in ("accepted_trades", "rejected_trades", "signal_entries"):
+        try:
+            metrics[key] = parse_finite_int(row.get(key), field_name=key)
+        except ConfigError:
+            errors.append(key)
+    for key in ("total_r", "profit_factor_r", "max_drawdown_r"):
+        try:
+            metrics[key] = parse_finite_float(row.get(key), field_name=key)
+        except ConfigError:
+            errors.append(key)
+    if errors:
+        return None, tuple(errors)
+    return metrics, ()
 
 
 def _params_stop_mode(row: Mapping[str, Any]) -> str | None:
@@ -176,11 +240,33 @@ def evaluate_selection_gates(
     pol: dict[str, Any] = {**DEFAULT_POLICY, **(dict(policy) if policy else {})}
     gate_label = str(pol.get("gate_label", GATE_LABEL_PA_L1_SELECTION_DESIGN_V1))
 
-    accepted = _int_metric(row, "accepted_trades")
-    rejected = _int_metric(row, "rejected_trades")
-    total_r = _float_metric(row, "total_r")
-    profit_factor = _float_metric(row, "profit_factor_r")
-    max_dd = _float_metric(row, "max_drawdown_r")
+    metrics, metric_errors = _parse_row_metrics(row)
+    if metrics is None:
+        combo_id = str(row.get("combo_id", ""))
+        preview = preview_candidate_id(row) if combo_id else ""
+        return SelectionDecision(
+            gate_label=gate_label,
+            decision=DECISION_REJECT,
+            hard_gate_pass=False,
+            reject_reasons=("invalid_metrics",),
+            warning_flags=(),
+            gate_results=(
+                SelectionGateResult(
+                    "valid_metrics",
+                    "hard",
+                    False,
+                    f"invalid fields: {', '.join(metric_errors)}",
+                ),
+            ),
+            promotion_allowed_now=False,
+            candidate_id_preview=preview,
+        )
+
+    accepted = int(metrics["accepted_trades"])
+    rejected = int(metrics["rejected_trades"])
+    total_r = float(metrics["total_r"])
+    profit_factor = float(metrics["profit_factor_r"])
+    max_dd = float(metrics["max_drawdown_r"])
 
     gate_results: list[SelectionGateResult] = []
     reject_reasons: list[str] = []
@@ -268,8 +354,8 @@ def evaluate_selection_gates(
         if not recon_ok:
             reject_reasons.append("config_reconstruction_failed")
 
-    # Invalid metrics guard
-    if accepted < 0 or profit_factor < 0:
+    # Invalid metrics guard (semantic negatives after finite parse)
+    if accepted < 0 or profit_factor < 0 or max_dd < 0:
         gate_results.append(
             SelectionGateResult("valid_metrics", "hard", False, "negative metric values")
         )
@@ -300,7 +386,7 @@ def evaluate_selection_gates(
     if skip_raw:
         try:
             skips = json.loads(skip_raw) if isinstance(skip_raw, str) else dict(skip_raw)
-            signal_entries = _int_metric(row, "signal_entries", 1)
+            signal_entries = int(metrics["signal_entries"])
             max_sess = int(skips.get("max_trades_per_session", 0))
             if signal_entries > 0 and max_sess / signal_entries > 0.85:
                 warning_flags.append("high_skip_rate")

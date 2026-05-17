@@ -40,6 +40,8 @@ Phase **7** adds `reconstruct_resolved_config_for_combo` in `intraday.layer1.gri
 
 Phase **7b** adds repeatable dry-run tooling: `run_layer1_candidate_selection_dry_run`, `write_layer1_candidate_selection_dry_run_artifacts`, and CLI `layer1 select-dry-run` (reads prior sweep CSV as audit input; writes review artifacts only).
 
+Phase **8** (partial): finite metric parsers (`parse_finite_float` / `parse_finite_int`), `artifacts/`-only `--output-root`, confirmation config `controlled_pa_qqq_2024h2.yaml`; confirmation grid pending curated QQQ data (`FIX_LOCAL_CURATED_DATA`).
+
 ## Execution modes
 
 Smoke configs may set `execution.mode` to `reference`, `fast`, or `both`. Canonical metrics in Phase 6 use **reference** results; `both` runs fast for parity assertion only.

@@ -1,0 +1,7 @@
+command,exit_status,pass_fail,key_output,notes
+compileall src,0,PASS,,
+pytest tests/smoke tests/unit,0,PASS,,352 passed
+ruff check/format,0,PASS,,after fixes
+layer1 select-dry-run --help,0,PASS,,sweep-results present
+data validate-curated QQQ 2024H2,1,FAIL,,no curated parquet
+layer1 grid (confirmation),,SKIP,,blocked by missing data

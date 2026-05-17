@@ -69,6 +69,8 @@ Selection design stays in Layer1:
 ## 7b. Repeatable selection dry-run (Phase 7b — review only)
 
 - **CLI:** `python -m intraday.cli.main layer1 select-dry-run` with `--sweep-results`, `--base-config`, `--grid-config`, `--output-root`.
+- **Output root:** Must be repo-relative under `artifacts/` (review artifacts only); absolute paths and `configs/candidates/` are rejected.
+- **Numeric metrics:** `parse_finite_float` / `parse_finite_int`; malformed or non-finite values fail closed per row with `invalid_metrics` (dry-run does not abort).
 - **Orchestrator:** `run_layer1_candidate_selection_dry_run` reconstructs + hash-verifies each combo, then evaluates gates.
 - **Artifacts:** `write_layer1_candidate_selection_dry_run_artifacts` writes CSV/MD under the output root (idempotent overwrite).
 - **Input exception:** The dry-run CLI may read a prior `sweep_results_review.csv` as **audit/review input only** — not runtime trading config.
@@ -88,6 +90,13 @@ Selection design stays in Layer1:
 | Config reconstruction | hash-verified helper | Blocks promotion-unsafe rows |
 
 Revisit all thresholds after confirmation-window testing.
+
+## 7c. Confirmation window (Phase 8 — anti-overfit)
+
+- Run the **same** controlled grid on a non-overlapping QQQ window (e.g. 2024H2) without retuning.
+- Compare design-window (2024H1) sweep + dry-run to confirmation-window results.
+- **No promotion** until confirmation evidence exists; `promotion_allowed_now=false` remains enforced.
+- Bundle: `artifacts/layer1_pa_confirmation_window_phase8/` (may be partial if local curated data is missing).
 
 ## 8. Future candidate YAML schema (summary)
 

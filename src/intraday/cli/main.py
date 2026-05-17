@@ -365,7 +365,7 @@ try:
         output_root: str = typer.Option(
             ...,
             "--output-root",
-            help="Directory for dry-run selection CSV/MD artifacts.",
+            help="Repo-relative directory under artifacts/ for dry-run CSV/MD review outputs.",
         ),
     ) -> None:
         raise typer.Exit(

@@ -1,0 +1,11 @@
+section,item,metric,value,interpretation
+git,branch,name,main,synced with origin
+git,head,sha,dbeaddb,pre-task baseline
+phase8,ci_help,status,PASS,CliRunner + subprocess hardened
+phase8,numeric_parsing,status,PASS,fail-closed invalid_metrics per row
+phase8,output_root,status,PASS,artifacts/ only
+data,QQQ_2024H2,curated_rows,0,BLOCKER for confirmation grid
+config,controlled_pa_qqq_2024h2,combo_count,16,ready when data exists
+confirmation,grid_run,status,SKIPPED,no parquet
+decision,label,,FIX_LOCAL_CURATED_DATA,not LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE
+next_step,label,,FIX_LOCAL_CURATED_DATA,curate then re-run Phase 8 grid path

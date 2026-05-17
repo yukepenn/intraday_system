@@ -174,3 +174,21 @@ def test_dry_run_missing_sweep_raises(tmp_path: Path) -> None:
             base_config_path=root / BASE,
             grid_config_path=root / GRID,
         )
+
+
+def test_dry_run_malformed_row_does_not_abort_other_rows(tmp_path: Path) -> None:
+    sweep = tmp_path / "sweep.csv"
+    bad = _combo_row("combo_0001")
+    bad["total_r"] = "not-a-number"
+    _write_synthetic_sweep(sweep, [_combo_row("combo_0003"), bad])
+    root = repo_root()
+    result = run_layer1_candidate_selection_dry_run(
+        sweep_results_path=sweep,
+        base_config_path=root / BASE,
+        grid_config_path=root / GRID,
+    )
+    assert result.row_count == 2
+    by_combo = {r.combo_id: r for r in result.rows}
+    assert "invalid_metrics" in by_combo["combo_0001"].decision.reject_reasons
+    assert by_combo["combo_0003"].decision.decision == DECISION_HOLD
+    assert all(not r.decision.promotion_allowed_now for r in result.rows)

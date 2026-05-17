@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
-from intraday.core.paths import repo_root
+from intraday.core.errors import ConfigError
+from intraday.core.paths import is_absolute_path_like, repo_root
 from intraday.layer1.config import load_layer1_controlled_grid_config
 from intraday.layer1.grid import grid_document_combo_count, load_grid_document
 from intraday.layer1.runner import (
@@ -91,6 +93,32 @@ def cmd_layer1_grid_inspect(*, config: str) -> int:
     return 0
 
 
+def validate_selection_dry_run_output_root(output_root: str, *, root: Path | None = None) -> Path:
+    """Resolve dry-run output root: repo-relative path under ``artifacts/`` only."""
+    base = root or repo_root()
+    text = output_root.strip()
+    if not text:
+        raise ConfigError("output-root must be a non-empty repo-relative path under artifacts/")
+    if is_absolute_path_like(text):
+        raise ConfigError(
+            f"output-root must be repo-relative under artifacts/, not absolute: {text!r}"
+        )
+    rel = Path(text)
+    if rel.is_absolute():
+        raise ConfigError(f"output-root must be repo-relative under artifacts/: {text!r}")
+    posix = rel.as_posix()
+    if posix.startswith("configs/candidates") or "/configs/candidates/" in f"/{posix}/":
+        raise ConfigError("output-root must not be under configs/candidates/")
+    if rel.parts[0] != "artifacts":
+        raise ConfigError(f"output-root must be under artifacts/ (review artifacts only): {text!r}")
+    resolved = (base / rel).resolve()
+    try:
+        resolved.relative_to((base / "artifacts").resolve())
+    except ValueError as exc:
+        raise ConfigError(f"output-root must resolve under artifacts/: {text!r}") from exc
+    return resolved
+
+
 def cmd_layer1_select_dry_run(
     *,
     sweep_results: str,
@@ -108,9 +136,11 @@ def cmd_layer1_select_dry_run(
     grid_path = Path(grid_config)
     if not grid_path.is_absolute():
         grid_path = root / grid_path
-    out_path = Path(output_root)
-    if not out_path.is_absolute():
-        out_path = root / out_path
+    try:
+        out_path = validate_selection_dry_run_output_root(output_root, root=root)
+    except ConfigError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        raise SystemExit(1) from exc
 
     result = run_layer1_candidate_selection_dry_run(
         sweep_results_path=sweep_path,

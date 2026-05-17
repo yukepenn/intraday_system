@@ -1,0 +1,7 @@
+item,value
+decision,FIX_LOCAL_CURATED_DATA
+recommended_next_step,FIX_LOCAL_CURATED_DATA
+ci_help_fix,complete
+numeric_parsing,complete
+output_root_guardrail,complete
+confirmation_grid,skipped

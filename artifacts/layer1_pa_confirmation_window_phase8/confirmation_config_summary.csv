@@ -1,0 +1,2 @@
+config_path,start,end,strategy_grid,feature_config,execution_config,changed_from_design_window,reason,validation_status
+configs/layer1/controlled_pa_qqq_2024h2.yaml,2024-07-01,2024-12-31,pa_buy_sell_close_trend_controlled_small.yaml,pa_core_v1.yaml,intraday_default.yaml,dates/run_id/artifact_root only,confirmation window prep,grid-inspect combo_count=16; grid run SKIPPED (no curated data)

@@ -1,0 +1,7 @@
+field,bad_input,expected_behavior,implementation,test_name,status,notes
+total_r,not-a-number,REJECT invalid_metrics,parse_finite_float + early gate,test_malformed_total_r_fails_closed,PASS,
+profit_factor_r,nan,REJECT invalid_metrics,parse_finite_float,test_nan_profit_factor_fails_closed,PASS,
+max_drawdown_r,inf,REJECT invalid_metrics,parse_finite_float,test_inf_max_drawdown_fails_closed,PASS,
+accepted_trades,missing,REJECT invalid_metrics,parse_finite_int,test_missing_accepted_trades_fails_closed,PASS,
+accepted_trades,124,parse OK,parse_finite_int,test_valid_numeric_strings_parse,PASS,
+dry_run,one bad row,other rows continue,evaluate_selection_gates fail-closed per row,test_dry_run_malformed_row_does_not_abort_other_rows,PASS,

@@ -1,0 +1,38 @@
+run_id: L1_PA_QQQ_2024H2_CONTROLLED_GRID_V1
+description: Phase 8 confirmation window PA controlled grid. Same grid as 2024H1 design window; no retuning.
+
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: "2024-07-01"
+end: "2024-12-31"
+
+data:
+  data_root: data/curated/bars_1m_rth
+
+feature:
+  config: configs/features/pa_core_v1.yaml
+  use_cache: false
+
+strategy:
+  name: pa_buy_sell_close_trend
+  base_config: configs/strategies/base/pa_buy_sell_close_trend.yaml
+  grid: configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml
+
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+
+grid:
+  max_combos: null
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+
+output:
+  artifact_root: artifacts/layer1_pa_confirmation_window_phase8/local_run

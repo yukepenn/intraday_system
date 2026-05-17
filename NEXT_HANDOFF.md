@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-17** (`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN` / Phase **7b** closed).
+Last updated: **2026-05-17** (`RUN_LAYER1_PA_CONFIRMATION_WINDOW_AND_FIX_CI` / Phase **8** partial).
 
 ---
 
@@ -8,134 +8,134 @@ Last updated: **2026-05-17** (`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN` 
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Phase 7b commit: see local `git log -1` after push
+- Task commit: see local `git log -1` after push
 - HEAD should match **`origin/main`** after push (**non-force** only)
 
 ---
 
-## B. Task scope (Phase `IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN` / Phase 7b)
+## B. Task scope (Phase 8)
 
-- Fixed CSV/string boolean parsing for `config_reconstruction_safe` (`parse_bool_like`, fail closed).
-- Implemented `run_layer1_candidate_selection_dry_run` + `SelectionDryRunResult`.
-- Implemented `write_layer1_candidate_selection_dry_run_artifacts`.
-- Added CLI `layer1 select-dry-run` (reads Phase 6c sweep as audit input).
-- Ran dry-run on **16**-row Phase 6c sweep; wrote `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`.
-- **Did not** promote candidates, write runtime candidate YAMLs, or implement Layer2/3.
-
----
-
-## C. Codex review context
-
-- Codex reviewed Phase 7 commit `4e64e29` — **PASS_WITH_WARNINGS**
-- Warning fixed in 7b: `bool("False")` truthiness on reconstruction gate from CSV
-- **`CODEX_REVIEW.md` not modified by Cursor** (Codex-owned)
+- Fixed CI `select-dry-run --help` smoke test (CliRunner + robust subprocess env).
+- Hardened finite numeric metric parsing (`parse_finite_float` / `parse_finite_int`).
+- Enforced `artifacts/`-only `--output-root` for dry-run CLI.
+- Prepared confirmation config `configs/layer1/controlled_pa_qqq_2024h2.yaml` (same grid, no retuning).
+- **Did not** run confirmation grid or dry-run — **no local curated QQQ parquet** for 2024H2/2023H2/2025H1.
+- **Did not** promote candidates or write runtime candidate YAMLs.
 
 ---
 
-## D. Input normalization / boolean parsing fix
+## C. CI select-dry-run help fix
 
-- `intraday.layer1.selection.parse_bool_like` + `_config_reconstruction_gate`
-- Tests: `tests/unit/test_layer1_selection_gates.py` (parametrized + invalid string fail closed)
-- Artifact matrix: `artifacts/.../input_normalization_fix.*`
-
----
-
-## E. Repeatable dry-run function
-
-- `run_layer1_candidate_selection_dry_run` — reconstruct, hash-verify, gate evaluate, rank PASS/HOLD
-- `promotion_allowed_now=false` on every decision
-- Tests: `tests/unit/test_layer1_selection_dry_run.py`
+- `tests/smoke/test_layer1_selection_cli.py`: Typer `CliRunner` + `NO_COLOR`/`TERM`/`COLUMNS` subprocess; ANSI strip; asserts `sweep-results`, `base-config`, `grid-config`, `output-root`.
+- Artifacts: `artifacts/layer1_pa_confirmation_window_phase8/ci_cli_help_fix.*`
 
 ---
 
-## F. Dry-run artifact writer
+## D. Numeric metric parsing hardening
 
-- `write_layer1_candidate_selection_dry_run_artifacts` in `selection_reports.py`
-- Outputs: `dry_run_selection_results.csv`, rejects, warnings, summaries (CSV + MD)
-- Tests: `tests/unit/test_layer1_selection_reports.py`
-
----
-
-## G. Layer1 select-dry-run CLI
-
-```bash
-python -m intraday.cli.main layer1 select-dry-run \
-  --sweep-results artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv \
-  --base-config configs/strategies/base/pa_buy_sell_close_trend.yaml \
-  --grid-config configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml \
-  --output-root artifacts/layer1_pa_candidate_selection_dry_run_phase7b
-```
-
-- Tests: `tests/smoke/test_layer1_selection_cli.py`
+- `parse_finite_float`, `parse_finite_int`, `_parse_row_metrics` in `selection.py`
+- Per-row `invalid_metrics` reject; malformed row does not abort full dry-run
+- Tests: extended `test_layer1_selection_gates.py`, `test_layer1_selection_dry_run.py`
 
 ---
 
-## H. Current 16-row grid dry-run result
+## E. Output-root guardrail
 
-| Metric | Value |
+- `validate_selection_dry_run_output_root` — repo-relative under `artifacts/` only
+- Rejects absolute paths and `configs/candidates/`
+- Tests: `test_layer1_selection_reports.py`, CLI smoke rejection tests
+
+---
+
+## F. Confirmation window selection
+
+| Window | Status |
 | --- | --- |
-| Rows | 16 |
-| Hard pass | 7 |
-| HOLD | 7 |
-| REJECT | 9 |
-| Reconstruction pass | 16 |
-| Top preview | `combo_0015` (rank 1) |
-| promotion_allowed_now | false (all rows) |
+| QQQ 2024H2 (preferred) | **NO_DATA** |
+| QQQ 2023H2 | NO_DATA |
+| QQQ 2025H1 | NO_DATA |
+
+`data/curated/bars_1m_rth` empty in workspace.
 
 ---
 
-## I. Tests / validation
+## G. Confirmation config
+
+- `configs/layer1/controlled_pa_qqq_2024h2.yaml`
+- `grid-inspect`: **combo_count=16**
+- Same feature/strategy grid/execution as 2024H1 design window
+
+---
+
+## H. Confirmation controlled grid run
+
+**SKIPPED** — no curated data.
+
+---
+
+## I. Confirmation selection dry-run
+
+**SKIPPED** — no confirmation sweep CSV.
+
+---
+
+## J. Design-vs-confirmation comparison
+
+**CONFIRMATION_SKIPPED_NO_DATA** — deferred.
+
+---
+
+## K. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | `compileall src` | PASS |
-| `pytest` (`-q`) | **371 passed** |
+| `pytest` smoke+unit (`-q`) | **352 passed** |
 | Ruff format/check | PASS |
-| CLI (`doctor`, `validate structure`, `layer1 grid-inspect`, `select-dry-run`) | PASS |
-| Repeat `layer1 grid` | **Skipped** (Phase 6c reuse) |
+| `layer1 select-dry-run --help` | PASS |
+| `data validate-curated` QQQ 2024H2 | FAIL (no data) |
+| Confirmation `layer1 grid` | SKIP |
 
 ---
 
-## J. Explicit still-not-implemented
+## L. Explicit still-not-implemented
 
-Real candidate YAML promotion, runtime promotion code, Layer2 candidate loading/router, Layer3 validation, GAP/CCI strategies, broad PA grids, WFO, management overlays, portfolio sizing, live/paper trading.
+Real candidate YAML promotion, Layer2/3, WFO, live/paper, broad PA grids, PA logic changes, confirmation grid execution (blocked on data).
 
 ---
 
-## K. Risks / blockers
+## M. Risks / blockers
 
-| Risk | Mitigation |
+| Risk | Status |
 | --- | --- |
-| Single-window overfit | HOLD + confirmation window required |
-| Stop-mode dominance | Warn on rolling_low hard-pass cluster |
-| Serialization drift | Reconstruction helper + future `resolved_config_json` |
-
-No hard HOLD for confirmation-window work.
+| Missing curated QQQ confirmation window | **BLOCKER** |
+| Single-window overfit | Unmitigated until confirmation run |
 
 ---
 
-## L. Files changed (high-level)
+## N. Files changed (high-level)
 
-`src/intraday/layer1/{selection,selection_reports}.py`, `src/intraday/cli/{layer1_cmds,main}.py`, tests (`test_layer1_selection_*`), docs (`LAYER1_CANDIDATE_SELECTION_CONTRACT`, `LAYER1_CONTRACT`, `PHASE_PLAN`), `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/**`, status docs.
-
----
-
-## M. Artifact hygiene
-
-- No parquet/cache/npy/candidate YAML under `configs/candidates/`
-- Dry-run outputs are CSV/MD review only
-- `CODEX_REVIEW.md` not staged by Cursor
+`src/intraday/layer1/selection.py`, `src/intraday/cli/layer1_cmds.py`, `src/intraday/cli/main.py`, tests (`test_layer1_selection_*`), `configs/layer1/controlled_pa_qqq_2024h2.yaml`, `artifacts/layer1_pa_confirmation_window_phase8/**`, docs/status.
 
 ---
 
-## N. Decision (exactly one)
+## O. Artifact hygiene
 
-### `LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`
+- No parquet/cache/candidate YAML staged
+- `CODEX_REVIEW.md` not modified by Cursor
 
 ---
 
-## O. Recommended next step (exactly one)
+## P. Decision (exactly one)
 
-### `RUN_LAYER1_PA_CONFIRMATION_WINDOW`
+### `FIX_LOCAL_CURATED_DATA`
 
-(Out-of-sample window before promotion schema or runtime YAML writes.)
+(Not `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE` — confirmation grid not executed.)
+
+---
+
+## Q. Recommended next step (exactly one)
+
+### `FIX_LOCAL_CURATED_DATA`
+
+Curate QQQ 2024H2 (or nearest non-overlapping window), then re-run confirmation grid + dry-run + comparison **without retuning**.

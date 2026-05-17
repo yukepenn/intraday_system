@@ -1,0 +1,4 @@
+case,expected,implementation,test_name,status,notes
+artifacts/...,accept,validate_selection_dry_run_output_root,test_output_root_under_artifacts_accepted,PASS,
+/tmp/out,reject,is_absolute_path_like,test_output_root_rejected,PASS,
+configs/candidates/...,reject,prefix guard,test_select_dry_run_rejects_candidates_output_root,PASS,

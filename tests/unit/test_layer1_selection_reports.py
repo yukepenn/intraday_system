@@ -6,6 +6,9 @@ import csv
 import json
 from pathlib import Path
 
+import pytest
+from intraday.cli.layer1_cmds import validate_selection_dry_run_output_root
+from intraday.core.errors import ConfigError
 from intraday.core.paths import repo_root
 from intraday.layer1.selection import run_layer1_candidate_selection_dry_run
 from intraday.layer1.selection_reports import write_layer1_candidate_selection_dry_run_artifacts
@@ -13,6 +16,30 @@ from intraday.layer1.selection_reports import write_layer1_candidate_selection_d
 BASE = "configs/strategies/base/pa_buy_sell_close_trend.yaml"
 GRID = "configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml"
 SWEEP = "artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv"
+
+
+def test_output_root_under_artifacts_accepted() -> None:
+    root = repo_root()
+    resolved = validate_selection_dry_run_output_root(
+        "artifacts/layer1_pa_candidate_selection_dry_run_phase7b",
+        root=root,
+    )
+    assert resolved.is_relative_to(root / "artifacts")
+
+
+@pytest.mark.parametrize(
+    "output_root",
+    [
+        "/tmp/out",
+        "C:\\temp\\out",
+        "\\\\server\\share\\out",
+        "configs/candidates/l1_pa_controlled_v1/out",
+        "artifacts/../configs/candidates/x",
+    ],
+)
+def test_output_root_rejected(output_root: str) -> None:
+    with pytest.raises(ConfigError):
+        validate_selection_dry_run_output_root(output_root, root=repo_root())
 
 
 def test_write_dry_run_artifacts(tmp_path: Path) -> None:

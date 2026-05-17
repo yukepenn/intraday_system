@@ -1,0 +1,19 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+artifacts/layer1_pa_confirmation_window_phase8/CHATGPT_REVIEW_BUNDLE.md,Human review bundle,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/SOURCE_MAP.csv,Artifact index,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/chatgpt_key_tables.csv,Key metrics table,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/baseline_inventory.md,Git/handoff baseline,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/ci_cli_help_fix.md,CI help fix record,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/numeric_metric_parsing_fix.md,Parsing hardening record,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/output_root_guardrail.md,Output root policy,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/confirmation_window_selection.md,Window data probe,yes,generated,true,No curated parquet locally
+artifacts/layer1_pa_confirmation_window_phase8/confirmation_config_summary.md,Confirmation YAML summary,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/layer1_pa_confirmation_window_phase8_decision.md,Phase decision,yes,generated,false,
+artifacts/layer1_pa_confirmation_window_phase8/validation_results.md,Validation ledger,yes,generated,false,
+configs/layer1/controlled_pa_qqq_2024h2.yaml,Confirmation grid config (prepared),yes,source,false,Grid run blocked until data
+src/intraday/layer1/selection.py,Selection gates + finite parsers,yes,source,false,
+src/intraday/cli/layer1_cmds.py,select-dry-run CLI + output validation,yes,source,false,
+tests/smoke/test_layer1_selection_cli.py,CLI smoke tests,yes,source,false,
+tests/unit/test_layer1_selection_gates.py,Gate + parser unit tests,yes,source,false,
+tests/unit/test_layer1_selection_dry_run.py,Dry-run unit tests,yes,source,false,
+tests/unit/test_layer1_selection_reports.py,Output-root + artifact tests,yes,source,false,
