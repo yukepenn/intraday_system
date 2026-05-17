@@ -14,6 +14,8 @@ from intraday.layer1.runner import (
     run_layer1_controlled_grid,
     run_layer1_smoke,
 )
+from intraday.layer1.selection import run_layer1_candidate_selection_dry_run
+from intraday.layer1.selection_reports import write_layer1_candidate_selection_dry_run_artifacts
 
 
 def cmd_layer1_run(*, config: str) -> int:
@@ -86,4 +88,51 @@ def cmd_layer1_grid_inspect(*, config: str) -> int:
         "artifact_root": cfg.artifact_root,
     }
     print(json.dumps(out, indent=2))
+    return 0
+
+
+def cmd_layer1_select_dry_run(
+    *,
+    sweep_results: str,
+    base_config: str,
+    grid_config: str,
+    output_root: str,
+) -> int:
+    root = repo_root()
+    sweep_path = Path(sweep_results)
+    if not sweep_path.is_absolute():
+        sweep_path = root / sweep_path
+    base_path = Path(base_config)
+    if not base_path.is_absolute():
+        base_path = root / base_path
+    grid_path = Path(grid_config)
+    if not grid_path.is_absolute():
+        grid_path = root / grid_path
+    out_path = Path(output_root)
+    if not out_path.is_absolute():
+        out_path = root / out_path
+
+    result = run_layer1_candidate_selection_dry_run(
+        sweep_results_path=sweep_path,
+        base_config_path=base_path,
+        grid_config_path=grid_path,
+    )
+    write_layer1_candidate_selection_dry_run_artifacts(result, out_path)
+
+    print(f"row_count={result.row_count}")
+    print(f"pass_count={result.pass_count}")
+    print(f"reject_count={result.reject_count}")
+    print(f"hold_count={result.hold_count}")
+    print(f"reconstruction_pass_count={result.reconstruction_pass_count}")
+    print("promotion_allowed_now=false for all rows")
+
+    preview_rows = [r for r in result.rows if r.rank is not None]
+    preview_rows.sort(key=lambda r: r.rank or 999)
+    for r in preview_rows[:3]:
+        sweep = r.sweep_row
+        print(
+            f"preview rank={r.rank} combo_id={r.combo_id} "
+            f"decision={r.decision.decision} total_r={sweep.get('total_r')} "
+            f"PF={sweep.get('profit_factor_r')}"
+        )
     return 0

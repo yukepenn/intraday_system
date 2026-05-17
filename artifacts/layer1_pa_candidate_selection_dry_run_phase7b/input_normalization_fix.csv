@@ -1,0 +1,12 @@
+field,input_value,expected_behavior,implementation,test_name,status,notes
+config_reconstruction_safe,True,pass reconstruction gate,parse_bool_like in evaluate_selection_gates,test_config_reconstruction_safe_passes_gate[True],pass,
+config_reconstruction_safe,False,fail reconstruction gate,parse_bool_like in evaluate_selection_gates,test_config_reconstruction_safe_fails_gate[False],pass,
+config_reconstruction_safe,true,pass,parse_bool_like,test_config_reconstruction_safe_passes_gate[true],pass,
+config_reconstruction_safe,false,fail,parse_bool_like,test_config_reconstruction_safe_fails_gate[false],pass,
+config_reconstruction_safe,False,fail (not Python bool truthiness),parse_bool_like,test_config_reconstruction_safe_fails_gate[False],pass,Codex-flagged case
+config_reconstruction_safe,0,fail,parse_bool_like,test_config_reconstruction_safe_fails_gate[0],pass,
+config_reconstruction_safe,1,pass,parse_bool_like,test_config_reconstruction_safe_passes_gate[1],pass,
+config_reconstruction_safe,yes,pass,parse_bool_like,test_config_reconstruction_safe_passes_gate[yes],pass,
+config_reconstruction_safe,no,fail,parse_bool_like,test_config_reconstruction_safe_fails_gate[no],pass,
+config_reconstruction_safe,nonsense,fail closed (reject),_config_reconstruction_gate,test_config_reconstruction_safe_invalid_string_fails_closed,pass,
+promotion_allowed_now,any,false always,SelectionDecision default,test_promotion_allowed_now_always_false,pass,

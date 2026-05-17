@@ -1,0 +1,5 @@
+component,location,notes
+run_layer1_candidate_selection_dry_run,src/intraday/layer1/selection.py,Deterministic dry-run orchestration
+SelectionDryRunResult,src/intraday/layer1/selection.py,Aggregate counts and rows
+reconstruct_resolved_config_for_combo,src/intraday/layer1/grid.py,Hash-verified reconstruction
+evaluate_selection_gates,src/intraday/layer1/selection.py,PA_L1_SELECTION_DESIGN_V1 gates

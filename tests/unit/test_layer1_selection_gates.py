@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import pytest
+from intraday.core.errors import ConfigError
 from intraday.layer1.selection import (
     DECISION_HOLD,
     DECISION_REJECT,
     GATE_LABEL_PA_L1_SELECTION_DESIGN_V1,
     evaluate_selection_gates,
+    parse_bool_like,
 )
 
 
@@ -80,5 +83,56 @@ def test_promotion_allowed_now_always_false() -> None:
 
 def test_config_reconstruction_failed_rejects() -> None:
     row = {**_passing_row(), "config_reconstruction_safe": False}
+    d = evaluate_selection_gates(row)
+    assert "config_reconstruction_failed" in d.reject_reasons
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        (True, True),
+        (False, False),
+        (1, True),
+        (0, False),
+        ("true", True),
+        ("false", False),
+        ("False", False),
+        ("0", False),
+        ("1", True),
+        ("yes", True),
+        ("no", False),
+    ],
+)
+def test_parse_bool_like_accepted(value: object, expected: bool) -> None:
+    assert parse_bool_like(value, field_name="config_reconstruction_safe") is expected
+
+
+def test_parse_bool_like_nonsense_raises() -> None:
+    with pytest.raises(ConfigError):
+        parse_bool_like("nonsense", field_name="config_reconstruction_safe")
+
+
+@pytest.mark.parametrize(
+    "recon_value",
+    [True, "true", "1", "yes"],
+)
+def test_config_reconstruction_safe_passes_gate(recon_value: object) -> None:
+    row = {**_passing_row(), "config_reconstruction_safe": recon_value}
+    d = evaluate_selection_gates(row)
+    assert "config_reconstruction_failed" not in d.reject_reasons
+
+
+@pytest.mark.parametrize(
+    "recon_value",
+    [False, "false", "False", "0", "no"],
+)
+def test_config_reconstruction_safe_fails_gate(recon_value: object) -> None:
+    row = {**_passing_row(), "config_reconstruction_safe": recon_value}
+    d = evaluate_selection_gates(row)
+    assert "config_reconstruction_failed" in d.reject_reasons
+
+
+def test_config_reconstruction_safe_invalid_string_fails_closed() -> None:
+    row = {**_passing_row(), "config_reconstruction_safe": "nonsense"}
     d = evaluate_selection_gates(row)
     assert "config_reconstruction_failed" in d.reject_reasons

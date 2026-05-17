@@ -6,10 +6,18 @@ No candidate YAML writes, no promotion side effects.
 
 from __future__ import annotations
 
+import csv
 import json
+import uuid
 from collections.abc import Mapping
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
+
+from intraday.core.errors import ConfigError
+from intraday.core.paths import repo_root
+from intraday.layer1.grid import reconstruct_resolved_config_for_combo
+from intraday.strategies.config_validation import parse_bool_like as _parse_bool_like
 
 GATE_LABEL_PA_L1_SELECTION_DESIGN_V1 = "PA_L1_SELECTION_DESIGN_V1"
 
@@ -36,10 +44,19 @@ __all__ = [
     "DEFAULT_POLICY",
     "GATE_LABEL_PA_L1_SELECTION_DESIGN_V1",
     "SelectionDecision",
+    "SelectionDryRunResult",
+    "SelectionDryRunRow",
     "SelectionGateResult",
     "evaluate_selection_gates",
+    "parse_bool_like",
     "preview_candidate_id",
+    "run_layer1_candidate_selection_dry_run",
 ]
+
+
+def parse_bool_like(value: Any, *, field_name: str) -> bool:
+    """Strict boolean coercion for selection inputs (no ``bool(string)`` pitfalls)."""
+    return _parse_bool_like(value, field_name)
 
 
 @dataclass(frozen=True)
@@ -73,6 +90,32 @@ class SelectionDecision:
         return json.dumps(list(self.warning_flags), sort_keys=True)
 
 
+@dataclass(frozen=True)
+class SelectionDryRunRow:
+    """One sweep row with reconstruction outcome and gate decision."""
+
+    combo_id: str
+    sweep_row: Mapping[str, Any]
+    decision: SelectionDecision
+    config_reconstruction_safe: bool
+    rank: int | None = None
+    notes: str = ""
+
+
+@dataclass(frozen=True)
+class SelectionDryRunResult:
+    """Aggregate outcome of a Layer1 candidate-selection dry run."""
+
+    run_id: str
+    source_sweep_path: Path
+    row_count: int
+    pass_count: int
+    reject_count: int
+    hold_count: int
+    reconstruction_pass_count: int
+    rows: tuple[SelectionDryRunRow, ...]
+
+
 def _float_metric(row: Mapping[str, Any], key: str, default: float = 0.0) -> float:
     raw = row.get(key)
     if raw is None or raw == "":
@@ -100,6 +143,18 @@ def _params_stop_mode(row: Mapping[str, Any]) -> str | None:
         mode = risk.get("stop_mode")
         return str(mode) if mode is not None else None
     return None
+
+
+def _config_reconstruction_gate(row: Mapping[str, Any]) -> tuple[bool, str]:
+    """Parse ``config_reconstruction_safe``; invalid values fail closed."""
+    recon_flag = row.get("config_reconstruction_safe")
+    if recon_flag is None:
+        return True, "not_checked"
+    try:
+        ok = parse_bool_like(recon_flag, field_name="config_reconstruction_safe")
+    except ConfigError:
+        return False, f"config_reconstruction_safe invalid: {recon_flag!r}"
+    return ok, f"config_reconstruction_safe={recon_flag!r}"
 
 
 def preview_candidate_id(row: Mapping[str, Any], *, symbol: str = "QQQ") -> str:
@@ -205,13 +260,7 @@ def evaluate_selection_gates(
 
     # Hard: config reconstruction (caller may set bool on row)
     recon_required = bool(pol.get("require_config_reconstruction_safe", True))
-    recon_flag = row.get("config_reconstruction_safe")
-    if recon_flag is None:
-        recon_ok = True
-        recon_detail = "not_checked"
-    else:
-        recon_ok = bool(recon_flag)
-        recon_detail = f"config_reconstruction_safe={recon_flag!r}"
+    recon_ok, recon_detail = _config_reconstruction_gate(row)
     if recon_required:
         gate_results.append(
             SelectionGateResult("config_reconstruction_safe", "hard", recon_ok, recon_detail)
@@ -292,4 +341,152 @@ def evaluate_selection_gates(
         gate_results=tuple(gate_results),
         promotion_allowed_now=False,
         candidate_id_preview=preview if combo_id else "",
+    )
+
+
+def _rank_key(row: SelectionDryRunRow) -> tuple:
+    sweep = row.sweep_row
+    hard = row.decision.hard_gate_pass
+    return (
+        0 if hard else 1,
+        -_float_metric(sweep, "profit_factor_r"),
+        -_float_metric(sweep, "total_r"),
+        _float_metric(sweep, "max_drawdown_r"),
+        -_int_metric(sweep, "accepted_trades"),
+        row.combo_id,
+    )
+
+
+def _assign_ranks(rows: list[SelectionDryRunRow]) -> list[SelectionDryRunRow]:
+    rankable = [r for r in rows if r.decision.decision in (DECISION_PASS, DECISION_HOLD)]
+    rankable.sort(key=_rank_key)
+    rank_map = {r.combo_id: i + 1 for i, r in enumerate(rankable)}
+    out: list[SelectionDryRunRow] = []
+    for r in rows:
+        rank = rank_map.get(r.combo_id)
+        out.append(
+            SelectionDryRunRow(
+                combo_id=r.combo_id,
+                sweep_row=r.sweep_row,
+                decision=r.decision,
+                config_reconstruction_safe=r.config_reconstruction_safe,
+                rank=rank,
+                notes=r.notes,
+            )
+        )
+    return out
+
+
+def _load_sweep_rows(path: Path) -> list[dict[str, str]]:
+    if not path.is_file():
+        raise ConfigError(f"sweep results file not found: {path}")
+    with path.open(newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        if reader.fieldnames is None:
+            raise ConfigError(f"sweep results CSV has no header: {path}")
+        return [dict(row) for row in reader]
+
+
+def run_layer1_candidate_selection_dry_run(
+    *,
+    sweep_results_path: Path,
+    base_config_path: Path,
+    grid_config_path: Path,
+    gate_policy: Mapping[str, Any] | None = None,
+    gate_label: str = GATE_LABEL_PA_L1_SELECTION_DESIGN_V1,
+) -> SelectionDryRunResult:
+    """Run deterministic Layer1 candidate-selection dry run on a sweep review CSV.
+
+    Reconstructs and hash-verifies each combo, evaluates selection gates, and
+    never writes candidate YAML or promotes rows.
+    """
+    root = repo_root()
+    sweep_path = Path(sweep_results_path)
+    if not sweep_path.is_absolute():
+        sweep_path = root / sweep_path
+    base_path = Path(base_config_path)
+    if not base_path.is_absolute():
+        base_path = root / base_path
+    grid_path = Path(grid_config_path)
+    if not grid_path.is_absolute():
+        grid_path = root / grid_path
+
+    pol: dict[str, Any] = {**DEFAULT_POLICY, **(dict(gate_policy) if gate_policy else {})}
+    pol["gate_label"] = gate_label
+
+    sweep_rows = _load_sweep_rows(sweep_path)
+    dry_rows: list[SelectionDryRunRow] = []
+    recon_pass = 0
+
+    for row in sweep_rows:
+        combo_id = str(row.get("combo_id", "")).strip()
+        config_hash = str(row.get("config_hash", "")).strip()
+        if not combo_id:
+            eval_row = {**row, "config_reconstruction_safe": False}
+            decision = evaluate_selection_gates(eval_row, policy=pol)
+            dry_rows.append(
+                SelectionDryRunRow(
+                    combo_id="",
+                    sweep_row=row,
+                    decision=decision,
+                    config_reconstruction_safe=False,
+                    notes="missing combo_id",
+                )
+            )
+            continue
+
+        recon_ok = False
+        recon_note = ""
+        try:
+            reconstruct_resolved_config_for_combo(
+                base_config_path=base_path,
+                grid_config_path=grid_path,
+                combo_id=combo_id,
+                expected_config_hash=config_hash or None,
+            )
+            recon_ok = True
+            recon_pass += 1
+        except Exception as exc:  # noqa: BLE001 — fail closed per row
+            recon_note = str(exc)
+
+        eval_row = dict(row)
+        eval_row["config_reconstruction_safe"] = recon_ok
+        decision = evaluate_selection_gates(eval_row, policy=pol)
+        if not recon_ok and decision.hard_gate_pass:
+            decision = evaluate_selection_gates(
+                {**eval_row, "config_reconstruction_safe": False},
+                policy=pol,
+            )
+
+        dry_rows.append(
+            SelectionDryRunRow(
+                combo_id=combo_id,
+                sweep_row=row,
+                decision=decision,
+                config_reconstruction_safe=recon_ok,
+                notes=recon_note or "selection dry-run review only",
+            )
+        )
+
+    dry_rows = _assign_ranks(dry_rows)
+
+    pass_count = sum(1 for r in dry_rows if r.decision.decision == DECISION_PASS)
+    reject_count = sum(1 for r in dry_rows if r.decision.decision == DECISION_REJECT)
+    hold_count = sum(1 for r in dry_rows if r.decision.decision == DECISION_HOLD)
+
+    run_id = ""
+    if sweep_rows:
+        run_id = str(sweep_rows[0].get("run_id", "")).strip()
+    if not run_id:
+        run_id = f"L1_SELECT_DRY_RUN_{gate_label}_{uuid.uuid5(uuid.NAMESPACE_URL, str(sweep_path)).hex[:12]}"
+
+    return SelectionDryRunResult(
+        run_id=run_id,
+        source_sweep_path=sweep_path,
+        row_count=len(dry_rows),
+        pass_count=pass_count,
+        reject_count=reject_count,
+        hold_count=hold_count,
+        reconstruction_pass_count=recon_pass,
+        rows=tuple(dry_rows),
     )

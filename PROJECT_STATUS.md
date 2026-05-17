@@ -2,22 +2,22 @@
 
 ## Current phase
 
-**Phase 7 — Layer1 PA candidate selection design (`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`)** — doctrine, schema, reconstruction helper, provisional gates, dry-run on Phase **6c** sweep (**no** runtime candidate YAMLs).
+**Phase 7b — Layer1 PA candidate-selection dry-run (`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`)** — repeatable CLI + library path; reads Phase **6c** sweep as audit input; **no** runtime candidate YAMLs.
 
 ## Decision
 
-**`LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`** — Selection contract + hash-verified reconstruction for all **16** combos; dry-run gates applied; promotion blocked (`promotion_allowed_now=false`).
+**`LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`** — `layer1 select-dry-run` on 16-row sweep; **16/16** reconstruction pass; **7** hold / **9** reject; `promotion_allowed_now=false` for all rows; Codex bool-parsing warning addressed.
 
 ## Recommended next step (exactly one)
 
-**`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`** — Repeatable CLI/report path for selection dry-run (still **not** YAML promotion).
+**`RUN_LAYER1_PA_CONFIRMATION_WINDOW`** — Add out-of-sample window before promotion schema or YAML writes.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Latest validation (Phase 7): **`pytest 340`** + Ruff + CLI (`doctor`, `validate structure`, `layer1 grid-inspect`)
-- Bundle: `artifacts/layer1_pa_candidate_selection_design_phase7/`
-- Dry-run: 7 hold / 9 reject; top preview `combo_0015`
+- Latest validation (Phase 7b): **`pytest 371`** + Ruff + CLI (`doctor`, `validate structure`, `layer1 grid-inspect`, `layer1 select-dry-run`)
+- Bundle: `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`
+- Dry-run: 7 hold / 9 reject; top preview `combo_0015`; reconstruction 16/16
 
 See `NEXT_HANDOFF.md` for full checklist.

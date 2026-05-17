@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-17
 
+### Phase 7b — Layer1 PA candidate-selection dry-run (repeatable)
+
+- Feat(layer1): `parse_bool_like` for selection gates; `run_layer1_candidate_selection_dry_run`; `write_layer1_candidate_selection_dry_run_artifacts`.
+- Feat(cli): `layer1 select-dry-run` (reads Phase 6c sweep CSV as audit input; no promotion).
+- Docs: `LAYER1_CANDIDATE_SELECTION_CONTRACT`, `LAYER1_CONTRACT`, `PHASE_PLAN` — Phase 7b dry-run boundary.
+- Chore(artifacts): `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/` — 16-row dry-run, review bundle.
+- Test: `test_layer1_selection_dry_run`, `test_layer1_selection_reports`, `test_layer1_selection_cli`; extended gate bool tests.
+- Validation: `pytest` **371 passed**; Ruff; CLI `select-dry-run` on Phase 6c sweep.
+
 ### Phase 7 — Layer1 PA candidate selection design
 
 - Feat(layer1): `reconstruct_resolved_config_for_combo`; `evaluate_selection_gates` (`PA_L1_SELECTION_DESIGN_V1`, `promotion_allowed_now=false`).

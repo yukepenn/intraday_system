@@ -195,6 +195,7 @@ try:
         cmd_layer1_grid_inspect,
         cmd_layer1_inspect,
         cmd_layer1_run,
+        cmd_layer1_select_dry_run,
     )
     from intraday.cli.strategy_cmds import (
         cmd_strategies_generate_smoke,
@@ -340,6 +341,41 @@ try:
         config: str = typer.Option(..., "--config"),
     ) -> None:
         raise typer.Exit(code=cmd_layer1_grid_inspect(config=config))
+
+    @layer1_app.command(
+        "select-dry-run",
+        help="Layer1 PA candidate-selection dry run (review CSV in, review artifacts out; no promotion).",
+    )
+    def _typer_layer1_select_dry_run(
+        sweep_results: str = typer.Option(
+            ...,
+            "--sweep-results",
+            help="Prior sweep_results_review.csv (audit input, not runtime config).",
+        ),
+        base_config: str = typer.Option(
+            ...,
+            "--base-config",
+            help="Strategy base YAML for resolved-config reconstruction.",
+        ),
+        grid_config: str = typer.Option(
+            ...,
+            "--grid-config",
+            help="Strategy grid YAML for resolved-config reconstruction.",
+        ),
+        output_root: str = typer.Option(
+            ...,
+            "--output-root",
+            help="Directory for dry-run selection CSV/MD artifacts.",
+        ),
+    ) -> None:
+        raise typer.Exit(
+            code=cmd_layer1_select_dry_run(
+                sweep_results=sweep_results,
+                base_config=base_config,
+                grid_config=grid_config,
+                output_root=output_root,
+            )
+        )
 
     @data_app.command("inventory", help="Write a raw-data parquet inventory.")
     def _typer_data_inventory(

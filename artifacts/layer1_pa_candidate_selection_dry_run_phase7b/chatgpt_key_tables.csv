@@ -1,0 +1,11 @@
+section,item,metric,value,interpretation
+git,branch,branch,main,synced with origin
+git,head,sha,post-7b-commit,pending push at task close
+dry_run,rows,row_count,16,full Phase 6c sweep
+dry_run,hold,hold_count,7,hard pass with review warnings
+dry_run,reject,reject_count,9,mostly signal_low partition
+dry_run,reconstruction,reconstruction_pass_count,16,hash verify all combos
+dry_run,promotion,promotion_allowed_now,false,blocked by design
+dry_run,top,top_combo_preview,combo_0015,rank 1 hold row
+validation,pytest,passed,371,includes new selection tests
+codex,bool_fix,addressed,true,parse_bool_like for CSV fields

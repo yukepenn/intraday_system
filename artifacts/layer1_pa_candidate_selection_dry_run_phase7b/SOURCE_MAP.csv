@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/layer1/selection.py,Dry-run orchestration + gates,source,source,false,parse_bool_like + run_layer1_candidate_selection_dry_run
+src/intraday/layer1/selection_reports.py,Dry-run CSV/MD writer,source,source,false,
+src/intraday/cli/layer1_cmds.py,select-dry-run CLI handler,source,source,false,
+src/intraday/cli/main.py,Typer registration,source,source,false,
+tests/unit/test_layer1_selection_gates.py,Bool + gate tests,source,source,false,
+tests/unit/test_layer1_selection_dry_run.py,Dry-run function tests,source,source,false,
+tests/unit/test_layer1_selection_reports.py,Artifact writer tests,source,source,false,
+tests/smoke/test_layer1_selection_cli.py,CLI smoke tests,source,source,false,
+docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md,Selection + dry-run contract,source,source,false,
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,Dry-run input sweep,required,generated,false,16 rows audit input
+artifacts/layer1_pa_candidate_selection_dry_run_phase7b/dry_run_selection_results.csv,Dry-run output,required,generated,false,
+artifacts/layer1_pa_candidate_selection_dry_run_phase7b/CHATGPT_REVIEW_BUNDLE.md,Review narrative,required,generated,false,GitHub-readable

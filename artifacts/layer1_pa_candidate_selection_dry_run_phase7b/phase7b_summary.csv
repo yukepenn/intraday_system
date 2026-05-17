@@ -1,0 +1,8 @@
+item,value
+decision,LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE
+recommended_next,RUN_LAYER1_PA_CONFIRMATION_WINDOW
+pytest_count,371
+dry_run_rows,16
+hold_count,7
+reject_count,9
+reconstruction_pass,16

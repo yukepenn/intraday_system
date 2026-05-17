@@ -161,6 +161,22 @@ Decision label on success: **`LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`**.
 
 Recommended next step: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`**.
 
+## Phase 7b — Layer1 PA candidate-selection dry-run (repeatable) — **complete**
+
+Goal: repeatable CLI + library path for selection dry-run on Phase **6c** sweep artifacts — **no** runtime candidate YAML promotion.
+
+Highlights:
+
+- `parse_bool_like` for `config_reconstruction_safe` (fixes CSV `"False"` truthiness bug flagged by Codex).
+- `run_layer1_candidate_selection_dry_run` + `write_layer1_candidate_selection_dry_run_artifacts`.
+- CLI `layer1 select-dry-run`; bundle `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`.
+- 16-row QQQ 2024H1 dry-run: **7** hold / **9** reject; **16/16** reconstruction pass; `promotion_allowed_now=false` everywhere.
+- `pytest` **371** at handoff.
+
+Decision label on success: **`LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`**.
+
+Recommended next step: **`RUN_LAYER1_PA_CONFIRMATION_WINDOW`**.
+
 ## Phase 8 — Port GAP and CCI
 
 ## Phase 9 — Layer2 controlled router
@@ -173,6 +189,7 @@ Recommended next step: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`**.
 
 ## Decision labels (recent)
 
+- `LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`
 - `LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`
 - `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
 - `LAYER1_PA_GRID_RESULTS_REVIEW_COMPLETE`
@@ -185,4 +202,4 @@ Recommended next step: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`**.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **7** completes **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**. Next: **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`** (repeatable tooling, still no YAML promotion).
+Phase **7b** completes repeatable selection dry-run tooling (still no YAML promotion). Next: confirmation window or grid reporting schema uplift before promotion design.

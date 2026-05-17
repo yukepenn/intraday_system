@@ -66,6 +66,16 @@ Selection design stays in Layer1:
 - Evaluator: `intraday.layer1.selection.evaluate_selection_gates`
 - **`promotion_allowed_now` must be `false`** for every dry-run row until a future promotion phase explicitly enables it after multi-window confirmation and reporting schema enforcement.
 
+## 7b. Repeatable selection dry-run (Phase 7b — review only)
+
+- **CLI:** `python -m intraday.cli.main layer1 select-dry-run` with `--sweep-results`, `--base-config`, `--grid-config`, `--output-root`.
+- **Orchestrator:** `run_layer1_candidate_selection_dry_run` reconstructs + hash-verifies each combo, then evaluates gates.
+- **Artifacts:** `write_layer1_candidate_selection_dry_run_artifacts` writes CSV/MD under the output root (idempotent overwrite).
+- **Input exception:** The dry-run CLI may read a prior `sweep_results_review.csv` as **audit/review input only** — not runtime trading config.
+- **Boolean parsing:** `config_reconstruction_safe` and other bool-like CSV fields use `parse_bool_like` (string `"False"` must not pass as true).
+- **No promotion:** Does not write `configs/candidates/**/*.yaml`; `candidate_id_preview` is display-only and not a runtime identity.
+- **Bundle:** `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`
+
 ### Provisional hard gates (design defaults — not production)
 
 | Gate | Default | Rationale |

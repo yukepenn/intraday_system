@@ -38,6 +38,8 @@ Treat premature reliance on **`params_json` without those companions** as a **`F
 
 Phase **7** adds `reconstruct_resolved_config_for_combo` in `intraday.layer1.grid` and documents selection gates in `docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md` (`PA_L1_SELECTION_DESIGN_V1`). Dry-run selection is evaluation-only; **`promotion_allowed_now` remains false** until a future promotion phase after multi-window confirmation.
 
+Phase **7b** adds repeatable dry-run tooling: `run_layer1_candidate_selection_dry_run`, `write_layer1_candidate_selection_dry_run_artifacts`, and CLI `layer1 select-dry-run` (reads prior sweep CSV as audit input; writes review artifacts only).
+
 ## Execution modes
 
 Smoke configs may set `execution.mode` to `reference`, `fast`, or `both`. Canonical metrics in Phase 6 use **reference** results; `both` runs fast for parity assertion only.

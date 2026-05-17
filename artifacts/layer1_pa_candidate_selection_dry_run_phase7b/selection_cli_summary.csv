@@ -1,0 +1,3 @@
+command,exit_code_expected,writes_candidate_yaml,reads_parquet
+layer1 select-dry-run --help,0,false,false
+layer1 select-dry-run (16-row sweep),0,false,false

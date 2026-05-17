@@ -96,7 +96,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 7 complete:** Layer1 PA candidate-selection **design** (`LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`). Dry-run gates + reconstruction helper; **no** runtime candidate YAMLs.
 
-**Next:** **`IMPLEMENT_LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN`** (repeatable dry-run tooling — **still not** YAML promotion). Layer2/3 remain out of scope.
+**Phase 7b complete:** Repeatable selection dry-run — CLI `layer1 select-dry-run`, `run_layer1_candidate_selection_dry_run`, strict CSV boolean parsing; bundle `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`; **still no** runtime candidate YAMLs.
+
+**Next:** **`RUN_LAYER1_PA_CONFIRMATION_WINDOW`** (out-of-sample evidence before promotion). Layer2/3 remain out of scope.
 
 See:
 
