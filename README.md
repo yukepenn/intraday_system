@@ -106,9 +106,13 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 11 complete:** Strategy-family **onboarding contract** + second MVP family selection — **ORB continuation** (`orb_continuation`) for future implementation. See `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` and `artifacts/strategy_family_onboarding_phase11/`.
 
-**Phase 12 complete:** Generic ORB feature foundation — `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`. No ORB strategy yet. Bundle `artifacts/generic_feature_foundation_second_family_phase12/`.
+**Phase 12 complete:** Generic ORB feature foundation — `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`. No Layer1 or promotion in that phase. Bundle `artifacts/generic_feature_foundation_second_family_phase12/`.
 
-**Next (provisional):** **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** (ORB continuation strategy using `orb_core_v1`). Not promotion. Layer2/3 remain out of scope.
+**Phase 13 complete:** Pre-Layer2 strategy library runtime sprint — **`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`**. The repo now has 10 active long-only pre-Layer2 strategy runtimes (PA anchor + ORB/gap/VWAP/levels/CCI/stochastic families), Phase 13 feature configs, base YAMLs, metadata YAMLs, and controlled-small strategy grids. Bundle `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`.
+
+**Phase 14 complete:** **`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`** repaired Phase 13 CSV audit artifacts, refreshed stale status docs, added one tiny Layer1 controlled-grid diagnostic config per active strategy for QQQ 2024H1 plus exact QQQ 2024H2 repeat configs, and ran the Layer1 small-grid plumbing diagnostic. Bundle `artifacts/layer1_strategy_library_small_grid_phase14/`.
+
+**Next:** **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**. This is review of diagnostic/plumbing smoke only: not candidate promotion, not candidate YAML generation, not Layer2, not WFO, and not live/paper.
 
 See:
 

@@ -1,0 +1,38 @@
+run_id: L1_PHASE14_QQQ_2024H1_FAILED_ORB_DIAGNOSTIC
+description: Phase 14 primary diagnostic for failed_orb. Diagnostic plumbing smoke only; no promotion.
+
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: "2024-01-01"
+end: "2024-06-30"
+
+data:
+  data_root: data/curated/bars_1m_rth
+
+feature:
+  config: configs/features/opening_core_v1.yaml
+  use_cache: false
+
+strategy:
+  name: failed_orb
+  base_config: configs/strategies/base/failed_orb.yaml
+  grid: configs/strategies/grids/failed_orb_controlled_small.yaml
+
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+
+grid:
+  max_combos: null
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+
+output:
+  artifact_root: artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/failed_orb

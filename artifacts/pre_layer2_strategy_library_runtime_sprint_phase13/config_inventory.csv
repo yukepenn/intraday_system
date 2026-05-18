@@ -1,4 +1,4 @@
-c,o,n,f,i,g,_,p,a,t,h,",",c,o,n,f,i,g,_,t,y,p,e,",",s,t,r,a,t,e,g,y,_,o,r,_,f,e,a,t,u,r,e,_,s,e,t,",",c,o,m,b,o,_,c,o,u,n,t,_,i,f,_,g,r,i,d,",",r,u,n,t,i,m,e,_,t,r,u,t,h,",",n,o,t,e,s
+config_path,config_type,strategy_or_feature_set,combo_count_if_grid,runtime_truth,notes
 configs/features/opening_core_v1.yaml,feature,opening_core_v1,,true,ORB family
 configs/features/gap_level_core_v1.yaml,feature,gap_level_core_v1,,true,gap/levels
 configs/features/vwap_level_core_v1.yaml,feature,vwap_level_core_v1,,true,VWAP

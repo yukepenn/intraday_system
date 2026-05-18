@@ -267,6 +267,24 @@ Decision label: **`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`**.
 
 Recommended next step: **`RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`** (plumbing smoke; not promotion).
 
+## Phase 14 — Preflight and Layer1 strategy-library small-grid diagnostic — **complete**
+
+Goal: repair Phase 13 artifact/status hygiene and prove the pre-Layer2 strategy library can run through Layer1 controlled-grid plumbing on a tiny diagnostic surface — **not** candidate promotion, Layer2, WFO, live/paper, or alpha proof.
+
+Highlights:
+
+- Repaired malformed Phase 13 CSV audit artifacts with parseable schemas.
+- Added one Layer1 controlled-grid diagnostic config per active strategy for QQQ 2024H1.
+- Added exact QQQ 2024H2 repeat configs because local curated data exists; H2 is a sanity repeat, not confirmation or promotion.
+- Grid-inspect passed for all 20 configs; all 10 active strategies ran on H1 and H2.
+- Bundle `artifacts/layer1_strategy_library_small_grid_phase14/`.
+
+Decision label: **`LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC_COMPLETE`**.
+
+Recommended next step: **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**.
+
+Longer roadmap: Phase 15 may design a focused diagnostic grid only after review. Candidate promotion remains gated by evidence and schema/reconstruction safety. Layer2 remains locked until a candidate pool exists.
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; superseded by Phase 11 ORB-first plan)
 
 ## Phase 11 — Layer2 controlled router (original roadmap Phase 9)
@@ -299,4 +317,4 @@ Recommended next step: **`RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`** (plumbing sm
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). Next **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Port GAP/CCI deferred until after ORB pipeline proof.
+Superseded legacy note: Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). The old next step **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** and "Port GAP/CCI deferred until after ORB pipeline proof" note were superseded by Phase **13** (`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`) and Phase **14** (`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`). Current next step: **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**.

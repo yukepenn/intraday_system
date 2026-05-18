@@ -4,6 +4,16 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-18
 
+### Phase 14 — Preflight and Layer1 strategy-library small-grid diagnostic
+
+- Fix(artifacts): repair 7 malformed Phase 13 CSV audit tables with parseable headers via `csv.DictWriter`.
+- Docs(status): refresh README, project status, phase plan, progress, and handoff away from stale Phase 12/ORB-only next-step language.
+- Feat(config): add QQQ 2024H1 Layer1 diagnostic configs for all 10 active strategies plus exact QQQ 2024H2 repeat configs.
+- Research(artifacts): `artifacts/layer1_strategy_library_small_grid_phase14/` with run manifest, config inventory, data availability, per-strategy grid/health summaries, skip/reject summaries, hash summaries, schema validation, guardrails, and review bundle.
+- Test(unit): Phase 14 CSV schema, Layer1 config hygiene, candidate-root hygiene, and strategy boundary checks.
+- Validation: grid-inspect passed for 20/20 configs; QQQ 2024H1 and QQQ 2024H2 diagnostic grids ran for 10/10 strategies; H2 data warning recorded.
+- Explicit non-goals: no candidate YAML, promotion, select-dry-run, Layer2/3, WFO, live/paper, execution truth changes, strategy tuning, or QT runtime dependency.
+
 ### Phase 13 — Pre-Layer2 strategy library runtime sprint
 
 - Feat(features): `levels` kernel (prior-session OHLC, gap %, dist_to_prior_*).

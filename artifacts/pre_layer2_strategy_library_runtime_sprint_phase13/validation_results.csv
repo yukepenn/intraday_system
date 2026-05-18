@@ -1,4 +1,4 @@
-c,o,m,m,a,n,d,",",s,t,a,t,u,s,",",n,o,t,e,s
+command,status,notes
 python -m compileall src tests,pass,
 python -m pytest -q,pass,441 passed
 python -m pytest -q tests/smoke,pass,25 passed

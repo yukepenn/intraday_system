@@ -1,0 +1,19 @@
+key,value,notes
+phase,PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC,
+pre_task_head,dbaeb3d,Full hash recorded in review bundle.
+final_commit,pending,Filled after commit.
+previous_cursor_commit_reviewed,0762f9197f7a08037d8cd6f9ff0ecca3cd9d5d5e,Phase 13 task commit reviewed by Codex.
+active_strategy_count,10,
+layer1_configs_created,20,10 H1 primary + 10 H2 exact-repeat.
+qqq_2024h1_data_available,true,
+qqq_2024h1_grids_run,true,10/10 strategies.
+qqq_2024h2_data_available,true,PASS_WITH_WARNINGS data validation.
+qqq_2024h2_grids_run,true,Optional exact-repeat sanity diagnostic.
+candidate_yaml_added,false,
+layer2_added,false,
+wfo_added,false,
+live_paper_added,false,
+validation_passed,pass_with_unrelated_ruff_warnings,compileall/pytest/smoke/CLI/data/grid checks passed; ruff remaining findings are pre-existing scripts.
+csv_schema_validation_passed,true,Phase14 and repaired Phase13 CSVs parse with expected schemas.
+decision,LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC_COMPLETE,Pending final validation.
+next_step,REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS,"Review only, not promotion."

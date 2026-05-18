@@ -1,0 +1,21 @@
+strategy,window,loader_ok,feature_build_ok,signal_generation_ok,intent_adapter_ok,execution_ok,artifact_write_ok,grid_inspect_ok,run_status,primary_blocker,diagnostic_health_label,notes
+pa_buy_sell_close_trend,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+orb_continuation,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+orb_retest_continuation,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+failed_orb,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+gap_acceptance_failure,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+vwap_trend_pullback,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+vwap_reclaim_reject,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+prior_day_level_trap,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+cci_extreme_snapback,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+stochastic_oversold_cross,qqq_2024h1,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+pa_buy_sell_close_trend,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+orb_continuation,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+orb_retest_continuation,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+failed_orb,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+gap_acceptance_failure,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+vwap_trend_pullback,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+vwap_reclaim_reject,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+prior_day_level_trap,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+cci_extreme_snapback,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.
+stochastic_oversold_cross,qqq_2024h2,true,true,true,true,true,true,true,GRID_RAN,,CLEAN_PLUMBING,Layer1 diagnostic grid completed; performance is not promotion evidence.

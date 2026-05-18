@@ -1,5 +1,5 @@
-f,i,l,e,",",c,a,t,e,g,o,r,y,",",p,u,r,p,o,s,e,",",c,h,a,n,g,e,d,",",m,u,s,t,_,r,e,v,i,e,w,",",n,o,t,e,s
-HANGES.md,doc,phase13,True,False,
+file,category,purpose,changed,must_review,notes
+CHANGES.md,doc,phase13,True,False,
 NEXT_HANDOFF.md,doc,phase13,True,False,
 PROGRESS.md,doc,phase13,True,False,
 PROJECT_STATUS.md,doc,phase13,True,False,
