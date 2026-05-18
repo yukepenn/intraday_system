@@ -4,73 +4,73 @@
 
 - Repo: `https://github.com/yukepenn/intraday_system.git`
 - Branch: `main`
-- Latest commit at review time: `61fc90f2bdd5d6e95166e99f87a572ab80515be5`
-- Target Cursor commit reviewed: `61fc90f2bdd5d6e95166e99f87a572ab80515be5`
-- Target commit parent: `fabba9678ae020393905c3fbdefcdc839e08891f`
+- Latest commit at review time: `0762f9197f7a08037d8cd6f9ff0ecca3cd9d5d5e`
+- Target Cursor commit reviewed: `0762f9197f7a08037d8cd6f9ff0ecca3cd9d5d5e`
+- Target commit parent: `448a721b543a77ef5362378e8d8bdda1d6c9b8c4`
 - Cursor handoff reviewed: `NEXT_HANDOFF.md`
-- Phase / task identified: Phase 12, `DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`; decision `GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`; next `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`
-- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/DATA_CONTRACT.md`, `configs/features/orb_core_v1.yaml`, `configs/candidates/`, `src/intraday/features/engine.py`, `src/intraday/features/kernels/vwap.py`, `src/intraday/features/kernels/orb.py`, `src/intraday/features/registry.py`, `src/intraday/features/specs.py`, `tests/unit/test_feature_engine.py`, `tests/unit/test_features_vwap.py`, `tests/unit/test_features_orb.py`, Phase 12 bundle files under `artifacts/generic_feature_foundation_second_family_phase12/`, target diff stat/name list/numstat, and git status/log metadata.
+- Phase / task identified: Phase 13, `PHASE13_PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_SPRINT_V1`; decision `PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`; next `RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`
+- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/ARCHITECTURE.md`, `docs/CONFIG_CONTRACT.md`, `docs/DATA_CONTRACT.md`, Phase 13 bundle under `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`, representative feature configs and strategy configs, representative strategy source files, feature specs/engine/kernels, strategy registry/config validation/common helpers, representative Phase 13 tests, target diff stat/name list, git log/status metadata.
 
 ## B. Summary Verdict
 
 - PASS_WITH_WARNINGS
 
-Cursor completed the intended Phase 12 Layer 0 feature-foundation task: it added `vwap_slope_5`, `orb_width_pct_15`, and `configs/features/orb_core_v1.yaml`, updated status/docs, and produced a review bundle without adding ORB strategy runtime, Layer1 grids, candidate YAMLs, Layer2/3, WFO, live, paper, parquet, cache, or row-level artifacts. The repo is ready for ChatGPT final review. The next Cursor prompt should proceed to ORB strategy MVP only after ChatGPT agrees, with warnings that validation was not independently rerun, real-data feature build was skipped due missing local curated QQQ, and the `pa_core_v1` hash-stability test is deterministic but not pinned to a pre-Phase-12 expected hash.
+Cursor largely completed the intended Phase 13 pre-Layer2 runtime sprint: the target commit adds generic `levels`/`indicators` feature groups, five feature configs, nine new long-only strategy runtimes, registry/config/test coverage, base/metadata/grid YAMLs, and a Phase 13 review bundle without candidate YAMLs, Layer2/3, WFO, live/paper, execution changes, parquet, cache, or row-level artifacts. The repo is ready for ChatGPT final review, but the next Cursor prompt should proceed with an explicit repair/hygiene preface: several Phase 13 CSV review artifacts have malformed character-split headers, and `README.md` still advertises the stale Phase 12 next step.
 
 ## C. Cursor Run Consistency
 
-- Did the run follow the intended phase? Yes. The target commit implements the generic ORB feature foundation requested after Phase 11.
-- Did it match `NEXT_HANDOFF.md`? Yes. The handoff accurately states Layer 0-only scope, new features/config, validation claims, skipped real-data feature build, and explicit non-goals.
-- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. `PROJECT_STATUS.md`, `PHASE_PLAN.md`, `README.md`, `PROGRESS.md`, and `CHANGES.md` all point to Phase 12 completion and ORB strategy MVP as the provisional next step.
-- Any scope creep? No material scope creep. Runtime changes are limited to the feature layer plus tests and docs/artifacts.
-- Any premature phase movement? No. ORB strategy runtime, Layer1, candidate promotion, Layer2/3, WFO, live, and paper remain unimplemented.
-- Any skipped prerequisites? No blocker. Phase 11 requested exactly this feature foundation before ORB strategy implementation.
-- Any duplicated structure or architecture drift? No material drift. YAML remains runtime truth; CSV/MD remain audit artifacts.
+- Did the run follow the intended phase? Yes. The run implemented a pre-Layer2 strategy runtime library and did not run promotion or Layer2/3.
+- Did it match `NEXT_HANDOFF.md`? Mostly yes. `NEXT_HANDOFF.md` accurately summarizes the Phase 13 scope, validation claims, non-goals, and next step. Minor weakness: `Task commit` is left as "see git log -1" instead of recording the exact commit.
+- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Mostly yes. `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, and `docs/PHASE_PLAN.md` align on Phase 13 completion and `RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`.
+- Any scope creep? No material runtime scope creep. The sprint batches more strategy families than the original Phase 12 next-step wording, but Phase 13 documents that as an intentional pre-Layer2 library sprint.
+- Any premature phase movement? No Layer1 research, promotion, candidate YAML, Layer2/3, WFO, live, or paper implementation was added.
+- Any skipped prerequisites? No hard prerequisite blocker found for runtime plumbing. Real-data feature build was skipped because local curated data was unavailable.
+- Any duplicated structure or architecture drift? No major code architecture drift found. Documentation drift remains in `README.md`, which still says the next provisional step is `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`.
 
 ## D. Code / Architecture Findings
 
-- High-risk findings: None.
-- Medium-risk findings: None.
-- Low-risk findings: Real-data `features build` smoke was skipped because local curated QQQ data was absent, so synthetic/unit evidence covers semantics but not an actual QQQ build for `orb_core_v1`.
-- Low-risk findings: `test_pa_core_v1_hash_unchanged_after_orb_foundation` checks repeatability of the current resolved PA hash rather than asserting a pre-Phase-12 expected hash. The target diff directly shows `configs/features/pa_core_v1.yaml` was not edited, so the claim is credible, but the test name overstates what the test alone proves.
-- Relevant code paths inspected: Feature config resolution/hash/column expansion, built-in feature registration, feature matrix assembly, VWAP kernel, ORB kernel, new `orb_core_v1` config, unit tests for no-lookahead/session reset/hash behavior, candidate root, and Phase 12 artifact bundle.
-- Representative path inspected: `configs/features/orb_core_v1.yaml` -> `src/intraday/features/specs.py` / `registry.py` -> `src/intraday/features/kernels/vwap.py` and `orb.py` -> `src/intraday/features/engine.py` -> `tests/unit/test_feature_engine.py`, `test_features_vwap.py`, `test_features_orb.py` -> `artifacts/generic_feature_foundation_second_family_phase12/validation_results.csv` -> `NEXT_HANDOFF.md` claim.
-- Module-boundary concerns: None material. The feature additions are generic market facts and do not introduce strategy signals or execution/PnL logic.
-- Single-source-of-truth concerns: None material. Runtime behavior is controlled by YAML and Python source; artifacts are audit-only.
-- Runtime/config/schema alignment concerns: The new output names are aligned across `orb_core_v1.yaml`, allowed-output validation, registry outputs, kernel outputs, engine column expansion, tests, and docs.
+- High-risk findings: None found in lightweight inspection.
+- Medium-risk findings: Phase 13 review CSV artifacts are malformed at the header level. `SOURCE_MAP.csv`, `validation_results.csv`, `chatgpt_key_tables.csv`, `config_inventory.csv`, `feature_requirements_matrix.csv`, `phase14_readiness_matrix.csv`, and `strategy_inventory.csv` all show first lines like `f,i,l,e,",",...` or `c,o,m,m,a,n,d,",",...`, so normal CSV readers will see nonsensical columns. Rows are still human-readable in raw text, but the bundle is not cleanly machine-reviewable.
+- Medium-risk findings: `README.md` line 111 remains stale, pointing to `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP` as the provisional next step even though Phase 13 status and handoff now point to `RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`.
+- Low-risk findings: Several new strategy tests are intentionally validation/smoke-level rather than comprehensive synthetic-entry/no-lookahead tests per family; the bundle acknowledges this.
+- Relevant code paths inspected: Feature config resolution/hash/column expansion, feature engine dispatch, `levels` and `indicators` kernels, strategy registry, shared strategy validation/helpers, representative ORB/gap/VWAP/levels/CCI/stochastic strategy modules, representative feature/strategy configs, and Phase 13 tests.
+- Representative path inspected: `configs/features/opening_core_v1.yaml` -> `src/intraday/features/specs.py` / `engine.py` / `kernels/levels.py` / `kernels/indicators.py` -> `configs/strategies/base/orb_continuation.yaml` -> `src/intraday/strategies/orb/continuation.py` -> `tests/unit/test_strategy_orb_continuation.py` and `tests/unit/test_feature_config_strategy_library_phase13.py` -> Phase 13 bundle validation claims -> `NEXT_HANDOFF.md`.
+- Module-boundary concerns: No strategy code was found reading parquet, writing caches, importing execution/backtest, or computing PnL. Strategy modules emit `SignalMatrix` only.
+- Single-source-of-truth concerns: Runtime truth remains YAML/source code. CSV/MD artifacts are audit-only, though malformed CSVs weaken audit quality.
+- Runtime/config/schema alignment concerns: Representative configs and required feature columns are aligned for the sampled ORB path; combined `strategy_library_core_v1` includes the broad columns needed for Phase 14 smoke. The shared validator does not check every optional numeric bound, so later Layer1 plumbing should validate merged configs carefully.
 
 ## E. Validation / Artifact Hygiene
 
-- Validation credibility: Credible as artifact-reported evidence. `validation_results.csv` reports compileall, smoke+unit pytest, full pytest, Ruff, CLI help/doctor/validate, and `features inspect` passing; Layer1 grid was skipped as expected.
-- Missing tests or weak tests: No real-data feature build smoke was run. The PA hash-stability test is not pinned to a known historical hash, though direct diff inspection supports the unchanged-PA-config claim.
-- Claims accepted from validation artifacts but not independently rerun: compileall pass, 368 smoke+unit tests passing, 403 full tests passing, Ruff format/check passing, CLI help/doctor/validate passing, and `features inspect orb_core_v1` reporting 9 columns.
-- Artifact hygiene issues: No blocker. Phase 12 added small CSV/MD review artifacts only.
-- Heavy/raw/cache/parquet/log/generated-file issues: Target diff contains no parquet, raw/curated data, cache blobs, `.npy/.npz`, row-level trades/equity dumps, runtime candidate YAMLs, or large logs.
+- Validation credibility: Plausible but artifact-reported only. I did not rerun compileall, pytest, Ruff, CLI, features, strategies, Layer1, or data commands.
+- Missing tests or weak tests: Real-data `features build QQQ` was skipped. Some new families have minimal or partial no-lookahead/synthetic-entry tests, as acknowledged by `CHATGPT_REVIEW_BUNDLE.md`.
+- Claims accepted from validation artifacts but not independently rerun: compileall pass, full pytest `441 passed`, smoke pytest `25 passed`, Ruff check, CLI doctor/validate/features/strategies pass, and no curated-data build.
+- Artifact hygiene issues: Malformed CSV headers across most/all Phase 13 CSV tables. This should be repaired in a future hygiene pass or before relying on automated CSV ingestion.
+- Heavy/raw/cache/parquet/log/generated-file issues: Target diff shows only small docs/config/source/test/CSV/MD artifacts; no parquet, raw/curated data, cache files, `.npy/.npz`, memmap, row-level trades/equity, large logs, or runtime candidate YAMLs found in the target diff.
 - Working tree / git cleanliness: Clean before writing this review; no staged files were present.
 - Safe local-only untracked artifacts present before review: None visible in `git status --short`.
 - Suspicious untracked files present before review: None visible in `git status --short`.
-- Review bundle completeness: Good. Phase 12 includes `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, baseline inventory, feature semantics/config/implementation/test summaries, CLI smoke summary, ORB readiness update, decision record, status preflight, and validation ledger.
-- SOURCE_MAP / key-table completeness if applicable: Present and useful. `SOURCE_MAP.csv` identifies required review files and distinguishes generated artifacts from source files.
+- Review bundle completeness: Present and useful at the Markdown level, but CSV table quality is materially degraded by malformed headers.
+- SOURCE_MAP / key-table completeness if applicable: Present, but malformed as CSV. `SOURCE_MAP.csv` also displays a suspicious `HANGES.md` row in raw output, likely fallout from the same CSV-writing defect.
 
 ## F. Contract / Reproducibility Risks
 
-- Data contract: No data loader, raw, curated, or parquet changes.
-- Feature contract: The new outputs are documented as generic market facts: `vwap_slope_5 = (vwap[t] - vwap[t-4]) / 4` same-session and `orb_width_pct_15 = orb_range_15 / orb_mid_15` after ORB completion.
-- Strategy contract: Preserved. No strategy runtime or ORB `StrategyDef` was added.
-- Execution/accounting truth: Preserved. No execution, PnL, trade materialization, or accounting code changed.
-- Config/YAML contract: Preserved. New runtime truth is `configs/features/orb_core_v1.yaml`; no CSV/MD runtime dependency was introduced.
-- Timestamp/session/lookahead: Synthetic tests cover no-lookahead and session reset for the new features. Real-data timestamp/session behavior was not smoke-built due missing curated QQQ.
-- Candidate/promotion contract if relevant: Preserved. `configs/candidates/` contains README files only; no runtime candidate YAMLs were added.
-- Local path / GitHub reproducibility: Committed artifacts and configs are repo-relative and GitHub-readable.
-- Cache/artifact reproducibility: No cache artifacts committed. Feature cache remains local-only if used later.
+- Data contract: No data loader, raw, curated, or parquet changes inspected in the target diff.
+- Feature contract: Additions are generic market facts (`levels`, `indicators`) and are documented in `docs/FEATURE_CONTRACT.md`. No obvious lookahead issue found in sampled logic; levels use prior session stats, and indicators reset by session.
+- Strategy contract: Preserved in sampled modules: strategies consume `BarMatrix` + `FeatureMatrix` + YAML and emit `SignalMatrix`; no PnL/execution logic added.
+- Execution/accounting truth: Preserved. No execution truth changes found in the target diff.
+- Config/YAML contract: Preserved. New base/grid/metadata YAMLs are repo-relative. No candidate YAMLs were added.
+- Timestamp/session/lookahead: Synthetic tests cover representative no-lookahead/session cases, but not every family equally. Real curated-data timestamp behavior was not exercised by Cursor due missing local curated data.
+- Candidate/promotion contract if relevant: Preserved. `configs/candidates/**/*.yaml` was not added.
+- Local path / GitHub reproducibility: No absolute local path issue found in sampled committed configs. The malformed CSVs reduce reproducibility of review-table parsing.
+- Cache/artifact reproducibility: No cache artifacts committed. Phase 14 should regenerate features/signals from YAML/source, not from CSV artifacts.
 
 ## G. Recommended Next Review or Next Step
 
-- What ChatGPT should analyze next: Whether Phase 12's feature semantics are sufficient for ORB continuation MVP, whether `orb_core_v1` should include exactly these 9 columns, and whether the next ORB strategy prompt is narrow enough to avoid premature Layer1/promotion work.
-- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed with warnings. The next prompt should implement only ORB continuation strategy MVP signal generation and validation, not Layer1 promotion or grids unless explicitly scoped.
-- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `configs/features/orb_core_v1.yaml`, `src/intraday/features/kernels/orb.py`, `src/intraday/features/kernels/vwap.py`, `src/intraday/features/engine.py`, `src/intraday/strategies/base.py`, `src/intraday/strategies/registry.py`, `artifacts/generic_feature_foundation_second_family_phase12/CHATGPT_REVIEW_BUNDLE.md`, `feature_semantics_design.csv`, `feature_config_design.csv`, and `orb_readiness_update.md`.
-- What must be explicitly forbidden in the next prompt: Runtime candidate YAMLs, Layer1 grids/runs unless deliberately opened, Layer2/3, WFO, live/paper, GAP/CCI/VWAP strategy ports, PA refinement, QT imports/copying architecture, parquet/cache/local-run commits, strategy-specific feature hacks, CSV/MD as runtime config, and `git add .`.
-- Whether another Codex review should be required after the next Cursor run: Yes, especially if ORB strategy code, strategy YAML, registry changes, or Layer1 smoke/grid configs are added.
+- What ChatGPT should analyze next: Whether the Phase 13 strategy library semantics are acceptable as MVP signal plumbing, whether the family set is too broad for the next Layer1 smoke, and whether the malformed CSV artifacts need repair before/within the next Cursor prompt.
+- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed with warnings, but include a narrow artifact-hygiene repair step for Phase 13 CSV headers and README next-step drift before or alongside the Layer1 small-grid smoke.
+- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `README.md`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `configs/features/strategy_library_core_v1.yaml`, all Phase 13 `configs/strategies/base/*.yaml` and `configs/strategies/grids/*controlled_small.yaml`, `src/intraday/layer1/grid.py`, `src/intraday/layer1/config.py`, `src/intraday/layer1/runner.py`, representative strategy modules, and `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/CHATGPT_REVIEW_BUNDLE.md`.
+- What must be explicitly forbidden in the next prompt: Runtime candidate YAMLs, candidate promotion, Layer2/3, WFO, live/paper, broad research sweeps, QT imports, execution truth changes, parquet/cache/row-level artifact commits, CSV/MD as runtime truth, absolute local config paths, and `git add .`.
+- Whether another Codex review should be required after the next Cursor run: Yes, especially if Layer1 multi-strategy configs/runners/artifacts are added or CSV artifact-generation code is repaired.
 
 ## H. Explicit Non-Actions
 
@@ -89,36 +89,36 @@ Cursor completed the intended Phase 12 Layer 0 feature-foundation task: it added
 
 - Directly verified:
   - Latest commit and target parent hashes.
-  - Previous `CODEX_REVIEW.md` reviewed `5353d48`, not target `61fc90f`.
-  - Working tree was clean before review.
-  - Target diff added feature-layer code/config/tests/docs and small Phase 12 CSV/MD artifacts.
-  - `configs/features/orb_core_v1.yaml` contains VWAP, ORB, and volatility market facts only.
-  - `vwap_slope_5` and `orb_width_pct_15` are wired through config validation, registry, kernels, engine column names, tests, and docs.
-  - `configs/candidates/` contains README files only.
-  - No committed parquet/cache/heavy/generated local-run files in target diff.
+  - Existing `CODEX_REVIEW.md` reviewed `61fc90f2bdd5d6e95166e99f87a572ab80515be5`, not target `0762f9197f7a08037d8cd6f9ff0ecca3cd9d5d5e`.
+  - Working tree was clean before writing this review.
+  - Target diff changes 82 files with Phase 13 docs/configs/source/tests/artifacts.
+  - No target diff entries for parquet/cache/raw/curated data, `.npy/.npz`, row-level trades/equity, or candidate YAMLs.
+  - Representative feature config -> feature engine -> strategy -> test -> handoff path.
+  - Phase 13 CSV artifacts have malformed character-split headers.
+  - `README.md` next-step text is stale relative to Phase 13 handoff/status.
 - Inferred from Cursor artifacts:
-  - Full validation command results passed.
-  - `features inspect orb_core_v1` returned 9 columns and the reported hash.
-  - Real-data feature build was skipped because local curated QQQ was absent.
+  - Full validation commands passed.
+  - Real-data feature build skipped due no local curated data.
+  - QT reference path unavailable.
 - Accepted from Codex inspection:
-  - Phase 12 stayed within Layer 0 generic feature scope.
-  - `NEXT_HANDOFF.md` is aligned with code/config/artifacts.
+  - Phase 13 stayed within signal/runtime plumbing and avoided execution/PnL/promotion layers.
+  - New strategy modules respect core strategy/execution boundaries in representative inspection.
 - Not verified:
   - Tests not rerun.
   - Commands not rerun.
   - Artifacts not regenerated.
   - Raw/curated parquet not inspected.
-  - Feature hash not recomputed independently.
+  - Every strategy branch and every grid combo not exhaustively audited.
 - Claims requiring caution:
-  - Validation is artifact-reported, not independently reproduced by Codex.
-  - No real-data `orb_core_v1` feature matrix was built.
-  - The PA hash stability test is weaker than its name; direct diff evidence is the stronger support for PA config stability.
+  - Validation is artifact-reported only.
+  - CSV artifacts should not be trusted by automated tooling until repaired.
+  - Strategy expectancy is unproven; Phase 13 is plumbing, not alpha validation.
 
 ## J. Review Depth
 
-- Representative path inspected: `input/config -> runtime logic -> output artifact/result -> validation/test -> handoff claim` via `configs/features/orb_core_v1.yaml`, feature specs/registry/engine, VWAP/ORB kernels, unit tests, Phase 12 validation ledger, and `NEXT_HANDOFF.md`.
-- Important files inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/DATA_CONTRACT.md`, `configs/features/orb_core_v1.yaml`, candidate root, `src/intraday/features/engine.py`, `src/intraday/features/kernels/vwap.py`, `src/intraday/features/kernels/orb.py`, `src/intraday/features/registry.py`, `src/intraday/features/specs.py`, `tests/unit/test_feature_engine.py`, `tests/unit/test_features_vwap.py`, `tests/unit/test_features_orb.py`, Phase 12 review bundle, source map, key tables, semantic/config/test summaries, CLI smoke summary, ORB readiness update, and validation ledger.
-- Important files not inspected: Full `docs/ARCHITECTURE.md`, full `docs/EXECUTION_CONTRACT.md`, full `docs/LAYER1_CONTRACT.md`, full data loader implementation, full FeatureStore implementation, full strategy implementations, raw/curated parquet contents, and external QT source files.
-- Reason not inspected: The review request constrained Codex to lightweight read-only inspection and explicitly forbade pytest, compileall, Layer1, WFO, live, paper, and long commands unless requested.
-- Areas that should be reviewed by ChatGPT Pro: ORB feature sufficiency, ORB strategy MVP scope, whether `vwap_slope_5` should remain price-per-bar or be normalized, whether `orb_width_pct_15` belongs in the minimal ORB config, and whether the next prompt adequately prevents promotion/Layer1 drift.
-- Areas that should be reviewed by future Codex review: ORB strategy implementation, strategy YAML/config validation, required feature checks, SignalMatrix no-lookahead/session tests, registry wiring, any Layer1 smoke/grid configs, validation ledger, candidate root hygiene, and absence of candidate YAML promotion.
+- Representative path inspected: `input/config -> runtime logic -> output artifact/result -> validation/test -> handoff claim` via `configs/features/opening_core_v1.yaml`, `configs/strategies/base/orb_continuation.yaml`, feature specs/engine/kernels, `src/intraday/strategies/orb/continuation.py`, registry/config validation, unit tests, Phase 13 bundle, and `NEXT_HANDOFF.md`.
+- Important files inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/ARCHITECTURE.md`, `docs/CONFIG_CONTRACT.md`, `docs/DATA_CONTRACT.md`, representative feature configs, `strategy_library_core_v1`, representative base/grid strategy YAMLs, Phase 13 bundle files, `src/intraday/features/specs.py`, `engine.py`, `kernels/levels.py`, `kernels/indicators.py`, `src/intraday/strategies/common.py`, `config_validation.py`, `registry.py`, representative new strategy modules, and representative Phase 13 tests.
+- Important files not inspected: Every line of every added strategy test/config, full Layer1 runner internals, full CLI implementation, full execution contracts/code, raw/curated parquet contents, external QT source files, and generated artifact provenance scripts if any.
+- Reason not inspected: The review request constrained Codex to lightweight read-only inspection and explicitly forbade pytest, compileall, Layer1/Layer2/Layer3/WFO/live/paper commands, sweeps, and long commands.
+- Areas that should be reviewed by ChatGPT Pro: Strategy-family MVP semantics, minimal Layer1 all-strategy smoke design, CSV artifact-generation defect severity, whether Phase 13 breadth was appropriate, and whether Phase 14 should run one combined feature config or per-strategy feature configs.
+- Areas that should be reviewed by future Codex review: Layer1 small-grid implementation/results, artifact schema cleanliness, candidate-root hygiene, absence of promotion YAMLs, validation ledger credibility, and no drift in execution/accounting truth.
