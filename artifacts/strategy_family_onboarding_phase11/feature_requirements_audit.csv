@@ -1,0 +1,15 @@
+family,required_feature_or_fact,current_feature_available_yes_no,current_column_if_available,feature_group,generic_market_fact_yes_no,strategy_specific_yes_no,no_lookahead_risk,session_boundary_risk,implementation_complexity,recommended_action,notes
+ORB,vwap,yes,vwap,vwap,yes,no,low,low,low,available_now,
+ORB,vwap_side,yes,vwap_side,vwap,yes,no,low,low,low,available_now,
+ORB,orb_high low mid range,yes,orb_*_15,orb,yes,no,low,low,low,available_now,ORB contract in FEATURE_CONTRACT
+ORB,atr_like,yes,atr_like_20,volatility,yes,no,low,low,low,available_now,
+ORB,vwap_slope_5,no,,vwap,yes,no,low,low,medium,add_generic_feature_later,QT orb_continuation uses this filter
+ORB,orb_width_pct,partial,orb_range orb_mid,orb,yes,no,low,low,low,add_generic_feature_later,prefer feature over strategy ratio
+ORB,breakout above orb high,strategy,close vs orb_high,n/a,no,yes,low,low,low,available_now,strategy compares bar to feature
+ORB,entry after ORB window,strategy,bars.minute,n/a,no,yes,low,low,low,available_now,use minute + open_minutes param
+GAP,prior_day_close,no,,levels,yes,no,medium,high,high,defer,blocks GAP MVP
+GAP,gap_prior_range_norm,no,,levels,yes,no,medium,high,high,defer,
+CCI,cci series,no,,indicators,yes,no,medium,medium,high,defer,compute_cci not implemented
+CCI,past oversold flag,no,,indicators,no,yes,medium,medium,high,reject_strategy_specific_leakage,implement as strategy state or generic fact later
+VWAP,prev_session_high,no,,levels,yes,no,medium,medium,high,defer,
+PA,regime features for filter,yes,close_vs_rolling_mean_20 etc,regime,yes,no,low,low,low,available_now,strategy does not consume yet

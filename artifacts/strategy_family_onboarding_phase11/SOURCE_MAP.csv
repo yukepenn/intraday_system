@@ -1,0 +1,19 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,canonical onboarding contract,yes,source,no,
+docs/PHASE_PLAN.md,roadmap Phase 11 entry,yes,source,no,
+docs/STRATEGY_CONTRACT.md,strategy layer pointer to onboarding,yes,source,no,
+docs/FEATURE_CONTRACT.md,feature audit guidance,yes,source,no,
+artifacts/strategy_family_onboarding_phase11/CHATGPT_REVIEW_BUNDLE.md,review bundle,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/strategy_family_feasibility_matrix.csv,family comparison,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/feature_requirements_audit.csv,feature gaps,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/selected_second_family_decision.md,ORB selection,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/second_family_implementation_plan.md,future ORB plan,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/pa_path_hold_summary.md,PA hold evidence,yes,generated,no,
+artifacts/strategy_family_onboarding_phase11/qt_reference_inventory.csv,QT read-only map,yes,generated,no,QT path local
+artifacts/strategy_family_onboarding_phase11/validation_results.csv,CI validation ledger,yes,generated,no,
+NEXT_HANDOFF.md,mobile handoff,yes,source,no,
+README.md,project status section,yes,source,no,
+PROJECT_STATUS.md,current phase,yes,source,no,
+CODEX_REVIEW.md,prior Codex verdict,read-only input,source,no,not modified by Cursor
+artifacts/pa_risk_grid_diagnostic_phase10/diagnostic_conclusion.md,Phase 10 evidence,optional,source,no,
+QT/src/strategies/strategy/orb_continuation.py,QT logic reference,optional,external,yes,read-only not imported

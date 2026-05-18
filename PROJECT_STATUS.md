@@ -2,15 +2,15 @@
 
 ## Current phase
 
-**Phase 10 — PA risk-path diagnostic grid (`REFINE_PA_GRID_AND_RERUN`)** — 12-combo risk diagnostic on QQQ 2024H1/H2; no strategy/feature changes; no promotion.
+**Phase 11 — Strategy-family onboarding design (`DESIGN_STRATEGY_FAMILY_ONBOARDING_AND_SECOND_MVP_SELECTION`)** — onboarding contract, feasibility matrix, QT guardrails, second family selection; no runtime strategy/feature implementation.
 
 ## Decision
 
-**`PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`** — Risk-path-only grid did not restore design economics or cross-window stability (0/12 positive in both windows; all rows fail drawdown gates). Hold PA candidate path.
+**`STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED`** — Multi-family onboarding contract defined; **ORB continuation** selected as second MVP family (future implementation only). PA path remains **held** (not abandoned).
 
 ## Recommended next step (exactly one)
 
-**`REVIEW_PA_FEATURES_OR_LOGIC`** — Review PA signal scoring, regime feature use, and grid fixed-parameter doctrine before further diagnostics or holdout. Not promotion.
+**`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** — Small generic features for ORB (`vwap_slope_5`, optional `orb_width_pct`) before `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`. Not promotion.
 
 ## Snapshot
 

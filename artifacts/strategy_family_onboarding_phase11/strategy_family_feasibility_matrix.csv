@@ -1,0 +1,7 @@
+family,conceptual_fit,current_feature_availability,missing_generic_features,missing_strategy_features,no_lookahead_risk,session_boundary_risk,config_complexity,grid_complexity,implementation_complexity,qt_reference_available,diversification_vs_pa,qt_architecture_risk,layer1_smoke_feasibility,controlled_grid_feasibility,promotion_readiness_later,recommended_status,notes
+ORB continuation,high,high,vwap_slope optional orb_width_pct,after_orb uses bar minute,low,low,medium,low,medium,yes,high,low,high,high,after multi-window,READY_FOR_MVP_DESIGN,selected second family
+VWAP reclaim reject,high,medium,prior bar session flags wrong_stack,reject pattern logic,medium,medium,medium,medium,high,yes,low,low,medium,medium,defer,NEEDS_GENERIC_FEATURE_FOUNDATION,
+GAP acceptance failure,high,low,prior_day_close gap_norm session_open,acceptance state machine,medium,high,high,medium,high,yes,high,medium,low,low,defer,NEEDS_GENERIC_FEATURE_FOUNDATION,
+CCI extreme snapback,medium,low,CCI kernel oversold history,trigger windows,medium,medium,medium,medium,high,yes,medium,low,low,medium,defer,NEEDS_GENERIC_FEATURE_FOUNDATION,
+PA refine,high,high,regime use in strategy,none new,low,low,known,known,low,yes,none,low,high,high,not now,HOLD,canary held phase10
+failed ORB,medium,high,same as ORB,failure pattern,medium,low,medium,medium,high,yes,medium,low,medium,medium,defer,DEFER_TOO_COMPLEX,after ORB MVP

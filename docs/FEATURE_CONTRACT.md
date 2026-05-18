@@ -79,4 +79,6 @@ Row count **must** equal `BarMatrix.n_bars`. Duplicate column names are **errors
 
 `pa_core_v1` provides adequate **Layer 0 market facts** for PA MVP grids (VWAP, ORB, volatility, price action, volume, regime). Phase **9** found the PA strategy does not yet consume regime/volatility context for entry filtering; confirmation failure on QQQ 2024H2 is **not** evidence that feature kernels are broken.
 
-Before adding new feature families, prefer a **small risk-path diagnostic grid** using existing features. See `artifacts/pa_features_logic_review_after_confirmation_phase9/pa_feature_logic_review.md`.
+Before adding new feature families, complete a **feature requirements audit** per `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`. Phase **11** selected ORB as second family; likely small additions: `vwap_slope` (rolling slope on VWAP), optional `orb_width_pct` — not strategy-specific signal columns.
+
+PA hold: do not expand PA-specific features while onboarding ORB. See `artifacts/strategy_family_onboarding_phase11/feature_requirements_audit.csv`.

@@ -102,7 +102,11 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 9 complete:** PA feature/logic diagnostic review after confirmation failure — **`PA_FEATURE_LOGIC_REVIEW_COMPLETE`**. Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Confirmation rejected all rows (drawdown gate + rolling_low path reversal). Still **no** runtime candidate YAMLs.
 
-**Next:** **`REFINE_PA_GRID_AND_RERUN`** (tiny risk diagnostic grid on design window; not promotion). Layer2/3 remain out of scope.
+**Phase 10 complete:** PA risk-path diagnostic — path **held** (`PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`). PA served as canary vertical slice; do not refine PA grids while onboarding new families.
+
+**Phase 11 complete:** Strategy-family **onboarding contract** + second MVP family selection — **ORB continuation** (`orb_continuation`) for future implementation. See `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` and `artifacts/strategy_family_onboarding_phase11/`.
+
+**Next (provisional):** **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** (small ORB feature gaps: `vwap_slope`, optional `orb_width_pct`) → then **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Not promotion. Layer2/3 remain out of scope.
 
 See:
 

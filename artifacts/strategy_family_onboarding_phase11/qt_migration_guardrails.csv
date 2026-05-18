@@ -1,0 +1,11 @@
+guardrail,rule,enforcement
+concepts not architecture,reimplement under intraday contracts,code review + no QT imports
+no runtime QT,never sys.path QT,CI grep / policy doc
+yaml runtime only,no CSV MD configs,CONFIG_CONTRACT
+single pnl truth,execution only,EXECUTION_CONTRACT
+no script runners,layer1 CLI,DEVELOPMENT_WORKFLOW
+no absolute paths,repo-relative artifact_root,layer1 config validation
+idea triage,kernel or strategy or defer,feasibility matrix
+family gates,no lookahead smoke dry-run,onboarding contract
+no bulk port,minimal generic features,feature audit
+optional regression,QT numbers export only,tests/regression future

@@ -1,0 +1,7 @@
+finding,evidence,interpretation,action,future_relevance,notes
+PA MVP canary complete,Phases 5-10 end-to-end,vertical slice validated pipeline,hold promotion path,baseline for other families,
+Single-window H1 not robust,6c rank-1 vs 8b all REJECT,design window overfit risk,no PA grid refinement,use design+confirmation for all families,
+H2 confirmation weakens,CONFIRMATION_WEAKENS_SELECTION_DESIGN,stress not promotion proof,document H2 as stress only,same gate for next family,
+Risk path insufficient,Phase 10 0/12 both windows positive,risk-only retune failed,hold PA; pivot onboarding,risk axes still in Layer1 grids,
+Dry-run blocks promotion,24/24 REJECT promotion_allowed_now=false,gates work,keep same selection contract,apply to ORB etc,
+Layer1 infrastructure works,smoke grid dry-run artifacts,onboarding contract can reuse PA pattern,template Layer1 YAML per family,

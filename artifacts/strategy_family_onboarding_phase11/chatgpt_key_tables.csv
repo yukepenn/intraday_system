@@ -1,0 +1,15 @@
+section,item,metric,value,interpretation
+git,local_head_pre,fab6c6f,fab6c6f,matched origin/main before work
+git,remote_match,yes,yes,safe to proceed
+pa_hold,phase10_combos_both_positive,0,0/12,risk path did not restore PA
+pa_hold,promotion_allowed_now,false,24/24 reject,dry-run gates work
+onboarding,contract_doc,STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,created,all families must follow
+feasibility,selected_family,ORB,READY_FOR_MVP_DESIGN,best pipeline fit not alpha
+feasibility,deferred_gap,levels missing,NEEDS_GENERIC_FEATURE_FOUNDATION,too much feature debt
+feasibility,deferred_cci,CCI kernel missing,NEEDS_GENERIC_FEATURE_FOUNDATION,indicators not implemented
+features,orb_orb_columns,available,orb_high_15 etc,pa_core_v1 sufficient base
+features,missing_vwap_slope,no,vwap_slope_5,mini feature foundation recommended
+decision,phase11,STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED,one label,onboarding design complete
+next_step,cursor,DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY,one label,before ORB signal MVP
+validation,pytest_full,391,pass,no Layer1 runs
+validation,ruff,pass,pass,no source changes

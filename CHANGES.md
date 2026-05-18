@@ -4,6 +4,14 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-18
 
+### Phase 11 — Strategy-family onboarding + second MVP selection
+
+- Docs: `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` — per-family files, tests, Layer1 sequence, gates, anti-overfit.
+- Research(artifacts): `artifacts/strategy_family_onboarding_phase11/` — feasibility matrix, feature audit, QT inventory, ORB selection, implementation plan (design only).
+- Docs/status: PA path held; pivot to multi-family onboarding; second family **ORB continuation**; next feature foundation then ORB MVP.
+- Validation: full `pytest`, Ruff, CLI; no Layer1 grid runs.
+- Explicit non-goals: no GAP/CCI/ORB/VWAP runtime code, no new kernels, no candidate YAML.
+
 ### Phase 10 — PA risk-path diagnostic grid
 
 - Feat(grid): `configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml` (12 combos: stop_mode, target_r, max_hold).

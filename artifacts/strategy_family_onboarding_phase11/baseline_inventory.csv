@@ -1,0 +1,12 @@
+item,value,notes
+branch,main,
+local_head_pre_work,fab6c6f05968facfbac8924ab0d774c38b4371c9,
+remote_main_sha,fab6c6f05968facfbac8924ab0d774c38b4371c9,
+local_remote_match,yes,
+remote_url,https://github.com/yukepenn/intraday_system.git,
+working_tree_pre_work,clean,
+next_handoff_decision,PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH,
+next_handoff_next_step,REVIEW_PA_FEATURES_OR_LOGIC,
+codex_target_commit,17bd54edc86553e30ba33f64ea55dc092e4fbe0d,Phase 10 task commit reviewed by Codex
+codex_verdict,PASS_WITH_WARNINGS,
+pa_path_hold,yes,Phase 10 complete; no promotion

@@ -222,7 +222,22 @@ Decision label: **`PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`**.
 
 Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not promotion; not fresh holdout until path revives).
 
-## Phase 8-R — Port GAP and CCI (original roadmap; not started)
+## Phase 11 — Strategy-family onboarding + second MVP selection — **complete**
+
+Goal: define reusable **strategy-family onboarding contract**, audit features, map QT reference, select second MVP family — **no** runtime strategy/feature implementation, **no** Layer1 grids, **no** PA refinement.
+
+Highlights:
+
+- `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`
+- `artifacts/strategy_family_onboarding_phase11/` — feasibility matrix, feature audit, QT guardrails, PA hold summary
+- Second family selected: **ORB continuation** (`orb_continuation`) for **future** implementation only
+- PA path **held** after Phase 10 (canary complete; not promotion-ready)
+
+Decision label: **`STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED`**.
+
+Recommended next step: **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** (small ORB feature gaps) → **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**.
+
+## Phase 8-R — Port GAP and CCI (original roadmap; superseded by Phase 11 ORB-first plan)
 
 ## Phase 11 — Layer2 controlled router (original roadmap Phase 9)
 
@@ -254,4 +269,4 @@ Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not promotion; not fre
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **10** completed PA risk-path diagnostic grid; next **`REVIEW_PA_FEATURES_OR_LOGIC`** (hold PA path; not promotion). Port GAP/CCI (Phase 8-R) not started.
+Phase **11** completed strategy-family onboarding design; second family **ORB continuation** selected; PA path held. Next **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** then **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Port GAP/CCI deferred until after ORB pipeline proof.

@@ -1,0 +1,22 @@
+component,item,status,notes
+strategy,StrategyDef,ready,base.py
+strategy,registry builtins,ready,PA only registered
+strategy,loader validation,ready,
+strategy,SignalMatrix contract,ready,signal_v1
+strategy,gap cci orb vwap packages,partial,init only no impl
+strategy,PA buy_sell_close_trend,ready,held not promotion ready
+strategy,family smoke test template,missing,contract defines requirements
+configs,PA base grid metadata,ready,
+configs,non-PA configs,missing,
+features,pa_core_v1,ready,22 columns
+features,orb vwap vol pa vol regime kernels,ready,
+features,indicators CCI RSI,missing,NotImplementedError skeleton
+features,prior day levels,missing,
+layer1,smoke runner,ready,
+layer1,controlled grid,ready,
+layer1,select dry-run,ready,
+layer1,candidate promotion,partial,not activated
+gap,onboarding contract,needed,added phase11
+gap,feature requirements audit,needed,added phase11
+gap,qt mapping,needed,added phase11
+gap,implementation plan,needed,added phase11

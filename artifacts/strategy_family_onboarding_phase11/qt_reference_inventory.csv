@@ -1,0 +1,10 @@
+qt_path_or_concept,category,relevant_to_intraday_system_yes_no,possible_family,possible_feature_group,migration_value,migration_risk,recommended_action,notes
+QT/src/features/vwap.py,feature,yes,PA ORB VWAP,vwap,high,low,reuse concept,implemented pa_core_v1
+QT/src/features/orb.py,feature,yes,ORB PA,orb,high,low,reuse concept,implemented pa_core_v1
+QT/src/features/indicators.py,feature,yes,CCI,indicators,medium,medium,add generic CCI later,skeleton only in intraday
+QT/src/features/levels.py,feature,yes,GAP VWAP,levels,high,high,defer until levels contract,prior_day_close missing
+QT/src/strategies/strategy/orb_continuation.py,strategy,yes,ORB,orb+vwap,high,low,second MVP reference,read-only logic
+QT/src/strategies/strategy/gap_acceptance_failure.py,strategy,yes,GAP,levels+gap,medium,high,defer,needs prior session levels
+QT/src/strategies/strategy/cci_extreme_snapback.py,strategy,yes,CCI,indicators,medium,medium,defer,needs CCI kernel
+QT/src/strategies/strategy/vwap_reclaim_reject.py,strategy,yes,VWAP,vwap+session,medium,medium,defer,needs prev bar session facts
+QT/testing_parameters_results GAP CCI yaml,config audit,yes,GAP CCI,n/a,low,low,parameter vocabulary only,no runtime import

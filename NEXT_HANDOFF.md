@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-18** (`REFINE_PA_GRID_AND_RERUN` / Phase **10**).
+Last updated: **2026-05-18** (Phase **11** — strategy-family onboarding design).
 
 ---
 
@@ -8,145 +8,142 @@ Last updated: **2026-05-18** (`REFINE_PA_GRID_AND_RERUN` / Phase **10**).
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Task commit: see local `git log -1` after push
-- HEAD should match **`origin/main`** after push (**non-force** only)
+- Task commit: see `git log -1` after push
+- Pre-task HEAD: `fab6c6f` (matched `origin/main`)
 
 ---
 
-## B. Task scope (Phase 10)
+## B. Task scope (Phase 11)
 
-- Small PA **risk-path diagnostic grid** (12 combos) on QQQ 2024H1 design + 2024H2 stress retest.
-- **Did not** change PA strategy, features, execution, promote candidates, or write runtime candidate YAMLs.
-- Produced `artifacts/pa_risk_grid_diagnostic_phase10/` review bundle.
-
----
-
-## C. Schema / hygiene preflight
-
-- `atr_buffer`, `backtest.max_hold_minutes` grid overrides: **supported** (PASS).
-- CHANGES Phase 6d stale “latest” heading → historical anchor.
-- Phase 10 `local_run` gitignored under `artifacts/pa_risk_grid_diagnostic_phase10/local_run/`.
+- Design-only: strategy-family **onboarding contract**, feasibility matrix, feature audit, QT guardrails, second MVP family selection.
+- **Did not:** implement ORB/GAP/CCI/VWAP, new feature kernels, Layer1 grids, candidate YAML, PA changes, Layer2/3, WFO, live/paper.
+- Bundle: `artifacts/strategy_family_onboarding_phase11/`
 
 ---
 
-## D. Diagnostic grid design
+## C. PA path hold
 
-- Grid: `configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml`
-- Axes: `stop_mode` [signal_low, atr_buffer], `target_r` [0.8, 1.0, 1.2], `max_hold_minutes` [30, 50]
-- Fixed: body_pct 0.56, require_vwap false, long_only entry 60–300; **no rolling_low**; not chosen from H2 winners.
-
----
-
-## E. Layer1 diagnostic configs
-
-- `configs/layer1/pa_risk_diag_qqq_2024h1.yaml` (design)
-- `configs/layer1/pa_risk_diag_qqq_2024h2.yaml` (stress)
-- `grid-inspect`: 12 combos each.
+- PA canary vertical slice **complete** (Phases 5–10).
+- Phase 10: 0/12 risk-diagnostic combos positive in both H1/H2; all dry-run REJECT.
+- **Hold** PA promotion path; **do not** refine PA grids while onboarding ORB.
+- PA not permanently abandoned — idea bank only.
 
 ---
 
-## F. Data validation
+## D. Onboarding interface
 
-- QQQ 2024H1: 48360 rows, 124 sessions — PASS
-- QQQ 2024H2: 49380 rows, 128 sessions — PASS (540 missing minute slots warning)
-
----
-
-## G. Design-window diagnostic grid
-
-- Best total_r: **−4.79R** (`combo_0005`, signal_low, target_r 1.2, max_hold 30)
-- All 12 combos **negative** total_r
-- Dry-run: **12/12 REJECT** (`excessive_drawdown`, `negative_total_r`, `weak_profit_factor`)
+- **Ready:** `StrategyDef`, registry, PA configs, Layer1 smoke/grid/dry-run, selection gates.
+- **Gap (closed in docs):** `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`.
+- **Still missing at runtime:** non-PA strategies; `indicators`/`levels` feature groups.
 
 ---
 
-## H. Confirmation-window diagnostic grid
+## E. QT reference
 
-- Best total_r: **+4.68R** (`combo_0005`) — still REJECT (max_dd ~19.8R)
-- Dry-run: **12/12 REJECT** (`excessive_drawdown` all)
-- H2 is stress retest only (Phase 9 hypothesis window), not fresh holdout.
-
----
-
-## I. Selection dry-run on both windows
-
-- `promotion_allowed_now=false` on **all 24** rows (12+12).
-- Config reconstruction: 12/12 pass per window.
-- No candidate YAML.
+- Read-only: `QT/src/features/`, `QT/src/strategies/strategy/orb_continuation.py`.
+- No QT import; no architecture copy.
+- Guardrails: `artifacts/strategy_family_onboarding_phase11/qt_migration_guardrails.md`
 
 ---
 
-## J. Design-vs-confirmation diagnostic comparison
+## F. Feasibility matrix
 
-- **0/12** combos positive total_r in both windows.
-- **0/12** combos max_dd ≤ 10R in both.
-- `signal_low` dominates `atr_buffer`; max_hold 30 vs 50 negligible.
-- Label: **`RISK_DIAGNOSTIC_WEAKENS_PA_PATH`**
+| Family | Status |
+| --- | --- |
+| ORB continuation | **Selected** — READY_FOR_MVP_DESIGN |
+| GAP | NEEDS_GENERIC_FEATURE_FOUNDATION |
+| CCI | NEEDS_GENERIC_FEATURE_FOUNDATION |
+| VWAP | NEEDS_GENERIC_FEATURE_FOUNDATION |
+| PA | HOLD |
 
----
-
-## K. Diagnostic conclusion
-
-- Risk-path diagnostic **did not** restore design-window economics or cross-window stability.
-- **Not** ready for fresh holdout or promotion schema.
-- Next: PA feature/logic review — not family expansion yet.
+CSV: `strategy_family_feasibility_matrix.csv`
 
 ---
 
-## L. Tests / validation
+## G. Feature audit
+
+- ORB: reuse `pa_core_v1`; add `vwap_slope_5` (+ optional `orb_width_pct`) in mini foundation phase.
+- GAP/CCI blocked on levels/CCI kernels.
+
+CSV: `feature_requirements_audit.csv`
+
+---
+
+## H. Onboarding contract
+
+`docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` — required files, tests, Layer1 sequence, gates, prohibitions.
+
+---
+
+## I. Second family decision
+
+**ORB continuation** (`orb_continuation`) — future implementation only.  
+Rationale: best feature coverage, clear signal, diversifies PA, low arch risk.  
+Not based on expected alpha.
+
+---
+
+## J. Future implementation plan
+
+`second_family_implementation_plan.md` — feature foundation → strategy MVP → Layer1 smoke/grid → diagnostics. **Not started.**
+
+---
+
+## K. Tests / validation
 
 | Check | Status |
 | --- | --- |
-| `compileall src` | PASS |
-| `pytest` smoke+unit | PASS |
-| `pytest` full | PASS |
-| Ruff format/check | PASS |
+| compileall | PASS |
+| pytest smoke+unit | 356 PASS |
+| pytest full | 391 PASS |
+| ruff | PASS |
 | CLI help/doctor/validate | PASS |
-| `layer1 grid-inspect` | PASS (12 combos) |
-| `layer1 grid` H1/H2 | PASS |
-| `select-dry-run` H1/H2 | PASS |
+| Layer1 grid | skipped |
 
 ---
 
-## M. Explicit still-not-implemented
+## L. Not implemented
 
-Real candidate YAML promotion, Layer2/3, WFO, live/paper, GAP/CCI, PA logic changes, feature kernel changes, broad PA grids, retuning from 2024H2 winners.
-
----
-
-## N. Risks / blockers
-
-| Risk | Status |
-| --- | --- |
-| Fixed signal slice vs Phase 6c grid | May explain H1 all-negative vs prior +8.88R rank-1 |
-| H2 stress not independent holdout | Documented; fresh holdout still required if path revives |
-| Drawdown gate | All rows fail `excessive_drawdown` both windows |
+ORB/GAP/CCI/VWAP runtime code, feature kernels, candidate YAML, Layer2/3, WFO, live/paper, PA grid/logic changes.
 
 ---
 
-## O. Files changed (high-level)
+## M. Risks
 
-`configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml`, `configs/layer1/pa_risk_diag_qqq_2024h*.yaml`, `artifacts/pa_risk_grid_diagnostic_phase10/**`, `CHANGES.md`, status/docs.
+- ORB needs small feature additions before QT-parity filters.
+- Must not run multiple family implementations in parallel.
+- Promotion still blocked until multi-window doctrine passes.
 
 ---
 
-## P. Artifact hygiene
+## N. Files changed
+
+`docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, status docs, `artifacts/strategy_family_onboarding_phase11/**`
+
+---
+
+## O. Artifact hygiene
 
 - No parquet/cache/candidate YAML staged
 - `CODEX_REVIEW.md` not modified by Cursor
+- Phase 10 comparison CSV: use dedicated dry-run CSVs (`phase10_artifact_reading_note.md`)
 
 ---
 
-## Q. Decision (exactly one)
+## P. Decision (exactly one)
 
-### `PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`
-
-Phase 10 risk diagnostic complete. PA path held pending feature/logic review.
+### `STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED`
 
 ---
 
-## R. Recommended next step (exactly one)
+## Q. Recommended next step (exactly one)
 
-### `REVIEW_PA_FEATURES_OR_LOGIC`
+### `DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`
 
-Review PA signal scoring, regime feature use, and grid doctrine before further diagnostics or holdout design. **Not** promotion.
+Small generic features for ORB (`vwap_slope`, optional `orb_width_pct`) → then `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`. **Not** promotion.
+
+---
+
+## R. Review reminder
+
+After push: new **Codex** thread + **ChatGPT Pro** review. Cursor provisional steps are not final roadmap until reviewed.

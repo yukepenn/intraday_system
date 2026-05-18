@@ -81,7 +81,9 @@ Implemented in `intraday.strategies.contracts.compute_signal_hash`.
 
 Built-in strategies register via `register_builtin_strategies()`. Phase 5 ships:
 
-- `pa_buy_sell_close_trend` — PA-core features, long-only MVP
+- `pa_buy_sell_close_trend` — PA-core features, long-only MVP (held for promotion after Phase 10)
+
+New families must follow `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`. Phase **11** selected **ORB continuation** as the second MVP family (implementation deferred).
 
 ## Config layout
 

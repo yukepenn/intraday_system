@@ -1,0 +1,12 @@
+section,requirement,doc_reference
+files,strategy py + base grid metadata yaml,STRATEGY_FAMILY_ONBOARDING_CONTRACT §2
+interface,StrategyDef generate_reference validate_config,§3
+config,feature_config signal risk backtest no absolute paths,§4
+tests,config features signal_matrix no-lookahead session,§5
+layer1,smoke grid inspect dry-run artifacts,§6
+artifacts,CHATGPT_REVIEW_BUNDLE SOURCE_MAP key tables,§7
+gates,READY_FOR_STRATEGY_MVP_IMPLEMENTATION etc,§8
+features,audit before implementation,§9
+qt,read only no import,§10
+prohibited,no candidate yaml layer2 wfo live,§11
+anti_overfit,one family PA held multi-window,§12

@@ -1,0 +1,7 @@
+item,issue,action_taken,behavior_changed_yes_no,notes
+README.md,stale next step REFINE_PA_GRID,updated project status section,yes,align with PA hold + Phase 11
+PROJECT_STATUS.md,Phase 10 only,Phase 11 onboarding entry,yes,
+PROGRESS.md CHANGES.md,stale latest next,Phase 11 log entries,yes,
+phase10 comparison CSV,blank selection columns,documented limitation; reading note artifact,no,use dedicated dry-run CSVs
+gitignore local_run,verify patterns,verified existing patterns,no,artifacts/**/local_run/ already ignored
+CODEX_REVIEW.md,cursor must not edit,not modified,no,Codex-owned

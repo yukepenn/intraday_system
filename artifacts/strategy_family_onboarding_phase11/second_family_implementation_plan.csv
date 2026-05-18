@@ -1,0 +1,12 @@
+phase,step,files_or_commands,owner_layer,blocked_by
+A,add vwap_slope kernel,src/intraday/features/kernels/,features,none
+A,add orb_width_pct,src/intraday/features/kernels/orb.py,features,none
+A,feature yaml + tests,configs/features/ tests/unit/,features,none
+B,orb continuation strategy,src/intraday/strategies/orb/continuation.py,strategies,phase A optional
+B,base grid metadata yaml,configs/strategies/,strategies,phase B signal
+B,unit tests,tests/unit/test_strategy_orb_continuation.py,tests,phase B signal
+C,layer1 smoke config,configs/layer1/smoke_orb_qqq_2024h1.yaml,layer1,phase B
+C,controlled grid config,configs/layer1/controlled_orb_qqq_2024h1.yaml,layer1,phase B
+C,layer1 smoke test,tests/smoke/,tests,phase C config
+D,design grid + dry-run,layer1 CLI + artifacts,research,curated QQQ local
+D,confirmation window,controlled_orb_qqq_2024h2.yaml,research,phase D design

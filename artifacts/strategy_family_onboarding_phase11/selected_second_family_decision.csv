@@ -1,0 +1,17 @@
+field,value
+decision_label,SECOND_FAMILY_SELECTED_FOR_MVP_DESIGN
+selected_family,ORB continuation
+strategy_name_target,orb_continuation
+why_selected,Best feature readiness clear signal low arch risk diversifies PA strong QT reference
+alternative_gap,deferred missing prior_day levels feature group
+alternative_cci,deferred CCI kernel not implemented
+alternative_vwap,deferred session prior bar facts needed
+alternative_pa,held phase10 overfit risk
+feature_readiness_high,pa_core_v1 orb vwap atr available
+missing_features,vwap_slope_5 optional orb_width_pct
+implementation_risk,low medium with standard gates
+layer1_smoke_future,smoke_orb_qqq_2024h1 yaml
+controlled_grid_future,<=16 combos explicit yaml
+next_phase_feature,DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_ORB
+next_phase_strategy,IMPLEMENT_ORB_STRATEGY_FAMILY_MVP
+cursor_provisional_next,DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY

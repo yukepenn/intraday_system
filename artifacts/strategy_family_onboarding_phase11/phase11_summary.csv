@@ -1,0 +1,9 @@
+metric,value
+phase,11
+task,DESIGN_STRATEGY_FAMILY_ONBOARDING_AND_SECOND_MVP_SELECTION
+decision,STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED
+next_step,DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY
+second_family,ORB continuation
+pa_path_held,yes
+runtime_impl,no
+pytest_full,391 passed
