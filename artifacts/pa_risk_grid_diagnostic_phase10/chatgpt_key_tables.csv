@@ -1,0 +1,13 @@
+section,item,metric,value,interpretation
+baseline,local_head,d938753763ad299c7446b5a824c3654ee2e29285,matched origin/main
+grid,combo_count,12,2x3x2 risk axes
+design,best_total_r,-4.79R,combo_0005,all combos negative H1
+design,dry_run_reject,12,12,excessive_drawdown all
+confirmation,best_total_r,4.68R,combo_0005,still REJECT max_dd 19.8R
+confirmation,dry_run_reject,12,12,excessive_drawdown all
+comparison,both_positive,0,12,no cross-window stability
+comparison,both_max_dd_ok,0,12,gate limit 10R
+axes,signal_low_vs_atr_buffer,signal_low better,yes,atr_buffer worse both windows
+axes,max_hold_effect,negligible,,30 vs 50 often identical
+decision,label,PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH,,hold PA path
+next_step,label,REVIEW_PA_FEATURES_OR_LOGIC,,not promotion

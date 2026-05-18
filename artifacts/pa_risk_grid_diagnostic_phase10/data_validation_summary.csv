@@ -1,0 +1,3 @@
+window,rows,sessions,min_minute,max_minute,errors,warnings,local_parquet_note
+2024H1_design,48360,124,0,389,none,none,gitignored curated
+2024H2_stress,49380,128,0,389,none,missing_minute_slots_total=540,gitignored curated

@@ -42,7 +42,9 @@ Phase **7b** adds repeatable dry-run tooling: `run_layer1_candidate_selection_dr
 
 Phase **8b** (complete): confirmation window QQQ 2024H2 grid + dry-run executed; `promotion_allowed_now=false` enforced; comparison **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**; bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`.
 
-Phase **9** (complete): PA feature/logic diagnostic review after confirmation failure — no grid rerun, no promotion. Finding: design HOLD rows failed H2 primarily on `excessive_drawdown` and rolling_low path instability; **stop_mode ranking reversed** between windows. Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Next: tiny risk diagnostic grid (`REFINE_PA_GRID_AND_RERUN`), not promotion schema.
+Phase **9** (complete): PA feature/logic diagnostic review after confirmation failure — no grid rerun, no promotion. Finding: design HOLD rows failed H2 primarily on `excessive_drawdown` and rolling_low path instability; **stop_mode ranking reversed** between windows. Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`.
+
+Phase **10** (complete): PA risk-path diagnostic grid (12 combos) on QQQ 2024H1/H2 — `configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml`, Layer1 `pa_risk_diag_qqq_2024h*.yaml`. Result: **0/12** cross-window stable positive; all dry-run rows REJECT; `signal_low` preferred over `atr_buffer`; risk-only retune did not restore Phase 6c economics. Bundle `artifacts/pa_risk_grid_diagnostic_phase10/`. Next: **`REVIEW_PA_FEATURES_OR_LOGIC`**, not promotion.
 
 ## Execution modes
 

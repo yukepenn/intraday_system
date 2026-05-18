@@ -1,0 +1,13 @@
+command,exit_status,pass_fail,notes
+compileall -q src,0,PASS,
+pytest smoke unit,0,PASS,356 passed
+pytest full,0,PASS,391 passed
+ruff format --check,0,PASS,
+ruff check,0,PASS,
+cli --help,0,PASS,
+cli doctor,0,PASS,
+cli validate structure,0,PASS,
+data validate-curated H1 H2,0,PASS,
+layer1 grid-inspect H1 H2,0,PASS,combo_count 12
+layer1 grid H1 H2,0,PASS,
+layer1 select-dry-run H1 H2,0,PASS,promotion_allowed_now false all

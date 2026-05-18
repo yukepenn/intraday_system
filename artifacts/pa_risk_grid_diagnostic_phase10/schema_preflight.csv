@@ -1,0 +1,7 @@
+check,expected,actual,status,action_taken,notes
+risk.stop_mode atr_buffer,supported in strategy,buy_sell_close_trend.py + config_validation.py,PASS,none,atr_buffer_mult from base 0.35
+backtest.max_hold_minutes override,grid dotted key + runner,grid.py + runner.py hold=int(bt.get(max_hold_minutes)),PASS,none,
+layer1 grid resolver dotted keys,merge backtest.max_hold_minutes,normalize_override_mapping,PASS,none,
+CHANGES stale Phase 6d heading,no latest at bottom,was Phase 6d (latest),FIXED,renamed to historical anchor,
+H2 artifact_root documented,local-only comment,controlled_pa_qqq_2024h2.yaml comment,PASS,none,phase10 new roots
+gitignore local_run,artifacts/**/local_run/,present,PASS,none,

@@ -2,7 +2,16 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
-## [Unreleased] – 2026-05-17
+## [Unreleased] – 2026-05-18
+
+### Phase 10 — PA risk-path diagnostic grid
+
+- Feat(grid): `configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml` (12 combos: stop_mode, target_r, max_hold).
+- Feat(config): `configs/layer1/pa_risk_diag_qqq_2024h1.yaml`, `pa_risk_diag_qqq_2024h2.yaml`.
+- Research(artifacts): `artifacts/pa_risk_grid_diagnostic_phase10/` — H1/H2 sweeps, dry-run, comparison, conclusion.
+- Chore(docs): CHANGES Phase 6d heading → historical anchor.
+- Docs/status: `PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`; next `REVIEW_PA_FEATURES_OR_LOGIC`; no promotion.
+- Validation: grid + dry-run on both windows; `promotion_allowed_now=false` all rows.
 
 ### Phase 9 — PA feature/logic review after confirmation failure
 
@@ -153,7 +162,7 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 - Broad parameter sweeps / WFO / live-paper; candidate YAML promotion; GAP/CCI strategies; Layer2 router; Layer3 validation; management overlays in execution; portfolio sizing.
 
-### Decision — Phase 6d (latest)
+### Decision — Phase 6d (historical anchor)
 
 - `PA_GRID_REVIEW_COMPLETE_READY_FOR_SELECTION_DESIGN`
 - Recommended singular next procedural step (authoring/design only): **`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`**

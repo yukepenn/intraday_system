@@ -1,0 +1,9 @@
+field,value
+grid_path,configs/strategies/grids/pa_buy_sell_close_trend_risk_diagnostic_small.yaml
+combo_count,12
+axis_stop_mode,"signal_low, atr_buffer"
+axis_target_r,"0.8, 1.0, 1.2"
+axis_max_hold_minutes,"30, 50"
+rolling_low_included,no
+no_retune_from_h2,yes
+schema_validation,PASS

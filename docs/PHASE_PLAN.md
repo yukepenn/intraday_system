@@ -207,18 +207,35 @@ Decision label: **`PA_FEATURE_LOGIC_REVIEW_COMPLETE`**.
 
 Recommended next step: **`REFINE_PA_GRID_AND_RERUN`** (≤12-combo risk diagnostic; design window first; fresh holdout — not 2024H2 retuning).
 
+## Phase 10 — PA risk-path diagnostic grid — **complete**
+
+Goal: run ≤12-combo explicit risk diagnostic (`stop_mode`, `target_r`, `max_hold`) on QQQ 2024H1 design + 2024H2 stress retest — **no** strategy/feature changes, **no** promotion.
+
+Highlights:
+
+- Grid `pa_buy_sell_close_trend_risk_diagnostic_small.yaml` (12 combos); Layer1 configs `pa_risk_diag_qqq_2024h*.yaml`.
+- H1: all combos negative total_r; best −4.79R. H2: best +4.68R but all REJECT on gates.
+- **0/12** positive total_r in both windows; `signal_low` >> `atr_buffer`.
+- Bundle `artifacts/pa_risk_grid_diagnostic_phase10/`.
+
+Decision label: **`PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`**.
+
+Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not promotion; not fresh holdout until path revives).
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; not started)
 
-## Phase 10 — Layer2 controlled router (original roadmap Phase 9)
+## Phase 11 — Layer2 controlled router (original roadmap Phase 9)
 
-## Phase 11 — Management modes
+## Phase 12 — Management modes
 
-## Phase 12 — Layer3 frozen validation
+## Phase 13 — Layer3 frozen validation
 
-## Phase 13 — Scale and speed
+## Phase 14 — Scale and speed
 
 ## Decision labels (recent)
 
+- `PA_RISK_DIAGNOSTIC_COMPLETE_HOLD_PA_PATH`
+- `REVIEW_PA_FEATURES_OR_LOGIC`
 - `PA_FEATURE_LOGIC_REVIEW_COMPLETE`
 - `REFINE_PA_GRID_AND_RERUN`
 - `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`
@@ -237,4 +254,4 @@ Recommended next step: **`REFINE_PA_GRID_AND_RERUN`** (≤12-combo risk diagnost
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **9** completed PA feature/logic diagnostic review after confirmation failure; next **`REFINE_PA_GRID_AND_RERUN`** (tiny risk grid, not promotion). Port GAP/CCI (Phase 8-R) not started.
+Phase **10** completed PA risk-path diagnostic grid; next **`REVIEW_PA_FEATURES_OR_LOGIC`** (hold PA path; not promotion). Port GAP/CCI (Phase 8-R) not started.
