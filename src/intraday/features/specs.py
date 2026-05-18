@@ -24,8 +24,8 @@ CANONICAL_GROUP_ORDER: tuple[str, ...] = (
 )
 
 ALLOWED_OUTPUTS: dict[str, frozenset[str]] = {
-    "vwap": frozenset({"vwap", "vwap_dist", "vwap_dist_pct", "vwap_side"}),
-    "orb": frozenset({"orb_high", "orb_low", "orb_mid", "orb_range"}),
+    "vwap": frozenset({"vwap", "vwap_dist", "vwap_dist_pct", "vwap_side", "vwap_slope_5"}),
+    "orb": frozenset({"orb_high", "orb_low", "orb_mid", "orb_range", "orb_width_pct"}),
     "volatility": frozenset({"bar_range", "true_range", "atr_like", "range_mean"}),
     "price_action": frozenset(
         {

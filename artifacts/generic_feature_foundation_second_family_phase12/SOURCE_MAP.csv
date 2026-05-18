@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+artifacts/generic_feature_foundation_second_family_phase12/CHATGPT_REVIEW_BUNDLE.md,review bundle,yes,generated,no,
+artifacts/generic_feature_foundation_second_family_phase12/SOURCE_MAP.csv,artifact index,yes,generated,no,
+artifacts/generic_feature_foundation_second_family_phase12/chatgpt_key_tables.csv,key metrics,yes,generated,no,
+configs/features/orb_core_v1.yaml,ORB feature config,yes,source,no,
+src/intraday/features/kernels/vwap.py,vwap_slope_5 kernel,yes,source,no,
+src/intraday/features/kernels/orb.py,orb_width_pct kernel,yes,source,no,
+src/intraday/features/specs.py,allowed outputs,yes,source,no,
+tests/unit/test_features_vwap.py,vwap tests,yes,source,no,
+tests/unit/test_features_orb.py,orb tests,yes,source,no,
+docs/FEATURE_CONTRACT.md,semantics contract,yes,source,no,
+NEXT_HANDOFF.md,handoff,yes,source,no,
+CODEX_REVIEW.md,prior Codex review,optional,source,no,read-only for Cursor

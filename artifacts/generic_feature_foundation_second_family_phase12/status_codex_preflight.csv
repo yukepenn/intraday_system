@@ -1,0 +1,9 @@
+file_path,issue,action_taken,behavior_changed_yes_no,notes
+PROJECT_STATUS.md,Snapshot bundle Phase 10,Point to phase12 bundle,yes,Codex warning repaired
+PROJECT_STATUS.md,Phase 11 decision stale,Phase 12 decision,yes,metadata only
+README.md,Next step stale,Updated Phase 12 + next MVP,no,
+PROGRESS.md,Missing Phase 12,Added milestone,no,
+CHANGES.md,Missing Phase 12,Added changelog,no,
+docs/PHASE_PLAN.md,Phase 12 section,Added feature foundation section,no,
+docs/FEATURE_CONTRACT.md,New column semantics,Documented vwap_slope_5 orb_width_pct_15,no,
+CODEX_REVIEW.md,N/A,Not modified by Cursor,no,Codex-owned

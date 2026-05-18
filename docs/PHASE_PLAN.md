@@ -237,6 +237,21 @@ Decision label: **`STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED`**
 
 Recommended next step: **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** (small ORB feature gaps) → **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**.
 
+## Phase 12 — Generic feature foundation for second family — **complete**
+
+Goal: add minimal generic market facts for ORB continuation (`vwap_slope_5`, `orb_width_pct_15`) and `orb_core_v1` config — **no** ORB strategy, **no** Layer1, **no** promotion.
+
+Highlights:
+
+- Kernels: `vwap_slope_5`, `orb_width_pct` → `orb_width_pct_15`
+- Config: `configs/features/orb_core_v1.yaml` (does not mutate `pa_core_v1`)
+- Unit tests: no-lookahead, session reset, hash stability
+- Bundle `artifacts/generic_feature_foundation_second_family_phase12/`
+
+Decision label: **`GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`**.
+
+Recommended next step: **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** (ORB continuation strategy only; after Codex review).
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; superseded by Phase 11 ORB-first plan)
 
 ## Phase 11 — Layer2 controlled router (original roadmap Phase 9)
@@ -269,4 +284,4 @@ Recommended next step: **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`**
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **11** completed strategy-family onboarding design; second family **ORB continuation** selected; PA path held. Next **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** then **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Port GAP/CCI deferred until after ORB pipeline proof.
+Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). Next **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Port GAP/CCI deferred until after ORB pipeline proof.

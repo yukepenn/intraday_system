@@ -1,0 +1,8 @@
+item,value
+task,DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY
+decision,GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE
+next_step,IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP
+features_added,2
+config_added,orb_core_v1
+pa_core_v1_changed,no
+pytest_full,403

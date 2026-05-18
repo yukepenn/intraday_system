@@ -1,0 +1,9 @@
+check,status,notes
+vwap_slope_5,yes,implemented
+orb_width_pct_15,yes,implemented not deferred
+orb_core_v1,yes,9 columns
+no_lookahead_tests,pass,
+session_reset_tests,pass,
+orb_strategy_unblocked,yes_for_mvp_design,features only
+readiness_label,ORB_FEATURE_FOUNDATION_COMPLETE,
+remaining_blockers,strategy MVP Layer1 smoke,next phase

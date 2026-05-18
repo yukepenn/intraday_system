@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-18
 
+### Phase 12 — Generic feature foundation for ORB (second family)
+
+- Feat(features): `vwap_slope_5` in `kernels/vwap.py` — session-contained 5-bar VWAP slope (price/bar).
+- Feat(features): `orb_width_pct` → `orb_width_pct_15` in `kernels/orb.py` — `(orb_range / orb_mid)` after ORB complete.
+- Feat(config): `configs/features/orb_core_v1.yaml` — ORB foundation feature set (VWAP, ORB, volatility); `pa_core_v1` unchanged.
+- Test(unit): no-lookahead, session-reset, dtype/shape, hash stability for new columns.
+- Research(artifacts): `artifacts/generic_feature_foundation_second_family_phase12/`.
+- Explicit non-goals: no ORB/GAP/CCI/VWAP strategy runtime, no Layer1 grid, no candidate YAML.
+
 ### Phase 11 — Strategy-family onboarding + second MVP selection
 
 - Docs: `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` — per-family files, tests, Layer1 sequence, gates, anti-overfit.

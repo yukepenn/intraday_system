@@ -1,0 +1,10 @@
+section,item,metric,value,interpretation
+git,pre_task_head,sha,fabba96,matched origin/main
+features,vwap_slope_5,implemented,yes,required for ORB
+features,orb_width_pct_15,implemented,yes,not deferred
+config,orb_core_v1,columns,9,inspect hash stable
+config,pa_core_v1,changed,no,PA artifacts safe
+tests,pytest_full,count,403,all pass
+readiness,label,status,ORB_FEATURE_FOUNDATION_COMPLETE,strategy not done
+decision,phase12,GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE,complete,
+next,provisional,IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP,after Codex,not final roadmap

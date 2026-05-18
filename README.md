@@ -106,7 +106,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 11 complete:** Strategy-family **onboarding contract** + second MVP family selection — **ORB continuation** (`orb_continuation`) for future implementation. See `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` and `artifacts/strategy_family_onboarding_phase11/`.
 
-**Next (provisional):** **`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`** (small ORB feature gaps: `vwap_slope`, optional `orb_width_pct`) → then **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`**. Not promotion. Layer2/3 remain out of scope.
+**Phase 12 complete:** Generic ORB feature foundation — `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`. No ORB strategy yet. Bundle `artifacts/generic_feature_foundation_second_family_phase12/`.
+
+**Next (provisional):** **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** (ORB continuation strategy using `orb_core_v1`). Not promotion. Layer2/3 remain out of scope.
 
 See:
 

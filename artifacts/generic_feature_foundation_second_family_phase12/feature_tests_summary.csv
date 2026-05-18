@@ -1,0 +1,13 @@
+test_name,feature,scenario,expected,status,notes
+test_vwap_slope_5_simple_sequence,vwap_slope_5,rising VWAP,finite slope at t=4,pass,
+test_vwap_slope_5_nan_until_warmup,vwap_slope_5,t<4,all NaN,pass,
+test_vwap_slope_5_session_reset,vwap_slope_5,new session,no cross-session,pass,
+test_vwap_slope_5_no_lookahead,vwap_slope_5,future edit,prefix unchanged,pass,
+test_vwap_slope_5_nan_on_nonfinite_vwap,vwap_slope_5,zero vol,NaN,pass,
+test_orb_width_pct_after_complete,orb_width_pct_15,ORB done,range/mid,pass,
+test_orb_width_pct_nan_before_complete,orb_width_pct_15,pre-ORB,NaN,pass,
+test_orb_width_pct_zero_mid_nan,orb_width_pct_15,zero mid,NaN,pass,
+test_orb_width_pct_session_reset,orb_width_pct_15,two sessions,independent,pass,
+test_orb_width_pct_no_lookahead,orb_width_pct_15,future edit,prefix unchanged,pass,
+test_orb_core_v1_build_columns_and_hash,engine,build,9 cols stable hash,pass,
+test_pa_core_v1_hash_unchanged_after_orb_foundation,engine,pa hash,stable,pass,

@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-18** (Phase **11** — strategy-family onboarding design).
+Last updated: **2026-05-18** (Phase **12** — generic feature foundation for second family).
 
 ---
 
@@ -8,142 +8,135 @@ Last updated: **2026-05-18** (Phase **11** — strategy-family onboarding design
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
+- Pre-task HEAD: `fabba9678ae020393905c3fbdefcdc839e08891f`
 - Task commit: see `git log -1` after push
-- Pre-task HEAD: `fab6c6f` (matched `origin/main`)
 
 ---
 
-## B. Task scope (Phase 11)
+## B. Task scope (Phase 12)
 
-- Design-only: strategy-family **onboarding contract**, feasibility matrix, feature audit, QT guardrails, second MVP family selection.
-- **Did not:** implement ORB/GAP/CCI/VWAP, new feature kernels, Layer1 grids, candidate YAML, PA changes, Layer2/3, WFO, live/paper.
-- Bundle: `artifacts/strategy_family_onboarding_phase11/`
-
----
-
-## C. PA path hold
-
-- PA canary vertical slice **complete** (Phases 5–10).
-- Phase 10: 0/12 risk-diagnostic combos positive in both H1/H2; all dry-run REJECT.
-- **Hold** PA promotion path; **do not** refine PA grids while onboarding ORB.
-- PA not permanently abandoned — idea bank only.
+- Layer 0 only: `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`.
+- **Did not:** ORB/GAP/CCI/VWAP strategy runtime, Layer1 grids, candidate YAML, PA changes, Layer2/3, WFO, live/paper.
+- Bundle: `artifacts/generic_feature_foundation_second_family_phase12/`
 
 ---
 
-## D. Onboarding interface
+## C. Status / Codex preflight
 
-- **Ready:** `StrategyDef`, registry, PA configs, Layer1 smoke/grid/dry-run, selection gates.
-- **Gap (closed in docs):** `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`.
-- **Still missing at runtime:** non-PA strategies; `indicators`/`levels` feature groups.
-
----
-
-## E. QT reference
-
-- Read-only: `QT/src/features/`, `QT/src/strategies/strategy/orb_continuation.py`.
-- No QT import; no architecture copy.
-- Guardrails: `artifacts/strategy_family_onboarding_phase11/qt_migration_guardrails.md`
+- Repaired `PROJECT_STATUS.md` snapshot (Phase 10 → Phase 12 bundle).
+- `CODEX_REVIEW.md` **not** modified by Cursor.
+- Prior Codex: `5353d48`, `PASS_WITH_WARNINGS`.
 
 ---
 
-## F. Feasibility matrix
+## D. Feature semantics
 
-| Family | Status |
+| Column | Rule |
 | --- | --- |
-| ORB continuation | **Selected** — READY_FOR_MVP_DESIGN |
-| GAP | NEEDS_GENERIC_FEATURE_FOUNDATION |
-| CCI | NEEDS_GENERIC_FEATURE_FOUNDATION |
-| VWAP | NEEDS_GENERIC_FEATURE_FOUNDATION |
-| PA | HOLD |
+| `vwap_slope_5` | `(vwap[t]-vwap[t-4])/4`, same session, no future bars |
+| `orb_width_pct_15` | `orb_range_15/orb_mid_15` after ORB complete |
 
-CSV: `strategy_family_feasibility_matrix.csv`
+Generic market facts — not strategy signals.
 
 ---
 
-## G. Feature audit
+## E. Feature config
 
-- ORB: reuse `pa_core_v1`; add `vwap_slope_5` (+ optional `orb_width_pct`) in mini foundation phase.
-- GAP/CCI blocked on levels/CCI kernels.
-
-CSV: `feature_requirements_audit.csv`
-
----
-
-## H. Onboarding contract
-
-`docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` — required files, tests, Layer1 sequence, gates, prohibitions.
+- **New:** `configs/features/orb_core_v1.yaml` (9 columns)
+- **Unchanged:** `pa_core_v1.yaml` (hash stable for PA artifacts)
+- Feature hash (orb_core_v1): `e3c3df12cb5a2bdd787d5a5deaeada374d9b0787d7c0b993a309eb5bfc03d27d`
 
 ---
 
-## I. Second family decision
+## F. Feature implementation
 
-**ORB continuation** (`orb_continuation`) — future implementation only.  
-Rationale: best feature coverage, clear signal, diversifies PA, low arch risk.  
-Not based on expected alpha.
-
----
-
-## J. Future implementation plan
-
-`second_family_implementation_plan.md` — feature foundation → strategy MVP → Layer1 smoke/grid → diagnostics. **Not started.**
+- `kernels/vwap.py`, `kernels/orb.py`, `specs.py`, `registry.py`
+- Both Phase 11 gaps implemented (not deferred)
 
 ---
 
-## K. Tests / validation
+## G. Feature tests
+
+| Area | Status |
+| --- | --- |
+| no-lookahead | PASS |
+| session reset | PASS |
+| dtype/shape | PASS |
+| pa_core_v1 hash stable | PASS |
+| orb_core_v1 build | PASS |
+
+---
+
+## H. Feature CLI smoke
+
+| Command | Status |
+| --- | --- |
+| `features inspect orb_core_v1` | PASS |
+| `features build QQQ` | skipped (no local curated data) |
+
+---
+
+## I. ORB readiness
+
+- Label: **`ORB_FEATURE_FOUNDATION_COMPLETE`**
+- ORB strategy MVP **not** started; features unblock design only
+- Forbidden next: promotion, Layer2/3, WFO, live/paper, strategy-specific features
+
+---
+
+## J. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | compileall | PASS |
-| pytest smoke+unit | 356 PASS |
-| pytest full | 391 PASS |
+| pytest smoke+unit | 368 PASS |
+| pytest full | 403 PASS |
 | ruff | PASS |
 | CLI help/doctor/validate | PASS |
 | Layer1 grid | skipped |
 
 ---
 
-## L. Not implemented
+## K. Not implemented
 
-ORB/GAP/CCI/VWAP runtime code, feature kernels, candidate YAML, Layer2/3, WFO, live/paper, PA grid/logic changes.
-
----
-
-## M. Risks
-
-- ORB needs small feature additions before QT-parity filters.
-- Must not run multiple family implementations in parallel.
-- Promotion still blocked until multi-window doctrine passes.
+ORB strategy runtime, GAP/CCI/VWAP, candidate YAML, Layer1 grid, Layer2/3, WFO, live/paper.
 
 ---
 
-## N. Files changed
+## L. Risks
 
-`docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, status docs, `artifacts/strategy_family_onboarding_phase11/**`
+- No local QQQ feature build smoke (curated parquet absent).
+- Next phase must keep features generic; strategy timing uses `BarMatrix` + features.
 
 ---
 
-## O. Artifact hygiene
+## M. Files changed
+
+`configs/features/orb_core_v1.yaml`, feature kernels/specs/registry, tests, status docs, `artifacts/generic_feature_foundation_second_family_phase12/**`
+
+---
+
+## N. Artifact hygiene
 
 - No parquet/cache/candidate YAML staged
 - `CODEX_REVIEW.md` not modified by Cursor
-- Phase 10 comparison CSV: use dedicated dry-run CSVs (`phase10_artifact_reading_note.md`)
 
 ---
 
-## P. Decision (exactly one)
+## O. Decision (exactly one)
 
-### `STRATEGY_FAMILY_ONBOARDING_COMPLETE_SECOND_FAMILY_SELECTED`
-
----
-
-## Q. Recommended next step (exactly one)
-
-### `DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`
-
-Small generic features for ORB (`vwap_slope`, optional `orb_width_pct`) → then `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`. **Not** promotion.
+### `GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`
 
 ---
 
-## R. Review reminder
+## P. Recommended next step (exactly one)
+
+### `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`
+
+ORB continuation strategy using `orb_core_v1` — after Codex review. **Not** promotion.
+
+---
+
+## Q. Review reminder
 
 After push: new **Codex** thread + **ChatGPT Pro** review. Cursor provisional steps are not final roadmap until reviewed.

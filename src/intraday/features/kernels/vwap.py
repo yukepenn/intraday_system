@@ -81,4 +81,17 @@ def compute_vwap_group(bars: BarMatrix, cfg: Mapping[str, Any]) -> dict[str, np.
                 side[i] = 0.0
         out["vwap_side"] = side
 
+    if "vwap_slope_5" in outputs:
+        slope = np.full(n, np.nan, dtype=np.float64)
+        sid = bars.session_id
+        lookback = 4
+        for i in range(lookback, n):
+            if int(sid[i]) != int(sid[i - lookback]):
+                continue
+            v0 = vwap[i - lookback]
+            v1 = vwap[i]
+            if np.isfinite(v0) and np.isfinite(v1):
+                slope[i] = (v1 - v0) / float(lookback)
+        out["vwap_slope_5"] = slope
+
     return out

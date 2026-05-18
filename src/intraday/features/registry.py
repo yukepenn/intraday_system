@@ -55,7 +55,7 @@ def register_builtin_features() -> None:
             name="vwap",
             version="v1",
             required_inputs=("open", "high", "low", "close", "volume", "session_id"),
-            outputs=("vwap", "vwap_dist", "vwap_dist_pct", "vwap_side"),
+            outputs=("vwap", "vwap_dist", "vwap_dist_pct", "vwap_side", "vwap_slope_5"),
             compute_reference=vwap_k.compute_vwap_group,
         )
     )
@@ -64,7 +64,7 @@ def register_builtin_features() -> None:
             name="orb",
             version="v1",
             required_inputs=("open", "high", "low", "close", "minute", "session_id"),
-            outputs=("orb_high", "orb_low", "orb_mid", "orb_range"),
+            outputs=("orb_high", "orb_low", "orb_mid", "orb_range", "orb_width_pct"),
             compute_reference=orb_k.compute_orb_group,
         )
     )

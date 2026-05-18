@@ -78,4 +78,15 @@ def compute_orb_group(bars: BarMatrix, cfg: Mapping[str, Any]) -> dict[str, np.n
         if "orb_range" in outputs:
             out[f"orb_range{suf}"] = orb_range
 
+        if "orb_width_pct" in outputs:
+            width_pct = np.full(n, np.nan, dtype=np.float64)
+            for i in range(n):
+                mid = orb_mid[i]
+                if not np.isfinite(mid) or mid == 0.0:
+                    continue
+                rng = orb_range[i]
+                if np.isfinite(rng):
+                    width_pct[i] = rng / mid
+            out[f"orb_width_pct{suf}"] = width_pct
+
     return out

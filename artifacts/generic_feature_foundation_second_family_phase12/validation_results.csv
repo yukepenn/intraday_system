@@ -1,0 +1,11 @@
+command,exit_status,key_output,pass_fail,notes
+compileall,0,,pass,
+pytest smoke unit,0,368 passed,pass,
+pytest full,0,403 passed,pass,
+ruff format check,0,,pass,
+ruff check,0,,pass,
+cli help,0,,pass,
+cli doctor,0,,pass,
+cli validate structure,0,,pass,
+features inspect,0,9 columns,pass,
+features build,skipped,,skip,no curated QQQ

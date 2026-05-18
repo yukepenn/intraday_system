@@ -1,0 +1,3 @@
+feature_name,file_path,implementation_status,column_name,added_to_config,tests,notes
+vwap_slope_5,src/intraday/features/kernels/vwap.py,implemented,vwap_slope_5,orb_core_v1,yes,4-bar lookback baked into name
+orb_width_pct,src/intraday/features/kernels/orb.py,implemented,orb_width_pct_15,orb_core_v1,yes,range/mid after ORB complete

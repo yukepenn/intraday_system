@@ -1,0 +1,6 @@
+config_path,feature_group,setting,value,rationale,hash_impact,notes
+configs/features/orb_core_v1.yaml,vwap,outputs,vwap;vwap_slope_5,ORB foundation,new hash for orb_core only,
+configs/features/orb_core_v1.yaml,orb,open_minutes,15,standard ORB window,new,
+configs/features/orb_core_v1.yaml,orb,outputs,orb_high;orb_low;orb_mid;orb_range;orb_width_pct,ORB bounds + width,new,
+configs/features/orb_core_v1.yaml,volatility,atr_like_windows,20,context,new,
+configs/features/pa_core_v1.yaml,—,unchanged,—,preserve PA artifacts,none,not edited
