@@ -1,0 +1,17 @@
+strategy: prior_day_level_trap
+base_config: configs/strategies/base/prior_day_level_trap.yaml
+description: Controlled small prior-day trap grid (Phase 14 smoke skeleton).
+
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.max_hold_minutes: 60
+
+grid:
+  risk.stop_mode: [signal_low, prior_low_buffer, atr_buffer]
+  risk.target_r: [1.0, 1.2]
+  signal.breach_buffer_atr: [0.1, 0.2]
+  signal.require_close_above_vwap: [false, true]

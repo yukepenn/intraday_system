@@ -1,0 +1,42 @@
+feature_set_id: indicator_core_v1
+version: feature_set_v1
+description: CCI/stochastic indicator market facts (Phase 13).
+
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+
+features:
+  indicators:
+    enabled: true
+    cci_windows: [20]
+    stochastic_windows: [14]
+    stochastic_smooth_windows: [3]
+    outputs:
+      - cci
+      - stoch_k
+      - stoch_d
+
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+      - vwap
+      - vwap_side
+      - vwap_slope_5
+
+  volatility:
+    enabled: true
+    atr_like_windows: [20]
+    range_windows: [20]
+    outputs:
+      - atr_like
+      - range_mean
+
+  price_action:
+    enabled: true
+    rolling_windows: [20]
+    outputs:
+      - rolling_low
+      - close_position_in_range

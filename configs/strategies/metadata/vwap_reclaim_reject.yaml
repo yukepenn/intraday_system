@@ -1,0 +1,16 @@
+strategy: vwap_reclaim_reject
+family: vwap
+phase_added: Phase 13
+purpose: Long-only vwap_reclaim_reject MVP (signal only).
+setup_code: 4002
+long_only_mvp: true
+feature_config: configs/features/vwap_level_core_v1.yaml
+no_lookahead_notes: Entry at bar close; same-session state only where noted.
+qt_reference_files_read: []
+non_goals:
+  - no candidate promotion
+  - no Layer2
+  - no Layer3
+  - no WFO
+  - no live/paper
+  - no short side in signal_v1

@@ -43,6 +43,8 @@ def register_builtin_features() -> None:
     if _BUILTIN_REGISTERED:
         return
 
+    from intraday.features.kernels import indicators as ind_k
+    from intraday.features.kernels import levels as levels_k
     from intraday.features.kernels import orb as orb_k
     from intraday.features.kernels import price_action as pa_k
     from intraday.features.kernels import regime as reg_k
@@ -109,6 +111,33 @@ def register_builtin_features() -> None:
             required_inputs=("close", "session_id"),
             outputs=("close_vs_rolling_mean", "trend_slope_like"),
             compute_reference=reg_k.compute_regime_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="levels",
+            version="v1",
+            required_inputs=("open", "high", "low", "close", "session_id"),
+            outputs=(
+                "prior_session_open",
+                "prior_session_high",
+                "prior_session_low",
+                "prior_session_close",
+                "open_gap_pct",
+                "dist_to_prior_high_pct",
+                "dist_to_prior_low_pct",
+                "dist_to_prior_close_pct",
+            ),
+            compute_reference=levels_k.compute_levels_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="indicators",
+            version="v1",
+            required_inputs=("high", "low", "close", "session_id"),
+            outputs=("cci", "stoch_k", "stoch_d"),
+            compute_reference=ind_k.compute_indicators_group,
         )
     )
     _BUILTIN_REGISTERED = True

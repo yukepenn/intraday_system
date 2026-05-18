@@ -79,11 +79,16 @@ Implemented in `intraday.strategies.contracts.compute_signal_hash`.
 
 ## Registry
 
-Built-in strategies register via `register_builtin_strategies()`. Phase 5 ships:
+Built-in strategies register via `register_builtin_strategies()`. Phase **13** ships ten long-only `signal_v1` runtimes:
 
-- `pa_buy_sell_close_trend` — PA-core features, long-only MVP (held for promotion after Phase 10)
+- `pa_buy_sell_close_trend` (1001) — `pa_core_v1`
+- `orb_continuation` (2001), `orb_retest_continuation` (2002), `failed_orb` (2003) — `opening_core_v1`
+- `gap_acceptance_failure` (3001) — `gap_level_core_v1`
+- `vwap_trend_pullback` (4001), `vwap_reclaim_reject` (4002) — `vwap_level_core_v1`
+- `prior_day_level_trap` (5001) — `gap_level_core_v1`
+- `cci_extreme_snapback` (6001), `stochastic_oversold_cross` (6002) — `indicator_core_v1`
 
-New families must follow `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`. Phase **11** selected **ORB continuation** as the second MVP family (implementation deferred).
+New families must follow `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`. Phase **13** is runtime plumbing only — not promotion or Layer2.
 
 ## Config layout
 

@@ -1,0 +1,23 @@
+strategy: orb_continuation
+base_config: configs/strategies/base/orb_continuation.yaml
+description: Controlled small ORB continuation grid (Phase 14 smoke skeleton).
+
+fixed:
+  signal.side: long_only
+  signal.orb_open_minutes: 15
+  signal.entry_start_minute: 20
+  signal.entry_end_minute: 180
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+  backtest.max_hold_minutes: 60
+
+grid:
+  risk.stop_mode: [orb_mid, orb_low, signal_low]
+  risk.target_r: [1.0, 1.25]
+  signal.require_close_above_vwap: [false, true]
+  signal.min_vwap_slope: [0.0, 0.01]

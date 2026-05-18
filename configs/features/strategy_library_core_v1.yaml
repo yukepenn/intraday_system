@@ -1,0 +1,69 @@
+feature_set_id: strategy_library_core_v1
+version: feature_set_v1
+description: Combined pre-Layer2 strategy library feature set (Phase 13/14 smoke).
+
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+
+features:
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+      - vwap
+      - vwap_slope_5
+      - vwap_side
+      - vwap_dist
+      - vwap_dist_pct
+
+  orb:
+    enabled: true
+    open_minutes: [15]
+    outputs:
+      - orb_high
+      - orb_low
+      - orb_mid
+      - orb_range
+      - orb_width_pct
+
+  volatility:
+    enabled: true
+    atr_like_windows: [20]
+    range_windows: [20]
+    outputs:
+      - atr_like
+      - range_mean
+
+  price_action:
+    enabled: true
+    rolling_windows: [20]
+    outputs:
+      - body_pct
+      - lower_wick_pct
+      - close_position_in_range
+      - rolling_high
+      - rolling_low
+
+  levels:
+    enabled: true
+    outputs:
+      - prior_session_open
+      - prior_session_high
+      - prior_session_low
+      - prior_session_close
+      - open_gap_pct
+      - dist_to_prior_high_pct
+      - dist_to_prior_low_pct
+      - dist_to_prior_close_pct
+
+  indicators:
+    enabled: true
+    cci_windows: [20]
+    stochastic_windows: [14]
+    stochastic_smooth_windows: [3]
+    outputs:
+      - cci
+      - stoch_k
+      - stoch_d

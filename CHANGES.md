@@ -4,6 +4,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-18
 
+### Phase 13 — Pre-Layer2 strategy library runtime sprint
+
+- Feat(features): `levels` kernel (prior-session OHLC, gap %, dist_to_prior_*).
+- Feat(features): `indicators` kernel (`cci_20`, `stoch_k_14`, `stoch_d_14_3`).
+- Feat(config): `opening_core_v1`, `gap_level_core_v1`, `vwap_level_core_v1`, `indicator_core_v1`, `strategy_library_core_v1`.
+- Feat(strategies): nine long-only MVP runtimes (ORB×3, gap, VWAP×2, prior-day trap, CCI, stochastic) + registry.
+- Feat(config): base/metadata/controlled-small grid YAML per new strategy (≤24 combos).
+- Test(unit): levels/indicators/hash stability/registry/import guards + strategy validation tests.
+- Research(artifacts): `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`.
+- Explicit non-goals: no candidate YAML, promotion, Layer2/3, WFO, live/paper, execution changes, QT import.
+
 ### Phase 12 — Generic feature foundation for ORB (second family)
 
 - Feat(features): `vwap_slope_5` in `kernels/vwap.py` — session-contained 5-bar VWAP slope (price/bar).

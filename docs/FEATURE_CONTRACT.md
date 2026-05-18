@@ -86,6 +86,15 @@ Phase **12** added generic ORB foundation outputs (not strategy signals):
 | `vwap_slope_5` | vwap | `(vwap[t] - vwap[t-4]) / 4` when `t` and `t-4` share `session_id` and both VWAP finite; else NaN. Units: price per bar. |
 | `orb_width_pct_15` | orb | `(orb_range_15 / orb_mid_15)` when ORB complete and `orb_mid_15 != 0`; else NaN. |
 
-Config **`configs/features/orb_core_v1.yaml`** is the feature set for future ORB continuation MVP. **`pa_core_v1`** is unchanged (hash stable for prior PA artifacts).
+Config **`configs/features/orb_core_v1.yaml`** is the ORB foundation set. **`pa_core_v1`** is unchanged (hash stable for prior PA artifacts).
 
-PA hold: do not expand PA-specific features while onboarding ORB. See `artifacts/strategy_family_onboarding_phase11/feature_requirements_audit.csv`.
+Phase **13** added optional groups (included in resolved config only when present in YAML):
+
+| Group | Example columns | Semantics |
+| --- | --- | --- |
+| `levels` | `prior_session_close`, `open_gap_pct` | Prior session OHLC from immediately previous session; gap % from session open vs prior close |
+| `indicators` | `cci_20`, `stoch_k_14`, `stoch_d_14_3` | Same-session current-inclusive CCI and stochastic; reset at session boundary |
+
+Strategy-facing configs: `opening_core_v1`, `gap_level_core_v1`, `vwap_level_core_v1`, `indicator_core_v1`, `strategy_library_core_v1`.
+
+PA hold: do not expand PA-specific features while onboarding additional families. See `artifacts/strategy_family_onboarding_phase11/feature_requirements_audit.csv`.

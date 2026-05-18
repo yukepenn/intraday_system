@@ -1,0 +1,16 @@
+strategy: orb_retest_continuation
+family: orb
+phase_added: Phase 13
+purpose: Long-only orb_retest_continuation MVP (signal only).
+setup_code: 2002
+long_only_mvp: true
+feature_config: configs/features/opening_core_v1.yaml
+no_lookahead_notes: Entry at bar close; same-session state only where noted.
+qt_reference_files_read: []
+non_goals:
+  - no candidate promotion
+  - no Layer2
+  - no Layer3
+  - no WFO
+  - no live/paper
+  - no short side in signal_v1

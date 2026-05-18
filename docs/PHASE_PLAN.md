@@ -252,6 +252,21 @@ Decision label: **`GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`**.
 
 Recommended next step: **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** (ORB continuation strategy only; after Codex review).
 
+## Phase 13 — Pre-Layer2 strategy library runtime sprint — **complete**
+
+Goal: batch-onboard long-only strategy runtimes and generic feature configs for a diversified pre-Layer2 library — **no** Layer1 research, promotion, Layer2/3, WFO, live/paper.
+
+Highlights:
+
+- Feature groups: `levels`, `indicators`; configs `opening_core_v1`, `gap_level_core_v1`, `vwap_level_core_v1`, `indicator_core_v1`, `strategy_library_core_v1`
+- Strategies: ORB×3, gap, VWAP×2, prior-day trap, CCI, stochastic (+ existing PA)
+- Base/metadata/controlled-small grid YAML per strategy (≤24 combos)
+- Bundle `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`
+
+Decision label: **`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`**.
+
+Recommended next step: **`RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`** (plumbing smoke; not promotion).
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; superseded by Phase 11 ORB-first plan)
 
 ## Phase 11 — Layer2 controlled router (original roadmap Phase 9)

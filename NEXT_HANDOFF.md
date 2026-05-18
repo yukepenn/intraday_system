@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-18** (Phase **12** — generic feature foundation for second family).
+Last updated: **2026-05-18** (Phase **13** — pre-Layer2 strategy library runtime sprint).
 
 ---
 
@@ -8,135 +8,84 @@ Last updated: **2026-05-18** (Phase **12** — generic feature foundation for se
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `fabba9678ae020393905c3fbdefcdc839e08891f`
+- Pre-task HEAD: `448a721b543a77ef5362378e8d8bdda1d6c9b8c4`
 - Task commit: see `git log -1` after push
 
 ---
 
-## B. Task scope (Phase 12)
+## B. Task scope (Phase 13)
 
-- Layer 0 only: `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`.
-- **Did not:** ORB/GAP/CCI/VWAP strategy runtime, Layer1 grids, candidate YAML, PA changes, Layer2/3, WFO, live/paper.
-- Bundle: `artifacts/generic_feature_foundation_second_family_phase12/`
+- Onboarded **9** new long-only strategy runtimes + existing PA anchor (**10** active families).
+- Added generic feature groups **`levels`**, **`indicators`** and feature configs for ORB/gap/VWAP/indicator/library paths.
+- Base YAML, metadata YAML, controlled small grid skeletons (≤24 combos each).
+- Bundle: `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`
+
+**Did not:** candidate YAML, promotion, Layer2/3, WFO, live/paper, broad Layer1 grids, execution changes, shorts, QT import.
 
 ---
 
 ## C. Status / Codex preflight
 
-- Repaired `PROJECT_STATUS.md` snapshot (Phase 10 → Phase 12 bundle).
 - `CODEX_REVIEW.md` **not** modified by Cursor.
-- Prior Codex: `5353d48`, `PASS_WITH_WARNINGS`.
 
 ---
 
-## D. Feature semantics
+## D. Feature foundation
 
-| Column | Rule |
-| --- | --- |
-| `vwap_slope_5` | `(vwap[t]-vwap[t-4])/4`, same session, no future bars |
-| `orb_width_pct_15` | `orb_range_15/orb_mid_15` after ORB complete |
-
-Generic market facts — not strategy signals.
-
----
-
-## E. Feature config
-
-- **New:** `configs/features/orb_core_v1.yaml` (9 columns)
-- **Unchanged:** `pa_core_v1.yaml` (hash stable for PA artifacts)
-- Feature hash (orb_core_v1): `e3c3df12cb5a2bdd787d5a5deaeada374d9b0787d7c0b993a309eb5bfc03d27d`
+| Config | Columns | Notes |
+| --- | ---: | --- |
+| `opening_core_v1` | 16 | ORB family |
+| `gap_level_core_v1` | 16 | gap + prior levels |
+| `vwap_level_core_v1` | 11 | VWAP family |
+| `indicator_core_v1` | 10 | CCI/stoch |
+| `strategy_library_core_v1` | 28 | Phase 14 all-strategy smoke |
+| `pa_core_v1` | 22 | unchanged |
+| `orb_core_v1` | 9 | unchanged; hash `e3c3df12cb5a2bdd787d5a5deaeada374d9b0787d7c0b993a309eb5bfc03d27d` |
 
 ---
 
-## F. Feature implementation
+## E. Strategy library
 
-- `kernels/vwap.py`, `kernels/orb.py`, `specs.py`, `registry.py`
-- Both Phase 11 gaps implemented (not deferred)
+Registry strategies: `pa_buy_sell_close_trend`, `orb_continuation`, `orb_retest_continuation`, `failed_orb`, `gap_acceptance_failure`, `vwap_trend_pullback`, `vwap_reclaim_reject`, `prior_day_level_trap`, `cci_extreme_snapback`, `stochastic_oversold_cross`.
 
----
-
-## G. Feature tests
-
-| Area | Status |
-| --- | --- |
-| no-lookahead | PASS |
-| session reset | PASS |
-| dtype/shape | PASS |
-| pa_core_v1 hash stable | PASS |
-| orb_core_v1 build | PASS |
+All **long-only** under `signal_v1`.
 
 ---
 
-## H. Feature CLI smoke
-
-| Command | Status |
-| --- | --- |
-| `features inspect orb_core_v1` | PASS |
-| `features build QQQ` | skipped (no local curated data) |
-
----
-
-## I. ORB readiness
-
-- Label: **`ORB_FEATURE_FOUNDATION_COMPLETE`**
-- ORB strategy MVP **not** started; features unblock design only
-- Forbidden next: promotion, Layer2/3, WFO, live/paper, strategy-specific features
-
----
-
-## J. Tests / validation
+## F. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | compileall | PASS |
-| pytest smoke+unit | 368 PASS |
-| pytest full | 403 PASS |
-| ruff | PASS |
-| CLI help/doctor/validate | PASS |
-| Layer1 grid | skipped |
+| pytest full | 441 PASS |
+| pytest smoke | 25 PASS |
+| ruff (phase13 files) | PASS |
+| CLI doctor/validate/features/strategies | PASS |
+| features build QQQ | skipped (no curated data) |
+| Layer1 grid / selection | not run |
 
 ---
 
-## K. Not implemented
+## G. Not implemented
 
-ORB strategy runtime, GAP/CCI/VWAP, candidate YAML, Layer1 grid, Layer2/3, WFO, live/paper.
-
----
-
-## L. Risks
-
-- No local QQQ feature build smoke (curated parquet absent).
-- Next phase must keep features generic; strategy timing uses `BarMatrix` + features.
+Candidate promotion, Layer2/3, WFO, live/paper, broad Layer1 research, Numba strategy fast paths, shorts.
 
 ---
 
-## M. Files changed
+## H. Decision (exactly one)
 
-`configs/features/orb_core_v1.yaml`, feature kernels/specs/registry, tests, status docs, `artifacts/generic_feature_foundation_second_family_phase12/**`
-
----
-
-## N. Artifact hygiene
-
-- No parquet/cache/candidate YAML staged
-- `CODEX_REVIEW.md` not modified by Cursor
+### `PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`
 
 ---
 
-## O. Decision (exactly one)
+## I. Recommended next step (exactly one)
 
-### `GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`
+### `RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`
 
----
-
-## P. Recommended next step (exactly one)
-
-### `IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`
-
-ORB continuation strategy using `orb_core_v1` — after Codex review. **Not** promotion.
+Run tiny all-strategy Layer1 small-grid **smoke** across the library (plumbing validation). **Not** promotion.
 
 ---
 
-## Q. Review reminder
+## J. Review reminder
 
-After push: new **Codex** thread + **ChatGPT Pro** review. Cursor provisional steps are not final roadmap until reviewed.
+After push: Codex review on `main`. Cursor does not edit `CODEX_REVIEW.md`.

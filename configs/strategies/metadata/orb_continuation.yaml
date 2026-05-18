@@ -1,0 +1,25 @@
+strategy: orb_continuation
+family: orb
+phase_added: Phase 13
+purpose: Long ORB breakout continuation MVP (signal only).
+setup_code: 2001
+long_only_mvp: true
+feature_config: configs/features/opening_core_v1.yaml
+required_feature_columns:
+  - orb_high_15
+  - orb_low_15
+  - orb_mid_15
+  - orb_range_15
+  - orb_width_pct_15
+  - vwap
+  - vwap_slope_5
+  - atr_like_20
+no_lookahead_notes: Same-session ORB complete gate; no future bars in features or signal state.
+qt_reference_files_read: []
+non_goals:
+  - no candidate promotion
+  - no Layer2
+  - no Layer3
+  - no WFO
+  - no live/paper
+  - no short side in signal_v1

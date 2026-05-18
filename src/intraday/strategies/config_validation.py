@@ -128,6 +128,59 @@ def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
                 raise ConfigError("backtest.eod_exit_minute must be in 0..389")
 
 
+def validate_long_only_strategy_base(
+    config: Mapping[str, Any],
+    *,
+    strategy_name: str,
+    family: str,
+    required_feature_set: str,
+    allowed_stop_modes: tuple[str, ...],
+) -> None:
+    """Shared long-only MVP config checks for Phase 13 strategies."""
+    if config.get("strategy") != strategy_name:
+        raise ConfigError(f"strategy must be {strategy_name}, got {config.get('strategy')!r}")
+    if "family" in config and config["family"] != family:
+        raise ConfigError(f"family must be {family} when present")
+    rfs = config.get("required_feature_set")
+    if rfs not in (None, required_feature_set):
+        raise ConfigError(f"required_feature_set must be {required_feature_set}")
+
+    sig = config.get("signal")
+    if not isinstance(sig, Mapping):
+        raise ConfigError("signal section required")
+    if sig.get("side", "long_only") != "long_only":
+        raise ConfigError("signal.side must be long_only")
+
+    es = _as_int(sig.get("entry_start_minute"), "signal.entry_start_minute")
+    ee = _as_int(sig.get("entry_end_minute"), "signal.entry_end_minute")
+    if not (0 <= es <= ee <= 389):
+        raise ConfigError("entry window must satisfy 0 <= entry_start <= entry_end <= 389")
+
+    risk = config.get("risk")
+    if not isinstance(risk, Mapping):
+        raise ConfigError("risk section required")
+    stop_mode = str(risk.get("stop_mode", "signal_low"))
+    if stop_mode not in allowed_stop_modes:
+        raise ConfigError(f"risk.stop_mode invalid: {stop_mode!r}")
+    if risk.get("target_mode", "fixed_r") != "fixed_r":
+        raise ConfigError("risk.target_mode must be fixed_r")
+    target_r = _as_float(risk.get("target_r"), "risk.target_r")
+    if target_r <= 0:
+        raise ConfigError("risk.target_r must be > 0")
+    atr_mult = _as_float(risk.get("atr_buffer_mult", 0), "risk.atr_buffer_mult")
+    if atr_mult < 0:
+        raise ConfigError("risk.atr_buffer_mult must be >= 0")
+    if "max_trades_per_day" in risk:
+        if _as_int(risk["max_trades_per_day"], "risk.max_trades_per_day") <= 0:
+            raise ConfigError("risk.max_trades_per_day must be > 0")
+
+    backtest = config.get("backtest")
+    if isinstance(backtest, Mapping) and "eod_exit_minute" in backtest:
+        eod = _as_int(backtest["eod_exit_minute"], "backtest.eod_exit_minute")
+        if not (0 <= eod <= 389):
+            raise ConfigError("backtest.eod_exit_minute must be in 0..389")
+
+
 def validate_strategy_config_for_name(
     strategy_name: str,
     config: Mapping[str, Any],

@@ -1,0 +1,31 @@
+strategy: cci_extreme_snapback
+family: cci
+version: strategy_v1
+required_feature_set: indicator_core_v1
+signal_contract_version: signal_v1
+
+features:
+  feature_config: configs/features/indicator_core_v1.yaml
+
+signal:
+  side: long_only
+  entry_start_minute: 30
+  entry_end_minute: 360
+  oversold_threshold: -100.0
+  cross_threshold: -80.0
+  require_close_above_vwap: false
+
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.15
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+
+backtest:
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  eod_exit_minute: 389
+  max_hold_minutes: 60

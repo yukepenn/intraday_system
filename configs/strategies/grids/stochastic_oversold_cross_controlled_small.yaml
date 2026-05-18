@@ -1,0 +1,17 @@
+strategy: stochastic_oversold_cross
+base_config: configs/strategies/base/stochastic_oversold_cross.yaml
+description: Controlled small stochastic cross grid (Phase 14 smoke skeleton).
+
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.max_hold_minutes: 60
+
+grid:
+  risk.stop_mode: [signal_low, rolling_low_20, atr_buffer]
+  risk.target_r: [1.0, 1.15]
+  signal.oversold_threshold: [15.0, 25.0]
+  signal.require_close_above_vwap: [false, true]

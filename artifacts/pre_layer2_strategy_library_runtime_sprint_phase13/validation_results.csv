@@ -1,0 +1,15 @@
+c,o,m,m,a,n,d,",",s,t,a,t,u,s,",",n,o,t,e,s
+python -m compileall src tests,pass,
+python -m pytest -q,pass,441 passed
+python -m pytest -q tests/smoke,pass,25 passed
+python -m ruff check (phase13 files),pass,fixed
+python -m intraday.cli.main doctor,pass,
+python -m intraday.cli.main validate structure,pass,
+python -m intraday.cli.main features list,pass,
+python -m intraday.cli.main features inspect opening_core_v1,pass,
+python -m intraday.cli.main features inspect gap_level_core_v1,pass,
+python -m intraday.cli.main features inspect vwap_level_core_v1,pass,
+python -m intraday.cli.main features inspect indicator_core_v1,pass,
+python -m intraday.cli.main features inspect strategy_library_core_v1,pass,
+python -m intraday.cli.main strategies list,pass,10 strategies
+python -m intraday.cli.main features build QQQ,skipped,no local curated data

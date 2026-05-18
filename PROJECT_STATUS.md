@@ -2,21 +2,22 @@
 
 ## Current phase
 
-**Phase 12 — Generic feature foundation for second family (`DESIGN_GENERIC_FEATURE_FOUNDATION_FOR_SECOND_FAMILY`)** — `vwap_slope_5`, `orb_width_pct_15`, `configs/features/orb_core_v1.yaml`; no ORB strategy, Layer1, or promotion.
+**Phase 13 — Pre-Layer2 strategy library runtime sprint (`PHASE13_PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_SPRINT_V1`)** — nine new long-only strategy runtimes, `levels`/`indicators` feature groups, five new feature configs, base/metadata/grid YAMLs; no Layer1 research, promotion, or candidate YAML.
 
 ## Decision
 
-**`GENERIC_FEATURE_FOUNDATION_SECOND_FAMILY_COMPLETE`** — ORB continuation generic market facts added; ORB strategy **not** implemented.
+**`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`** — ten active pre-Layer2 strategies in registry (PA + 9 new families).
 
 ## Recommended next step (exactly one)
 
-**`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** — ORB continuation strategy MVP using `orb_core_v1` (after Codex review). Not promotion.
+**`RUN_LAYER1_STRATEGY_LIBRARY_SMALL_GRID`** — tiny all-strategy Layer1 small-grid smoke (plumbing only). Not promotion.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Bundle: `artifacts/generic_feature_foundation_second_family_phase12/`
+- Bundle: `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`
+- Prior bundle: `artifacts/generic_feature_foundation_second_family_phase12/`
 - Prior Phase 11 bundle: `artifacts/strategy_family_onboarding_phase11/`
 - Prior Phase 9 bundle: `artifacts/pa_features_logic_review_after_confirmation_phase9/`
 - Prior confirmation bundle: `artifacts/layer1_pa_confirmation_data_repair_phase8b/`

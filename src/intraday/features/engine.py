@@ -68,6 +68,8 @@ def build_feature_matrix(
 
     blocks: dict[str, np.ndarray] = {}
     for group in CANONICAL_GROUP_ORDER:
+        if group not in resolved["features"]:
+            continue
         gcfg = resolved["features"][group]
         if not gcfg.get("enabled"):
             continue

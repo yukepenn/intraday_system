@@ -1,0 +1,6 @@
+f,e,a,t,u,r,e,_,g,r,o,u,p,",",o,u,t,p,u,t,_,c,o,l,u,m,n,_,p,a,t,t,e,r,n,",",s,e,m,a,n,t,i,c,s,",",s,e,s,s,i,o,n,_,r,u,l,e,",",f,i,r,s,t,_,v,a,l,i,d,_,b,e,h,a,v,i,o,r,",",n,o,_,l,o,o,k,a,h,e,a,d,_,n,o,t,e
+levels,prior_session_*,OHLC from immediately prior session,constant within session after open,first session NaN,no current-session future bars
+levels,open_gap_pct,(session_open - prior_close)/prior_close,session open fixed at minute 0,NaN if no prior close,uses prior session close only
+indicators,cci_{w},CCI from same-session typical price MAD,reset each session,NaN until window full,current-inclusive same-session
+indicators,stoch_k_{w},%K from session high/low range,reset each session,NaN until window full,current-inclusive same-session
+indicators,stoch_d_{w}_{s},rolling mean of %K,reset each session,NaN until smooth window,no cross-session

@@ -1,0 +1,17 @@
+strategy: gap_acceptance_failure
+base_config: configs/strategies/base/gap_acceptance_failure.yaml
+description: Controlled small gap failure grid (Phase 14 smoke skeleton).
+
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.max_hold_minutes: 60
+
+grid:
+  signal.reclaim_mode: [prior_close, vwap]
+  signal.min_gap_pct: [0.004, 0.006, 0.008]
+  risk.stop_mode: [signal_low, rolling_low_20]
+  risk.target_r: [1.0, 1.2]

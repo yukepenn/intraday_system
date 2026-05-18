@@ -14,7 +14,7 @@ from intraday.core.hashing import hash_config
 # Bumped when feature semantics or hashing envelope change.
 FEATURE_ENGINE_SEMANTIC_VERSION = "feature_engine_mvp_v1"
 
-CANONICAL_GROUP_ORDER: tuple[str, ...] = (
+LEGACY_GROUP_ORDER: tuple[str, ...] = (
     "vwap",
     "orb",
     "volatility",
@@ -22,6 +22,10 @@ CANONICAL_GROUP_ORDER: tuple[str, ...] = (
     "volume",
     "regime",
 )
+
+OPTIONAL_GROUP_ORDER: tuple[str, ...] = ("levels", "indicators")
+
+CANONICAL_GROUP_ORDER: tuple[str, ...] = LEGACY_GROUP_ORDER + OPTIONAL_GROUP_ORDER
 
 ALLOWED_OUTPUTS: dict[str, frozenset[str]] = {
     "vwap": frozenset({"vwap", "vwap_dist", "vwap_dist_pct", "vwap_side", "vwap_slope_5"}),
@@ -39,6 +43,19 @@ ALLOWED_OUTPUTS: dict[str, frozenset[str]] = {
     ),
     "volume": frozenset({"volume_mean", "rel_volume"}),
     "regime": frozenset({"close_vs_rolling_mean", "trend_slope_like"}),
+    "levels": frozenset(
+        {
+            "prior_session_open",
+            "prior_session_high",
+            "prior_session_low",
+            "prior_session_close",
+            "open_gap_pct",
+            "dist_to_prior_high_pct",
+            "dist_to_prior_low_pct",
+            "dist_to_prior_close_pct",
+        }
+    ),
+    "indicators": frozenset({"cci", "stoch_k", "stoch_d"}),
 }
 
 
@@ -96,7 +113,7 @@ def resolve_feature_config(config: Mapping[str, Any]) -> dict[str, Any]:
         raise ConfigError("Phase 4 requires engine.dtype == 'float64'")
 
     resolved_features: dict[str, Any] = {}
-    for group in CANONICAL_GROUP_ORDER:
+    for group in LEGACY_GROUP_ORDER:
         if group not in feats_raw:
             resolved_features[group] = {"enabled": False}
             continue
@@ -169,6 +186,51 @@ def resolve_feature_config(config: Mapping[str, Any]) -> dict[str, Any]:
 
         resolved_features[group] = gcfg
 
+    for group in OPTIONAL_GROUP_ORDER:
+        if group not in feats_raw:
+            continue
+        block = feats_raw[group]
+        if not isinstance(block, dict):
+            raise ConfigError(f"features.{group} must be a mapping")
+        if not _as_bool(block.get("enabled", False), field=f"features.{group}.enabled"):
+            continue
+
+        allowed = ALLOWED_OUTPUTS[group]
+        outs = block.get("outputs")
+        if not isinstance(outs, list) or not outs:
+            raise ConfigError(f"features.{group}.outputs must be a non-empty list")
+        outs_s = [str(o) for o in outs]
+        if len(set(outs_s)) != len(outs_s):
+            raise ConfigError(f"features.{group}.outputs contains duplicates: {outs_s!r}")
+        unknown = [o for o in outs_s if o not in allowed]
+        if unknown:
+            raise ConfigError(f"features.{group}.outputs unknown: {unknown!r}")
+
+        gcfg = {"enabled": True, "outputs": outs_s}
+        if group == "indicators":
+            gcfg["cci_windows"] = _positive_ints(
+                block.get("cci_windows"), field="features.indicators.cci_windows"
+            )
+            gcfg["stochastic_windows"] = _positive_ints(
+                block.get("stochastic_windows"),
+                field="features.indicators.stochastic_windows",
+            )
+            gcfg["stochastic_smooth_windows"] = _positive_ints(
+                block.get("stochastic_smooth_windows"),
+                field="features.indicators.stochastic_smooth_windows",
+            )
+            if "cci" in outs_s and not gcfg["cci_windows"]:
+                raise ConfigError("cci outputs require features.indicators.cci_windows")
+            if ("stoch_k" in outs_s or "stoch_d" in outs_s) and not gcfg["stochastic_windows"]:
+                raise ConfigError(
+                    "stochastic outputs require features.indicators.stochastic_windows"
+                )
+            if "stoch_d" in outs_s and not gcfg["stochastic_smooth_windows"]:
+                raise ConfigError(
+                    "stoch_d outputs require features.indicators.stochastic_smooth_windows"
+                )
+        resolved_features[group] = gcfg
+
     for key in feats_raw:
         if key not in CANONICAL_GROUP_ORDER:
             raise ConfigError(f"unknown feature group: {key!r}")
@@ -239,6 +301,25 @@ def expand_column_names(group: str, gcfg: Mapping[str, Any]) -> list[str]:
         for o in outputs:
             for w in gcfg["windows"]:
                 names.append(f"{o}_{w}")
+        return names
+
+    if group == "levels":
+        for o in outputs:
+            names.append(o)
+        return names
+
+    if group == "indicators":
+        for o in outputs:
+            if o == "cci":
+                for w in gcfg["cci_windows"]:
+                    names.append(f"cci_{w}")
+            elif o == "stoch_k":
+                for w in gcfg["stochastic_windows"]:
+                    names.append(f"stoch_k_{w}")
+            elif o == "stoch_d":
+                for w in gcfg["stochastic_windows"]:
+                    for sm in gcfg["stochastic_smooth_windows"]:
+                        names.append(f"stoch_d_{w}_{sm}")
         return names
 
     raise ConfigError(f"expand_column_names: unknown group {group!r}")

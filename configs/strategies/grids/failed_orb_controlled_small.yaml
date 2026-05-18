@@ -1,0 +1,17 @@
+strategy: failed_orb
+base_config: configs/strategies/base/failed_orb.yaml
+description: Controlled small failed ORB grid (Phase 14 smoke skeleton).
+
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.max_hold_minutes: 60
+
+grid:
+  signal.reclaim_level: [orb_low, orb_mid]
+  risk.stop_mode: [signal_low, atr_buffer]
+  risk.target_r: [1.0, 1.2, 1.35]
+  signal.require_close_above_vwap: [false, true]
