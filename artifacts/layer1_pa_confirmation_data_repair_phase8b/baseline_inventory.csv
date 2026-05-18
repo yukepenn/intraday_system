@@ -1,0 +1,10 @@
+key,value
+branch,main
+local_head,ce4814ef69bdee8d6b29f9c7b1a652f06c155df2
+remote_main,ce4814ef69bdee8d6b29f9c7b1a652f06c155df2
+local_remote_match,True
+next_handoff_decision_prior,FIX_LOCAL_CURATED_DATA
+codex_target_commit,ce4814ef69bdee8d6b29f9c7b1a652f06c155df2
+codex_verdict,PASS_WITH_WARNINGS
+confirmation_window,QQQ 2024H2
+confirmation_config,configs/layer1/controlled_pa_qqq_2024h2.yaml

@@ -166,7 +166,16 @@ The catalog proposes a canonical path for every file and records it in `artifact
 
 The `data_hash` is built from a manifest of `(relative_path, size_bytes, mtime_ns)` plus the requested window. It is **not** a content hash of every byte (which would be too slow). For audits, a full content hash can be computed on-demand and stored under `artifacts/diagnostics/data_validation/`.
 
-## 7. Forbidden
+## 7. Local workspace status (not in git)
+
+As of Phase **8b**, a typical dev workspace may have:
+
+- Raw IBKR QQQ 1m months under `data/raw/ibkr/` (canonical layout).
+- Curated RTH QQQ **2024H1** (design window) and **2024H2** (confirmation window) under `data/curated/bars_1m_rth/`.
+
+Parquet is **local-only**; never commit raw/curated/cache to the repo.
+
+## 8. Forbidden
 
 - Editing raw parquet in place.
 - Writing curated parquet that contains non-RTH bars in an `*_rth` path.

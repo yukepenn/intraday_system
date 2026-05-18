@@ -40,7 +40,7 @@ Phase **7** adds `reconstruct_resolved_config_for_combo` in `intraday.layer1.gri
 
 Phase **7b** adds repeatable dry-run tooling: `run_layer1_candidate_selection_dry_run`, `write_layer1_candidate_selection_dry_run_artifacts`, and CLI `layer1 select-dry-run` (reads prior sweep CSV as audit input; writes review artifacts only).
 
-Phase **8** (partial): finite metric parsers (`parse_finite_float` / `parse_finite_int`), `artifacts/`-only `--output-root`, confirmation config `controlled_pa_qqq_2024h2.yaml`; confirmation grid pending curated QQQ data (`FIX_LOCAL_CURATED_DATA`).
+Phase **8b** (complete): confirmation window QQQ 2024H2 grid + dry-run executed; `promotion_allowed_now=false` enforced; comparison **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**; bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`.
 
 ## Execution modes
 

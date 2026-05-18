@@ -91,12 +91,12 @@ Selection design stays in Layer1:
 
 Revisit all thresholds after confirmation-window testing.
 
-## 7c. Confirmation window (Phase 8 — anti-overfit)
+## 7c. Confirmation window (Phase 8b — anti-overfit)
 
-- Run the **same** controlled grid on a non-overlapping QQQ window (e.g. 2024H2) without retuning.
-- Compare design-window (2024H1) sweep + dry-run to confirmation-window results.
-- **No promotion** until confirmation evidence exists; `promotion_allowed_now=false` remains enforced.
-- Bundle: `artifacts/layer1_pa_confirmation_window_phase8/` (may be partial if local curated data is missing).
+- Ran the **same** controlled grid on QQQ **2024H2** (non-overlapping vs 2024H1 design) without retuning.
+- Compared design-window (2024H1) sweep + dry-run to confirmation-window results → **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`** (all design HOLD rows became REJECT on confirmation).
+- **No promotion**; `promotion_allowed_now=false` remains enforced for every row.
+- Bundle: `artifacts/layer1_pa_confirmation_data_repair_phase8b/`.
 
 ## 8. Future candidate YAML schema (summary)
 

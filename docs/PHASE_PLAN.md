@@ -177,20 +177,19 @@ Decision label on success: **`LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`**.
 
 Recommended next step: **`RUN_LAYER1_PA_CONFIRMATION_WINDOW`**.
 
-## Phase 8 — Layer1 PA confirmation window (anti-overfit) — **data blocker**
+## Phase 8 — Layer1 PA confirmation window (anti-overfit) — **complete (8b)**
 
-Goal: same 16-combo PA controlled grid on a non-overlapping QQQ window (e.g. 2024H2); `select-dry-run` on confirmation sweep; design vs confirmation comparison — **no** retuning, **no** promotion.
+Goal: same 16-combo PA controlled grid on a non-overlapping QQQ window (2024H2); `select-dry-run` on confirmation sweep; design vs confirmation comparison — **no** retuning, **no** promotion.
 
-Highlights (partial):
+Highlights:
 
-- CI `select-dry-run --help` smoke fix; finite numeric parsing; `artifacts/`-only dry-run output root.
-- Config `configs/layer1/controlled_pa_qqq_2024h2.yaml`; `grid-inspect` → 16 combos.
-- Confirmation grid/dry-run **skipped** — no local curated parquet.
-- Bundle `artifacts/layer1_pa_confirmation_window_phase8/`.
+- Phase 8 partial: CI help, finite parsing, output-root guardrail, confirmation config prepared.
+- Phase 8b: curated QQQ 2024H2 locally; grid **16/16**; dry-run **16** reject; comparison **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**.
+- Bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`.
 
-Decision label: **`FIX_LOCAL_CURATED_DATA`** (not `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE` until grid runs).
+Decision label: **`LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`**.
 
-Recommended next step: **`FIX_LOCAL_CURATED_DATA`**, then re-run confirmation grid path without retuning.
+Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not real promotion).
 
 ## Phase 8-R — Port GAP and CCI (original roadmap; not started)
 
@@ -204,6 +203,8 @@ Recommended next step: **`FIX_LOCAL_CURATED_DATA`**, then re-run confirmation gr
 
 ## Decision labels (recent)
 
+- `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`
+- `REVIEW_PA_FEATURES_OR_LOGIC`
 - `FIX_LOCAL_CURATED_DATA`
 - `LAYER1_PA_CANDIDATE_SELECTION_DRY_RUN_COMPLETE`
 - `LAYER1_PA_CANDIDATE_SELECTION_DESIGN_COMPLETE`
@@ -218,4 +219,4 @@ Recommended next step: **`FIX_LOCAL_CURATED_DATA`**, then re-run confirmation gr
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **8** (partial) hardened selection CLI/parsing; confirmation grid blocked on curated data. Next: **`FIX_LOCAL_CURATED_DATA`**, then re-run confirmation window. Port GAP/CCI (Phase 8-R) not started.
+Phase **8b** completed confirmation window on QQQ 2024H2 without retuning; design holds did not replicate (**CONFIRMATION_WEAKENS_SELECTION_DESIGN**). Next: **`REVIEW_PA_FEATURES_OR_LOGIC`**. Port GAP/CCI (Phase 8-R) not started.

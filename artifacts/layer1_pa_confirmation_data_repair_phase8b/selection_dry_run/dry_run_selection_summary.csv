@@ -1,0 +1,2 @@
+run_id,source_sweep_path,row_count,hard_pass_count,pass_decision_count,hold_count,reject_count,reconstruction_pass_count,promotion_allowed_now,top_combo_preview,top_rank
+L1_PA_QQQ_2024H2_CONTROLLED_GRID_V1,confirmation_sweep_results.csv,16,0,0,0,16,16,false,,

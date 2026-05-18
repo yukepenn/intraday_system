@@ -1,0 +1,5 @@
+fix,status,notes
+selection_reports_md_metrics,done,invalid/non-finite -> invalid marker
+output_root_dot_rejected,done,ConfigError for . and empty
+handoff_wording,done,non-overlapping H2 parquet absent (not empty root)
+source_map_md_ref,done,confirmation_config_summary.md created in 8b

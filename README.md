@@ -98,9 +98,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 7b complete:** Repeatable selection dry-run — CLI `layer1 select-dry-run`, `run_layer1_candidate_selection_dry_run`, strict CSV boolean parsing; bundle `artifacts/layer1_pa_candidate_selection_dry_run_phase7b/`; **still no** runtime candidate YAMLs.
 
-**Phase 8 (partial):** Confirmation-window repairs — CI help test, finite metric parsing, `artifacts/`-only dry-run output root; config `controlled_pa_qqq_2024h2.yaml` ready. Confirmation grid **skipped** (no local curated QQQ parquet). Bundle `artifacts/layer1_pa_confirmation_window_phase8/`.
+**Phase 8b complete:** Curated QQQ 2024H2 locally; confirmation grid **16/16** + dry-run; design-vs-confirmation **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**. Bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`. Still **no** runtime candidate YAMLs.
 
-**Next:** **`FIX_LOCAL_CURATED_DATA`** then re-run confirmation grid + dry-run (no retuning). Layer2/3 remain out of scope.
+**Next:** **`REVIEW_PA_FEATURES_OR_LOGIC`** (not real promotion). Layer2/3 remain out of scope.
 
 See:
 

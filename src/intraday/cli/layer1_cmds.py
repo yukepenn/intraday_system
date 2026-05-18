@@ -106,6 +106,8 @@ def validate_selection_dry_run_output_root(output_root: str, *, root: Path | Non
     rel = Path(text)
     if rel.is_absolute():
         raise ConfigError(f"output-root must be repo-relative under artifacts/: {text!r}")
+    if not rel.parts:
+        raise ConfigError("output-root must be a non-empty repo-relative path under artifacts/")
     posix = rel.as_posix()
     if posix.startswith("configs/candidates") or "/configs/candidates/" in f"/{posix}/":
         raise ConfigError("output-root must not be under configs/candidates/")

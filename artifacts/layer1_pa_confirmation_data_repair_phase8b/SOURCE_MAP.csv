@@ -1,0 +1,6 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+artifacts/layer1_pa_confirmation_data_repair_phase8b/CHATGPT_REVIEW_BUNDLE.md,Review bundle,yes,generated,false,
+artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_config_summary.md,Config summary,yes,generated,false,fixes Phase 8 SOURCE_MAP gap
+artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_sweep_results.csv,Confirmation sweep,yes,generated,false,
+artifacts/layer1_pa_confirmation_data_repair_phase8b/design_vs_confirmation_comparison.md,Comparison,yes,generated,false,
+configs/layer1/controlled_pa_qqq_2024h2.yaml,Confirmation config,yes,source,true,requires local curated H2

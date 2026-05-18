@@ -4,6 +4,14 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-17
 
+### Phase 8b — Layer1 PA confirmation data repair + rerun
+
+- Fix(layer1): `selection_reports` Markdown metrics — invalid/non-finite render as `invalid` without aborting.
+- Fix(cli): `validate_selection_dry_run_output_root` rejects `.` and empty paths.
+- Data(local): normalized QQQ 2024H2 curated parquet from raw (not committed).
+- Chore(artifacts): `artifacts/layer1_pa_confirmation_data_repair_phase8b/` — grid, dry-run, design-vs-confirmation.
+- Validation: confirmation grid **16/16**; dry-run **16** reject; comparison **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**.
+
 ### Phase 8 — Layer1 PA confirmation window (partial; data blocker)
 
 - Fix(tests): `select-dry-run --help` smoke — CliRunner + robust subprocess env (CI).

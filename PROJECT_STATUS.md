@@ -2,22 +2,22 @@
 
 ## Current phase
 
-**Phase 8 — Layer1 PA confirmation window (`RUN_LAYER1_PA_CONFIRMATION_WINDOW_AND_FIX_CI`)** — CI/help + selection hardening complete; confirmation grid **blocked** on missing local curated QQQ data.
+**Phase 8b — Layer1 PA confirmation window complete (`FIX_LOCAL_CURATED_DATA_AND_RERUN_CONFIRMATION_WINDOW`)** — QQQ 2024H2 curated locally, confirmation grid + dry-run executed without retuning.
 
 ## Decision
 
-**`FIX_LOCAL_CURATED_DATA`** — Confirmation-window grid and dry-run were not executed (no parquet under `data/curated/bars_1m_rth`). Infrastructure fixes (CI help, finite metric parsing, output-root guardrail) are complete.
+**`LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`** — Non-overlapping confirmation window (QQQ 2024H2) validated, 16-combo grid run, selection dry-run completed. Design-window HOLD previews did not survive confirmation gates (**CONFIRMATION_WEAKENS_SELECTION_DESIGN**).
 
 ## Recommended next step (exactly one)
 
-**`FIX_LOCAL_CURATED_DATA`** — Curate QQQ 2024H2 (preferred), then re-run confirmation grid + `select-dry-run` + design-vs-confirmation comparison without retuning.
+**`REVIEW_PA_FEATURES_OR_LOGIC`** — Review PA features/logic after confirmation weakened design selection; not real candidate promotion.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Latest validation: **`pytest 352`** (smoke+unit) + Ruff + CLI help
-- Bundle: `artifacts/layer1_pa_confirmation_window_phase8/`
-- Confirmation config ready: `configs/layer1/controlled_pa_qqq_2024h2.yaml` (`grid-inspect` → 16 combos)
+- Bundle: `artifacts/layer1_pa_confirmation_data_repair_phase8b/`
+- Confirmation config: `configs/layer1/controlled_pa_qqq_2024h2.yaml`
+- `promotion_allowed_now=false` enforced; no runtime candidate YAMLs
 
 See `NEXT_HANDOFF.md` for full checklist.

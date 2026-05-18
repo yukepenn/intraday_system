@@ -11,7 +11,18 @@ from intraday.layer1.selection import (
     DECISION_REJECT,
     SelectionDryRunResult,
     SelectionDryRunRow,
+    parse_finite_float,
 )
+
+
+def _format_metric_for_md(value: object, *, field_name: str, precision: int) -> str:
+    """Format a sweep metric for Markdown; invalid values render as explicit markers."""
+    try:
+        parsed = parse_finite_float(value, field_name=field_name)
+    except Exception:
+        return "invalid"
+    return f"{parsed:.{precision}f}"
+
 
 _RESULTS_FIELDS = [
     "combo_id",
@@ -167,8 +178,8 @@ def write_layer1_candidate_selection_dry_run_artifacts(
         sweep = r.sweep_row
         results_md.append(
             f"| {r.combo_id} | {r.decision.decision} | {r.rank or '-'} | "
-            f"{float(sweep.get('total_r', 0)):.2f} | "
-            f"{float(sweep.get('profit_factor_r', 0)):.3f} | "
+            f"{_format_metric_for_md(sweep.get('total_r'), field_name='total_r', precision=2)} | "
+            f"{_format_metric_for_md(sweep.get('profit_factor_r'), field_name='profit_factor_r', precision=3)} | "
             f"{r.decision.hard_gate_pass} | {r.config_reconstruction_safe} |"
         )
     (output_root / "dry_run_selection_results.md").write_text(

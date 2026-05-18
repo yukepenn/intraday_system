@@ -1,0 +1,15 @@
+command,exit_status,key_output,pass_fail,notes
+python -m compileall -q src,0,,PASS,
+pytest -q tests/smoke tests/unit,0,356 passed,PASS,pre-format subset
+pytest -q,0,391 passed,PASS,full suite after ruff format
+ruff format --check src tests,0,2 files reformatted then clean,PASS,
+ruff check src tests,0,,PASS,
+intraday.cli.main --help,0,,PASS,
+intraday.cli.main doctor,0,,PASS,
+intraday.cli.main validate structure,0,,PASS,
+data validate-curated QQQ 2024H2,0,49380 rows 128 sessions,PASS,
+data load-bars QQQ 2024H2,0,data_hash verified,PASS,
+layer1 grid-inspect controlled_pa_qqq_2024h2.yaml,0,combo_count=16,PASS,
+layer1 grid controlled_pa_qqq_2024h2.yaml,0,16 combos best total_r combo_0010,PASS,
+layer1 select-dry-run confirmation sweep,0,16 reject promotion_allowed_now=false,PASS,
+promotion_allowed_now=true rows,0,none,PASS,fail if any true

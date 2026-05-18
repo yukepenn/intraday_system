@@ -1,0 +1,3 @@
+step,status,notes
+grid,pass,16 combos reference execution
+artifact_root,local,phase8/local_run (not committed heavy)

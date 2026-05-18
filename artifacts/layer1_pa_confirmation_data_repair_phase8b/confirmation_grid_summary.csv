@@ -1,0 +1,14 @@
+metric,value
+combo_count,16
+row_count,16
+best_total_r_combo,combo_0010
+best_total_r,7.578524598745652
+best_pf_combo,combo_0010
+best_pf,1.1080457880558798
+accepted_trades_min,111
+accepted_trades_median,128
+accepted_trades_max,128
+signal_entries_min,2825
+signal_entries_max,4548
+execution_mode,reference
+feature_hash,facb93387b6460a7f79bfd08a23b71560539d284f5ca2f0e1b565cb224a15498

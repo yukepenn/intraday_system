@@ -1,0 +1,6 @@
+section,item,metric,value,interpretation
+decision,phase8b,decision,LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE,workflow complete
+decision,phase8b,next_step,REVIEW_PA_FEATURES_OR_LOGIC,CONFIRMATION_WEAKENS_SELECTION_DESIGN
+grid,confirmation,combo_count,16,as design
+dry_run,confirmation,reject_count,16,no holds
+comparison,label,interpretation,CONFIRMATION_WEAKENS_SELECTION_DESIGN,design holds did not survive

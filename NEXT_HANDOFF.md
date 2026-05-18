@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-17** (`RUN_LAYER1_PA_CONFIRMATION_WINDOW_AND_FIX_CI` / Phase **8** partial).
+Last updated: **2026-05-17** (`FIX_LOCAL_CURATED_DATA_AND_RERUN_CONFIRMATION_WINDOW` / Phase **8b**).
 
 ---
 
@@ -13,129 +13,134 @@ Last updated: **2026-05-17** (`RUN_LAYER1_PA_CONFIRMATION_WINDOW_AND_FIX_CI` / P
 
 ---
 
-## B. Task scope (Phase 8)
+## B. Task scope (Phase 8b)
 
-- Fixed CI `select-dry-run --help` smoke test (CliRunner + robust subprocess env).
-- Hardened finite numeric metric parsing (`parse_finite_float` / `parse_finite_int`).
-- Enforced `artifacts/`-only `--output-root` for dry-run CLI.
-- Prepared confirmation config `configs/layer1/controlled_pa_qqq_2024h2.yaml` (same grid, no retuning).
-- **Did not** run confirmation grid or dry-run — **no local curated QQQ parquet** for 2024H2/2023H2/2025H1.
+- Repaired local curated QQQ **2024H2** from raw IBKR (non-overlapping vs design 2024H1).
+- Preflight: selection report Markdown metric hardening; output-root `.` rejection; handoff wording fix.
+- Ran confirmation controlled grid (16 combos, same grid, no retuning).
+- Ran confirmation `select-dry-run` (review-only; `promotion_allowed_now=false` all rows).
+- Design-vs-confirmation comparison: **CONFIRMATION_WEAKENS_SELECTION_DESIGN**.
 - **Did not** promote candidates or write runtime candidate YAMLs.
 
 ---
 
-## C. CI select-dry-run help fix
+## C. Preflight repairs
 
-- `tests/smoke/test_layer1_selection_cli.py`: Typer `CliRunner` + `NO_COLOR`/`TERM`/`COLUMNS` subprocess; ANSI strip; asserts `sweep-results`, `base-config`, `grid-config`, `output-root`.
-- Artifacts: `artifacts/layer1_pa_confirmation_window_phase8/ci_cli_help_fix.*`
-
----
-
-## D. Numeric metric parsing hardening
-
-- `parse_finite_float`, `parse_finite_int`, `_parse_row_metrics` in `selection.py`
-- Per-row `invalid_metrics` reject; malformed row does not abort full dry-run
-- Tests: extended `test_layer1_selection_gates.py`, `test_layer1_selection_dry_run.py`
+- `selection_reports.py`: `_format_metric_for_md` — malformed/non-finite → `invalid` in MD table.
+- `validate_selection_dry_run_output_root`: rejects `.`, empty, whitespace-only paths.
+- Tests: malformed metric artifact writer; output-root edge cases.
+- Artifacts: `artifacts/layer1_pa_confirmation_data_repair_phase8b/preflight_repairs.*`
 
 ---
 
-## E. Output-root guardrail
+## D. Local raw/curated confirmation data inventory
 
-- `validate_selection_dry_run_output_root` — repo-relative under `artifacts/` only
-- Rejects absolute paths and `configs/candidates/`
-- Tests: `test_layer1_selection_reports.py`, CLI smoke rejection tests
-
----
-
-## F. Confirmation window selection
-
-| Window | Status |
+| Item | Status |
 | --- | --- |
-| QQQ 2024H2 (preferred) | **NO_DATA** |
-| QQQ 2023H2 | NO_DATA |
-| QQQ 2025H1 | NO_DATA |
+| Raw QQQ | 104 months (canonical IBKR layout) |
+| Curated before | 2024H1 only (design window) |
+| Curated added | 2024H2 (Jul–Dec 2024) |
+| Chosen window | **QQQ 2024H2** (preferred, non-overlapping) |
 
-`data/curated/bars_1m_rth` empty in workspace.
+Prior Phase 8 wording “curated root empty” was inaccurate — blocker was **missing non-overlapping confirmation-window parquet**.
 
 ---
 
-## G. Confirmation config
+## E. Confirmation normalization / validation
+
+- Normalize dry-run + write: **49380** rows, 6 months, warnings `short_sessions_count=3`
+- `validate-curated` QQQ 2024H2: **PASS** (0 errors)
+- `load-bars`: 128 sessions, `data_hash` verified
+- Local parquet: **not committed**
+
+---
+
+## F. Confirmation config
 
 - `configs/layer1/controlled_pa_qqq_2024h2.yaml`
+- Same feature / strategy base / controlled grid / execution as 2024H1
 - `grid-inspect`: **combo_count=16**
-- Same feature/strategy grid/execution as 2024H1 design window
 
 ---
 
-## H. Confirmation controlled grid run
+## G. Confirmation controlled grid run
 
-**SKIPPED** — no curated data.
-
----
-
-## I. Confirmation selection dry-run
-
-**SKIPPED** — no confirmation sweep CSV.
+- **16/16** combos, reference execution
+- Best `total_r`: **combo_0010** → 7.58
+- Best `profit_factor_r`: **combo_0010** → 1.11
+- Accepted trades per combo: 111–128
+- Artifacts: `artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_*`
 
 ---
 
-## J. Design-vs-confirmation comparison
+## H. Confirmation selection dry-run
 
-**CONFIRMATION_SKIPPED_NO_DATA** — deferred.
+- Rows: **16** | PASS: **0** | HOLD: **0** | REJECT: **16**
+- Reconstruction pass: **16/16**
+- `promotion_allowed_now=false` for every row
+- Common reject: `excessive_drawdown` (all 16)
 
 ---
 
-## K. Tests / validation
+## I. Design-vs-confirmation comparison
+
+- Label: **CONFIRMATION_WEAKENS_SELECTION_DESIGN**
+- Design rank-1 preview `combo_0015` (HOLD, +8.88R H1) → REJECT on H2 (-9.08R)
+- All 7 design HOLD rows → REJECT on confirmation gates
+- No retuning performed
+
+---
+
+## J. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | `compileall src` | PASS |
-| `pytest` smoke+unit (`-q`) | **352 passed** |
+| `pytest` smoke+unit | PASS (see commit) |
 | Ruff format/check | PASS |
-| `layer1 select-dry-run --help` | PASS |
-| `data validate-curated` QQQ 2024H2 | FAIL (no data) |
-| Confirmation `layer1 grid` | SKIP |
+| Confirmation grid + dry-run | PASS |
+| `promotion_allowed_now=true` anywhere | **none** |
 
 ---
 
-## L. Explicit still-not-implemented
+## K. Explicit still-not-implemented
 
-Real candidate YAML promotion, Layer2/3, WFO, live/paper, broad PA grids, PA logic changes, confirmation grid execution (blocked on data).
+Real candidate YAML promotion, Layer2/3, WFO, live/paper, broad PA grids, PA logic changes, retuning after confirmation.
 
 ---
 
-## M. Risks / blockers
+## L. Risks / blockers
 
 | Risk | Status |
 | --- | --- |
-| Missing curated QQQ confirmation window | **BLOCKER** |
-| Single-window overfit | Unmitigated until confirmation run |
+| Single-window overfit | Mitigated by confirmation run; design holds did not replicate |
+| Drawdown gate sensitivity | All confirmation rows hit `excessive_drawdown` |
 
 ---
 
-## N. Files changed (high-level)
+## M. Files changed (high-level)
 
-`src/intraday/layer1/selection.py`, `src/intraday/cli/layer1_cmds.py`, `src/intraday/cli/main.py`, tests (`test_layer1_selection_*`), `configs/layer1/controlled_pa_qqq_2024h2.yaml`, `artifacts/layer1_pa_confirmation_window_phase8/**`, docs/status.
+`selection_reports.py`, `layer1_cmds.py`, tests, `artifacts/layer1_pa_confirmation_data_repair_phase8b/**`, docs/status.
 
 ---
 
-## O. Artifact hygiene
+## N. Artifact hygiene
 
 - No parquet/cache/candidate YAML staged
 - `CODEX_REVIEW.md` not modified by Cursor
 
 ---
 
-## P. Decision (exactly one)
+## O. Decision (exactly one)
 
-### `FIX_LOCAL_CURATED_DATA`
+### `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`
 
-(Not `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE` — confirmation grid not executed.)
+Confirmation workflow executed end-to-end on QQQ 2024H2 without retuning.
 
 ---
 
-## Q. Recommended next step (exactly one)
+## P. Recommended next step (exactly one)
 
-### `FIX_LOCAL_CURATED_DATA`
+### `REVIEW_PA_FEATURES_OR_LOGIC`
 
-Curate QQQ 2024H2 (or nearest non-overlapping window), then re-run confirmation grid + dry-run + comparison **without retuning**.
+Confirmation weakened design-window selection previews; review PA features/logic before promotion schema or grid refinement — **not** real candidate promotion.
