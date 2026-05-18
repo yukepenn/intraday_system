@@ -35,4 +35,6 @@ grid:
   require_no_fixed_grid_overlap: true
 
 output:
+  # Local-only heavy grid outputs (gitignored). Phase 8b committed review CSVs/MD live under
+  # artifacts/layer1_pa_confirmation_data_repair_phase8b/ — do not confuse with this path.
   artifact_root: artifacts/layer1_pa_confirmation_window_phase8/local_run

@@ -4,6 +4,14 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-17
 
+### Phase 9 — PA feature/logic review after confirmation failure
+
+- Research(artifacts): `artifacts/pa_features_logic_review_after_confirmation_phase9/` — design vs confirmation delta, axis/interaction stability, exit/DD diagnostics, PA sufficiency review, diagnostic proposal.
+- Chore(gitignore): ignore `artifacts/**/local_run/`, `_pytest*` artifact dirs.
+- Chore(config): comment on `controlled_pa_qqq_2024h2.yaml` local `artifact_root` vs Phase 8b committed bundle.
+- Docs/status: `PA_FEATURE_LOGIC_REVIEW_COMPLETE`; next `REFINE_PA_GRID_AND_RERUN`; confirmation weakness documented; no promotion.
+- Validation: **391** `pytest`; Ruff; CLI; `grid-inspect` (no grid/dry-run rerun).
+
 ### Phase 8b — Layer1 PA confirmation data repair + rerun
 
 - Fix(layer1): `selection_reports` Markdown metrics — invalid/non-finite render as `invalid` without aborting.
@@ -38,7 +46,7 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 - Test: `test_layer1_candidate_selection_design.py`, `test_layer1_selection_gates.py`; grid reconstruction tests.
 - Validation: `pytest` **340 passed**; Ruff; CLI smoke + `layer1 grid-inspect`.
 
-### Phase 6d — PA logic / controlled-grid diagnostics (pre–selection design)
+### Phase 6d — PA logic / controlled-grid diagnostics (historical; pre–selection design)
 
 - Docs/artifacts: `artifacts/pa_logic_grid_review_phase6d/` Phase 6d review bundle (parameter-axis diagnostics, exit/skip review, readiness label, serialization audit proposals, GitHub-renderable bundle).
 - Status: PROJECT_STATUS/NEXT_HANDOFF/README/PHASE_PLAN/LAYER1_CONTRACT aligned to Phase **6d** completion and **candidate selection design next** (`DESIGN_LAYER1_PA_CANDIDATE_SELECTION`).

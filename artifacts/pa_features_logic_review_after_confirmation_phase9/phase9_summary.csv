@@ -1,0 +1,15 @@
+metric,value,interpretation
+phase,9,PA feature logic review
+decision,PA_FEATURE_LOGIC_REVIEW_COMPLETE,
+recommended_next_step,REFINE_PA_GRID_AND_RERUN,
+confirmation_reject_count,16,all rows
+design_hold_count,7,all became confirmation reject
+design_rank1_combo,combo_0015,HOLD to REJECT
+design_rank1_total_r_h1,8.880356,
+confirmation_rank1_total_r_h2,-9.079716,
+confirmation_best_total_r_combo,combo_0010,7.578525 still REJECT
+rolling_low_mean_r_h1,5.570113,
+rolling_low_mean_r_h2,-12.210083,ranking reversed
+signal_low_mean_r_h1,-11.838882,
+signal_low_mean_r_h2,0.601774,
+promotion_allowed_now,false,all rows

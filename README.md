@@ -100,7 +100,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 8b complete:** Curated QQQ 2024H2 locally; confirmation grid **16/16** + dry-run; design-vs-confirmation **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**. Bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`. Still **no** runtime candidate YAMLs.
 
-**Next:** **`REVIEW_PA_FEATURES_OR_LOGIC`** (not real promotion). Layer2/3 remain out of scope.
+**Phase 9 complete:** PA feature/logic diagnostic review after confirmation failure — **`PA_FEATURE_LOGIC_REVIEW_COMPLETE`**. Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Confirmation rejected all rows (drawdown gate + rolling_low path reversal). Still **no** runtime candidate YAMLs.
+
+**Next:** **`REFINE_PA_GRID_AND_RERUN`** (tiny risk diagnostic grid on design window; not promotion). Layer2/3 remain out of scope.
 
 See:
 

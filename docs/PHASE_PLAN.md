@@ -191,18 +191,36 @@ Decision label: **`LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`**.
 
 Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not real promotion).
 
+## Phase 9 — PA feature/logic review after confirmation — **complete**
+
+Goal: diagnose why QQQ 2024H2 confirmation rejected all 16 controlled-grid rows and choose the next **system-building** step — **no** strategy/feature changes, **no** grid rerun, **no** promotion.
+
+Highlights:
+
+- Reconfirmed **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**; design rank-1 `combo_0015` HOLD → H2 REJECT.
+- **stop_mode ranking reversed** (rolling_low H1 best → H2 worst).
+- Universal `excessive_drawdown` on confirmation (max_dd > 10R gate).
+- Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`.
+- `pytest` **391** at handoff.
+
+Decision label: **`PA_FEATURE_LOGIC_REVIEW_COMPLETE`**.
+
+Recommended next step: **`REFINE_PA_GRID_AND_RERUN`** (≤12-combo risk diagnostic; design window first; fresh holdout — not 2024H2 retuning).
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; not started)
 
-## Phase 9 — Layer2 controlled router
+## Phase 10 — Layer2 controlled router (original roadmap Phase 9)
 
-## Phase 10 — Management modes
+## Phase 11 — Management modes
 
-## Phase 11 — Layer3 frozen validation
+## Phase 12 — Layer3 frozen validation
 
-## Phase 12 — Scale and speed
+## Phase 13 — Scale and speed
 
 ## Decision labels (recent)
 
+- `PA_FEATURE_LOGIC_REVIEW_COMPLETE`
+- `REFINE_PA_GRID_AND_RERUN`
 - `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`
 - `REVIEW_PA_FEATURES_OR_LOGIC`
 - `FIX_LOCAL_CURATED_DATA`
@@ -219,4 +237,4 @@ Recommended next step: **`REVIEW_PA_FEATURES_OR_LOGIC`** (not real promotion).
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Phase **8b** completed confirmation window on QQQ 2024H2 without retuning; design holds did not replicate (**CONFIRMATION_WEAKENS_SELECTION_DESIGN**). Next: **`REVIEW_PA_FEATURES_OR_LOGIC`**. Port GAP/CCI (Phase 8-R) not started.
+Phase **9** completed PA feature/logic diagnostic review after confirmation failure; next **`REFINE_PA_GRID_AND_RERUN`** (tiny risk grid, not promotion). Port GAP/CCI (Phase 8-R) not started.

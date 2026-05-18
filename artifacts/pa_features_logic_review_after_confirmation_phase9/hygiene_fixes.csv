@@ -1,0 +1,5 @@
+item,issue,action_taken,behavior_changed_yes_no,notes
+gitignore_local_run,untracked local_run dirs,added artifacts/**/local_run/ and _pytest patterns,no,does not delete local dirs
+h2_config_artifact_root,namespace mismatch with phase8b bundle,comment only in yaml,no,grid not rerun
+changes_md_heading,stale latest on phase 6d,renamed section,no,
+codex_review,owned by codex,not_modified,no,

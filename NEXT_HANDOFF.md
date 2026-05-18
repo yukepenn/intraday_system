@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-17** (`FIX_LOCAL_CURATED_DATA_AND_RERUN_CONFIRMATION_WINDOW` / Phase **8b**).
+Last updated: **2026-05-17** (`REVIEW_PA_FEATURES_OR_LOGIC_AFTER_CONFIRMATION_FAILURE` / Phase **9**).
 
 ---
 
@@ -13,134 +13,120 @@ Last updated: **2026-05-17** (`FIX_LOCAL_CURATED_DATA_AND_RERUN_CONFIRMATION_WIN
 
 ---
 
-## B. Task scope (Phase 8b)
+## B. Task scope (Phase 9)
 
-- Repaired local curated QQQ **2024H2** from raw IBKR (non-overlapping vs design 2024H1).
-- Preflight: selection report Markdown metric hardening; output-root `.` rejection; handoff wording fix.
-- Ran confirmation controlled grid (16 combos, same grid, no retuning).
-- Ran confirmation `select-dry-run` (review-only; `promotion_allowed_now=false` all rows).
-- Design-vs-confirmation comparison: **CONFIRMATION_WEAKENS_SELECTION_DESIGN**.
+- Diagnostic review of PA strategy logic, `pa_core_v1` features, 16-combo grid axes, and QQQ 2024H2 confirmation failure.
+- **Did not** change PA strategy, features, execution, or rerun broad/confirmation grids.
 - **Did not** promote candidates or write runtime candidate YAMLs.
+- Produced `artifacts/pa_features_logic_review_after_confirmation_phase9/` review bundle.
 
 ---
 
-## C. Preflight repairs
+## C. Artifact / hygiene preflight
 
-- `selection_reports.py`: `_format_metric_for_md` — malformed/non-finite → `invalid` in MD table.
-- `validate_selection_dry_run_output_root`: rejects `.`, empty, whitespace-only paths.
-- Tests: malformed metric artifact writer; output-root edge cases.
-- Artifacts: `artifacts/layer1_pa_confirmation_data_repair_phase8b/preflight_repairs.*`
-
----
-
-## D. Local raw/curated confirmation data inventory
-
-| Item | Status |
-| --- | --- |
-| Raw QQQ | 104 months (canonical IBKR layout) |
-| Curated before | 2024H1 only (design window) |
-| Curated added | 2024H2 (Jul–Dec 2024) |
-| Chosen window | **QQQ 2024H2** (preferred, non-overlapping) |
-
-Prior Phase 8 wording “curated root empty” was inaccurate — blocker was **missing non-overlapping confirmation-window parquet**.
+- Phase 8b artifacts complete (16-row sweep + dry-run + design-vs-confirmation).
+- `configs/candidates/**` — README only; no candidate YAML.
+- `CODEX_REVIEW.md` not modified by Cursor.
+- `.gitignore` extended for `local_run` / `_pytest` artifact dirs.
+- `controlled_pa_qqq_2024h2.yaml` `artifact_root` documented as local-only (path unchanged; no grid rerun).
 
 ---
 
-## E. Confirmation normalization / validation
+## D. Design-vs-confirmation failure decomposition
 
-- Normalize dry-run + write: **49380** rows, 6 months, warnings `short_sessions_count=3`
-- `validate-curated` QQQ 2024H2: **PASS** (0 errors)
-- `load-bars`: 128 sessions, `data_hash` verified
-- Local parquet: **not committed**
-
----
-
-## F. Confirmation config
-
-- `configs/layer1/controlled_pa_qqq_2024h2.yaml`
-- Same feature / strategy base / controlled grid / execution as 2024H1
-- `grid-inspect`: **combo_count=16**
+- Label: **CONFIRMATION_WEAKENS_SELECTION_DESIGN** (reconfirmed).
+- Design rank-1 `combo_0015`: HOLD +8.88R (H1) → REJECT -9.08R (H2).
+- Confirmation best `combo_0010`: +7.58R — still REJECT (`excessive_drawdown`, max_dd 19.88R).
+- All **7** design HOLD rows → confirmation REJECT.
+- Primary gate: `excessive_drawdown` on **16/16** (max_dd > 10.0R limit).
 
 ---
 
-## G. Confirmation controlled grid run
+## E. Parameter-axis stability review
 
-- **16/16** combos, reference execution
-- Best `total_r`: **combo_0010** → 7.58
-- Best `profit_factor_r`: **combo_0010** → 1.11
-- Accepted trades per combo: 111–128
-- Artifacts: `artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_*`
-
----
-
-## H. Confirmation selection dry-run
-
-- Rows: **16** | PASS: **0** | HOLD: **0** | REJECT: **16**
-- Reconstruction pass: **16/16**
-- `promotion_allowed_now=false` for every row
-- Common reject: `excessive_drawdown` (all 16)
+- **stop_mode:** rolling_low dominated H1 (+5.57R mean) → collapsed H2 (-12.21R); signal_low improved H2 (+0.60R mean). **Ranking reversed.**
+- **target_r:** No stable H2 edge; signal_low×1.35 best interaction cell.
+- **body_pct_min:** 0.56 relatively better both windows.
+- **require_vwap_side:** Weak/noisy; not a stabilizer.
 
 ---
 
-## I. Design-vs-confirmation comparison
+## F. Exit / skip / drawdown diagnostics
 
-- Label: **CONFIRMATION_WEAKENS_SELECTION_DESIGN**
-- Design rank-1 preview `combo_0015` (HOLD, +8.88R H1) → REJECT on H2 (-9.08R)
-- All 7 design HOLD rows → REJECT on confirmation gates
-- No retuning performed
+- STOP share ↑, TARGET share ↓ in H2 (aggregate exit distribution).
+- Accepted trades 111–128 — comparable; not trade-count failure.
+- Drawdown failures reflect economics + path risk, not gate-only artifact.
 
 ---
 
-## J. Tests / validation
+## G. PA feature / logic sufficiency review
+
+- PA MVP over-relies on bar anatomy + simple trend score; no regime filter in strategy.
+- `pa_core_v1` adequate for infrastructure; **not** sufficient for promotion without risk diagnostic and/or strategy use of regime context.
+- Defer minimal feature diagnostic until after tiny risk grid refinement.
+
+---
+
+## H. Diagnostic next-step proposal
+
+- **Recommended:** `REFINE_PA_GRID_AND_RERUN` — ≤12-combo diagnostic on risk path (`stop_mode`, `target_r`, `max_hold`), design window first, fresh holdout for confirmation.
+- **Not recommended now:** promotion schema, broad grid, 2024H2 retuning, Layer2/3.
+
+---
+
+## I. Tests / validation
 
 | Check | Status |
 | --- | --- |
 | `compileall src` | PASS |
-| `pytest` smoke+unit | PASS (see commit) |
+| `pytest` smoke+unit | PASS (356) |
+| `pytest` full | PASS (391) |
 | Ruff format/check | PASS |
-| Confirmation grid + dry-run | PASS |
-| `promotion_allowed_now=true` anywhere | **none** |
+| CLI help/doctor/validate | PASS |
+| `layer1 grid-inspect` 2024H2 | PASS (16 combos) |
+| Grid / dry-run rerun | **skipped** (artifacts sufficient) |
 
 ---
 
-## K. Explicit still-not-implemented
+## J. Explicit still-not-implemented
 
-Real candidate YAML promotion, Layer2/3, WFO, live/paper, broad PA grids, PA logic changes, retuning after confirmation.
+Real candidate YAML promotion, Layer2/3, WFO, live/paper, GAP/CCI, PA logic changes, feature kernel changes, broad PA grids, retuning from 2024H2 confirmation.
 
 ---
 
-## L. Risks / blockers
+## K. Risks / blockers
 
 | Risk | Status |
 | --- | --- |
-| Single-window overfit | Mitigated by confirmation run; design holds did not replicate |
-| Drawdown gate sensitivity | All confirmation rows hit `excessive_drawdown` |
+| H1 rolling_low false confidence | Address via diagnostic grid without rolling_low primary |
+| Regime shift QQQ H2 | Fresh holdout required after tiny grid |
+| Feature creep before risk test | Deferred per Phase 9 decision |
 
 ---
 
-## M. Files changed (high-level)
+## L. Files changed (high-level)
 
-`selection_reports.py`, `layer1_cmds.py`, tests, `artifacts/layer1_pa_confirmation_data_repair_phase8b/**`, docs/status.
+`artifacts/pa_features_logic_review_after_confirmation_phase9/**`, `.gitignore`, `configs/layer1/controlled_pa_qqq_2024h2.yaml` (comment), status/docs.
 
 ---
 
-## N. Artifact hygiene
+## M. Artifact hygiene
 
 - No parquet/cache/candidate YAML staged
 - `CODEX_REVIEW.md` not modified by Cursor
 
 ---
 
-## O. Decision (exactly one)
+## N. Decision (exactly one)
 
-### `LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE`
+### `PA_FEATURE_LOGIC_REVIEW_COMPLETE`
 
-Confirmation workflow executed end-to-end on QQQ 2024H2 without retuning.
+Phase 9 diagnostic review complete. PA path not ready for promotion.
 
 ---
 
-## P. Recommended next step (exactly one)
+## O. Recommended next step (exactly one)
 
-### `REVIEW_PA_FEATURES_OR_LOGIC`
+### `REFINE_PA_GRID_AND_RERUN`
 
-Confirmation weakened design-window selection previews; review PA features/logic before promotion schema or grid refinement — **not** real candidate promotion.
+Define and run a **small explicit diagnostic grid** (≈12 combos) on risk/stop/target/hold — design window first, then fresh non-overlapping confirmation. **Not** retuning from 2024H2 winners.

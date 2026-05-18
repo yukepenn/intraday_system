@@ -1,0 +1,16 @@
+section,item,metric,value,interpretation
+preflight,confirmation_sweep_rows,row_count,16,complete
+preflight,confirmation_dry_run,decision_REJECT,16,all rejected
+preflight,promotion_allowed_now,all_rows,false,no promotion
+decomposition,design_rank1,combo_id,combo_0015,HOLD in H1
+decomposition,design_rank1,total_r_h1,8.880356,best design preview
+decomposition,design_rank1,total_r_h2,-9.079716,failed confirmation
+decomposition,confirmation_best,combo_id,combo_0010,best H2 total_r
+decomposition,confirmation_best,total_r_h2,7.578525,still REJECT on DD
+axis,stop_mode_h1,rolling_low_mean_r,5.570113,dominant in design
+axis,stop_mode_h2,rolling_low_mean_r,-12.210083,collapsed in confirmation
+axis,stop_mode_h2,signal_low_mean_r,0.601774,ranking reversed
+gate,excessive_drawdown,count,16,all confirmation rows
+gate,max_drawdown_limit_R,threshold,10.0,PA_L1_SELECTION_DESIGN_V1
+decision,phase9,label,PA_FEATURE_LOGIC_REVIEW_COMPLETE,
+decision,next_step,label,REFINE_PA_GRID_AND_RERUN,tiny diagnostic grid

@@ -1,0 +1,11 @@
+item,value,notes
+branch,main,
+local_head_sha,3183f12771e740665b9895b92034f3df246d1307,pre-work
+remote_main_sha,3183f12771e740665b9895b92034f3df246d1307,
+local_remote_match,true,
+working_tree_status,untracked_local_artifacts_only,
+prior_decision,LAYER1_PA_CONFIRMATION_WINDOW_COMPLETE,
+prior_recommended_next_step,REVIEW_PA_FEATURES_OR_LOGIC,
+codex_target_commit,1d45dfaed1eaeff746a6a4aa572e1214e65860f2,Phase 8b
+codex_verdict,PASS_WITH_WARNINGS,
+codex_review_not_modified_by_cursor,true,

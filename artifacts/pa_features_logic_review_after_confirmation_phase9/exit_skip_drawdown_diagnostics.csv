@@ -1,0 +1,6 @@
+diagnostic_area,design_evidence,confirmation_evidence,interpretation,likely_cause,recommended_action,blocks_promotion_yes_no
+exit_STOP,819 (42.9%),874 (45.6%),STOP share rose slightly in H2,More adverse excursions before target,Test lower target_r in tiny diagnostic grid,yes
+exit_TARGET,677 (35.5%),656 (34.2%),TARGET share fell ~1.4pp in H2,Harder to reach fixed R targets in H2,"Consider target_r [0.8,1.0,1.2] diagnostic only",yes
+exit_MAX_HOLD,412 (21.6%),386 (20.1%),MAX_HOLD count similar; rolling_low combos dominate MAX_HOLD,50m max_hold + rolling stop = long underwater holds,"Future grid: max_hold_minutes [30,50,80] if config-only",yes
+drawdown_gate,HOLD rows max_dd 4.2-7.1R; 9 REJECT rows dd 16-21R,All combos max_dd 14.8-30.7R (>10 gate),Economics + gate: H2 instability not just threshold artifact,Performance collapse increased path DD,Do not loosen gate; fix economics first,yes
+trade_density,accepted_trades 114-124 per combo,accepted_trades 111-128 per combo,Comparable trade counts; not insufficient_trades,Skip/session cap similar (~95% signals skipped),No session-cap change before grid diagnostic,no

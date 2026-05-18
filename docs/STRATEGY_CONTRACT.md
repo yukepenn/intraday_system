@@ -94,3 +94,12 @@ Built-in strategies register via `register_builtin_strategies()`. Phase 5 ships:
 `validate_signal_matrix(signals, n_bars)` enforces shape and entry/non-entry conventions.
 
 Strategy-specific config validation lives in `intraday.strategies.config_validation` and per-`StrategyDef.validate_config`.
+
+## PA MVP sufficiency (Phase 9 review)
+
+`pa_buy_sell_close_trend` (Phase 5) is sufficient for **signal-layer MVP** and controlled grids. It is **not** sufficient for candidate promotion without either:
+
+1. A successful **risk-path diagnostic grid** (stop/target/hold), and/or
+2. Strategy consumption of generic regime/volatility context already available in `pa_core_v1`.
+
+Phase **9** confirmation (QQQ 2024H2) rejected all controlled-grid rows; see `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Broader QT-like strategy families remain deferred per `docs/QT_REFERENCE_POLICY.md`.

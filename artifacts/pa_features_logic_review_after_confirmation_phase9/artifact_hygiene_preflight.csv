@@ -1,0 +1,12 @@
+item,expected,actual,status,action_taken,notes
+phase8b_chatgpt_bundle,present,present,PASS,none,
+phase8b_source_map,present,present,PASS,none,
+phase8b_key_tables,present,present,PASS,none,
+design_vs_confirmation,md_and_csv,present,PASS,none,
+confirmation_sweep_rows,16,16,PASS,none,
+confirmation_dry_run_rows,16,16,PASS,none,
+confirmation_dry_run_summary,0_PASS_0_HOLD_16_REJECT,matches,PASS,none,
+candidate_yaml,none,README_only,PASS,none,
+codex_review_unmodified,true,not_edited,PASS,none,
+h2_config_artifact_root,aligned_or_documented,phase8_local_run,WARN,documented_in_hygiene_fixes,committed_results_in_phase8b_bundle
+untracked_local_dirs,gitignored_or_local,local_run_pytest,WARN,gitignore_updated,no_delete

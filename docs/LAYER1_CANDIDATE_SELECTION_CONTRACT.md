@@ -141,6 +141,17 @@ Before runtime candidate YAML promotion:
 2. Add `resolved_config_json` **or** `reconstruction_manifest` to sweep CSV in a future `FIX_GRID_REPORTING_SCHEMA` phase.
 3. Promotion code must verify `config_hash` equality and refuse `params_json`-only configs.
 
+## 12. Confirmation outcome (Phase 8b / 9)
+
+QQQ **2024H2** confirmation on the same 16-combo grid (no retuning):
+
+- Dry-run: **0** PASS / **0** HOLD / **16** REJECT; `promotion_allowed_now=false` everywhere.
+- All **7** design-window HOLD rows became confirmation REJECT.
+- Primary hard reject on confirmation: **`excessive_drawdown`** (16/16); `max_drawdown_r` gate limit **10.0** R units.
+- Phase **9** review: failure is primarily **risk-path / regime instability** (rolling_low H1 dominance did not persist in H2), not selection infrastructure defect. **Do not** promote or retune from 2024H2 winners.
+
+Bundle: `artifacts/pa_features_logic_review_after_confirmation_phase9/`.
+
 ## Related
 
 - `docs/LAYER1_CONTRACT.md` — Layer1 sweep / serialization caveat

@@ -1,0 +1,11 @@
+review_item,current_behavior,evidence,interpretation,recommended_action,urgency,notes
+bar_anatomy_entry,body_pct and close_position gates drive entries,strategy source + grid axes,dominant signal driver,keep for diagnostic grid,medium,
+trend_score,simple_pa_v1 linear score on slope/mean/atr,strategy source,H2 regime may invalidate slope edge,defer feature change until grid diagnostic,medium,
+regime_context,pa_core_v1 regime outputs unused,feature yaml vs PA_REQUIRED_FEATURE_COLUMNS,no session quality filter,PROPOSE_MINIMAL later not now,low,after grid diagnostic
+stop_modes,grid uses signal_low and rolling_low only,controlled_small grid,H2 reversal implicates rolling_low,REFINE_PA_GRID diagnostic,high,atr_buffer optional later
+target_r,grid 1.0 and 1.35,axis review,H2 signal_low+1.35 best cell,test 0.8-1.2 in tiny grid,high,not retune from H2 winner alone
+max_hold,fixed 50 in grid,exit diagnostics,MAX_HOLD+rolling_low path risk,test 30/50/80 config-only,medium,
+require_vwap_side,optional filter in grid,axis stability,noisy weak filter,deprioritize in next grid,low,
+entry_window,60-300 fixed,broad window,may add noise,defer narrow window,low,
+promotion_readiness,7 HOLD design all REJECT H2,confirmation dry-run,not ready,HOLD_CANDIDATE_SELECTION until diagnostic,high,
+qt_features,reference only,QT_REFERENCE_POLICY,defer until anti-overfit stable,add later after PA path stabilizes,low,

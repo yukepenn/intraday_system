@@ -55,6 +55,10 @@ artifacts/layer1_pa_controlled_grid_phase6b/_pytest_runner*/
 artifacts/layer1_pa_controlled_grid_phase6b/_pytest_cfg*/
 artifacts/**/tmp/
 artifacts/**/logs/
+artifacts/**/local_run/
+artifacts/_pytest*/
+artifacts/**/_pytest*/
+artifacts/layer1_pa_confirmation_window_phase8/local_run/
 
 # --- Logs ---
 *.log

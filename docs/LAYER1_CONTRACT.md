@@ -42,6 +42,8 @@ Phase **7b** adds repeatable dry-run tooling: `run_layer1_candidate_selection_dr
 
 Phase **8b** (complete): confirmation window QQQ 2024H2 grid + dry-run executed; `promotion_allowed_now=false` enforced; comparison **`CONFIRMATION_WEAKENS_SELECTION_DESIGN`**; bundle `artifacts/layer1_pa_confirmation_data_repair_phase8b/`.
 
+Phase **9** (complete): PA feature/logic diagnostic review after confirmation failure — no grid rerun, no promotion. Finding: design HOLD rows failed H2 primarily on `excessive_drawdown` and rolling_low path instability; **stop_mode ranking reversed** between windows. Bundle `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Next: tiny risk diagnostic grid (`REFINE_PA_GRID_AND_RERUN`), not promotion schema.
+
 ## Execution modes
 
 Smoke configs may set `execution.mode` to `reference`, `fast`, or `both`. Canonical metrics in Phase 6 use **reference** results; `both` runs fast for parity assertion only.

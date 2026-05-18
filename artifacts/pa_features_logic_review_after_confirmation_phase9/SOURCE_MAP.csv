@@ -1,0 +1,16 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+artifacts/pa_features_logic_review_after_confirmation_phase9/CHATGPT_REVIEW_BUNDLE.md,GitHub-readable review bundle,yes,generated,no,primary handoff for ChatGPT
+artifacts/pa_features_logic_review_after_confirmation_phase9/SOURCE_MAP.csv,Artifact index,yes,generated,no,
+artifacts/pa_features_logic_review_after_confirmation_phase9/chatgpt_key_tables.csv,Key metrics table,yes,generated,no,
+artifacts/pa_features_logic_review_after_confirmation_phase9/pa_features_logic_review_after_confirmation_phase9_decision.md,Phase decision record,yes,generated,no,
+artifacts/layer1_pa_grid_review_phase6c/sweep_results_review.csv,Design window sweep,yes,source,no,QQQ 2024H1
+artifacts/layer1_pa_candidate_selection_dry_run_phase7b/dry_run_selection_results.csv,Design dry-run,yes,source,no,
+artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_sweep_results.csv,Confirmation sweep,yes,source,no,QQQ 2024H2
+artifacts/layer1_pa_confirmation_data_repair_phase8b/confirmation_dry_run_selection_results.csv,Confirmation dry-run,yes,source,no,
+artifacts/layer1_pa_confirmation_data_repair_phase8b/design_vs_confirmation_comparison.csv,Window comparison,yes,source,no,
+src/intraday/strategies/pa/buy_sell_close_trend.py,PA strategy logic reference,yes,source,no,not modified
+configs/features/pa_core_v1.yaml,Feature set reference,yes,source,no,not modified
+configs/strategies/grids/pa_buy_sell_close_trend_controlled_small.yaml,16-combo grid,yes,source,no,not modified
+src/intraday/layer1/selection.py,Selection gate thresholds,yes,source,no,max_drawdown_r=10
+CODEX_REVIEW.md,Codex audit input,yes,source,no,Cursor did not edit
+configs/candidates/README.md,Candidate root guard,yes,source,no,no YAML candidates

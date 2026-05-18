@@ -1,0 +1,5 @@
+proposal_id,recommended_next_step,reason,evidence,expected_scope,max_combo_count_if_applicable,code_changes_required_yes_no,blocks_promotion_yes_no,notes
+P1,REFINE_PA_GRID_AND_RERUN,stop_mode ranking reversed; DD gate failures on all H2 rows,axis_stability_review.csv; confirmation dry-run,tiny diagnostic grid on design window then fresh confirmation,12,no,yes,do not retune from H2 winners
+P2,PROPOSE_MINIMAL_PA_FEATURE_DIAGNOSTIC,regime features unused by strategy,pa_core_v1 vs strategy columns,one generic regime filter feature,1,yes,yes,defer until after P1
+P3,HOLD_CANDIDATE_SELECTION,if P1 shows no stable cell,broad H2 failure,none,0,no,yes,fallback only
+P4,FIX_LAYER1_REPORTING_OR_ARTIFACTS,not primary blocker,artifacts complete,none,0,no,no,optional artifact_root hygiene only

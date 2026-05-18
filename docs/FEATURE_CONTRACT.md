@@ -74,3 +74,9 @@ Row count **must** equal `BarMatrix.n_bars`. Duplicate column names are **errors
 - PA / GAP / CCI **strategy signals**, Layer1/2/3 runners, candidate YAML, router,
   validation, management overlays, portfolio sizing, research sweeps.
 - Numba feature kernels (deferred; parity not in scope for Phase 4).
+
+## 11. PA core sufficiency (Phase 9 review)
+
+`pa_core_v1` provides adequate **Layer 0 market facts** for PA MVP grids (VWAP, ORB, volatility, price action, volume, regime). Phase **9** found the PA strategy does not yet consume regime/volatility context for entry filtering; confirmation failure on QQQ 2024H2 is **not** evidence that feature kernels are broken.
+
+Before adding new feature families, prefer a **small risk-path diagnostic grid** using existing features. See `artifacts/pa_features_logic_review_after_confirmation_phase9/pa_feature_logic_review.md`.
