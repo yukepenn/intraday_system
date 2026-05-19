@@ -1,0 +1,37 @@
+strategy: orb_retest_continuation
+family: orb
+version: strategy_v2
+required_feature_set: opening_core_v2
+signal_contract_version: signal_v1
+features:
+  feature_config: configs/features/opening_core_v2.yaml
+signal:
+  side: long_only
+  orb_open_minutes: 15
+  entry_start_minute: 20
+  entry_end_minute: 180
+  retest_tolerance_atr: 0.25
+  require_close_above_vwap: false
+  min_vwap_slope: 0.0
+  min_breakout_age_bars: 1
+  max_breakout_age_bars: 20
+  max_retest_depth_atr: 1.0
+  retest_hold_level: orb_high
+  close_position_min: 0.45
+  min_rel_volume_20: 0.75
+  breakout_buffer_atr: 0.02
+risk:
+  stop_mode: orb_low
+  target_mode: fixed_r
+  target_r: 1.25
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+backtest:
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  eod_exit_minute: 389
+  max_hold_minutes: 60
+metadata:
+  phase18b_refinement: optional_config_driven_v2

@@ -1,0 +1,36 @@
+strategy: gap_acceptance_failure
+family: gap
+version: strategy_v2
+required_feature_set: gap_level_core_v2
+signal_contract_version: signal_v1
+features:
+  feature_config: configs/features/gap_level_core_v2.yaml
+signal:
+  side: long_only
+  entry_start_minute: 5
+  entry_end_minute: 120
+  min_gap_pct: 0.005
+  reclaim_mode: prior_close
+  require_close_above_vwap: false
+  min_vwap_slope: 0.0
+  max_gap_pct: 0.04
+  reclaim_buffer_atr: 0.02
+  require_reclaim_cross: true
+  reclaim_lookback_bars: 30
+  require_gap_down_open_below_reclaim: true
+  close_position_min: 0.5
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.2
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+backtest:
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  eod_exit_minute: 389
+  max_hold_minutes: 60
+metadata:
+  phase18b_refinement: optional_config_driven_v2

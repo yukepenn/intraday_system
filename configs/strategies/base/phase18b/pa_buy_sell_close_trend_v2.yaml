@@ -1,0 +1,38 @@
+strategy: pa_buy_sell_close_trend
+family: pa
+version: strategy_v2
+required_feature_set: pa_core_v2
+signal_contract_version: signal_v1
+features:
+  feature_config: configs/features/pa_core_v2.yaml
+signal:
+  side: long_only
+  entry_start_minute: 60
+  entry_end_minute: 300
+  body_pct_min: 0.52
+  close_position_min: 0.6
+  trend_slope_min: 0.0
+  close_vs_mean_min: 0.0
+  require_vwap_side: false
+  score_mode: simple_pa_v1
+  max_vwap_dist_pct: 0.012
+  min_rel_volume_20: 0.8
+  require_close_above_vwap: true
+  require_above_rolling_high_20: false
+  min_range_mean_mult: 0.3
+  max_range_mean_mult: 2.0
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.2
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+backtest:
+  eod_exit_minute: 389
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  max_hold_minutes: 50
+metadata:
+  phase18b_refinement: optional_config_driven_v2

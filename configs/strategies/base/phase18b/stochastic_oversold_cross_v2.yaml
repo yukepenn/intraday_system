@@ -1,0 +1,34 @@
+strategy: stochastic_oversold_cross
+family: stochastic
+version: strategy_v2
+required_feature_set: indicator_core_v2
+signal_contract_version: signal_v1
+features:
+  feature_config: configs/features/indicator_core_v2.yaml
+signal:
+  side: long_only
+  entry_start_minute: 30
+  entry_end_minute: 360
+  oversold_threshold: 20.0
+  require_close_above_vwap: false
+  oversold_lookback_bars: 10
+  min_k_d_spread_after_cross: 2.0
+  min_k_slope: 1.0
+  require_vwap_slope_positive: false
+  close_position_min: 0.45
+  max_vwap_dist_pct: 0.02
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.15
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+backtest:
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  eod_exit_minute: 389
+  max_hold_minutes: 60
+metadata:
+  phase18b_refinement: optional_config_driven_v2

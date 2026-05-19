@@ -10,6 +10,7 @@ import numpy as np
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
+from intraday.strategies.common import previous_same_session
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_pa_buy_sell_close_trend_config,
@@ -37,6 +38,15 @@ PA_REQUIRED_FEATURE_COLUMNS: tuple[str, ...] = (
     "bar_range",
 )
 
+PA_OPTIONAL_FEATURE_COLUMNS: dict[str, tuple[str, ...]] = {
+    "max_vwap_dist_pct": ("vwap_dist_pct",),
+    "min_rel_volume_20": ("rel_volume_20",),
+    "require_close_above_vwap": ("vwap",),
+    "require_above_rolling_high_20": ("rolling_high_20",),
+    "range_mean_mult": ("range_mean_20",),
+    "vwap_atr_buffer": ("vwap",),
+}
+
 
 def _compute_stop(
     bars: BarMatrix,
@@ -49,10 +59,12 @@ def _compute_stop(
     atr = features.column("atr_like_20")
     if stop_mode == "signal_low":
         return low.astype(np.float64, copy=True)
-    if stop_mode == "rolling_low":
+    if stop_mode in ("rolling_low", "rolling_low_20"):
         return features.column("rolling_low_20").astype(np.float64, copy=True)
     if stop_mode == "atr_buffer":
         return close - atr_buffer_mult * atr
+    if stop_mode == "vwap_atr_buffer":
+        return features.column("vwap") - atr_buffer_mult * atr
     raise ValueError(f"unsupported stop_mode: {stop_mode!r}")
 
 
@@ -80,13 +92,33 @@ def generate_pa_buy_sell_close_trend_signals(
     score_mode = str(config["signal"].get("score_mode", "simple_pa_v1"))
     if score_mode != "simple_pa_v1":
         raise ConfigError(f"unsupported signal.score_mode for {STRATEGY_NAME}: {score_mode!r}")
-    require_feature_columns(
-        features.columns, PA_REQUIRED_FEATURE_COLUMNS, strategy_name=STRATEGY_NAME
-    )
 
     n = bars.n_bars
     sig = config["signal"]
     risk = config["risk"]
+    optional_cols: list[str] = []
+    if "max_vwap_dist_pct" in sig:
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["max_vwap_dist_pct"])
+    if "min_rel_volume_20" in sig:
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["min_rel_volume_20"])
+    if parse_bool_like(
+        sig.get("require_close_above_vwap", False), "signal.require_close_above_vwap"
+    ):
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["require_close_above_vwap"])
+    if parse_bool_like(
+        sig.get("require_above_rolling_high_20", False),
+        "signal.require_above_rolling_high_20",
+    ):
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["require_above_rolling_high_20"])
+    if "min_range_mean_mult" in sig or "max_range_mean_mult" in sig:
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["range_mean_mult"])
+    if str(risk.get("stop_mode", "signal_low")) == "vwap_atr_buffer":
+        optional_cols.extend(PA_OPTIONAL_FEATURE_COLUMNS["vwap_atr_buffer"])
+    require_feature_columns(
+        features.columns,
+        (*PA_REQUIRED_FEATURE_COLUMNS, *tuple(dict.fromkeys(optional_cols))),
+        strategy_name=STRATEGY_NAME,
+    )
 
     es = int(sig["entry_start_minute"])
     ee = int(sig["entry_end_minute"])
@@ -95,6 +127,13 @@ def generate_pa_buy_sell_close_trend_signals(
     trend_min = float(sig.get("trend_slope_min", 0))
     cv_min = float(sig.get("close_vs_mean_min", 0))
     req_vwap = parse_bool_like(sig.get("require_vwap_side", False), "signal.require_vwap_side")
+    req_close_above_vwap = parse_bool_like(
+        sig.get("require_close_above_vwap", False), "signal.require_close_above_vwap"
+    )
+    req_breakout = parse_bool_like(
+        sig.get("require_above_rolling_high_20", False),
+        "signal.require_above_rolling_high_20",
+    )
     stop_mode = str(risk.get("stop_mode", "signal_low"))
     target_r_val = float(risk["target_r"])
     atr_mult = float(risk.get("atr_buffer_mult", 0.35))
@@ -130,6 +169,25 @@ def generate_pa_buy_sell_close_trend_signals(
     )
     if req_vwap:
         cand &= vwap_side > 0
+    if req_close_above_vwap:
+        cand &= close > features.column("vwap")
+    if "max_vwap_dist_pct" in sig:
+        cand &= np.abs(features.column("vwap_dist_pct")) <= float(sig["max_vwap_dist_pct"])
+    if "min_rel_volume_20" in sig:
+        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+    if req_breakout:
+        prior_rolling_high = previous_same_session(
+            features.column("rolling_high_20"), bars.session_id
+        )
+        cand &= close > prior_rolling_high
+    if "min_range_mean_mult" in sig:
+        cand &= features.column("bar_range") >= float(sig["min_range_mean_mult"]) * features.column(
+            "range_mean_20"
+        )
+    if "max_range_mean_mult" in sig:
+        cand &= features.column("bar_range") <= float(sig["max_range_mean_mult"]) * features.column(
+            "range_mean_20"
+        )
 
     stop_arr = _compute_stop(bars, features, stop_mode, atr_mult)
     valid_stop = np.isfinite(stop_arr) & (stop_arr < close)

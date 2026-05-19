@@ -1,0 +1,51 @@
+feature_set_id: gap_level_core_v2
+version: feature_set_v2
+description: Phase18B gap/prior-level market facts for reclaim/trap v2 refinements.
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+features:
+  levels:
+    enabled: true
+    outputs:
+    - prior_session_open
+    - prior_session_high
+    - prior_session_low
+    - prior_session_close
+    - open_gap_pct
+    - dist_to_prior_high_pct
+    - dist_to_prior_low_pct
+    - dist_to_prior_close_pct
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+    - vwap
+    - vwap_slope_5
+    - vwap_side
+    - vwap_dist_pct
+  volatility:
+    enabled: true
+    atr_like_windows:
+    - 20
+    range_windows:
+    - 20
+    outputs:
+    - atr_like
+    - range_mean
+  price_action:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - rolling_low
+    - rolling_high
+    - close_position_in_range
+  volume:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - volume_mean
+    - rel_volume

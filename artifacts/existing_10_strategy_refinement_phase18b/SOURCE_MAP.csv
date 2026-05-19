@@ -1,0 +1,52 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/strategies/common.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/config_validation.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/pa/buy_sell_close_trend.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/orb/continuation.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/orb/retest_continuation.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/orb/failed_orb.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/gap/acceptance_failure.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/vwap/trend_pullback.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/vwap/reclaim_reject.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/levels/prior_day_level_trap.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/cci/extreme_snapback.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+src/intraday/strategies/stochastic/oversold_cross.py,Phase18B optional/config-driven v2 strategy refinement or shared validation/state helper,true,source,false,No execution/PnL truth changes.
+configs/features/opening_core_v2.yaml,V2 generic feature config,true,source,false,Existing kernels only; no hidden labels.
+configs/features/vwap_level_core_v2.yaml,V2 generic feature config,true,source,false,Existing kernels only; no hidden labels.
+configs/features/gap_level_core_v2.yaml,V2 generic feature config,true,source,false,Existing kernels only; no hidden labels.
+configs/features/indicator_core_v2.yaml,V2 generic feature config,true,source,false,Existing kernels only; no hidden labels.
+configs/features/pa_core_v2.yaml,V2 generic feature config,true,source,false,Existing kernels only; no hidden labels.
+configs/strategies/base/phase18b/pa_buy_sell_close_trend_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/pa_buy_sell_close_trend_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_pa_buy_sell_close_trend_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/orb_continuation_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/orb_continuation_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_orb_continuation_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/orb_retest_continuation_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/orb_retest_continuation_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_orb_retest_continuation_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/failed_orb_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/failed_orb_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_failed_orb_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/gap_acceptance_failure_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/gap_acceptance_failure_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_gap_acceptance_failure_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/vwap_trend_pullback_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/vwap_trend_pullback_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_vwap_trend_pullback_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/vwap_reclaim_reject_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/vwap_reclaim_reject_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_vwap_reclaim_reject_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/prior_day_level_trap_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/prior_day_level_trap_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_prior_day_level_trap_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/cci_extreme_snapback_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/cci_extreme_snapback_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_cci_extreme_snapback_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+configs/strategies/base/phase18b/stochastic_oversold_cross_v2.yaml,V2 base strategy config,true,source,false,"Runtime YAML, optional v2 parameters."
+configs/strategies/grids/phase18b/stochastic_oversold_cross_v2_rational.yaml,V2 grid skeleton for inspect/readiness,true,source,false,Broad sweep not allowed in Phase18B.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_stochastic_oversold_cross_v2_grid_inspect.yaml,Layer1 grid-inspect-only config,true,source,false,Do not run as research grid in Phase18B.
+tests/unit/test_phase18b_feature_configs.py,Phase18B unit guardrail/schema tests,true,source,false,Synthetic/no data dependency.
+tests/unit/test_phase18b_strategy_configs.py,Phase18B unit guardrail/schema tests,true,source,false,Synthetic/no data dependency.
+tests/unit/test_phase18b_no_runtime_leakage.py,Phase18B unit guardrail/schema tests,true,source,false,Synthetic/no data dependency.
+tests/unit/test_phase18b_artifact_schema.py,Phase18B unit guardrail/schema tests,true,source,false,Synthetic/no data dependency.

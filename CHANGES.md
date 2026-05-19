@@ -4,6 +4,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-19
 
+### Phase 18B — Existing-10 v2 refinement implementation
+
+- Feat(features): add `opening_core_v2`, `vwap_level_core_v2`, `gap_level_core_v2`, `indicator_core_v2`, and `pa_core_v2` using existing generic/no-label feature kernels.
+- Feat(strategies): add optional/config-driven v2 refinement branches across all 10 current strategies while preserving v1 config compatibility and execution/accounting truth.
+- Feat(config): add Phase18B v2 base configs, 8-combo v2 rational grid skeletons, and grid-inspect-only Layer1 configs for all 10 strategies.
+- Test(unit): add Phase18B feature-config, strategy-config/generation, no-runtime-leakage, and artifact-schema tests.
+- Research(artifacts): add `artifacts/existing_10_strategy_refinement_phase18b/` review bundle, inventories, guardrails, validation results, compatibility report, and decision artifact.
+- Validation: compileall, CLI help/doctor/structure, feature inspect, strategy inspect, grid-inspect, Phase18B tests, current-10 strategy tests, smoke tests, Ruff check, and Ruff format check passed.
+- Decision: `PHASE18B_EXISTING_10_REFINEMENT_IMPLEMENTATION_COMPLETE`; provisional next `PHASE18C_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no candidate YAML, promotion, select-dry-run, Layer2/3, WFO, live/paper, strategies 11-50, broad short-side implementation, full expanded grids, H2 confirmation, top-row retuning, or execution truth changes.
+
 ### Phase 18 — Existing-10 strategy improvement design
 
 - Research(artifacts): add `artifacts/existing_10_strategy_improvement_design_phase18/` with per-strategy improvement, feature-gap, short-side feasibility, risk-path, signal-frequency, regime/context, implementation-priority, non-goal, promotion-blocked, local reproducibility, H2 carryforward, schema, and decision artifacts.

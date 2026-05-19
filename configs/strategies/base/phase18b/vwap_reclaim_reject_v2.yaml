@@ -1,0 +1,33 @@
+strategy: vwap_reclaim_reject
+family: vwap
+version: strategy_v2
+required_feature_set: vwap_level_core_v2
+signal_contract_version: signal_v1
+features:
+  feature_config: configs/features/vwap_level_core_v2.yaml
+signal:
+  side: long_only
+  entry_start_minute: 15
+  entry_end_minute: 330
+  min_vwap_slope: 0.0
+  require_vwap_touch: true
+  close_position_min: 0.5
+  below_lookback_bars: 12
+  reclaim_buffer_atr: 0.02
+  max_bars_since_below_vwap: 12
+  min_rel_volume_20: 0.75
+risk:
+  stop_mode: signal_low
+  target_mode: fixed_r
+  target_r: 1.2
+  atr_buffer_mult: 0.35
+  min_risk_per_share: 0.03
+  max_trades_per_day: 1
+backtest:
+  quantity: 1.0
+  commission_per_trade: 0.0
+  slippage_per_share: 0.01
+  eod_exit_minute: 389
+  max_hold_minutes: 60
+metadata:
+  phase18b_refinement: optional_config_driven_v2

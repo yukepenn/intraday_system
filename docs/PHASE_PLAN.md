@@ -358,6 +358,24 @@ Decision label: **`PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN_COMPLETE`**.
 
 Recommended next step: **`IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review.
 
+## Phase 18B ? Existing-10 v2 refinement implementation ? **complete**
+
+Goal: implement explicitly approved optional/config-driven v2 refinements for exactly the current 10 active strategies, plus v2 feature configs, validation hardening, v2 base/grid skeletons, tests, and grid-inspect readiness artifacts.
+
+Status:
+
+- Created `opening_core_v2`, `vwap_level_core_v2`, `gap_level_core_v2`, `indicator_core_v2`, and `pa_core_v2` from existing generic/no-label feature kernels.
+- Added optional v2 refinement branches for all 10 current strategies; v1 configs remain valid and execution/accounting truth is unchanged.
+- Added Phase18B v2 base configs, 8-combo v2 rational grid skeletons, and grid-inspect-only Layer1 configs for all 10 strategies.
+- Added validation hardening and Phase18B feature/config/generation/no-runtime-leakage/artifact-schema tests.
+- Grid-inspect passed for all 10 Phase18B configs; no full Layer1 grid runs or expanded sweeps were run.
+- Preserved H2 warning `missing_minute_slots_total=540`; H2 remains diagnostic-only.
+- No candidate YAML, promotion, select-dry-run, Layer2/3, WFO, live/paper, broad short-side implementation, top-row retuning, or strategies 11-50.
+
+Decision label: **`PHASE18B_EXISTING_10_REFINEMENT_IMPLEMENTATION_COMPLETE`**.
+
+Recommended next step: **`PHASE18C_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review.
+
 ## Phase 19 ? Add strategies 11-20 ? **future**
 
 Add the next 10 strategies after separate brainstorming, including necessary generic features/configs/tests/grids.

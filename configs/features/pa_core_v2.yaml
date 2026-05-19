@@ -1,0 +1,62 @@
+feature_set_id: pa_core_v2
+version: feature_set_v2
+description: Phase18B PA context market facts for overextension/risk-path v2 refinements.
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+features:
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+    - vwap
+    - vwap_dist
+    - vwap_dist_pct
+    - vwap_side
+    - vwap_slope_5
+  orb:
+    enabled: true
+    open_minutes:
+    - 15
+    outputs:
+    - orb_high
+    - orb_low
+    - orb_mid
+    - orb_range
+  volatility:
+    enabled: true
+    atr_like_windows:
+    - 20
+    range_windows:
+    - 20
+    outputs:
+    - bar_range
+    - true_range
+    - atr_like
+    - range_mean
+  price_action:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - body_pct
+    - upper_wick_pct
+    - lower_wick_pct
+    - rolling_high
+    - rolling_low
+    - close_position_in_range
+  volume:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - volume_mean
+    - rel_volume
+  regime:
+    enabled: true
+    windows:
+    - 20
+    outputs:
+    - close_vs_rolling_mean
+    - trend_slope_like

@@ -1,0 +1,11 @@
+strategy,grid_config,combo_count,intended_use,broad_sweep_allowed,grid_inspect_status,notes
+pa_buy_sell_close_trend,configs/strategies/grids/phase18b/pa_buy_sell_close_trend_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+orb_continuation,configs/strategies/grids/phase18b/orb_continuation_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+orb_retest_continuation,configs/strategies/grids/phase18b/orb_retest_continuation_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+failed_orb,configs/strategies/grids/phase18b/failed_orb_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+gap_acceptance_failure,configs/strategies/grids/phase18b/gap_acceptance_failure_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+vwap_trend_pullback,configs/strategies/grids/phase18b/vwap_trend_pullback_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+vwap_reclaim_reject,configs/strategies/grids/phase18b/vwap_reclaim_reject_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+prior_day_level_trap,configs/strategies/grids/phase18b/prior_day_level_trap_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+cci_extreme_snapback,configs/strategies/grids/phase18b/cci_extreme_snapback_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.
+stochastic_oversold_cross,configs/strategies/grids/phase18b/stochastic_oversold_cross_v2_rational.yaml,8,grid-inspect/readiness only,false,pass,No Layer1 grid run performed.

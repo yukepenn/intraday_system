@@ -1,0 +1,10 @@
+artifact,required_columns,parse_status,notes
+SOURCE_MAP.csv,file_path;purpose;required_for_review;generated_or_source;local_only_dependency;notes,pass,Generated with csv.DictWriter.
+chatgpt_key_tables.csv,section;item;metric;value;interpretation,pass,Contains required guardrail metrics.
+approved_refinement_scope.csv,strategy;approved_refinement;source_phase18_evidence;implemented;deferred;reason_if_deferred;overfit_risk;tests_required;notes,pass,All 10 strategies covered.
+v2_feature_config_inventory.csv,feature_config;purpose;feature_groups_enabled;new_feature_columns;existing_feature_columns;no_lookahead_tests;session_tests;notes,pass,Five feature configs covered.
+v2_strategy_config_inventory.csv,strategy;base_config_v2;grid_config_v2;metadata_updated;required_feature_config;new_optional_parameters;default_backward_compatible;notes,pass,All 10 strategies covered.
+v2_grid_skeleton_inventory.csv,strategy;grid_config;combo_count;intended_use;broad_sweep_allowed;grid_inspect_status;notes,pass,All combo counts are 8.
+no_lookahead_test_summary.csv,strategy;test_name;logic_branch;session_reset_tested;future_perturbation_tested;current_bar_self_count_prevented;status;notes,pass,All 10 strategies covered.
+grid_inspect_summary.csv,config_path;strategy;grid_path;feature_config;combo_count;inspect_status;notes,pass,All inspect statuses pass.
+backward_compatibility_report.csv,strategy;v1_config_still_valid;v1_default_behavior_preserved;compatibility_notes;tests;status,pass,All statuses pass.

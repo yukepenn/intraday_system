@@ -1,0 +1,58 @@
+feature_set_id: indicator_core_v2
+version: feature_set_v2
+description: Phase18B oscillator context market facts for CCI/stochastic v2 refinements.
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+features:
+  indicators:
+    enabled: true
+    cci_windows:
+    - 20
+    stochastic_windows:
+    - 14
+    stochastic_smooth_windows:
+    - 3
+    outputs:
+    - cci
+    - stoch_k
+    - stoch_d
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+    - vwap
+    - vwap_side
+    - vwap_slope_5
+    - vwap_dist_pct
+  volatility:
+    enabled: true
+    atr_like_windows:
+    - 20
+    range_windows:
+    - 20
+    outputs:
+    - atr_like
+    - range_mean
+  price_action:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - rolling_low
+    - close_position_in_range
+  volume:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - volume_mean
+    - rel_volume
+  regime:
+    enabled: true
+    windows:
+    - 20
+    outputs:
+    - close_vs_rolling_mean
+    - trend_slope_like

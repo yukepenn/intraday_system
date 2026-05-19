@@ -1,0 +1,14 @@
+section,item,metric,value,interpretation
+coverage,current_10,strategies_covered_count,10,All current active strategies received v2 coverage.
+features,v2_configs,v2_feature_configs_count,5,All requested feature config families created.
+strategy,modules,strategy_modules_changed_count,10,All current-10 modules have optional v2 logic coverage.
+tests,phase18b,tests_added_or_updated_count,4,Three direct Phase18B suites plus artifact schema suite.
+layer1,inspect,grid_inspect_configs_count,10,One inspect-only config per strategy.
+guardrail,new_grid_runs,new_grid_runs,false,Phase18B non-promotion guardrail.
+guardrail,candidate_yaml_created,candidate_yaml_created,false,Phase18B non-promotion guardrail.
+guardrail,select_dry_run_run,select_dry_run_run,false,Phase18B non-promotion guardrail.
+guardrail,layer2_created,layer2_created,false,Phase18B non-promotion guardrail.
+guardrail,wfo_run,wfo_run,false,Phase18B non-promotion guardrail.
+guardrail,live_paper_run,live_paper_run,false,Phase18B non-promotion guardrail.
+guardrail,H2_warning_carried_forward,H2_warning_carried_forward,true,Phase18B non-promotion guardrail.
+guardrail,execution_truth_changed,execution_truth_changed,false,Phase18B non-promotion guardrail.

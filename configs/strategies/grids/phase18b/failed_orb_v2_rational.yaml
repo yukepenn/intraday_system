@@ -1,0 +1,28 @@
+strategy: failed_orb
+base_config: configs/strategies/base/phase18b/failed_orb_v2.yaml
+description: Phase18B v2 rational grid skeleton for inspect/readiness only; not a
+  research sweep.
+phase: PHASE18B_IMPLEMENT_EXISTING_10_STRATEGY_REFINEMENTS
+combo_count: 8
+diagnostic_only: true
+broad_sweep_allowed: false
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+grid:
+  signal.max_bars_since_breach:
+  - 10
+  - 20
+  signal.reclaim_buffer_atr:
+  - 0.0
+  - 0.03
+  signal.min_breach_depth_atr:
+  - 0.0
+  - 0.1
+notes: Small v2 skeleton designed for grid-inspect/config validation only in Phase18B.

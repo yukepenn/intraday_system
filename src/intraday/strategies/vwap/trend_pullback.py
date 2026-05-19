@@ -12,9 +12,16 @@ from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
     build_signal_matrix,
     compute_long_stop,
+    previous_same_session,
     thin_first_n_per_session,
 )
-from intraday.strategies.config_validation import validate_long_only_strategy_base
+from intraday.strategies.config_validation import (
+    parse_bool_like,
+    validate_long_only_strategy_base,
+    validate_optional_nonnegative_float,
+    validate_optional_positive_float,
+    validate_optional_probability,
+)
 from intraday.strategies.contracts import (
     SIGNAL_CONTRACT_VERSION,
     clip_finite,
@@ -24,6 +31,7 @@ from intraday.strategies.contracts import (
 STRATEGY_NAME = "vwap_trend_pullback"
 SETUP_CODE = 4001
 FEATURE_SET = "vwap_level_core_v1"
+FEATURE_SETS = ("vwap_level_core_v1", "vwap_level_core_v2")
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "vwap",
@@ -42,9 +50,23 @@ def validate_vwap_trend_pullback_config(config: Mapping[str, Any]) -> None:
         config,
         strategy_name=STRATEGY_NAME,
         family="vwap",
-        required_feature_set=FEATURE_SET,
-        allowed_stop_modes=("signal_low", "vwap_atr_buffer", "atr_buffer"),
+        required_feature_set=FEATURE_SETS,
+        allowed_stop_modes=("signal_low", "vwap_atr_buffer", "atr_buffer", "rolling_low_20"),
     )
+    sig = config.get("signal", {})
+    validate_optional_nonnegative_float(sig, "max_pullback_atr", "signal.max_pullback_atr")
+    validate_optional_nonnegative_float(
+        sig, "min_pullback_depth_atr", "signal.min_pullback_depth_atr"
+    )
+    validate_optional_nonnegative_float(sig, "max_under_vwap_atr", "signal.max_under_vwap_atr")
+    validate_optional_nonnegative_float(
+        sig, "max_close_vwap_dist_atr", "signal.max_close_vwap_dist_atr"
+    )
+    parse_bool_like(
+        sig.get("require_reclaim_above_vwap", False), "signal.require_reclaim_above_vwap"
+    )
+    validate_optional_positive_float(sig, "min_rel_volume_20", "signal.min_rel_volume_20")
+    validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
 
 
 def generate_vwap_trend_pullback_signals(
@@ -53,7 +75,6 @@ def generate_vwap_trend_pullback_signals(
     config: Mapping[str, Any],
 ) -> SignalMatrix:
     validate_vwap_trend_pullback_config(config)
-    require_feature_columns(features.columns, REQUIRED_COLUMNS, strategy_name=STRATEGY_NAME)
 
     sig = config["signal"]
     risk = config["risk"]
@@ -62,6 +83,19 @@ def generate_vwap_trend_pullback_signals(
     min_slope = float(sig.get("min_vwap_slope", 0.0))
     max_pb = float(sig.get("max_pullback_atr", 0.35))
     cp_min = float(sig.get("close_position_min", 0.55))
+    require_reclaim = parse_bool_like(
+        sig.get("require_reclaim_above_vwap", False), "signal.require_reclaim_above_vwap"
+    )
+    extra_cols: list[str] = []
+    if "min_rel_volume_20" in sig:
+        extra_cols.append("rel_volume_20")
+    if str(risk.get("stop_mode", "signal_low")) == "rolling_low_20":
+        extra_cols.append("rolling_low_20")
+    require_feature_columns(
+        features.columns,
+        (*REQUIRED_COLUMNS, *tuple(dict.fromkeys(extra_cols))),
+        strategy_name=STRATEGY_NAME,
+    )
 
     close = bars.close
     low = bars.low
@@ -73,6 +107,7 @@ def generate_vwap_trend_pullback_signals(
 
     in_window = (minute >= es) & (minute <= ee)
     near_vwap = low <= (vwap + max_pb * atr)
+    pullback_depth = (vwap - low) / atr
     cand = (
         in_window
         & (close > vwap)
@@ -82,6 +117,18 @@ def generate_vwap_trend_pullback_signals(
         & np.isfinite(atr)
         & (atr > 0)
     )
+    if "min_pullback_depth_atr" in sig:
+        cand &= pullback_depth >= float(sig["min_pullback_depth_atr"])
+    if "max_under_vwap_atr" in sig:
+        cand &= ((vwap - close) / atr) <= float(sig["max_under_vwap_atr"])
+    if "max_close_vwap_dist_atr" in sig:
+        cand &= np.abs(close - vwap) / atr <= float(sig["max_close_vwap_dist_atr"])
+    if require_reclaim:
+        prev_close = previous_same_session(close, bars.session_id)
+        prev_vwap = previous_same_session(vwap, bars.session_id)
+        cand &= np.isfinite(prev_close) & np.isfinite(prev_vwap) & (prev_close <= prev_vwap)
+    if "min_rel_volume_20" in sig:
+        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
 
     stop_arr = compute_long_stop(
         bars,

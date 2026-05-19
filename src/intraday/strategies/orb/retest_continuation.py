@@ -8,13 +8,21 @@ from typing import Any
 import numpy as np
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
+from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
+    bars_since_prior_condition,
     build_signal_matrix,
     compute_long_stop,
     thin_first_n_per_session,
 )
-from intraday.strategies.config_validation import parse_bool_like, validate_long_only_strategy_base
+from intraday.strategies.config_validation import (
+    parse_bool_like,
+    validate_long_only_strategy_base,
+    validate_optional_nonnegative_float,
+    validate_optional_positive_float,
+    validate_optional_probability,
+)
 from intraday.strategies.contracts import (
     SIGNAL_CONTRACT_VERSION,
     clip_finite,
@@ -24,6 +32,7 @@ from intraday.strategies.contracts import (
 STRATEGY_NAME = "orb_retest_continuation"
 SETUP_CODE = 2002
 FEATURE_SET = "opening_core_v1"
+FEATURE_SETS = ("opening_core_v1", "opening_core_v2")
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "orb_high_15",
@@ -42,8 +51,45 @@ def validate_orb_retest_continuation_config(config: Mapping[str, Any]) -> None:
         config,
         strategy_name=STRATEGY_NAME,
         family="orb",
-        required_feature_set=FEATURE_SET,
+        required_feature_set=FEATURE_SETS,
         allowed_stop_modes=("orb_mid", "orb_low", "signal_low", "atr_buffer"),
+    )
+    sig = config.get("signal", {})
+    if int(sig.get("orb_open_minutes", 15)) <= 0:
+        raise ConfigError("signal.orb_open_minutes must be > 0")
+    validate_optional_positive_float(sig, "retest_tolerance_atr", "signal.retest_tolerance_atr")
+    validate_optional_positive_float(sig, "min_breakout_age_bars", "signal.min_breakout_age_bars")
+    validate_optional_positive_float(sig, "max_breakout_age_bars", "signal.max_breakout_age_bars")
+    if (
+        "min_breakout_age_bars" in sig
+        and "max_breakout_age_bars" in sig
+        and int(sig["min_breakout_age_bars"]) > int(sig["max_breakout_age_bars"])
+    ):
+        raise ConfigError("signal.min_breakout_age_bars must be <= max_breakout_age_bars")
+    validate_optional_nonnegative_float(sig, "max_retest_depth_atr", "signal.max_retest_depth_atr")
+    validate_optional_nonnegative_float(sig, "breakout_buffer_atr", "signal.breakout_buffer_atr")
+    validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
+    validate_optional_positive_float(sig, "min_rel_volume_20", "signal.min_rel_volume_20")
+    hold_level = str(sig.get("retest_hold_level", "orb_high"))
+    if hold_level not in ("orb_high", "orb_mid"):
+        raise ConfigError("signal.retest_hold_level must be orb_high or orb_mid")
+
+
+def _breakout_above(
+    close: np.ndarray,
+    orb_high: np.ndarray,
+    atr: np.ndarray,
+    minute: np.ndarray,
+    om: int,
+    breakout_buffer_atr: float,
+) -> np.ndarray:
+    return (
+        (minute >= om - 1)
+        & np.isfinite(close)
+        & np.isfinite(orb_high)
+        & np.isfinite(atr)
+        & (atr > 0)
+        & (close > orb_high + breakout_buffer_atr * atr)
     )
 
 
@@ -54,21 +100,10 @@ def _prior_breakout_above(
     session_id: np.ndarray,
     om: int,
 ) -> np.ndarray:
-    n = int(close.shape[0])
-    out = np.zeros(n, dtype=bool)
-    seen_breakout = False
-    current_session: int | None = None
-    for i in range(n):
-        sid = int(session_id[i])
-        if current_session is None or sid != current_session:
-            current_session = sid
-            seen_breakout = False
-
-        if int(minute[i]) >= om - 1:
-            out[i] = seen_breakout
-            if np.isfinite(close[i]) and np.isfinite(orb_high[i]) and close[i] > orb_high[i]:
-                seen_breakout = True
-    return out
+    """Backward-compatible Phase16B helper: prior close above ORB high only."""
+    atr = np.ones_like(close, dtype=np.float64)
+    breakout_now = _breakout_above(close, orb_high, atr, minute, om, 0.0)
+    return bars_since_prior_condition(breakout_now, session_id) >= 1
 
 
 def generate_orb_retest_continuation_signals(
@@ -82,7 +117,6 @@ def generate_orb_retest_continuation_signals(
     om = int(sig.get("orb_open_minutes", 15))
     suf = f"_{om}"
     cols = tuple(c.replace("_15", suf) if "_15" in c else c for c in REQUIRED_COLUMNS)
-    require_feature_columns(features.columns, cols, strategy_name=STRATEGY_NAME)
 
     es = int(sig["entry_start_minute"])
     ee = int(sig["entry_end_minute"])
@@ -91,6 +125,16 @@ def generate_orb_retest_continuation_signals(
         sig.get("require_close_above_vwap", False), "signal.require_close_above_vwap"
     )
     min_slope = float(sig.get("min_vwap_slope", -1e18))
+    retest_hold_level = str(sig.get("retest_hold_level", "orb_high"))
+    breakout_buffer_atr = float(sig.get("breakout_buffer_atr", 0.0))
+    extra_cols: list[str] = []
+    if "close_position_min" in sig:
+        extra_cols.append("close_position_in_range")
+    if "min_rel_volume_20" in sig:
+        extra_cols.append("rel_volume_20")
+    require_feature_columns(
+        features.columns, (*cols, *tuple(dict.fromkeys(extra_cols))), strategy_name=STRATEGY_NAME
+    )
 
     close = bars.close
     low = bars.low
@@ -102,10 +146,20 @@ def generate_orb_retest_continuation_signals(
     vwap_slope = features.column("vwap_slope_5")
     atr = features.column("atr_like_20")
 
-    prior_break = _prior_breakout_above(close, orb_high, minute, bars.session_id, om)
+    breakout_now = _breakout_above(close, orb_high, atr, minute, om, breakout_buffer_atr)
+    breakout_age = bars_since_prior_condition(breakout_now, bars.session_id)
+    prior_break = breakout_age >= 1
+    if "min_breakout_age_bars" in sig:
+        prior_break &= breakout_age >= int(sig["min_breakout_age_bars"])
+    if "max_breakout_age_bars" in sig:
+        prior_break &= breakout_age <= int(sig["max_breakout_age_bars"])
     orb_ready = minute >= (om - 1)
     in_window = (minute >= es) & (minute <= ee)
-    retest = low <= (orb_high + tol * atr)
+    hold_level = orb_high if retest_hold_level == "orb_high" else orb_mid
+    retest = low <= (hold_level + tol * atr)
+    if "max_retest_depth_atr" in sig:
+        retest_depth = (orb_high - low) / atr
+        retest &= retest_depth <= float(sig["max_retest_depth_atr"])
     cand = (
         in_window
         & orb_ready
@@ -119,6 +173,10 @@ def generate_orb_retest_continuation_signals(
         cand &= close > vwap
     if min_slope > -1e17:
         cand &= vwap_slope >= min_slope
+    if "close_position_min" in sig:
+        cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
+    if "min_rel_volume_20" in sig:
+        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
 
     stop_arr = compute_long_stop(
         bars,

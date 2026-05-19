@@ -8,13 +8,20 @@ from typing import Any
 import numpy as np
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
+from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
     build_signal_matrix,
     compute_long_stop,
     thin_first_n_per_session,
 )
-from intraday.strategies.config_validation import parse_bool_like, validate_long_only_strategy_base
+from intraday.strategies.config_validation import (
+    parse_bool_like,
+    validate_long_only_strategy_base,
+    validate_optional_nonnegative_float,
+    validate_optional_positive_float,
+    validate_optional_probability,
+)
 from intraday.strategies.contracts import (
     SIGNAL_CONTRACT_VERSION,
     clip_finite,
@@ -24,6 +31,7 @@ from intraday.strategies.contracts import (
 STRATEGY_NAME = "orb_continuation"
 SETUP_CODE = 2001
 FEATURE_SET = "opening_core_v1"
+FEATURE_SETS = ("opening_core_v1", "opening_core_v2")
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "orb_high_15",
@@ -42,9 +50,21 @@ def validate_orb_continuation_config(config: Mapping[str, Any]) -> None:
         config,
         strategy_name=STRATEGY_NAME,
         family="orb",
-        required_feature_set=FEATURE_SET,
+        required_feature_set=FEATURE_SETS,
         allowed_stop_modes=("orb_mid", "orb_low", "atr_buffer", "signal_low"),
     )
+    sig = config.get("signal", {})
+    if int(sig.get("orb_open_minutes", 15)) <= 0:
+        raise ConfigError("signal.orb_open_minutes must be > 0")
+    min_w = float(sig.get("min_orb_width_pct", 0.0))
+    max_w = float(sig.get("max_orb_width_pct", 1e18))
+    if min_w < 0 or max_w < 0 or min_w > max_w:
+        raise ConfigError("signal min/max ORB width must be nonnegative and ordered")
+    validate_optional_nonnegative_float(sig, "breakout_buffer_atr", "signal.breakout_buffer_atr")
+    validate_optional_nonnegative_float(sig, "breakout_buffer_pct", "signal.breakout_buffer_pct")
+    validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
+    validate_optional_positive_float(sig, "min_rel_volume_20", "signal.min_rel_volume_20")
+    validate_optional_nonnegative_float(sig, "max_vwap_dist_pct", "signal.max_vwap_dist_pct")
 
 
 def _orb_suffix(config: Mapping[str, Any]) -> str:
@@ -60,7 +80,6 @@ def generate_orb_continuation_signals(
     validate_orb_continuation_config(config)
     suf = _orb_suffix(config)
     cols = tuple(c.replace("_15", suf) if c.endswith("_15") else c for c in REQUIRED_COLUMNS)
-    require_feature_columns(features.columns, cols, strategy_name=STRATEGY_NAME)
 
     sig = config["signal"]
     risk = config["risk"]
@@ -73,6 +92,16 @@ def generate_orb_continuation_signals(
     min_slope = float(sig.get("min_vwap_slope", -1e18))
     min_w = float(sig.get("min_orb_width_pct", 0.0))
     max_w = float(sig.get("max_orb_width_pct", 1e18))
+    extra_cols: list[str] = []
+    if "close_position_min" in sig:
+        extra_cols.append("close_position_in_range")
+    if "min_rel_volume_20" in sig:
+        extra_cols.append("rel_volume_20")
+    if "max_vwap_dist_pct" in sig:
+        extra_cols.append("vwap_dist_pct")
+    require_feature_columns(
+        features.columns, (*cols, *tuple(dict.fromkeys(extra_cols))), strategy_name=STRATEGY_NAME
+    )
 
     close = bars.close
     minute = bars.minute.astype(np.int32, copy=False)
@@ -93,12 +122,23 @@ def generate_orb_continuation_signals(
         & (atr > 0)
         & np.isfinite(orb_width)
     )
-    cand = in_window & orb_ready & finite & (close > orb_high)
+    breakout_level = orb_high.copy()
+    if "breakout_buffer_atr" in sig:
+        breakout_level = breakout_level + float(sig["breakout_buffer_atr"]) * atr
+    if "breakout_buffer_pct" in sig:
+        breakout_level = breakout_level * (1.0 + float(sig["breakout_buffer_pct"]))
+    cand = in_window & orb_ready & finite & (close > breakout_level)
     cand &= (orb_width >= min_w) & (orb_width <= max_w)
     if req_vwap:
         cand &= close > vwap
     if min_slope > -1e17:
         cand &= vwap_slope >= min_slope
+    if "close_position_min" in sig:
+        cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
+    if "min_rel_volume_20" in sig:
+        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+    if "max_vwap_dist_pct" in sig:
+        cand &= np.abs(features.column("vwap_dist_pct")) <= float(sig["max_vwap_dist_pct"])
 
     stop_arr = compute_long_stop(
         bars,
@@ -114,7 +154,7 @@ def generate_orb_continuation_signals(
     max_trades = int(risk.get("max_trades_per_day", 1))
     entry = thin_first_n_per_session(entry, bars.session_id, max_trades)
 
-    score = clip_finite((close - orb_high) / atr, -3.0, 3.0)
+    score = clip_finite((close - breakout_level) / atr, -3.0, 3.0)
     return build_signal_matrix(
         bars=bars,
         entry=entry,

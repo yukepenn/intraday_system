@@ -1,0 +1,20 @@
+command,status,notes
+git status --short; git log --oneline -10; git branch --show-current,pass,Captured baseline; branch main; pre-task HEAD ba4fd3c.
+python -m compileall -q src tests,pass,Passed after implementation and formatting.
+python -m intraday.cli.main --help,pass,CLI help rendered.
+python -m intraday.cli.main doctor,pass,Environment diagnostics passed.
+python -m intraday.cli.main validate structure,pass,Required structure present.
+python -m intraday.cli.main features list,pass,Built-in feature groups listed.
+python -m intraday.cli.main features inspect --config <5 phase18b feature configs>,pass,All five v2 feature configs inspected.
+python -m intraday.cli.main strategies list,pass,Current 10 strategies listed.
+python -m intraday.cli.main strategies inspect --strategy <strategy> --config <v2_base_config>,pass,All 10 v2 configs inspected.
+python -m intraday.cli.main layer1 grid-inspect --config <10 phase18b configs>,pass,All 10 grid-inspect configs passed; combo_count=8 each.
+python -m pytest -q tests/unit/test_phase18b_feature_configs.py,pass,3 passed.
+python -m pytest -q tests/unit/test_phase18b_strategy_configs.py,pass,31 passed.
+python -m pytest -q tests/unit/test_phase18b_no_runtime_leakage.py,pass,3 passed.
+python -m pytest -q tests/unit/test_strategy_<current10>.py,pass,49 passed after preserving Phase16B helper names.
+python -m pytest -q tests/smoke,pass,25 passed.
+python -m ruff check src tests,pass,Initial import-order findings fixed; final pass.
+python -m ruff format --check src tests,pass,Passed after formatting 7 files.
+forbidden commands: layer1 grid/select-dry-run/Layer2/WFO/live/paper,not_run,Explicitly not run.
+python -m pytest -q tests/unit/test_phase18b_artifact_schema.py,pass,3 passed.

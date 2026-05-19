@@ -1,0 +1,50 @@
+feature_set_id: vwap_level_core_v2
+version: feature_set_v2
+description: Phase18B VWAP-level market facts for pullback/reclaim v2 refinements.
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+features:
+  vwap:
+    enabled: true
+    price: hlc3
+    outputs:
+    - vwap
+    - vwap_slope_5
+    - vwap_side
+    - vwap_dist
+    - vwap_dist_pct
+  volatility:
+    enabled: true
+    atr_like_windows:
+    - 20
+    range_windows:
+    - 20
+    outputs:
+    - atr_like
+    - range_mean
+  price_action:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - body_pct
+    - lower_wick_pct
+    - close_position_in_range
+    - rolling_low
+    - rolling_high
+  volume:
+    enabled: true
+    rolling_windows:
+    - 20
+    outputs:
+    - volume_mean
+    - rel_volume
+  regime:
+    enabled: true
+    windows:
+    - 20
+    outputs:
+    - close_vs_rolling_mean
+    - trend_slope_like

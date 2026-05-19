@@ -23,6 +23,40 @@ def previous_same_session(values: np.ndarray, session_id: np.ndarray) -> np.ndar
     return out
 
 
+def bars_since_prior_condition(condition: np.ndarray, session_id: np.ndarray) -> np.ndarray:
+    """Bars since ``condition`` was true earlier in the same session.
+
+    The current bar is deliberately excluded: if ``condition[i]`` is true,
+    ``out[i]`` still reflects the prior occurrence before bar ``i``.
+    """
+    n = int(condition.shape[0])
+    out = np.full(n, -1, dtype=np.int32)
+    current_session: int | None = None
+    last_seen = -1
+    for i in range(n):
+        sid = int(session_id[i])
+        if current_session is None or sid != current_session:
+            current_session = sid
+            last_seen = -1
+        if last_seen >= 0:
+            out[i] = i - last_seen
+        if bool(condition[i]):
+            last_seen = i
+    return out
+
+
+def prior_condition_within_bars(
+    condition: np.ndarray,
+    session_id: np.ndarray,
+    max_bars: int,
+) -> np.ndarray:
+    """Whether a condition occurred within ``max_bars`` prior same-session bars."""
+    if max_bars <= 0:
+        return np.zeros(condition.shape[0], dtype=bool)
+    age = bars_since_prior_condition(condition, session_id)
+    return (age >= 1) & (age <= max_bars)
+
+
 def crossed_above(
     prev_a: np.ndarray, curr_a: np.ndarray, prev_b: np.ndarray, curr_b: np.ndarray
 ) -> np.ndarray:
