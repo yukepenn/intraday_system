@@ -1,0 +1,21 @@
+section,item,metric,value,interpretation
+phase,phase,label,PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN,Phase18 design-only phase
+phase,task_type,scope,design-only + strategy-family improvement planning + diagnostic artifact review,No runtime implementation
+git,pre_task_head,sha,a700571,Baseline commit before Phase18 work
+git,final_commit,sha,recorded in Cursor final response after commit,Commit hash cannot be known before commit
+coverage,strategies_covered_count,count,10,All 10 active strategies covered
+guardrail,new_grid_runs,boolean,false,No Layer1 grids run
+guardrail,runtime_strategy_changes,boolean,false,Strategy runtime untouched
+guardrail,feature_semantic_changes,boolean,false,Feature semantics untouched
+guardrail,execution_truth_changes,boolean,false,Execution truth untouched
+guardrail,select_dry_run_run,boolean,false,No selection dry-run
+guardrail,candidate_yaml_created,boolean,false,No candidate YAML
+guardrail,layer2_created,boolean,false,No Layer2
+guardrail,wfo_run,boolean,false,No WFO
+guardrail,live_paper_run,boolean,false,No live/paper
+data_warning,H2_warning,warning,missing_minute_slots_total=540,H2 remains diagnostic-only
+design,number_of_improvement_items,count,10,One strategy-level design item per current strategy
+design,number_of_short_side_feasibility_items,count,10,One short-side design row per strategy
+design,number_of_feature_gap_items,count,10,One feature-gap row per strategy
+decision,decision,label,PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN_COMPLETE,Design bundle complete
+decision,recommended_next_step,label,IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS,Provisional only; requires Codex and ChatGPT Pro review

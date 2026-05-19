@@ -4,6 +4,16 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-19
 
+### Phase 18 — Existing-10 strategy improvement design
+
+- Research(artifacts): add `artifacts/existing_10_strategy_improvement_design_phase18/` with per-strategy improvement, feature-gap, short-side feasibility, risk-path, signal-frequency, regime/context, implementation-priority, non-goal, promotion-blocked, local reproducibility, H2 carryforward, schema, and decision artifacts.
+- Chore(scripts): add `scripts/phase18_improvement_design.py` to regenerate curated Phase18 design artifacts from Phase17 evidence.
+- Test(unit): add Phase18 artifact-schema and no-runtime-leakage guards.
+- Docs(status): update handoff, project status, progress, README, and phase plan for design-only Phase18 completion.
+- Validation: compileall, CLI help/doctor/structure, Phase17 tests, Phase18 tests, Ruff check, and Ruff format check passed.
+- Decision: `PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN_COMPLETE`; next `IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no runtime strategy changes, feature semantic changes, execution changes, new grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, H2 confirmation, top-row retuning, or strategies 11-50.
+
 ### Phase 17 — Expanded-grid region/neighborhood result review
 
 - Research(artifacts): add `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/` with region, neighborhood, axis, interaction, H1/H2, drawdown, sample, risk/cost, isolated-top-row, guardrail, and decision artifacts for all 10 current strategies.

@@ -1,0 +1,10 @@
+command,status,exit_code,notes
+python scripts/phase18_improvement_design.py,pass,0,generated curated Phase18 design artifacts from Phase17 evidence
+python -m compileall -q src tests,pass,0,source and tests compiled
+python -m intraday.cli.main --help,pass,0,CLI help rendered
+python -m intraday.cli.main doctor,pass,0,doctor passed; dependencies and key paths available
+python -m intraday.cli.main validate structure,pass,0,required repository structure present
+python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py,pass,0,Phase17 guardrail regression tests passed: 7 passed
+python -m pytest -q tests/unit/test_phase18_artifact_schema.py tests/unit/test_phase18_no_runtime_leakage.py,pass,0,Phase18 artifact schema/no-runtime-leakage tests passed: 8 passed
+python -m ruff check src tests,pass,0,Ruff lint passed for src and tests
+python -m ruff format --check src tests,pass,0,Ruff format check passed: 225 files already formatted

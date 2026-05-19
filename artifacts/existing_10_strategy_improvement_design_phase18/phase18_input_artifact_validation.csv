@@ -1,0 +1,11 @@
+artifact_path,artifact_type,required,available,parse_ok,expected_columns_ok,row_count,local_only_dependency,issue,notes
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_surface_status_matrix.csv,csv,true,true,true,true,10,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_improvement_backlog.csv,csv,true,true,true,true,16,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/phase18_candidate_improvement_scope.md,md,true,true,true,true,28,false,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/h2_warning_interpretation.md,md,true,true,true,true,5,false,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/isolated_top_row_warning.csv,csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/parameter_region_summary.csv,csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/risk_cost_region_summary.csv,csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/drawdown_region_summary.csv,csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/sample_adequacy_region_summary.csv,csv,true,true,true,true,636,false,,csv parsed
+CODEX_REVIEW.md,md,true,true,true,true,122,false,,text artifact readable

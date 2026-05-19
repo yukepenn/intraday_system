@@ -342,9 +342,21 @@ Decision label: **`PHASE17_EXPANDED_GRID_REGION_REVIEW_COMPLETE`**.
 
 Recommended next step: **`DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review.
 
-## Phase 18 ? Improve existing 10 strategies/features/short-side variants ? **future / next if accepted**
+## Phase 18 ? Existing-10 strategy improvement design ? **complete**
 
-Only where Phase17 region evidence justifies it. No promotion. Desired unsupported axes from Phase16 belong here or later.
+Goal: convert Phase17 strategy-surface evidence and backlog into bounded improvement design for the current 10 active strategies.
+
+Status:
+
+- Generated per-strategy improvement design, feature-gap, and short-side feasibility matrices for exactly the current 10 strategies.
+- Generated risk-path, signal-frequency, and regime/context improvement plans.
+- Generated implementation-priority, non-goal, promotion-blocked, local reproducibility, H2 carryforward, schema, and decision artifacts.
+- Preserved H2 warning `missing_minute_slots_total=540`; H2 remains diagnostic-only.
+- No runtime strategy changes, feature semantic changes, execution changes, new grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, H2 confirmation, top-row retuning, or strategies 11-50.
+
+Decision label: **`PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN_COMPLETE`**.
+
+Recommended next step: **`IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review.
 
 ## Phase 19 ? Add strategies 11-20 ? **future**
 
@@ -418,4 +430,4 @@ Begin Layer2 only after a real candidate YAML pool exists.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Superseded legacy note: Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). The old next step **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** and "Port GAP/CCI deferred until after ORB pipeline proof" note were superseded by Phase **13** (`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`), Phase **14** (`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`), Phase **15** (`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`), Phase **16/16B** expanded-grid completion, and Phase **17** region/neighborhood review. Current next step: **`DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review; candidate selection/promotion and Layer2 remain locked.
+Superseded legacy note: Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). The old next step **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** and "Port GAP/CCI deferred until after ORB pipeline proof" note were superseded by Phase **13** (`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`), Phase **14** (`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`), Phase **15** (`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`), Phase **16/16B** expanded-grid completion, Phase **17** region/neighborhood review, and Phase **18** existing-10 improvement design. Current next step: **`IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review; candidate selection/promotion and Layer2 remain locked.

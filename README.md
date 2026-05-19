@@ -118,7 +118,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 17 complete:** **`PHASE17_REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** reviewed all 10 expanded-grid surfaces by parameter region/neighborhood, H1/H2 behavior, drawdown, sample adequacy, and risk/cost profile. Bundle: `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/`.
 
-**Next:** **`DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
+**Phase 18 complete:** **`PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN`** converted Phase17 artifacts and Codex warnings into design-only improvement matrices and plans for the existing 10 strategies. Bundle: `artifacts/existing_10_strategy_improvement_design_phase18/`.
+
+**Next:** **`IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50.
 
 See:
 

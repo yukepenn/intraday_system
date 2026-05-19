@@ -1,12 +1,12 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-19** (Phase **17** - expanded-grid region/neighborhood review).
+Last updated: **2026-05-19** (Phase **18** - existing-10 improvement design).
 
 ## A. Git
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `1fba694`
+- Pre-task HEAD: `a700571`
 - Task commit hash: recorded in Cursor final response after commit.
 - Codex review pending: yes.
 - ChatGPT Pro review pending: yes.
@@ -14,29 +14,31 @@ Last updated: **2026-05-19** (Phase **17** - expanded-grid region/neighborhood r
 
 ## B. Phase
 
-`PHASE17_REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`
+`PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN`
 
 ## C. Task Type
 
-Diagnostic + strategy-family review + artifact/reporting analysis.
+Design-only + strategy-family improvement planning + diagnostic artifact review.
 
 ## D. What Was Done
 
-- Reviewed Phase16/16B curated artifacts and local-only Phase16 `runs/` sweep summaries.
-- Generated region, axis, pairwise interaction, H1/H2, top-neighborhood, drawdown, sample, and risk/cost summaries for all 10 current active strategies.
-- Assigned one diagnostic surface status per strategy with `promotion_ready=false` and `candidate_yaml_allowed=false`.
-- Preserved the H2 warning `missing_minute_slots_total=540`; H2 remains diagnostic-only.
-- Generated a Phase18 improvement backlog without recommending promotion.
+- Reviewed Phase17 artifacts and Codex Phase17 warnings.
+- Generated a per-strategy improvement design matrix for all 10 active strategies.
+- Generated feature-gap and short-side feasibility design matrices.
+- Generated risk-path, signal-frequency, and regime/context improvement plans.
+- Generated a future implementation priority matrix.
+- Generated non-goals, candidate-promotion-blocked, H2 warning, and local reproducibility guardrail docs.
+- Added lightweight Phase18 artifact-schema and no-runtime-leakage tests.
 
 ## E. What Was Intentionally Not Done
 
-No new Layer1 grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO, no live/paper, no strategy retuning, no feature semantic changes, and no execution/accounting truth changes.
+No new grids, no strategy runtime changes, no feature semantic changes, no execution changes, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO, no live/paper, and no strategies 11-50.
 
 ## F. Key Artifacts
 
-Primary Phase17 bundle:
+Primary Phase18 bundle:
 
-`artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/`
+`artifacts/existing_10_strategy_improvement_design_phase18/`
 
 Key files:
 
@@ -44,49 +46,56 @@ Key files:
 - `SOURCE_MAP.csv`
 - `chatgpt_key_tables.csv`
 - `validation_results.csv`
-- `phase17_input_artifact_validation.csv`
-- `strategy_surface_status_matrix.csv`
-- `parameter_region_summary.csv`
-- `top_neighborhood_summary.csv`
-- `isolated_top_row_warning.csv`
-- `axis_marginal_summary.csv`
-- `pairwise_interaction_summary.csv`
-- `h1_h2_cross_window_region_matrix.csv`
-- `drawdown_region_summary.csv`
-- `risk_cost_region_summary.csv`
-- `sample_adequacy_region_summary.csv`
-- `strategy_improvement_backlog.csv`
-- `phase18_candidate_improvement_scope.md`
-- `h2_warning_interpretation.md`
-- `non_promotion_guardrails.md`
+- `phase18_input_artifact_validation.csv`
+- `per_strategy_improvement_design_matrix.csv`
+- `feature_gap_design_matrix.csv`
+- `short_side_feasibility_matrix.csv`
+- `risk_path_improvement_plan.md`
+- `signal_frequency_improvement_plan.md`
+- `regime_context_improvement_plan.md`
+- `implementation_priority_matrix.csv`
+- `phase18_non_goals.md`
+- `candidate_promotion_still_blocked.md`
+- `local_reproducibility_caveat.md`
+- `h2_warning_carryforward.md`
 - `artifact_schema_validation.csv`
-- `phase17_decision.md`
+- `phase18_decision.md`
+
+Supporting files:
+
+- `scripts/phase18_improvement_design.py`
+- `tests/unit/test_phase18_artifact_schema.py`
+- `tests/unit/test_phase18_no_runtime_leakage.py`
 
 ## G. Validation
 
+- `python scripts/phase18_improvement_design.py` - pass.
 - `python -m compileall -q src tests` - pass.
 - `python -m intraday.cli.main --help` - pass.
 - `python -m intraday.cli.main doctor` - pass.
 - `python -m intraday.cli.main validate structure` - pass.
-- `python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py` - pass after fixing an initial missing H2-warning string in `phase17_decision.md`.
+- `python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py` - pass, 7 passed.
+- `python -m pytest -q tests/unit/test_phase18_artifact_schema.py tests/unit/test_phase18_no_runtime_leakage.py` - pass, 8 passed.
 - `python -m ruff check src tests` - pass.
-- `python -m ruff format --check src tests` - pass after formatting `tests/unit/test_phase17_no_promotion_leakage.py`.
+- `python -m ruff format --check src tests` - pass.
 
-See `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/validation_results.csv`.
+See `artifacts/existing_10_strategy_improvement_design_phase18/validation_results.csv`.
 
 ## H. Risks / Blockers
 
 - H2 remains diagnostic-only because `missing_minute_slots_total=540`.
-- Phase17 used local-only Phase16 run outputs under `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`; they must remain unstaged.
-- Phase16 full-grid completion is accepted from Phase16B artifacts; Phase17 did not rerun grids.
-- Some watch/hold strategies require Phase18 logic, sample, drawdown, or regime review before any future confirmation design.
+- Phase17 depended on local-only Phase16 run outputs under `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`; they must remain unstaged.
+- Promotion remains blocked: no fresh holdout, no candidate selection gates, no candidate YAML schema application, and no Layer2 candidate pool.
+- PA, VWAP pullback, CCI, and stochastic need risk-path design before implementation.
+- Gap acceptance, VWAP reclaim/reject, and prior-day trap need signal-frequency design before implementation.
+- ORB retest and failed ORB need regime/context or logic review before implementation.
 
 ## I. Decision
 
-### `PHASE17_EXPANDED_GRID_REGION_REVIEW_COMPLETE`
+### `PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN_COMPLETE`
 
 ## J. Cursor Provisional Recommended Next Step
 
-### `DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`
+### `IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`
 
-This recommendation is provisional only. Codex review and ChatGPT Pro review are required next. Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, WFO, live, or paper.
+This recommendation is provisional only. Codex review and ChatGPT Pro review are required next. Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50 from this phase.

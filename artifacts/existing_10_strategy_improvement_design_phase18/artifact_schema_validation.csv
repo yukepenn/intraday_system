@@ -1,0 +1,19 @@
+artifact_path,artifact_type,parse_ok,expected_columns_ok,row_count,issue,notes
+artifacts/existing_10_strategy_improvement_design_phase18/SOURCE_MAP.csv,csv,true,true,37,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/chatgpt_key_tables.csv,csv,true,true,20,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/validation_results.csv,csv,true,true,9,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/phase18_input_artifact_validation.csv,csv,true,true,10,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/per_strategy_improvement_design_matrix.csv,csv,true,true,10,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/feature_gap_design_matrix.csv,csv,true,true,10,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/short_side_feasibility_matrix.csv,csv,true,true,10,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/implementation_priority_matrix.csv,csv,true,true,10,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/artifact_schema_validation.csv,csv,true,true,18,,csv parsed
+artifacts/existing_10_strategy_improvement_design_phase18/CHATGPT_REVIEW_BUNDLE.md,md,true,true,91,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/risk_path_improvement_plan.md,md,true,true,26,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/signal_frequency_improvement_plan.md,md,true,true,21,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/regime_context_improvement_plan.md,md,true,true,19,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/phase18_non_goals.md,md,true,true,17,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/candidate_promotion_still_blocked.md,md,true,true,14,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/local_reproducibility_caveat.md,md,true,true,14,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/h2_warning_carryforward.md,md,true,true,7,,text artifact readable
+artifacts/existing_10_strategy_improvement_design_phase18/phase18_decision.md,md,true,true,13,,text artifact readable
