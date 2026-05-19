@@ -1,0 +1,18 @@
+section,item,metric,value,interpretation
+phase,phase,name,PHASE17_REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION,Phase17 review-only task
+phase,task_type,scope,diagnostic + strategy-family review + artifact/reporting analysis,diagnostic only
+git,pre_task_head,sha,1fba694,captured before edits
+git,final_commit,sha,recorded in final Cursor response,self-referential before commit
+scope,strategies_reviewed_count,count,10,all 10 active strategies
+guardrails,new_grid_runs,bool,false,Phase17 did not run grids
+guardrails,select_dry_run_run,bool,false,no candidate selection dry-run
+guardrails,candidate_yaml_created,bool,false,no runtime candidates
+guardrails,layer2_created,bool,false,Layer2 remains locked
+guardrails,wfo_run,bool,false,no WFO
+guardrails,live_paper_run,bool,false,no live/paper
+data,H2_warning,warning,missing_minute_slots_total=540,H2 diagnostic-only
+status,number_of_strategies_by_status,counts,"{""ROBUST_REGION_CANDIDATE_FOR_FURTHER_REVIEW"": 1, ""WATCH_HIGH_DRAWDOWN"": 3, ""WATCH_LOW_SAMPLE"": 3, ""WATCH_PROMISING_REGION"": 2, ""WATCH_REGIME_DEPENDENT"": 1}",diagnostic statuses only
+warnings,number_of_isolated_top_row_warnings,count,5,MEDIUM/HIGH top-neighborhood warnings
+backlog,number_of_strategy_improvement_items,count,16,Phase18 non-promotional backlog items
+decision,decision,label,PHASE17_EXPANDED_GRID_REGION_REVIEW_COMPLETE,all 10 surfaces reviewed
+decision,recommended_next_step,label,DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS,provisional pending Codex and ChatGPT Pro review

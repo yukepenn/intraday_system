@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-19
 
+### Phase 17 — Expanded-grid region/neighborhood result review
+
+- Research(artifacts): add `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/` with region, neighborhood, axis, interaction, H1/H2, drawdown, sample, risk/cost, isolated-top-row, guardrail, and decision artifacts for all 10 current strategies.
+- Test(unit): add Phase17 artifact-schema and no-promotion leakage guards.
+- Docs(status): update handoff, project status, progress, README, and phase plan for diagnostic-only Phase17 completion.
+- Validation: compileall, CLI help/doctor/structure, Phase17 tests, Ruff check, and Ruff format check passed after fixing an initial H2-warning artifact gap and formatting the new guardrail test.
+- Decision: `PHASE17_EXPANDED_GRID_REGION_REVIEW_COMPLETE`; next `DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no new Layer1 grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, strategy retuning, feature semantic change, or execution truth change.
+
 ### Phase 16B — Expanded-grid runtime/reporting repair + controlled rerun
 
 - Fix(strategies): replace nested ORB retest prior-breakout and failed ORB prior-breach session rescans with semantics-preserving O(n) cumulative state passes.

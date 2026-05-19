@@ -116,7 +116,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 16 complete after repair:** **`PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN`** replaced the ORB-only next step with all-current-10 rational expanded grids. Phase 16B repaired runtime/reporting blockers and completed all 20 QQQ H1/H2 diagnostic grids with full combo coverage. Bundles: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/` and `artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/`.
 
-**Next:** **`REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
+**Phase 17 complete:** **`PHASE17_REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** reviewed all 10 expanded-grid surfaces by parameter region/neighborhood, H1/H2 behavior, drawdown, sample adequacy, and risk/cost profile. Bundle: `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/`.
+
+**Next:** **`DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
 
 See:
 

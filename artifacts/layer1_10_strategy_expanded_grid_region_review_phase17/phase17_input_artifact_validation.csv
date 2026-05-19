@@ -1,0 +1,49 @@
+artifact_path,artifact_type,required,available,parse_ok,expected_columns_ok,row_count,local_only_dependency,issue,notes
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/CHATGPT_REVIEW_BUNDLE.md,phase16b_md,true,true,true,true,69,false,,text artifact readable
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/SOURCE_MAP.csv,phase16b_csv,true,true,true,true,29,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/chatgpt_key_tables.csv,phase16b_csv,true,true,true,true,21,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/validation_results.csv,phase16b_csv,true,true,true,true,61,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16b_run_manifest.csv,phase16b_csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/remaining_grid_run_summary.csv,phase16b_csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/artifact_schema_validation.csv,phase16b_csv,true,true,true,true,18,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/non_promotion_guardrails.md,phase16b_md,true,true,true,true,18,false,,text artifact readable
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16b_decision.md,phase16b_md,true,true,true,true,11,false,,text artifact readable
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_inventory.csv,phase16_csv,true,true,true,true,10,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_axis_rationale.csv,phase16_csv,true,true,true,true,78,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/per_strategy_combo_count.csv,phase16_csv,true,true,true,true,10,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/layer1_config_inventory.csv,phase16_csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/pa_buy_sell_close_trend/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,288,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/orb_continuation/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,2592,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/orb_retest_continuation/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/failed_orb/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,384,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/gap_acceptance_failure/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,576,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/vwap_trend_pullback/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,648,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/vwap_reclaim_reject/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/prior_day_level_trap/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/cci_extreme_snapback/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,864,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/stochastic_oversold_cross/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,576,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/pa_buy_sell_close_trend/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,288,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/orb_continuation/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,2592,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/orb_retest_continuation/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/failed_orb/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,384,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/gap_acceptance_failure/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,576,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/vwap_trend_pullback/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,648,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/vwap_reclaim_reject/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/prior_day_level_trap/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,1296,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/cci_extreme_snapback/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,864,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/stochastic_oversold_cross/sweep_results.csv,phase16_local_sweep_results,true,true,true,true,576,true,,local-only run output used for region/neighborhood aggregation
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/SOURCE_MAP.csv,phase17_generated_csv,true,true,true,true,31,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/chatgpt_key_tables.csv,phase17_generated_csv,true,true,true,true,17,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/validation_results.csv,phase17_generated_csv,true,true,true,true,16,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_surface_status_matrix.csv,phase17_generated_csv,true,true,true,true,10,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/parameter_region_summary.csv,phase17_generated_csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/top_neighborhood_summary.csv,phase17_generated_csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/isolated_top_row_warning.csv,phase17_generated_csv,true,true,true,true,20,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/axis_marginal_summary.csv,phase17_generated_csv,true,true,true,true,376,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/pairwise_interaction_summary.csv,phase17_generated_csv,true,true,true,true,548,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/h1_h2_cross_window_region_matrix.csv,phase17_generated_csv,true,true,true,true,318,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/drawdown_region_summary.csv,phase17_generated_csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/risk_cost_region_summary.csv,phase17_generated_csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/sample_adequacy_region_summary.csv,phase17_generated_csv,true,true,true,true,636,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_improvement_backlog.csv,phase17_generated_csv,true,true,true,true,16,false,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/artifact_schema_validation.csv,phase17_generated_csv,true,true,true,true,20,false,,csv parsed

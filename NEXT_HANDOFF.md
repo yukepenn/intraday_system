@@ -1,54 +1,42 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-19** (Phase **16B** - runtime/reporting repair + controlled rerun).
+Last updated: **2026-05-19** (Phase **17** - expanded-grid region/neighborhood review).
 
 ## A. Git
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `1ab2728`
-- Task commit hash: recorded after commit.
+- Pre-task HEAD: `1fba694`
+- Task commit hash: recorded in Cursor final response after commit.
 - Codex review pending: yes.
 - ChatGPT Pro review pending: yes.
 - Cursor did not edit `CODEX_REVIEW.md`.
 
 ## B. Phase
 
-`PHASE16B_RESOLVE_EXPANDED_GRID_RUNTIME_AND_REPORTING_BLOCKERS`
+`PHASE17_REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`
 
 ## C. Task Type
 
-Repair + infrastructure + validation + controlled rerun.
+Diagnostic + strategy-family review + artifact/reporting analysis.
 
-## D. What Was Repaired
+## D. What Was Done
 
-- Repaired `orb_retest_continuation` prior-breakout state from nested per-bar session rescans to an O(n) session-local cumulative pass.
-- During the controlled rerun, found the same prior-state runtime pattern in `failed_orb` and repaired `_prior_breach_below` with the same semantics-preserving session-local pass.
-- Added synthetic old-slow vs new-fast equivalence tests for ORB retest and failed ORB prior-state helpers.
-- Extended Layer1 grid summaries with aggregate-only risk-per-share and cost-to-risk diagnostics derived from execution-produced `TradeResult` fields.
-- Added drawdown summary helper/test for positive drawdown magnitude ordering: best=min, median=median, p75=p75, worst=max.
+- Reviewed Phase16/16B curated artifacts and local-only Phase16 `runs/` sweep summaries.
+- Generated region, axis, pairwise interaction, H1/H2, top-neighborhood, drawdown, sample, and risk/cost summaries for all 10 current active strategies.
+- Assigned one diagnostic surface status per strategy with `promotion_ready=false` and `candidate_yaml_allowed=false`.
+- Preserved the H2 warning `missing_minute_slots_total=540`; H2 remains diagnostic-only.
+- Generated a Phase18 improvement backlog without recommending promotion.
 
-## E. What Was Run
+## E. What Was Intentionally Not Done
 
-- CLI/help/doctor/structure validation.
-- QQQ 2024H1 and 2024H2 curated data validation and load-bars checks.
-- ORB retest synthetic equivalence and runtime benchmark.
-- Targeted unit tests and compileall.
-- Grid-inspect for all 20 Phase16 configs.
-- Layer1 grid rerun for all 20 Phase16 configs with full combo coverage.
+No new Layer1 grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO, no live/paper, no strategy retuning, no feature semantic changes, and no execution/accounting truth changes.
 
-## F. Data Validation / Repair Status
+## F. Key Artifacts
 
-- QQQ 2024H1: pass, 48,360 rows, 124 full sessions, no missing minute slots.
-- QQQ 2024H2: pass with warning, 49,380 rows, 128 sessions, `missing_minute_slots_total=540`.
-- No data regeneration was needed.
-- H2 remains diagnostic-only and must not be treated as clean confirmation evidence.
+Primary Phase17 bundle:
 
-## G. Artifacts
-
-Primary Phase16B bundle:
-
-`artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/`
+`artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/`
 
 Key files:
 
@@ -56,46 +44,49 @@ Key files:
 - `SOURCE_MAP.csv`
 - `chatgpt_key_tables.csv`
 - `validation_results.csv`
-- `runtime_blocker_diagnosis.md`
-- `runtime_profile_summary.csv`
-- `orb_retest_signal_equivalence_report.csv`
-- `orb_retest_runtime_benchmark.csv`
-- `drawdown_aggregation_repair_report.csv`
-- `risk_cost_reporting_repair_report.csv`
-- `curated_data_validation_or_repair_summary.csv`
-- `phase16b_run_manifest.csv`
-- `phase16_completion_delta_summary.csv`
-- `remaining_grid_run_summary.csv`
-- `artifact_schema_validation.csv`
+- `phase17_input_artifact_validation.csv`
+- `strategy_surface_status_matrix.csv`
+- `parameter_region_summary.csv`
+- `top_neighborhood_summary.csv`
+- `isolated_top_row_warning.csv`
+- `axis_marginal_summary.csv`
+- `pairwise_interaction_summary.csv`
+- `h1_h2_cross_window_region_matrix.csv`
+- `drawdown_region_summary.csv`
+- `risk_cost_region_summary.csv`
+- `sample_adequacy_region_summary.csv`
+- `strategy_improvement_backlog.csv`
+- `phase18_candidate_improvement_scope.md`
+- `h2_warning_interpretation.md`
 - `non_promotion_guardrails.md`
-- `phase16b_decision.md`
+- `artifact_schema_validation.csv`
+- `phase17_decision.md`
 
-## H. Validation Summary
+## G. Validation
 
-- Targeted tests: pass.
-- Compileall: pass.
-- Data validation/load-bars: pass, with H2 warning carried forward.
-- Grid-inspect: 20/20 pass.
-- Layer1 grid rerun: 20/20 pass.
-- Artifact schema validation: pass for required Phase16B CSV/MD artifacts.
+- `python -m compileall -q src tests` - pass.
+- `python -m intraday.cli.main --help` - pass.
+- `python -m intraday.cli.main doctor` - pass.
+- `python -m intraday.cli.main validate structure` - pass.
+- `python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py` - pass after fixing an initial missing H2-warning string in `phase17_decision.md`.
+- `python -m ruff check src tests` - pass.
+- `python -m ruff format --check src tests` - pass after formatting `tests/unit/test_phase17_no_promotion_leakage.py`.
 
-## I. Explicit Non-Runs
+See `artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/validation_results.csv`.
 
-No candidate YAML, no promotion, no Layer1 select-dry-run, no Layer2/3, no WFO, no live/paper, no strategy retuning, no feature semantic changes, no execution/accounting truth changes, no prefix slicing, no post-result grid shrinking, and no QT runtime dependency.
+## H. Risks / Blockers
 
-## J. Risks / Blockers
-
-- No remaining Phase16 grid-completion blocker.
 - H2 remains diagnostic-only because `missing_minute_slots_total=540`.
-- Phase17, if accepted after review, must be region/neighborhood review only, not top-row candidate selection.
-- Cursor recommendation is provisional only; Codex review and ChatGPT Pro review are required next.
+- Phase17 used local-only Phase16 run outputs under `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`; they must remain unstaged.
+- Phase16 full-grid completion is accepted from Phase16B artifacts; Phase17 did not rerun grids.
+- Some watch/hold strategies require Phase18 logic, sample, drawdown, or regime review before any future confirmation design.
 
-## K. Decision
+## I. Decision
 
-### `PHASE16_EXPANDED_GRID_RUN_RESUMED_COMPLETE`
+### `PHASE17_EXPANDED_GRID_REGION_REVIEW_COMPLETE`
 
-## L. Cursor Provisional Recommended Next Step
+## J. Cursor Provisional Recommended Next Step
 
-### `REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`
+### `DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS`
 
-This recommendation is provisional only. Final roadmap decision belongs to ChatGPT Pro + user after Codex review. Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, Layer3, WFO, live, or paper.
+This recommendation is provisional only. Codex review and ChatGPT Pro review are required next. Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, WFO, live, or paper.

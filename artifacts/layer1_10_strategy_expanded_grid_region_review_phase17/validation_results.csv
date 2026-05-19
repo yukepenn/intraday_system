@@ -1,0 +1,17 @@
+command,status,exit_code,notes
+python scripts/phase17_region_review.py,pass,0,generated curated Phase17 review artifacts from existing Phase16/16B inputs
+python -m compileall -q src tests,pass,0,source and tests compiled
+python -m intraday.cli.main --help,pass,0,CLI help rendered
+python -m intraday.cli.main doctor,pass,0,doctor passed; dependencies and key paths available
+python -m intraday.cli.main validate structure,pass,0,required repository structure present
+python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py,fail,1,initial Phase17 test run found missing exact H2 warning in phase17_decision.md
+python scripts/phase17_region_review.py,pass,0,regenerated Phase17 artifacts after adding exact H2 warning to phase17_decision.md
+python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py,pass,0,Phase17 artifact schema/no-promotion tests passed: 7 passed
+python -m ruff check src tests,pass,0,Ruff lint passed for src and tests
+python -m ruff format --check src tests,fail,1,format check found tests/unit/test_phase17_no_promotion_leakage.py needed formatting
+python -m ruff format tests/unit/test_phase17_no_promotion_leakage.py,pass,0,formatted new Phase17 no-promotion test
+python -m ruff format --check src tests,pass,0,format check passed: 223 files already formatted
+python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py,pass,0,Phase17 tests passed after formatting: 7 passed
+python scripts/phase17_region_review.py,pass,0,regenerated Phase17 artifacts after adding README.md to SOURCE_MAP.csv
+python -m pytest -q tests/unit/test_phase17_artifact_schema.py tests/unit/test_phase17_no_promotion_leakage.py,pass,0,Phase17 tests passed after source map update: 7 passed
+refresh Phase17 validation/schema artifacts,pass,0,"refreshed validation_results, artifact_schema_validation, and input artifact validation tables"

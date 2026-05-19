@@ -1,0 +1,21 @@
+strategy,window,combo_id,metric,metric_value,neighborhood_median,neighborhood_combo_count,isolation_reason,warning_level,notes
+pa_buy_sell_close_trend,qqq_2024h1,combo_0068,total_r,23.7476,18.2105,10,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+pa_buy_sell_close_trend,qqq_2024h2,combo_0185,total_r,12.1426,7.00938,10,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+orb_continuation,qqq_2024h1,combo_2168,total_r,15.5461,12.3781,14,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+orb_continuation,qqq_2024h2,combo_0441,total_r,14.5978,11.6546,14,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+orb_retest_continuation,qqq_2024h1,combo_0870,total_r,14.3247,10.9076,13,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+orb_retest_continuation,qqq_2024h2,combo_0473,total_r,13.2808,9.04679,13,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+failed_orb,qqq_2024h1,combo_0031,total_r,6.7932,3.72293,10,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+failed_orb,qqq_2024h2,combo_0244,total_r,8.44782,4.51502,10,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+gap_acceptance_failure,qqq_2024h1,combo_0308,total_r,6.40757,3.61582,11,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+gap_acceptance_failure,qqq_2024h2,combo_0194,total_r,7.88462,5.63164,11,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+vwap_trend_pullback,qqq_2024h1,combo_0331,total_r,17.6375,8.3261,12,large_top_vs_neighborhood_spread,MEDIUM,warning is anti-argmax diagnostic; no promotion allowed
+vwap_trend_pullback,qqq_2024h2,combo_0386,total_r,10.2352,6.50293,12,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+vwap_reclaim_reject,qqq_2024h1,combo_1088,total_r,3.30522,0.305216,13,negative_lower_quartile,MEDIUM,warning is anti-argmax diagnostic; no promotion allowed
+vwap_reclaim_reject,qqq_2024h2,combo_0701,total_r,13.9417,9.68963,13,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+prior_day_level_trap,qqq_2024h1,combo_0721,total_r,9.89741,5.89741,13,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+prior_day_level_trap,qqq_2024h2,combo_0579,total_r,9.90849,8.33242,13,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+cci_extreme_snapback,qqq_2024h1,combo_0260,total_r,16.3923,11.1327,12,negative_lower_quartile,MEDIUM,warning is anti-argmax diagnostic; no promotion allowed
+cci_extreme_snapback,qqq_2024h2,combo_0211,total_r,12.6907,4.62219,12,large_top_vs_neighborhood_spread,MEDIUM,warning is anti-argmax diagnostic; no promotion allowed
+stochastic_oversold_cross,qqq_2024h1,combo_0331,total_r,16.2266,11.6177,12,top_row_supported_by_neighborhood,LOW,warning is anti-argmax diagnostic; no promotion allowed
+stochastic_oversold_cross,qqq_2024h2,combo_0279,total_r,8.30695,1.77533,12,negative_lower_quartile,MEDIUM,warning is anti-argmax diagnostic; no promotion allowed

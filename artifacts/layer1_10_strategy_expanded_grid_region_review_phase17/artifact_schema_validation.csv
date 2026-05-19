@@ -1,0 +1,21 @@
+artifact_path,artifact_type,parse_ok,expected_columns_ok,row_count,issue,notes
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/SOURCE_MAP.csv,csv,true,true,31,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/chatgpt_key_tables.csv,csv,true,true,17,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/validation_results.csv,csv,true,true,16,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/phase17_input_artifact_validation.csv,csv,true,true,48,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_surface_status_matrix.csv,csv,true,true,10,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/parameter_region_summary.csv,csv,true,true,636,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/top_neighborhood_summary.csv,csv,true,true,20,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/isolated_top_row_warning.csv,csv,true,true,20,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/axis_marginal_summary.csv,csv,true,true,376,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/pairwise_interaction_summary.csv,csv,true,true,548,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/h1_h2_cross_window_region_matrix.csv,csv,true,true,318,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/drawdown_region_summary.csv,csv,true,true,636,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/risk_cost_region_summary.csv,csv,true,true,636,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/sample_adequacy_region_summary.csv,csv,true,true,636,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/strategy_improvement_backlog.csv,csv,true,true,16,,csv parsed
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/CHATGPT_REVIEW_BUNDLE.md,md,true,true,89,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/phase18_candidate_improvement_scope.md,md,true,true,28,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/h2_warning_interpretation.md,md,true,true,5,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/non_promotion_guardrails.md,md,true,true,17,,text artifact readable
+artifacts/layer1_10_strategy_expanded_grid_region_review_phase17/phase17_decision.md,md,true,true,13,,text artifact readable
