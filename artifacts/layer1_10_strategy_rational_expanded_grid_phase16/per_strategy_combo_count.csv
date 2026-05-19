@@ -1,0 +1,11 @@
+strategy,combo_count,target_range,within_target_range,exceeds_1500,exceeds_5000,justification_if_large,notes
+pa_buy_sell_close_trend,288,100-500,true,false,false,,Moderate PA expansion only; no new PA parameters introduced.
+orb_continuation,2592,500-2000 guidance; justified >1500,false,true,false,Expanded above 1500 because ORB continuation has the cleanest Phase15 evidence and each axis maps to existing runtime fields.,Expanded above 1500 because ORB continuation has the cleanest Phase15 evidence and each axis maps to existing runtime fields.
+orb_retest_continuation,1296,300-1500,true,false,false,,Retest tolerance and timing axes test whether pullback/reclaim behavior clusters by region.
+failed_orb,384,100-500,true,false,false,,Kept under 500 because Phase15 marked failed_orb as weak/legacy hold.
+gap_acceptance_failure,576,200-1000,true,false,false,,Gap threshold and reclaim-mode axes stay inside existing gap validation.
+vwap_trend_pullback,648,200-1000,true,false,false,,Tests pullback depth and trend strictness without adding feature semantics.
+vwap_reclaim_reject,1296,300-1500,true,false,false,,Bounded reclaim confirmation grid stays within Tier 2 target range.
+prior_day_level_trap,1296,300-1500,true,false,false,,Breach/reclaim buffer grid is bounded around prior-low trap logic.
+cci_extreme_snapback,864,200-1000,true,false,false,,Oscillator threshold grid tests broad snapback regimes without changing indicator definitions.
+stochastic_oversold_cross,576,200-1000,true,false,false,,Oversold threshold and timing grid remains within Tier 3 budget.

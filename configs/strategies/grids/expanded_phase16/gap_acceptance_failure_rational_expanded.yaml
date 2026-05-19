@@ -1,0 +1,44 @@
+strategy: gap_acceptance_failure
+base_config: configs/strategies/base/gap_acceptance_failure.yaml
+description: Phase16 rational expanded diagnostic grid; no candidate promotion or
+  Layer2 fields.
+phase: PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN
+combo_count: 576
+diagnostic_only: true
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+grid:
+  signal.entry_start_minute:
+  - 5
+  - 15
+  signal.entry_end_minute:
+  - 60
+  - 120
+  - 180
+  signal.min_gap_pct:
+  - 0.003
+  - 0.005
+  - 0.008
+  signal.reclaim_mode:
+  - prior_close
+  - vwap
+  signal.require_close_above_vwap:
+  - false
+  - true
+  signal.min_vwap_slope:
+  - 0.0
+  - 0.01
+  risk.stop_mode:
+  - signal_low
+  - rolling_low_20
+  risk.target_r:
+  - 1.0
+  - 1.25
+notes: Gap threshold and reclaim-mode axes stay inside existing gap validation.

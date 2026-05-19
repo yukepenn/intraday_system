@@ -1,0 +1,64 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+CHANGES.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+NEXT_HANDOFF.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+PROGRESS.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+PROJECT_STATUS.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+README.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/artifact_schema_validation.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/chatgpt_key_tables.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/cost_to_risk_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/data_window_quality_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/drawdown_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/execution_mode_and_parity_plan.md,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_axis_rationale.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_inventory.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/feature_signal_hash_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/future_strategy_logic_improvement_backlog.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/layer1_config_inventory.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/non_promotion_guardrails.md,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/per_strategy_combo_count.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/per_strategy_metric_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/phase16_run_manifest.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/phase17_review_plan.md,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/preliminary_region_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/promotion_gap_update.md,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/rejection_skip_reason_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/risk_per_share_distribution.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/sample_adequacy_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/validation_results.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/zero_trade_zero_signal_summary.csv,Phase16 curated review artifact,true,generated,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_cci_extreme_snapback.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_failed_orb.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_gap_acceptance_failure.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_continuation.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_retest_continuation.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_pa_buy_sell_close_trend.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_prior_day_level_trap.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_stochastic_oversold_cross.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_reclaim_reject.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_trend_pullback.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_cci_extreme_snapback.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_failed_orb.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_gap_acceptance_failure.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_continuation.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_retest_continuation.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_pa_buy_sell_close_trend.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_prior_day_level_trap.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_stochastic_oversold_cross.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_reclaim_reject.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_trend_pullback.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/cci_extreme_snapback_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/failed_orb_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/gap_acceptance_failure_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/orb_continuation_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/orb_retest_continuation_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/pa_buy_sell_close_trend_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/prior_day_level_trap_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/stochastic_oversold_cross_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/vwap_reclaim_reject_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+configs/strategies/grids/expanded_phase16/vwap_trend_pullback_rational_expanded.yaml,Phase16 diagnostic runtime config/grid,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+docs/PHASE_PLAN.md,Roadmap/status documentation,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+src/intraday/layer1/config.py,Layer1 expanded-grid validation support,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+tests/unit/test_phase16_artifact_schema.py,Phase16 guardrail/schema test,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+tests/unit/test_phase16_expanded_grid_configs.py,Phase16 guardrail/schema test,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency
+tests/unit/test_phase16_no_promotion_leakage.py,Phase16 guardrail/schema test,true,source,false,No candidate promotion/Layer2/live-paper runtime dependency

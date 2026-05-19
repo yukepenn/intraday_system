@@ -1,0 +1,3 @@
+strategy,desired_axis_or_feature,reason,current_blocker,suggested_future_phase,notes
+orb_continuation,orb_open_minutes values beyond 15,5/30 minute ORB variants are trader-rational but not currently materialized by opening_core_v1.,Current Phase16 feature config includes only open_minutes: [15].,Phase18,Record as future config/feature inclusion candidate; not changed in Phase16.
+all_strategies,per-trade risk_per_share and cost_to_risk in grid summaries,Future promotion review needs full risk/cost distributions.,Committed Layer1 grid summaries aggregate TradeResult metrics and do not persist per-trade risk/cost fields.,Phase18 or pre-Phase26 reporting gate,Do not recompute fills/PnL independently from CSV artifacts.

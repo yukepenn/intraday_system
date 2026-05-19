@@ -1,0 +1,31 @@
+run_id: L1_PHASE16_QQQ_2024H2_VWAP_TREND_PULLBACK_RATIONAL_EXPANDED_DIAGNOSTIC
+description: Phase16 rational expanded diagnostic grid for vwap_trend_pullback. Diagnostic
+  only; no promotion.
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: '2024-07-01'
+end: '2024-12-31'
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/vwap_level_core_v1.yaml
+  use_cache: false
+strategy:
+  name: vwap_trend_pullback
+  base_config: configs/strategies/base/vwap_trend_pullback.yaml
+  grid: configs/strategies/grids/expanded_phase16/vwap_trend_pullback_rational_expanded.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+grid:
+  max_combos: 648
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+output:
+  artifact_root: artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h2/vwap_trend_pullback

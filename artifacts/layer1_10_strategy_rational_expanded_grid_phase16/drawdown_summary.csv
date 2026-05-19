@@ -1,0 +1,21 @@
+strategy,window,combo_count,median_max_drawdown_r,p75_max_drawdown_r,worst_max_drawdown_r,drawdown_warning_count,notes
+pa_buy_sell_close_trend,qqq_2024h1,288,9.407317617834167,17.709946676291217,4.607334334985707,0,drawdown from execution metrics aggregate
+orb_continuation,qqq_2024h1,2592,6.696946921701912,15.815854148540431,2.7671859862404222,0,drawdown from execution metrics aggregate
+orb_retest_continuation,qqq_2024h1,1296,not_run,not_run,not_run,not_run,blocked_runtime
+failed_orb,qqq_2024h1,384,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+gap_acceptance_failure,qqq_2024h1,576,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_trend_pullback,qqq_2024h1,648,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_reclaim_reject,qqq_2024h1,1296,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+prior_day_level_trap,qqq_2024h1,1296,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+cci_extreme_snapback,qqq_2024h1,864,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+stochastic_oversold_cross,qqq_2024h1,576,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+pa_buy_sell_close_trend,qqq_2024h2,288,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+orb_continuation,qqq_2024h2,2592,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+orb_retest_continuation,qqq_2024h2,1296,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+failed_orb,qqq_2024h2,384,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+gap_acceptance_failure,qqq_2024h2,576,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_trend_pullback,qqq_2024h2,648,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_reclaim_reject,qqq_2024h2,1296,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+prior_day_level_trap,qqq_2024h2,1296,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+cci_extreme_snapback,qqq_2024h2,864,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+stochastic_oversold_cross,qqq_2024h2,576,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker

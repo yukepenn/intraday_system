@@ -1,0 +1,32 @@
+strategy,window,region_key,region_definition,combo_count,median_total_r,p25_total_r,p75_total_r,median_max_drawdown_r,median_accepted_trades,preliminary_observation,phase17_review_required
+pa_buy_sell_close_trend,qqq_2024h1,stop=rolling_low|target=1.0,risk.stop_mode plus risk.target_r coarse grouping,72,7.494018574122681,4.4925822636999335,14.432372522212304,6.643243171338584,121.5,region-ready aggregate only; no Phase16 conclusion,true
+pa_buy_sell_close_trend,qqq_2024h1,stop=rolling_low|target=1.25,risk.stop_mode plus risk.target_r coarse grouping,72,7.04628516119814,2.6790244216646526,10.738111242895371,7.075302077932777,121.5,region-ready aggregate only; no Phase16 conclusion,true
+pa_buy_sell_close_trend,qqq_2024h1,stop=signal_low|target=1.0,risk.stop_mode plus risk.target_r coarse grouping,72,-9.406813658812958,-14.54894557704656,0.5662880387852944,17.305197877985698,121.5,region-ready aggregate only; no Phase16 conclusion,true
+pa_buy_sell_close_trend,qqq_2024h1,stop=signal_low|target=1.25,risk.stop_mode plus risk.target_r coarse grouping,72,-5.018071531466509,-9.338021008666082,0.7537880387855678,17.89676744145845,121.5,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_low|target=1.0,risk.stop_mode plus risk.target_r coarse grouping,288,5.2764546026607935,3.5237465430107466,8.029049419401906,4.842964164983989,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_low|target=1.25,risk.stop_mode plus risk.target_r coarse grouping,288,4.2449840146683275,2.0924082060773874,7.744858729233969,4.927045743167909,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_low|target=1.5,risk.stop_mode plus risk.target_r coarse grouping,288,4.954941420914486,2.8704890481386847,7.301454248520913,4.722953634838223,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_mid|target=1.0,risk.stop_mode plus risk.target_r coarse grouping,288,4.811758711587988,0.0029173527876308614,7.592236329991487,5.231547150379952,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_mid|target=1.25,risk.stop_mode plus risk.target_r coarse grouping,288,5.363134729376187,2.298632982334512,8.8987956736513,5.0476796481707575,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=orb_mid|target=1.5,risk.stop_mode plus risk.target_r coarse grouping,288,7.773949130477343,5.412622980160708,10.553683515773374,5.154734190884768,75.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=signal_low|target=1.0,risk.stop_mode plus risk.target_r coarse grouping,288,-13.608711451012105,-16.41156041776154,-10.860237873593727,18.74549264103142,74.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=signal_low|target=1.25,risk.stop_mode plus risk.target_r coarse grouping,288,-13.085271480494894,-14.877390011202898,-11.344057343830812,17.25618908988335,74.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_continuation,qqq_2024h1,stop=signal_low|target=1.5,risk.stop_mode plus risk.target_r coarse grouping,288,-11.620623215717849,-14.75193851273352,-8.47342890007948,18.821320929953693,74.0,region-ready aggregate only; no Phase16 conclusion,true
+orb_retest_continuation,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,blocked_runtime,true
+failed_orb,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+gap_acceptance_failure,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+vwap_trend_pullback,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+vwap_reclaim_reject,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+prior_day_level_trap,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+cci_extreme_snapback,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+stochastic_oversold_cross,qqq_2024h1,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+pa_buy_sell_close_trend,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+orb_continuation,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+orb_retest_continuation,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+failed_orb,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+gap_acceptance_failure,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+vwap_trend_pullback,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+vwap_reclaim_reject,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+prior_day_level_trap,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+cci_extreme_snapback,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true
+stochastic_oversold_cross,qqq_2024h2,not_run,runtime blocker before this diagnostic grid completed,0,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker,true

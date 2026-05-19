@@ -4,6 +4,16 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-19
 
+### Phase 16 — Layer1 10-strategy rational expanded grid design + partial run
+
+- Feat(config): add rational expanded grid YAMLs for exactly the 10 current active strategies plus 20 QQQ H1/H2 Phase16 Layer1 diagnostic configs.
+- Feat(layer1): allow explicit bounded expanded grids up to 5,000 combos while preserving the 24-combo default for old controlled grids.
+- Research(artifacts): add `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/` with grid rationale, inventory, run manifest, data quality, diagnostic summaries, guardrails, runtime blocker notes, and review bundle.
+- Test(unit): add Phase16 expanded-grid config, artifact-schema, and no-promotion leakage tests.
+- Docs(status): refactor roadmap from ORB-only Phase16 to all-current-10 expanded-grid path; record runtime-blocked decision.
+- Decision: `LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED`; next `RESOLVE_PHASE16_GRID_RUN_BLOCKER`.
+- Explicit non-goals: no candidate YAML, promotion, select-dry-run, Layer2/3, WFO, live/paper, strategy retuning, feature semantic change, execution truth change, QT runtime dependency, or heavy run artifact commit.
+
 ### Phase 15 — Layer1 strategy-library result review and focused-grid design
 
 - Research(artifacts): add `artifacts/layer1_strategy_library_result_review_phase15/` with Phase14 parse validation, H1/H2 cross-window metrics, strategy-family status matrix, hold/watch rationale, focused-grid design scope, data-window policy, H2 warning memo, promotion prerequisite gaps, Ruff triage, guardrails, and next-phase decision matrix.

@@ -1,0 +1,31 @@
+run_id: L1_PHASE16_QQQ_2024H1_STOCHASTIC_OVERSOLD_CROSS_RATIONAL_EXPANDED_DIAGNOSTIC
+description: Phase16 rational expanded diagnostic grid for stochastic_oversold_cross.
+  Diagnostic only; no promotion.
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: '2024-01-01'
+end: '2024-06-30'
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/indicator_core_v1.yaml
+  use_cache: false
+strategy:
+  name: stochastic_oversold_cross
+  base_config: configs/strategies/base/stochastic_oversold_cross.yaml
+  grid: configs/strategies/grids/expanded_phase16/stochastic_oversold_cross_rational_expanded.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+grid:
+  max_combos: 576
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+output:
+  artifact_root: artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/qqq_2024h1/stochastic_oversold_cross

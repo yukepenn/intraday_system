@@ -1,0 +1,19 @@
+artifact_path,artifact_type,parse_ok,expected_columns_ok,row_count,issue,notes
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_axis_rationale.csv,csv,true,true,78,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/expanded_grid_inventory.csv,csv,true,true,10,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/per_strategy_combo_count.csv,csv,true,true,10,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/phase16_run_manifest.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/layer1_config_inventory.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/data_window_quality_summary.csv,csv,true,true,2,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/per_strategy_metric_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/risk_per_share_distribution.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/cost_to_risk_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/drawdown_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/sample_adequacy_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/zero_trade_zero_signal_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/rejection_skip_reason_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/feature_signal_hash_summary.csv,csv,true,true,20,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/preliminary_region_summary.csv,csv,true,true,31,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/future_strategy_logic_improvement_backlog.csv,csv,true,true,2,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/chatgpt_key_tables.csv,csv,true,true,28,,Phase16 required artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16/validation_results.csv,csv,true,true,31,,Phase16 required artifact

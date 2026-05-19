@@ -1,0 +1,46 @@
+strategy: vwap_reclaim_reject
+base_config: configs/strategies/base/vwap_reclaim_reject.yaml
+description: Phase16 rational expanded diagnostic grid; no candidate promotion or
+  Layer2 fields.
+phase: PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN
+combo_count: 1296
+diagnostic_only: true
+fixed:
+  signal.side: long_only
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.eod_exit_minute: 389
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+grid:
+  signal.entry_start_minute:
+  - 5
+  - 15
+  - 30
+  signal.entry_end_minute:
+  - 180
+  - 330
+  signal.min_vwap_slope:
+  - 0.0
+  - 0.005
+  - 0.01
+  signal.require_vwap_touch:
+  - false
+  - true
+  signal.close_position_min:
+  - 0.45
+  - 0.55
+  - 0.65
+  risk.stop_mode:
+  - signal_low
+  - vwap_atr_buffer
+  - atr_buffer
+  risk.target_r:
+  - 1.0
+  - 1.25
+  backtest.max_hold_minutes:
+  - 45
+  - 75
+notes: Bounded reclaim confirmation grid stays within Tier 2 target range.

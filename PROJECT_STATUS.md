@@ -2,32 +2,25 @@
 
 ## Current phase
 
-**Phase 15 — Layer1 strategy-library result review and focused-grid design (`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`)** — reviewed existing Phase14 Layer1 small-grid diagnostic artifacts, built cross-window/status/rationale tables, interpreted the H2 data warning, and designed a future bounded focused diagnostic grid without running new research.
+**Phase 16 - Rational expanded grid design + partial diagnostic run (`PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN`)** - created bounded rational expanded grids for all 10 current active long-only strategies, added 20 QQQ H1/H2 Layer1 diagnostic configs, passed data validation and grid-inspect, and completed two H1 diagnostic grid runs before stopping at a runtime blocker.
 
 ## Decision
 
-**`LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE`** — all 10 active strategy families have review-only statuses; `orb_continuation` is the only first-scope focused diagnostic candidate, while every strategy remains `promotion_ready=false`.
+**`LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED`** - expanded grid design and inspection are complete, but the full 20-config diagnostic run is blocked by reference-mode runtime in `orb_retest_continuation`. No promotion decision can be made.
 
 ## Recommended next step (exactly one)
 
-**`RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`** — future bounded Phase16 diagnostic only. Do not promote, create candidate YAML, run select-dry-run, start Layer2, run WFO, or move to live/paper.
+**`RESOLVE_PHASE16_GRID_RUN_BLOCKER`** - resolve the Phase16 grid-run runtime blocker without prefix slicing, post-result shrinking, strategy retuning from top rows, feature semantic changes, or execution truth changes.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Phase 15 bundle: `artifacts/layer1_strategy_library_result_review_phase15/`
-- Phase 14 bundle: `artifacts/layer1_strategy_library_small_grid_phase14/`
-- Phase 13 bundle: `artifacts/pre_layer2_strategy_library_runtime_sprint_phase13/`
-- Prior bundle: `artifacts/generic_feature_foundation_second_family_phase12/`
-- Prior Phase 11 bundle: `artifacts/strategy_family_onboarding_phase11/`
-- Prior Phase 9 bundle: `artifacts/pa_features_logic_review_after_confirmation_phase9/`
-- Prior confirmation bundle: `artifacts/layer1_pa_confirmation_data_repair_phase8b/`
-- Confirmation config: `configs/layer1/controlled_pa_qqq_2024h2.yaml`
-- Strategy library runtime exists: 10 active long-only `signal_v1` strategy runtimes.
-- Phase15 was review/design only: no new grid run, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO, no live/paper.
-- H2 warning preserved: `missing_minute_slots_total=540`; H2 is sanity/plumbing only, not confirmation.
-- Future focused grid, if accepted, remains diagnostic only and first-scope limited to `orb_continuation`.
-- Layer2 remains locked until a future candidate pool exists; no runtime candidate YAMLs were added.
+- Phase16 bundle: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/`
+- Phase15 bundle: `artifacts/layer1_strategy_library_result_review_phase15/`
+- Current active strategy universe remains exactly 10 long-only strategies.
+- Phase16 is diagnostic-only: no candidate YAML, no promotion, no select-dry-run, no Layer2/3, no WFO, no live/paper.
+- H2 warning preserved: `missing_minute_slots_total=540`; H2 is not confirmation evidence.
+- Layer2 remains locked until a real candidate YAML pool exists after later evidence and gates.
 
 See `NEXT_HANDOFF.md` for full checklist.

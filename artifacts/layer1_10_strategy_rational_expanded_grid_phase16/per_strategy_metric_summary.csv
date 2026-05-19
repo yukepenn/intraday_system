@@ -1,0 +1,21 @@
+strategy,window,combo_count,combos_ran,combos_failed,total_signal_entries,total_valid_intents,total_accepted_trades,total_rejected_trades,combos_with_zero_signals,combos_with_zero_accepted_trades,best_total_r,median_total_r,p25_total_r,p75_total_r,best_profit_factor_r,median_profit_factor_r,worst_max_drawdown_r,median_max_drawdown_r,notes
+pa_buy_sell_close_trend,qqq_2024h1,288,288,0,892376,892376,34456,0,0,0,23.747592673121407,3.8678462815342036,-7.053756993175134,10.145664698828455,1.595676243570762,1.076740670958468,4.607334334985707,9.407317617834167,completed reference diagnostic run; top rows are not candidates
+orb_continuation,qqq_2024h1,2592,2592,0,194832,194832,193680,1152,0,0,15.546131325505131,2.6221059896659233,-10.36385941409642,7.071078709777373,1.7137745652846035,1.1149531766115515,2.7671859862404222,6.696946921701912,completed reference diagnostic run; top rows are not candidates
+orb_retest_continuation,qqq_2024h1,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,blocked_runtime
+failed_orb,qqq_2024h1,384,0,384,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+gap_acceptance_failure,qqq_2024h1,576,0,576,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_trend_pullback,qqq_2024h1,648,0,648,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_reclaim_reject,qqq_2024h1,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+prior_day_level_trap,qqq_2024h1,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+cci_extreme_snapback,qqq_2024h1,864,0,864,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+stochastic_oversold_cross,qqq_2024h1,576,0,576,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+pa_buy_sell_close_trend,qqq_2024h2,288,0,288,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+orb_continuation,qqq_2024h2,2592,0,2592,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+orb_retest_continuation,qqq_2024h2,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+failed_orb,qqq_2024h2,384,0,384,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+gap_acceptance_failure,qqq_2024h2,576,0,576,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_trend_pullback,qqq_2024h2,648,0,648,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+vwap_reclaim_reject,qqq_2024h2,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+prior_day_level_trap,qqq_2024h2,1296,0,1296,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+cci_extreme_snapback,qqq_2024h2,864,0,864,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker
+stochastic_oversold_cross,qqq_2024h2,576,0,576,0,0,0,0,0,0,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run,not_run_due_runtime_blocker

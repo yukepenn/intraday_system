@@ -156,6 +156,7 @@ def validate_layer1_smoke_config(config: Layer1SmokeConfig) -> None:
 
 
 MAX_CONTROLLED_GRID_COMBOS = 24
+MAX_EXPANDED_GRID_COMBOS = 5_000
 
 
 @dataclass(frozen=True)
@@ -333,9 +334,11 @@ def validate_layer1_controlled_grid_config(config: Layer1ControlledGridConfig) -
         n = grid_document_combo_count(gdoc)
     except (TypeError, ValueError) as exc:
         raise ConfigError(f"invalid grid document: {exc}") from exc
-    if n > MAX_CONTROLLED_GRID_COMBOS:
+    combo_limit = config.grid_max_combos or MAX_CONTROLLED_GRID_COMBOS
+    if combo_limit > MAX_EXPANDED_GRID_COMBOS:
         raise ConfigError(
-            f"grid has {n} combos; Phase 6b allows at most {MAX_CONTROLLED_GRID_COMBOS}"
+            f"grid.max_combos={combo_limit} exceeds expanded grid cap "
+            f"{MAX_EXPANDED_GRID_COMBOS}"
         )
-    if config.grid_max_combos is not None and n > config.grid_max_combos:
-        raise ConfigError(f"grid has {n} combos; exceeds grid.max_combos={config.grid_max_combos}")
+    if n > combo_limit:
+        raise ConfigError(f"grid has {n} combos; allowed max is {combo_limit}")

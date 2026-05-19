@@ -1,0 +1,29 @@
+section,item,metric,value,interpretation
+phase,phase_name,phase,PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN,current phase label
+phase,task_type,task_type,multi-strategy research-run + rational expanded-grid design + diagnostic run,diagnostic-only controlled research phase
+universe,total_strategies,count,10,current active long-only strategies only
+grid,total_unique_strategy_grid_combos,combos,9816,sum across 10 unique grids
+grid,total_config_window_combos,combos,19632,20 Layer1 configs if full run completes
+run,windows_used,windows,QQQ 2024H1; QQQ 2024H2,diagnostic only
+run,execution_mode,mode,reference,reference execution remains truth
+run,grid_inspect,pass_count,20/20,all Phase16 configs inspect cleanly
+run,grid_runs_completed,configs,2,partial run before runtime blocker
+run,grid_runs_blocked_or_not_run,configs,18,stopped at ORB retest runtime blocker
+guardrail,candidate_yaml_created,boolean,false,no promotion artifacts created
+guardrail,select_dry_run_run,boolean,false,select-dry-run intentionally not run
+guardrail,Layer2_created,boolean,false,Layer2 remains locked
+guardrail,WFO_run,boolean,false,WFO not run
+guardrail,live_paper_run,boolean,false,no live or paper activity
+data,H2_warning,missing_minute_slots_total,540,H2 is not clean confirmation evidence
+decision,decision,label,LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED,design and inspect complete; full run blocked
+decision,recommended_next_step,label,RESOLVE_PHASE16_GRID_RUN_BLOCKER,resolve runtime blocker before Phase17 review
+combo_count,pa_buy_sell_close_trend,combo_count,288,Moderate PA expansion only; no new PA parameters introduced.
+combo_count,orb_continuation,combo_count,2592,Expanded above 1500 because ORB continuation has the cleanest Phase15 evidence and each axis maps to existing runtime fields.
+combo_count,orb_retest_continuation,combo_count,1296,Retest tolerance and timing axes test whether pullback/reclaim behavior clusters by region.
+combo_count,failed_orb,combo_count,384,Kept under 500 because Phase15 marked failed_orb as weak/legacy hold.
+combo_count,gap_acceptance_failure,combo_count,576,Gap threshold and reclaim-mode axes stay inside existing gap validation.
+combo_count,vwap_trend_pullback,combo_count,648,Tests pullback depth and trend strictness without adding feature semantics.
+combo_count,vwap_reclaim_reject,combo_count,1296,Bounded reclaim confirmation grid stays within Tier 2 target range.
+combo_count,prior_day_level_trap,combo_count,1296,Breach/reclaim buffer grid is bounded around prior-low trap logic.
+combo_count,cci_extreme_snapback,combo_count,864,Oscillator threshold grid tests broad snapback regimes without changing indicator definitions.
+combo_count,stochastic_oversold_cross,combo_count,576,Oversold threshold and timing grid remains within Tier 3 budget.
