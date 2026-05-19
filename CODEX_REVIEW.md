@@ -4,77 +4,205 @@
 
 - Repo: `https://github.com/yukepenn/intraday_system.git`
 - Branch: `main`
-- Latest commit at review time: `7c54f0ba75a97a3264ff2ed29b646e0e8ed4163b`
-- Target Cursor commit reviewed: `7c54f0ba75a97a3264ff2ed29b646e0e8ed4163b`
-- Target commit parent: `a700571175e5afd39a6a4b4cfb568d0b1524c7ef`
+- Latest commit at review time: `4195572b5dba7873ebb5ed4c8535b1d3bddcc243`
+- Target Cursor commit reviewed: `4195572b5dba7873ebb5ed4c8535b1d3bddcc243`
+- Target commit parent: `4d1ed28bc9fbfe9d3f7e69c18c8f615c4c8b972e`
+- Substantive Phase18B implementation commit reviewed: `4d1ed28bc9fbfe9d3f7e69c18c8f615c4c8b972e`
+- Substantive implementation parent: `ba4fd3c`
 - Cursor handoff reviewed: `NEXT_HANDOFF.md`
-- Phase / task identified: Phase 18, `PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN`
-- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/LAYER1_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, target commit changed-file list/stat, `scripts/phase18_improvement_design.py`, Phase18 artifact bundle, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, `phase18_input_artifact_validation.csv`, representative Phase17 source artifacts, Phase18 unit tests, `configs/candidates/`, and working tree status.
+- Phase / task identified: Phase 18B, `PHASE18B_IMPLEMENT_EXISTING_10_STRATEGY_REFINEMENTS` / `PHASE18B_ALL_10_FULL_REFINEMENT_IMPLEMENTATION`
+- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `docs/PHASE_PLAN.md`, `intraday_system_design_instructions.txt`, architecture/contracts under `docs/`, Phase18 and Phase18B artifacts, all five v2 feature configs, Phase18B base/grid/Layer1 inspect configs, current-10 strategy module diffs, `src/intraday/strategies/common.py`, `src/intraday/strategies/config_validation.py`, Phase18B unit tests, `configs/candidates/`, `configs/layer2/`, and target commit diffs/status.
 
 ## B. Summary Verdict
 
-- PASS_WITH_WARNINGS
+- NEEDS_FIX
 
-Cursor completed the intended Phase18 design-only task without changing runtime strategy code, feature semantics, execution truth, configs, candidate YAMLs, Layer2/3, WFO, live/paper, or new grid run paths. The handoff, status docs, script, Phase18 artifacts, and tests are broadly consistent with the prior Phase17 review and keep H2 warning/candidate-promotion guardrails visible. The repo is ready for ChatGPT final review, but the next Cursor prompt should proceed only after ChatGPT/user approval and should implement only explicitly approved existing-10 improvements with tests; it should not treat this design bundle as promotion evidence.
+Cursor correctly kept Phase18B focused on the current 10 strategies, added explicit v2 coverage for all 10, avoided strategies 11-50, avoided candidate promotion paths, and did not change execution/accounting truth. The repo is close, but not ready for ChatGPT final acceptance as-is: the implementation claims validation hardening for finite numeric v2 parameters, yet several newly used v2 fields are not validated, and the tests mostly prove v2 configs load/generate rather than exercising each new branch with targeted behavioral/no-lookahead assertions. The next Cursor prompt should repair Phase18B validation/test coverage before moving to Phase18C or any later phase.
 
-## C. Cursor Run Consistency
+## C. Phase18B Scope Consistency
 
-- Did the run follow the intended phase? Yes. It converted Phase17 review/backlog evidence into a Phase18 improvement-design bundle for the current 10 strategies.
-- Did it match `NEXT_HANDOFF.md`? Yes. The changed files and artifact bundle match the handoff claims.
-- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. Phase18 follows Phase17's recommended `DESIGN_PHASE18_EXISTING_10_STRATEGY_IMPROVEMENTS` step and keeps candidate selection/promotion locked.
-- Any scope creep? Minor warning only: the recommended next step is implementation, and several rows mark implementation as allowed in the next phase, so the next prompt must keep the scope tightly bounded to reviewed/approved improvements.
-- Any premature phase movement? No. No candidate YAMLs, select-dry-run, Layer2/3, WFO, live, paper, or strategies 11-50 were added.
-- Any skipped prerequisites? No blocker for a design-only phase. ChatGPT review remains a prerequisite before implementation.
-- Any duplicated structure or architecture drift? No runtime architecture drift found; Phase18 is a script-generated artifact/reporting layer.
+- Did Cursor correctly implement Phase18B as current-10 refinement implementation? Yes.
+- Did all 10 current strategies receive explicit coverage? Yes: PA, ORB x3, gap, VWAP x2, prior-day trap, CCI, and stochastic each have v2 config/grid/artifact coverage and runtime edits.
+- Did Cursor avoid strategies 11-50? Yes.
+- Did Cursor avoid candidate YAML / promotion / select-dry-run / Layer2? Yes. `configs/candidates/` still contains README files only; `configs/layer2/` remains README-only.
+- Did Cursor avoid full expanded grid runs? Claimed yes; only grid-inspect readiness artifacts/configs were added.
+- Did Cursor avoid H2 confirmation and top-row retuning? Yes; artifacts repeatedly mark H2 diagnostic-only and thresholds as skeleton defaults.
+- Did Cursor preserve the roadmap? Mostly. Phase18C review is a reasonable next label, but only after the validation/test repair above.
 
-## D. Code / Architecture Findings
+## D. Feature Config / No-Lookahead Review
 
-- High-risk findings: None found.
-- Medium-risk findings: Phase18 relies on committed Phase17 curated summaries, but inherits Phase17's GitHub-only reproducibility caveat because the underlying Phase16 `runs/` CSVs remain local-only and untracked.
-- Medium-risk findings: `scripts/phase18_improvement_design.py` combines Phase17 evidence with hardcoded per-strategy design classifications. This is acceptable for a design artifact, but ChatGPT should review the judgment calls rather than treating the generated matrix as mechanically derived truth.
-- Low-risk findings: `NEXT_HANDOFF.md`, `CHATGPT_REVIEW_BUNDLE.md`, and `chatgpt_key_tables.csv` still use final-commit placeholders instead of embedding `7c54f0ba75a97a3264ff2ed29b646e0e8ed4163b`.
-- Low-risk findings: `docs/PHASE_PLAN.md` still has visible replacement/question-mark punctuation around recent phase headings, a documentation cleanliness issue carried forward from prior reviews.
-- Low-risk findings: `test_phase18_source_map_marks_local_runs_local_only_and_codex_untouched` shells out to `git status --short -- CODEX_REVIEW.md`; it should pass after commit/CI, but it is brittle during an active local review when `CODEX_REVIEW.md` is intentionally dirty.
-- Relevant code paths inspected: `scripts/phase18_improvement_design.py`, `tests/unit/test_phase18_artifact_schema.py`, `tests/unit/test_phase18_no_runtime_leakage.py`, Phase18 CSV/MD artifacts, Phase17 `strategy_surface_status_matrix.csv`, Phase17 `strategy_improvement_backlog.csv`, and candidate config directory contents.
-- Representative path inspected: Phase17 `strategy_surface_status_matrix.csv` + `strategy_improvement_backlog.csv` -> `scripts/phase18_improvement_design.py` input validation/design row builders -> Phase18 `per_strategy_improvement_design_matrix.csv` / `feature_gap_design_matrix.csv` / `short_side_feasibility_matrix.csv` -> Phase18 schema/no-runtime-leakage tests -> `NEXT_HANDOFF.md` Phase18 design-only claim.
-- Module-boundary concerns: None found. The script reads review artifacts and writes review artifacts; it does not feed runtime config paths.
-- Single-source-of-truth concerns: No new PnL, R-multiple, execution, feature, or strategy truth found.
-- Runtime/config/schema alignment concerns: No `configs/` or `src/` files changed in the target commit. `configs/candidates/` still contains README files only.
+- v2 feature configs created/updated: `opening_core_v2`, `vwap_level_core_v2`, `gap_level_core_v2`, `indicator_core_v2`, `pa_core_v2`.
+- Generic market facts only? Yes from inspection; no outcome/profit/winner labels found.
+- Any feature kernel changes? No.
+- No-lookahead/session tests: Feature config tests assert reference engine/session reset, and helper tests cover prior-condition exclusion/reset.
+- Hidden/outcome label concerns: None found.
+- Required feature column coverage: Generally credible; optional columns are required only when corresponding v2 options are enabled.
+- Feature config validation concerns: No blocker, but no independent feature recomputation was run in this review.
 
-## E. Validation / Artifact Hygiene
+## E. Strategy Logic / Config Validation Review
 
-- Validation credibility: Credible as recorded validation for a design-only run, but not independently rerun per review boundary.
-- Missing tests or weak tests: Tests cover artifact presence/schema, current-10 coverage, H2 guardrails, candidate/runtime YAML leakage, and heavy artifact exclusion. They do not validate the methodology or correctness of the per-strategy design classifications.
-- Claims accepted from validation artifacts but not independently rerun: `python scripts/phase18_improvement_design.py`, `compileall`, CLI help/doctor/structure, Phase17 tests, Phase18 tests, Ruff check, and Ruff format check.
-- Artifact hygiene issues: Safe local-only untracked Phase16 run artifacts were present before review and remain untracked.
-- Heavy/raw/cache/parquet/log/generated-file issues: No committed raw/curated/cache/parquet/npy/npz/memmap/row-level outputs found in the Phase18 changed-file set. Phase18 artifacts are small curated CSV/MD summaries.
-- Working tree / git cleanliness: Before review, no tracked modifications and no staged files; only `?? artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`.
-- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` with 200 files, 180 `.csv` and 20 `.md`, totaling 34,079,459 bytes. These should remain unstaged; Cursor can handle cleanup/ignore/retention policy in a future hygiene pass.
-- Suspicious untracked files present before review: None requiring stop. The untracked tree is large and is inherited local run output, but it is disclosed as local-only and not a runtime candidate/config path.
-- Review bundle completeness: `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, validation artifacts, input validation, design matrices, risk/signal/regime plans, guardrail docs, and decision doc are present.
-- SOURCE_MAP / key-table completeness if applicable: Present and generally complete; final commit placeholder remains a minor provenance gap.
+- Strategy modules changed: all current 10 strategy modules plus shared strategy helpers/validation.
+- Optional/config-driven refinements: Mostly yes; v1 configs remain accepted and v2 behavior is opt-in through v2 configs/options.
+- v1 backward compatibility: Credible from config tests and preserved helper names; not independently rerun.
+- Config validation hardening: Incomplete. New runtime-used fields such as `signal.min_cci_slope` in `cci_extreme_snapback`, `signal.min_k_slope` in `stochastic_oversold_cross`, and several `signal.min_vwap_slope` fields are converted with raw `float(...)` in strategy logic but are not validated as finite numeric config values.
+- Invalid parameter tests: Present but thin: one invalid v2 field per strategy plus one entry-window case. They do not cover all newly introduced v2 parameters or non-finite/string failure modes.
+- Missing required feature handling: Covered indirectly through synthetic generation on generic v2 feature configs; branch-specific missing-column tests are limited.
+- Stop mode validation: Improved and covered for v1/v2 config validation, but not deeply tested per new stop branch.
+- Any broad or unsafe semantic changes: No execution truth change found. Strategy entry semantics changed only behind optional v2 fields, but targeted branch tests should be added before acceptance.
 
-## F. Contract / Reproducibility Risks
+## F. Per-Strategy Coverage Review
 
-- Data contract: Preserved. H2 warning `missing_minute_slots_total=540` is carried through as diagnostic-only.
-- Feature contract: Preserved. No feature implementation or semantic change found.
-- Strategy contract: Preserved. No strategy runtime change found.
-- Execution/accounting truth: Preserved. Phase18 does not compute fills, stops, targets, PnL, or R.
-- Config/YAML contract: Preserved. No runtime YAMLs were added or changed in the target commit.
-- Timestamp/session/lookahead: Not directly rerun; no Phase18 logic changes touch timestamps, features, or signal generation.
-- Candidate/promotion contract if relevant: Preserved. No candidate YAMLs; promotion remains explicitly blocked.
-- Local path / GitHub reproducibility: Warning. Phase18 is GitHub-reproducible from committed Phase17 summaries, but the deeper Phase17 source evidence still traces to local-only Phase16 `runs/` outputs.
-- Cache/artifact reproducibility: Curated Phase18 artifacts are committed and small; exact regeneration depends on committed Phase17 artifacts plus the generator, while full provenance still depends on retained local Phase16 run outputs or future reruns/manifests.
+1. `pa_buy_sell_close_trend`
+- refinement implemented / config-only / deferred: implemented optional v2 filters and stop alias.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes, 8 combos.
+- tests: v1/v2 validation and synthetic generation; current tests claimed pass.
+- no-lookahead/session coverage: prior rolling-high uses previous same-session helper.
+- concerns: branch-specific tests for VWAP/range/rolling-high/stop behavior are sparse.
 
-## G. Recommended Next Review or Next Step
+2. `orb_continuation`
+- refinement implemented / config-only / deferred: implemented optional breakout/context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation only at Phase18B level.
+- no-lookahead/session coverage: no new stateful branch beyond current-bar feature use.
+- concerns: `min_vwap_slope` remains raw-float validated only at runtime conversion.
 
-- What ChatGPT should analyze next: Whether the Phase18 design classifications and implementation-priority ordering are methodologically sound, especially which current-10 improvements should be approved, deferred, or rejected.
-- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed only after ChatGPT/user acceptance; otherwise pause. If proceeding, implement only approved existing-10 improvements with explicit tests and guardrails.
-- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `CODEX_REVIEW.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/LAYER1_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `artifacts/existing_10_strategy_improvement_design_phase18/CHATGPT_REVIEW_BUNDLE.md`, `per_strategy_improvement_design_matrix.csv`, `feature_gap_design_matrix.csv`, `short_side_feasibility_matrix.csv`, `implementation_priority_matrix.csv`, `risk_path_improvement_plan.md`, `signal_frequency_improvement_plan.md`, `regime_context_improvement_plan.md`, and the Phase17 status/backlog artifacts.
-- What must be explicitly forbidden in the next prompt: Candidate YAML creation, promotion, select-dry-run, Layer2/3, WFO, live/paper, strategies 11-50, H2 confirmation, top-row retuning, broad new grids, execution/accounting truth changes, feature semantic changes without explicit approval/tests, local `runs/` staging, and `git add .`.
-- Whether another Codex review should be required after the next Cursor run: Yes, especially if any strategy logic, feature context, short-side feasibility, or future diagnostic-grid preparation is implemented.
+3. `orb_retest_continuation`
+- refinement implemented / config-only / deferred: implemented breakout-age, retest-depth, hold-level, context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation plus existing helper tests.
+- no-lookahead/session coverage: `bars_since_prior_condition` excludes current bar and resets session.
+- concerns: branch-level age/depth behavior tests are thin; `min_vwap_slope` not explicitly finite-validated.
 
-## H. Explicit Non-Actions
+4. `failed_orb`
+- refinement implemented / config-only / deferred: implemented breach-depth, age, reclaim/context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation plus existing helper tests.
+- no-lookahead/session coverage: shared prior-condition helper is tested.
+- concerns: branch-level breach/reclaim behavior tests are thin; `min_vwap_slope` not explicitly finite-validated.
+
+5. `gap_acceptance_failure`
+- refinement implemented / config-only / deferred: implemented max gap, reclaim modes, reclaim lookback/cross/context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: reclaim lookback uses prior-only helper.
+- concerns: `min_vwap_slope` not explicitly finite-validated; branch-specific reclaim-mode tests are limited.
+
+6. `vwap_trend_pullback`
+- refinement implemented / config-only / deferred: implemented pullback/depth/distance/reclaim/volume and rolling-low stop support.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: reclaim uses previous same-session close/VWAP.
+- concerns: `min_vwap_slope` not explicitly finite-validated; branch-specific tests sparse.
+
+7. `vwap_reclaim_reject`
+- refinement implemented / config-only / deferred: implemented below-lookback, reclaim buffer, max bars since below, touch/context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: below-state uses prior-only helper.
+- concerns: `min_vwap_slope` not explicitly finite-validated; branch-specific tests sparse.
+
+8. `prior_day_level_trap`
+- refinement implemented / config-only / deferred: implemented level type, prior breach age/depth, reclaim/context filters.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: lookback branch uses prior-only helper.
+- concerns: prior-high/prior-close branch semantics need targeted synthetic tests.
+
+9. `cci_extreme_snapback`
+- refinement implemented / config-only / deferred: implemented oversold lookback, CCI slope, VWAP/close-position context.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: oversold lookback uses prior-only helper.
+- concerns: `signal.min_cci_slope` is in v2 base/grid and runtime logic but is not validated as finite numeric.
+
+10. `stochastic_oversold_cross`
+- refinement implemented / config-only / deferred: implemented oversold lookback, K/D spread, K slope, VWAP/close-position context.
+- runtime logic changed: yes.
+- v2 base config: yes.
+- v2 grid skeleton: yes.
+- tests: validation/generation.
+- no-lookahead/session coverage: oversold lookback uses prior-only helper.
+- concerns: `signal.min_k_slope` is in v2 base/runtime logic but is not validated as finite numeric; grid does not vary it.
+
+## G. Short-Side / Side-Generalization Review
+
+- Was broad short-side implemented? No.
+- Was signal adapter side behavior changed? No evidence found.
+- Was short-side deferred clearly? Yes, in `short_side_deferred_plan.md`.
+- Any naive long-to-short mirroring risk? No implementation risk found.
+- Future pilot suggestions, if documented: ORB continuation short and VWAP reject short are documented as future pilots only.
+
+## H. Non-Promotion / No-Leakage Review
+
+- Candidate YAML created? No.
+- select-dry-run run? Claimed no.
+- candidate promotion attempted? No.
+- Layer2/Layer3/WFO/live/paper introduced? No.
+- Full expanded grids run? Claimed no; grid-inspect only.
+- Top rows used for retuning? No evidence found; artifacts say skeleton defaults.
+- H2 treated as clean confirmation? No; H2 warning carried forward.
+- Execution truth changed? No.
+
+## I. Validation / Tests / Artifact Hygiene
+
+- Validation credibility: Good for smoke/config readiness claims, but not sufficient for final Phase18B acceptance because test coverage does not match the breadth of runtime branches added.
+- Tests added/updated: `test_phase18b_feature_configs.py`, `test_phase18b_strategy_configs.py`, `test_phase18b_no_runtime_leakage.py`, `test_phase18b_artifact_schema.py`.
+- Missing tests or weak tests: Need targeted invalid-value tests for every new runtime-used v2 field, including non-finite values; targeted branch tests for each strategy's core v2 options; missing-feature tests per optional feature branch; and stronger future-perturbation/no-lookahead tests beyond shared helper checks.
+- Claims accepted from validation artifacts but not independently rerun: compileall, CLI help/doctor/structure, feature inspect, strategy inspect, grid-inspect, Phase18B tests, current-10 strategy tests, smoke tests, Ruff check, and Ruff format check.
+- Artifact hygiene issues: Existing safe local-only Phase16 run artifacts remain untracked.
+- Heavy/raw/cache/parquet/log/generated-file issues: No new committed heavy/raw/cache/parquet/npy/npz/memmap outputs found in Phase18B changed files.
+- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`.
+- Suspicious untracked files present before review: None requiring stop.
+- Working tree / git cleanliness: Before review, no tracked modifications and no staged files; only the local `runs/` directory above.
+- Review bundle / source map / key table completeness: Present, parseable, and GitHub-readable from inspection.
+
+## J. Contract / Reproducibility Risks
+
+- Data contract: Preserved; no parquet/raw/curated changes found.
+- Feature contract: Preserved; v2 configs use existing generic market-fact kernels.
+- Strategy contract: Mostly preserved; strategies still emit `SignalMatrix` only and do not compute PnL.
+- Execution/accounting truth: Preserved.
+- Config/YAML contract: Mostly preserved; paths are repo-relative and v2 grid skeletons are bounded.
+- Timestamp/session/lookahead: Shared prior-condition helpers are session-safe; branch-level lookahead tests should be stronger before final acceptance.
+- Candidate/promotion contract: Preserved.
+- Local path / GitHub reproducibility: Phase18B artifacts are committed and small; inherited Phase16 local run provenance caveat remains for the upstream evidence chain.
+- Cache/artifact reproducibility: No cache committed; local `runs/` artifact hygiene should be handled in a future cleanup/ignore-retention pass.
+
+## K. Evidence Quality
+
+- Directly verified: target commit selection, status cleanliness, changed-file sets, current-10 coverage, no candidates/Layer2, v2 feature configs, v2 base/grid/inspect config inventory, representative strategy diffs, shared helper logic, config validation code, Phase18B tests, artifacts, and handoff/status docs.
+- Inferred from Cursor artifacts: actual validation command execution and grid-inspect pass results.
+- Accepted from Codex inspection: no feature kernel changes, no execution truth changes, no broad short-side implementation, no candidate promotion leakage.
+- Not verified: tests were not rerun; compileall/Ruff/CLI/grid-inspect were not rerun; artifacts were not regenerated; grids/sweeps/select-dry-run were not run.
+- Claims requiring caution: validation hardening is overstated; no-lookahead/session coverage is partly inferred from helper tests rather than per-strategy branch tests.
+
+## L. Recommended Next Review or Next Step
+
+- What ChatGPT should analyze next: Whether the v2 refinements themselves are analytically approved, and whether the missing validation/branch tests are sufficient to require repair before final Phase18B acceptance.
+- Whether the next Cursor prompt should proceed, repair, redesign, pause, or continue to the next approved phase: Repair Phase18B first.
+- What files should be read before writing the next prompt: `CODEX_REVIEW.md`, `NEXT_HANDOFF.md`, `src/intraday/strategies/config_validation.py`, all 10 changed strategy modules, Phase18B tests, v2 base/grid configs, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, and Phase18B artifacts.
+- What must be explicitly forbidden in the next prompt: source changes outside validation/tests/needed small strategy fixes, candidate YAMLs, select-dry-run, promotion, Layer2/3, WFO, live/paper, full grids, strategies 11-50, H2 confirmation language, top-row retuning, execution truth changes, and `git add .`.
+- Whether another Codex review should be required after the next Cursor run: Yes.
+
+## M. Explicit Non-Actions
 
 - I did not edit source code.
 - I did not edit tests.
@@ -84,40 +212,7 @@ Cursor completed the intended Phase18 design-only task without changing runtime 
 - I did not run long commands.
 - I did not run pytest unless explicitly requested.
 - I did not run Layer/WFO/live/paper commands.
-- I did not run sweeps.
+- I did not run Layer1 grids or sweeps.
+- I did not run select-dry-run.
 - I did not stage or commit any local-only artifact directories.
 - I did not commit anything except `CODEX_REVIEW.md`.
-
-## I. Evidence Quality
-
-- Directly verified:
-  - Latest commit, target commit, target parent, and changed-file set.
-  - Working tree cleanliness classification before review.
-  - Phase18 handoff/status docs and roadmap alignment.
-  - Phase18 generator structure, new tests, source map, key tables, validation log, and generated CSV/MD artifacts.
-  - `configs/candidates/` contains README files only and the target commit does not change `configs/`, `src/`, or `data/`.
-  - Representative Phase17 evidence -> Phase18 generator -> Phase18 artifact -> Phase18 test -> handoff claim path.
-- Inferred from Cursor artifacts:
-  - Actual validation command execution and pass/fail outcomes in `validation_results.csv`.
-  - Cursor's claim that local Phase16 `runs/` were not read directly by Phase18 or staged.
-  - Methodological sufficiency of the Phase18 design judgments.
-- Accepted from Codex inspection:
-  - No runtime/config promotion leakage in the changed-file set.
-  - H2 warning and promotion-blocking language are consistently carried forward.
-  - Phase18 artifact set is curated and not heavy/raw/cache-like.
-- Not verified:
-  - Tests not rerun.
-  - Compileall/Ruff/CLI commands not rerun.
-  - Phase18 artifacts not regenerated.
-  - Phase17/Phase16 grids not rerun.
-  - Numerical source artifacts not recomputed.
-- Claims requiring caution: Phase18 design classifications are partly curated judgment; H2 remains warning-tainted; inherited local-only Phase16 run provenance still limits full GitHub-only reproducibility.
-
-## J. Review Depth
-
-- Representative path inspected: Phase17 strategy status/backlog CSVs -> Phase18 design generator -> Phase18 per-strategy/feature/short-side/priority artifacts -> Phase18 guardrail tests -> `NEXT_HANDOFF.md` design-only claims.
-- Important files inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/LAYER1_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `scripts/phase18_improvement_design.py`, Phase18 artifact bundle, Phase18 tests, Phase17 status/backlog/input artifacts, and `configs/candidates/`.
-- Important files not inspected: Every Phase17 region-summary row in full, every Phase16 local `runs/` file, every strategy runtime source file, every feature kernel, and every architecture contract not directly implicated by Phase18.
-- Reason not inspected: Review boundary called for lightweight inspection and no long commands/reruns; Phase18 is design/report generation, not runtime implementation.
-- Areas that should be reviewed by ChatGPT Pro: Whether Phase18's per-strategy actions, short-side feasibility labels, feature-gap guidance, and implementation-priority ordering are analytically justified and appropriately sequenced.
-- Areas that should be reviewed by future Codex review: Any approved Phase18 implementation, feature or strategy logic edits, short-side design implementation, fresh diagnostic-grid setup, and any movement toward candidate selection or promotion.
