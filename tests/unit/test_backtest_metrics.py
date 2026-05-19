@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 
 import pytest
-from intraday.backtest.metrics import summarize_trade_results
+from intraday.backtest.metrics import summarize_trade_results, summarize_trade_risk_cost
 from intraday.core.types import ExitReason, RejectReason, Side
 from intraday.execution.records import TradeResult
 
@@ -65,6 +65,26 @@ def test_mixed_profit_factor() -> None:
     m = summarize_trade_results([_acc(r_multiple=2.0), _acc(r_multiple=-1.0, signal_bar=1)])
     assert m.profit_factor_r == pytest.approx(2.0)
     assert m.win_rate == pytest.approx(0.5)
+
+
+def test_risk_and_cost_diagnostics_use_execution_fields() -> None:
+    results = [
+        _acc(entry_price=100.0, stop_price=99.0, r_multiple=1.0),
+        _acc(entry_price=100.0, stop_price=98.0, r_multiple=-1.0, signal_bar=1),
+    ]
+
+    m = summarize_trade_results(results)
+    c = summarize_trade_risk_cost(
+        results,
+        slippage_per_share=0.01,
+        commission_per_trade=0.0,
+    )
+
+    assert m.avg_risk_per_share == pytest.approx(1.5)
+    assert m.median_risk_per_share == pytest.approx(1.5)
+    assert m.p10_risk_per_share == pytest.approx(1.1)
+    assert m.p90_risk_per_share == pytest.approx(1.9)
+    assert c.avg_cost_to_risk == pytest.approx((0.02 / 1.0 + 0.02 / 2.0) / 2.0)
 
 
 def test_max_drawdown_known_sequence() -> None:

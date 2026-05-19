@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 from intraday.core.paths import repo_root
-from intraday.layer1.reports import write_layer1_grid_artifacts
+from intraday.layer1.reports import summarize_positive_drawdowns, write_layer1_grid_artifacts
 from intraday.layer1.result import Layer1GridResult, Layer1GridRow
 
 
@@ -36,6 +36,12 @@ def _row(
         profit_factor_r=pfr,
         max_drawdown_r=0.0,
         avg_bars_held=1.0 if acc else 0.0,
+        avg_risk_per_share=1.0 if acc else 0.0,
+        median_risk_per_share=1.0 if acc else 0.0,
+        p10_risk_per_share=1.0 if acc else 0.0,
+        p90_risk_per_share=1.0 if acc else 0.0,
+        avg_cost_to_risk=0.02 if acc else 0.0,
+        median_cost_to_risk=0.02 if acc else 0.0,
         exit_reason_counts_json="{}",
         reject_reason_counts_json="{}",
         skip_reason_counts_json=json.dumps({"invalid_signal": 0}, sort_keys=True),
@@ -98,3 +104,16 @@ def test_grid_reports_use_repo_paths_independent(tmp_path: Path) -> None:
     root = str(repo_root())
     for p in tmp_path.glob("*.csv"):
         assert root not in p.read_text(encoding="utf-8")
+
+
+def test_positive_drawdown_summary_orders_best_to_worst() -> None:
+    summary = summarize_positive_drawdowns([9.0, 2.0, 5.0, 12.0])
+
+    assert summary["best_max_drawdown_r"] == 2.0
+    assert summary["worst_max_drawdown_r"] == 12.0
+    assert (
+        summary["best_max_drawdown_r"]
+        <= summary["median_max_drawdown_r"]
+        <= summary["p75_max_drawdown_r"]
+        <= summary["worst_max_drawdown_r"]
+    )

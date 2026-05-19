@@ -2,24 +2,25 @@
 
 ## Current phase
 
-**Phase 16 - Rational expanded grid design + partial diagnostic run (`PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN`)** - created bounded rational expanded grids for all 10 current active long-only strategies, added 20 QQQ H1/H2 Layer1 diagnostic configs, passed data validation and grid-inspect, and completed two H1 diagnostic grid runs before stopping at a runtime blocker.
+**Phase 16B - expanded-grid runtime/reporting repair + controlled rerun (`PHASE16B_RESOLVE_EXPANDED_GRID_RUNTIME_AND_REPORTING_BLOCKERS`)** - repaired prior-state runtime blockers in ORB retest and failed ORB, added aggregate-only drawdown/risk/cost reporting repairs, validated local curated QQQ data, and completed all 20 Phase16 diagnostic grids with full combo coverage.
 
 ## Decision
 
-**`LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED`** - expanded grid design and inspection are complete, but the full 20-config diagnostic run is blocked by reference-mode runtime in `orb_retest_continuation`. No promotion decision can be made.
+**`PHASE16_EXPANDED_GRID_RUN_RESUMED_COMPLETE`** - the intended Phase16 expanded-grid diagnostic run is complete after Phase16B repairs. No promotion decision has been made.
 
 ## Recommended next step (exactly one)
 
-**`RESOLVE_PHASE16_GRID_RUN_BLOCKER`** - resolve the Phase16 grid-run runtime blocker without prefix slicing, post-result shrinking, strategy retuning from top rows, feature semantic changes, or execution truth changes.
+**`REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** - after Codex and ChatGPT Pro review, review completed Phase16 results by parameter region/neighborhood only, not by top-row candidate selection.
 
 ## Snapshot
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
 - Phase16 bundle: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/`
+- Phase16B bundle: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/`
 - Phase15 bundle: `artifacts/layer1_strategy_library_result_review_phase15/`
 - Current active strategy universe remains exactly 10 long-only strategies.
-- Phase16 is diagnostic-only: no candidate YAML, no promotion, no select-dry-run, no Layer2/3, no WFO, no live/paper.
+- Phase16/Phase16B are diagnostic-only: no candidate YAML, no promotion, no select-dry-run, no Layer2/3, no WFO, no live/paper.
 - H2 warning preserved: `missing_minute_slots_total=540`; H2 is not confirmation evidence.
 - Layer2 remains locked until a real candidate YAML pool exists after later evidence and gates.
 

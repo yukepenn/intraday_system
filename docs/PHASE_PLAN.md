@@ -293,7 +293,7 @@ Decision label: **`LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE`**.
 
 Superseded next step: `RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID` was replaced by the Phase16 all-current-10 rational expanded-grid decision. Tiny Phase14 grids are plumbing/triage diagnostics only and do not permanently reject other families.
 
-## Phase 16 ? Current-10 rational expanded grid design + run ? **partial / run blocked**
+## Phase 16 ? Current-10 rational expanded grid design + run ? **complete after Phase 16B repair**
 
 Goal: pre-register rational expanded grids for the current 10 active strategies, document axes/combo counts, inspect all configs, and run diagnostic Layer1 grids where feasible.
 
@@ -303,15 +303,33 @@ Status:
 - 20 QQQ H1/H2 Layer1 diagnostic configs created.
 - Data validation passed; H2 warning `missing_minute_slots_total=540` remains diagnostic-only.
 - Grid-inspect passed for all 20 configs.
-- H1 PA and H1 ORB continuation grids ran; full run stopped at ORB retest runtime blocker.
+- H1 PA and H1 ORB continuation grids ran; the original full run stopped at ORB retest runtime blocker.
 
 Decision label: **`LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED`**.
 
 Recommended next step: **`RESOLVE_PHASE16_GRID_RUN_BLOCKER`**.
 
+## Phase 16B ? Expanded-grid runtime/reporting repair + controlled rerun ? **complete**
+
+Goal: repair Phase16 runtime/reporting blockers without strategy retuning, feature semantic changes, execution truth changes, prefix slicing, post-result grid shrinking, candidate promotion, or Layer2.
+
+Status:
+
+- Repaired ORB retest prior-breakout state and failed ORB prior-breach state with O(n) session-local cumulative passes.
+- Added synthetic old-vs-new equivalence tests for the repaired prior-state helpers.
+- Added aggregate-only risk/cost diagnostics derived from execution-produced fields.
+- Added drawdown aggregation guard for positive drawdown magnitude ordering.
+- Validated QQQ 2024H1/H2 curated data; H2 warning `missing_minute_slots_total=540` remains diagnostic-only.
+- Grid-inspect passed for all 20 Phase16 configs.
+- Full Layer1 grid rerun completed for all 20 configs with full combo coverage.
+
+Decision label: **`PHASE16_EXPANDED_GRID_RUN_RESUMED_COMPLETE`**.
+
+Recommended next step: **`REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** after Codex and ChatGPT Pro review.
+
 ## Phase 17 ? Expanded-result region/neighborhood review ? **future**
 
-Review expanded results by parameter region/neighborhood, not top-row ranking. No candidate selection, no promotion, no select-dry-run, no Layer2.
+Review expanded results by parameter region/neighborhood, not top-row ranking. No candidate selection, no promotion, no select-dry-run, no Layer2. Phase17 starts only after the complete/accepted Phase16B run scope is reviewed.
 
 ## Phase 18 ? Improve existing 10 strategies/features/short-side variants ? **future**
 

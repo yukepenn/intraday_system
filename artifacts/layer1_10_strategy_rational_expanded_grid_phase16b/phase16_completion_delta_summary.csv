@@ -1,0 +1,6 @@
+category,phase16_before,phase16b_after,delta,notes
+grid_inspect,20/20 pass,20/20 pass,0,combo counts unchanged
+grid_runs_completed,2/20,20/20,+18,all intended Phase16 configs completed after repairs
+blocked_configs,18,0,-18,runtime blockers resolved for Phase16 scope
+candidate_yaml_created,false,false,0,non-promotion boundary preserved
+layer2_created,false,false,0,Layer2 remains locked

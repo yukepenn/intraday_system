@@ -114,9 +114,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 15 complete:** **`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`** reviewed existing Phase14 results only, built cross-window/status/rationale artifacts for all 10 strategies, and preserved the H2 warning `missing_minute_slots_total=540`. Bundle `artifacts/layer1_strategy_library_result_review_phase15/`.
 
-**Phase 16 partial:** **`PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN`** replaced the ORB-only next step with all-current-10 rational expanded grids. Design and 20/20 grid-inspect are complete; two H1 grids ran; the full run is blocked at ORB retest runtime. Bundle `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/`.
+**Phase 16 complete after repair:** **`PHASE16_LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_AND_RUN`** replaced the ORB-only next step with all-current-10 rational expanded grids. Phase 16B repaired runtime/reporting blockers and completed all 20 QQQ H1/H2 diagnostic grids with full combo coverage. Bundles: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/` and `artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/`.
 
-**Next:** **`RESOLVE_PHASE16_GRID_RUN_BLOCKER`**. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
+**Next:** **`REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
 
 See:
 

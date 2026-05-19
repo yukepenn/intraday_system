@@ -1,0 +1,25 @@
+step,config_or_strategy,elapsed_seconds,rows,combos,mode,before_or_after_repair,bottleneck_label,notes
+layer1_grid,qqq_2024h1_pa_buy_sell_close_trend,5.84,48360,288,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_orb_continuation,16.84,48360,2592,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_orb_retest_continuation,77.48,48360,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_failed_orb,24.09,48360,384,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_gap_acceptance_failure,3.42,48360,576,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_vwap_trend_pullback,3.76,48360,648,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_vwap_reclaim_reject,27.22,48360,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_prior_day_level_trap,6.24,48360,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_cci_extreme_snapback,12.43,48360,864,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h1_stochastic_oversold_cross,13.82,48360,576,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_pa_buy_sell_close_trend,6.04,49380,288,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_orb_continuation,17.85,49380,2592,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_orb_retest_continuation,74.05,49380,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_failed_orb,23.19,49380,384,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_gap_acceptance_failure,3.49,49380,576,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_vwap_trend_pullback,3.82,49380,648,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_vwap_reclaim_reject,27.58,49380,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_prior_day_level_trap,6.52,49380,1296,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_cci_extreme_snapback,12.70,49380,864,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+layer1_grid,qqq_2024h2_stochastic_oversold_cross,14.02,49380,576,reference,after_repair,completed_full_grid,full run elapsed from controlled Phase16B rerun
+prior_breakout_helper_benchmark,orb_retest_continuation,1.952453,48360,1,synthetic_old_slow,before_repair,strategy_signal_generation_prior_breakout,old nested session scan synthetic H1-sized benchmark
+prior_breakout_helper_benchmark,orb_retest_continuation,0.049686,48360,1,synthetic_new_fast,after_repair,strategy_signal_generation_prior_breakout,new cumulative session-state synthetic H1-sized benchmark
+prior_breach_helper_runtime_observation,failed_orb,456.18,48360,384,reference_old_slow,before_repair,strategy_signal_generation_prior_breach,stalled controlled rerun killed while running failed_orb before repair
+prior_breach_helper_runtime_observation,failed_orb,24.09,48360,384,reference,after_repair,completed_full_grid,same config completed after cumulative prior-breach repair

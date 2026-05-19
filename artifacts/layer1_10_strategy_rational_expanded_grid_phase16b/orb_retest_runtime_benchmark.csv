@@ -1,0 +1,3 @@
+benchmark_case,bars,sessions,old_runtime_seconds,new_runtime_seconds,speedup,semantics_equal,notes
+synthetic_h1_sized,48360,124,1.952453,0.049686,39.30,True,bounded synthetic prior-breakout benchmark only
+synthetic_small_ci_safe,7800,20,0.308620,0.007653,40.33,True,bounded synthetic prior-breakout benchmark only

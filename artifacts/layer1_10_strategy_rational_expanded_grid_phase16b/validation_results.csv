@@ -1,0 +1,62 @@
+command,status,exit_code,notes
+git status --short,pass,0,preflight; only local generated Phase16 runs existed before edits
+git log --oneline -10,pass,0,pre-task HEAD 1ab2728 Review: Codex audit latest run
+git branch --show-current,pass,0,main
+python -m intraday.cli.main --help,pass,0,CLI help available
+python -m intraday.cli.main data --help,pass,0,data validate-curated and load-bars available
+python -m intraday.cli.main doctor,pass,0,environment check passed
+python -m intraday.cli.main validate structure,pass,0,required paths present
+python -m intraday.cli.main data validate-curated --symbol QQQ --start 2024-01-01 --end 2024-06-30 --data-root data/curated/bars_1m_rth,pass,0,rows=48360; sessions=124; missing=0
+python -m intraday.cli.main data validate-curated --symbol QQQ --start 2024-07-01 --end 2024-12-31 --data-root data/curated/bars_1m_rth,pass_with_warning,0,rows=49380; sessions=128; missing_minute_slots_total=540
+python -m intraday.cli.main data load-bars --symbol QQQ --start 2024-01-01 --end 2024-06-30 --data-root data/curated/bars_1m_rth,pass,0,BarMatrix rows=48360; sessions=124
+python -m intraday.cli.main data load-bars --symbol QQQ --start 2024-07-01 --end 2024-12-31 --data-root data/curated/bars_1m_rth,pass,0,BarMatrix rows=49380; sessions=128; H2 diagnostic-only
+python -m pytest -q tests/unit/test_strategy_orb_retest_continuation.py tests/unit/test_backtest_metrics.py tests/unit/test_layer1_grid_reports.py && python -m compileall -q src tests,pass,0,20 passed before failed_orb repair
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_retest_continuation.yaml,pass,0,standalone repaired ORB retest H1 grid elapsed_s=77.92
+phase16b full rerun attempt before failed_orb repair,terminated,1,first 3 grids passed; stopped stalled failed_orb old prior-breach helper after 456s
+python -m pytest -q tests/unit/test_strategy_orb_retest_continuation.py tests/unit/test_strategy_failed_orb.py tests/unit/test_backtest_metrics.py tests/unit/test_layer1_grid_reports.py && python -m compileall -q src tests,pass,0,23 passed after failed_orb repair
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_pa_buy_sell_close_trend.yaml,pass,0,combo_count verified; strategy=pa_buy_sell_close_trend; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_pa_buy_sell_close_trend.yaml,pass,0,elapsed_s=5.84; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_continuation.yaml,pass,0,combo_count verified; strategy=orb_continuation; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_continuation.yaml,pass,0,elapsed_s=16.84; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_retest_continuation.yaml,pass,0,combo_count verified; strategy=orb_retest_continuation; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_orb_retest_continuation.yaml,pass,0,elapsed_s=77.48; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_failed_orb.yaml,pass,0,combo_count verified; strategy=failed_orb; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_failed_orb.yaml,pass,0,elapsed_s=24.09; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_gap_acceptance_failure.yaml,pass,0,combo_count verified; strategy=gap_acceptance_failure; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_gap_acceptance_failure.yaml,pass,0,elapsed_s=3.42; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_trend_pullback.yaml,pass,0,combo_count verified; strategy=vwap_trend_pullback; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_trend_pullback.yaml,pass,0,elapsed_s=3.76; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_reclaim_reject.yaml,pass,0,combo_count verified; strategy=vwap_reclaim_reject; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_vwap_reclaim_reject.yaml,pass,0,elapsed_s=27.22; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_prior_day_level_trap.yaml,pass,0,combo_count verified; strategy=prior_day_level_trap; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_prior_day_level_trap.yaml,pass,0,elapsed_s=6.24; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_cci_extreme_snapback.yaml,pass,0,combo_count verified; strategy=cci_extreme_snapback; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_cci_extreme_snapback.yaml,pass,0,elapsed_s=12.43; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_stochastic_oversold_cross.yaml,pass,0,combo_count verified; strategy=stochastic_oversold_cross; window=qqq_2024h1
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h1_stochastic_oversold_cross.yaml,pass,0,elapsed_s=13.82; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_pa_buy_sell_close_trend.yaml,pass,0,combo_count verified; strategy=pa_buy_sell_close_trend; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_pa_buy_sell_close_trend.yaml,pass,0,elapsed_s=6.04; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_continuation.yaml,pass,0,combo_count verified; strategy=orb_continuation; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_continuation.yaml,pass,0,elapsed_s=17.85; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_retest_continuation.yaml,pass,0,combo_count verified; strategy=orb_retest_continuation; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_orb_retest_continuation.yaml,pass,0,elapsed_s=74.05; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_failed_orb.yaml,pass,0,combo_count verified; strategy=failed_orb; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_failed_orb.yaml,pass,0,elapsed_s=23.19; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_gap_acceptance_failure.yaml,pass,0,combo_count verified; strategy=gap_acceptance_failure; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_gap_acceptance_failure.yaml,pass,0,elapsed_s=3.49; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_trend_pullback.yaml,pass,0,combo_count verified; strategy=vwap_trend_pullback; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_trend_pullback.yaml,pass,0,elapsed_s=3.82; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_reclaim_reject.yaml,pass,0,combo_count verified; strategy=vwap_reclaim_reject; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_vwap_reclaim_reject.yaml,pass,0,elapsed_s=27.58; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_prior_day_level_trap.yaml,pass,0,combo_count verified; strategy=prior_day_level_trap; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_prior_day_level_trap.yaml,pass,0,elapsed_s=6.52; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_cci_extreme_snapback.yaml,pass,0,combo_count verified; strategy=cci_extreme_snapback; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_cci_extreme_snapback.yaml,pass,0,elapsed_s=12.70; full combo coverage; no prefix slicing
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_stochastic_oversold_cross.yaml,pass,0,combo_count verified; strategy=stochastic_oversold_cross; window=qqq_2024h2
+python -m intraday.cli.main layer1 grid --config configs/layer1/phase16_10_strategy_rational_expanded_grid/qqq_2024h2_stochastic_oversold_cross.yaml,pass,0,elapsed_s=14.02; full combo coverage; no prefix slicing
+python -m compileall -q src tests && python -m pytest -q targeted Phase16/Phase16B tests && python -m ruff check src tests && python -m ruff format --check src tests,fail,1,first final lint pass found import ordering/formatting issues; fixed with ruff
+python -m ruff check tests/unit/test_phase16b_artifact_schema.py tests/unit/test_phase16b_no_promotion_leakage.py tests/unit/test_strategy_failed_orb.py tests/unit/test_strategy_orb_retest_continuation.py --fix,pass,0,fixed import ordering
+python -m ruff format tests/unit/test_phase16b_no_promotion_leakage.py tests/unit/test_strategy_orb_retest_continuation.py,pass,0,formatted changed tests
+python -m compileall -q src tests && python -m pytest -q targeted Phase16/Phase16B tests && python -m ruff check src tests && python -m ruff format --check src tests,pass,0,34 passed; ruff check passed; 221 files formatted
+python -m pytest -q tests/unit/test_phase16b_artifact_schema.py tests/unit/test_phase16b_no_promotion_leakage.py && python -m ruff check src tests && python -m ruff format --check src tests,pass,0,4 passed; ruff check passed; format check passed
+python -m pytest -q tests/unit/test_phase16b_artifact_schema.py tests/unit/test_phase16b_no_promotion_leakage.py,pass,0,4 passed after pruning redundant temporary grid command CSV

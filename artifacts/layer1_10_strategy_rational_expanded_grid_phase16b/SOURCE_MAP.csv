@@ -1,0 +1,30 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/strategies/orb/retest_continuation.py,O(n) prior-breakout state repair,yes,source,no,semantics-preserving cumulative session state
+src/intraday/strategies/orb/failed_orb.py,O(n) prior-breach state repair found during rerun,yes,source,no,semantics-preserving cumulative session state
+src/intraday/backtest/metrics.py,aggregate risk/cost metric helpers,yes,source,no,uses TradeResult fields only
+src/intraday/layer1/runner.py,persist aggregate risk/cost diagnostics per combo,yes,source,no,no row-level trades
+src/intraday/layer1/result.py,Layer1GridRow aggregate risk/cost fields,yes,source,no,schema extension
+src/intraday/layer1/reports.py,sweep CSV aggregate fields and drawdown helper,yes,source,no,positive drawdown ordering helper
+tests/unit/test_strategy_orb_retest_continuation.py,ORB retest old-vs-new equivalence tests,yes,source,no,synthetic no-lookahead/session/NaN cases
+tests/unit/test_strategy_failed_orb.py,failed ORB prior-breach equivalence tests,yes,source,no,second runtime blocker found during rerun
+tests/unit/test_backtest_metrics.py,risk/cost aggregate tests,yes,source,no,execution field derived
+tests/unit/test_layer1_grid_reports.py,drawdown/report schema tests,yes,source,no,ordering and report columns
+NEXT_HANDOFF.md,Phase16B handoff status,yes,source,no,updated after artifact generation
+PROJECT_STATUS.md,Phase16B decision/status,yes,source,no,updated after artifact generation
+PROGRESS.md,dated Phase16B progress entry,yes,source,no,updated after artifact generation
+CHANGES.md,Phase16B changelog entry,yes,source,no,updated after artifact generation
+docs/PHASE_PLAN.md,insert Phase16B before Phase17,yes,source,no,updated after artifact generation
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/cost_to_risk_summary.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/curated_data_validation_or_repair_summary.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/drawdown_aggregation_repair_report.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/orb_retest_runtime_benchmark.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/orb_retest_signal_equivalence_report.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16_completion_delta_summary.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16b_run_manifest.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/remaining_grid_run_summary.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/risk_cost_reporting_repair_report.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/risk_per_share_distribution.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/runtime_profile_summary.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/validation_results.csv,Phase16B review artifact,yes,generated,no,curated CSV/MD summary
+tests/unit/test_phase16b_artifact_schema.py,Phase16B artifact schema tests,yes,source,no,Phase16B validation guard
+tests/unit/test_phase16b_no_promotion_leakage.py,Phase16B no-promotion leakage tests,yes,source,no,Phase16B validation guard

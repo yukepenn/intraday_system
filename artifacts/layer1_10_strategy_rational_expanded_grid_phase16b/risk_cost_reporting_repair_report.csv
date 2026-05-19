@@ -1,0 +1,21 @@
+strategy,window,status,risk_per_share_available,cost_to_risk_available,derived_from_execution_outputs,row_level_trades_written,notes
+pa_buy_sell_close_trend,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+orb_continuation,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+orb_retest_continuation,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+failed_orb,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+gap_acceptance_failure,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+vwap_trend_pullback,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+vwap_reclaim_reject,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+prior_day_level_trap,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+cci_extreme_snapback,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+stochastic_oversold_cross,qqq_2024h1,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+pa_buy_sell_close_trend,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+orb_continuation,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+orb_retest_continuation,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+failed_orb,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+gap_acceptance_failure,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+vwap_trend_pullback,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+vwap_reclaim_reject,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+prior_day_level_trap,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+cci_extreme_snapback,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries
+stochastic_oversold_cross,qqq_2024h2,pass,True,True,True,False,aggregate fields persisted in sweep_results.csv and curated Phase16B summaries

@@ -9,7 +9,6 @@ import numpy as np
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.core.errors import ConfigError
-from intraday.features.kernels.session_ops import session_start_indices
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
     build_signal_matrix,
@@ -58,17 +57,19 @@ def _prior_breach_below(
     om: int,
 ) -> np.ndarray:
     n = int(close.shape[0])
-    starts = session_start_indices(session_id)
     out = np.zeros(n, dtype=bool)
+    seen_breach = False
+    current_session: int | None = None
     for i in range(n):
-        if int(minute[i]) < om - 1:
-            continue
-        s0 = int(starts[i])
-        for j in range(s0, i):
-            if int(minute[j]) >= om - 1 and np.isfinite(close[j]) and np.isfinite(orb_low[j]):
-                if close[j] < orb_low[j]:
-                    out[i] = True
-                    break
+        sid = int(session_id[i])
+        if current_session is None or sid != current_session:
+            current_session = sid
+            seen_breach = False
+
+        if int(minute[i]) >= om - 1:
+            out[i] = seen_breach
+            if np.isfinite(close[i]) and np.isfinite(orb_low[i]) and close[i] < orb_low[i]:
+                seen_breach = True
     return out
 
 

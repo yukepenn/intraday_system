@@ -58,6 +58,12 @@ class Layer1GridRow:
     profit_factor_r: float
     max_drawdown_r: float
     avg_bars_held: float
+    avg_risk_per_share: float
+    median_risk_per_share: float
+    p10_risk_per_share: float
+    p90_risk_per_share: float
+    avg_cost_to_risk: float
+    median_cost_to_risk: float
     exit_reason_counts_json: str
     reject_reason_counts_json: str
     skip_reason_counts_json: str

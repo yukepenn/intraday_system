@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any, Literal
 
-from intraday.backtest.metrics import summarize_trade_results
+from intraday.backtest.metrics import summarize_trade_results, summarize_trade_risk_cost
 from intraday.backtest.signal_adapter import SignalAdapterResult, build_trade_intents_from_signals
 from intraday.core.arrays import BarMatrix
 from intraday.core.paths import repo_root
@@ -304,6 +304,11 @@ def run_layer1_controlled_grid(config_path: Path) -> Layer1GridResult:
             results,
             count_rejected_in_metrics=cfg.count_rejected_intents,
         )
+        risk_cost = summarize_trade_risk_cost(
+            results,
+            slippage_per_share=spec.slippage_per_share,
+            commission_per_trade=spec.commission_per_trade,
+        )
 
         rows_out.append(
             Layer1GridRow(
@@ -323,6 +328,12 @@ def run_layer1_controlled_grid(config_path: Path) -> Layer1GridResult:
                 profit_factor_r=metrics.profit_factor_r,
                 max_drawdown_r=metrics.max_drawdown_r,
                 avg_bars_held=metrics.avg_bars_held,
+                avg_risk_per_share=metrics.avg_risk_per_share,
+                median_risk_per_share=metrics.median_risk_per_share,
+                p10_risk_per_share=metrics.p10_risk_per_share,
+                p90_risk_per_share=metrics.p90_risk_per_share,
+                avg_cost_to_risk=risk_cost.avg_cost_to_risk,
+                median_cost_to_risk=risk_cost.median_cost_to_risk,
                 exit_reason_counts_json=json.dumps(metrics.exit_reason_counts, sort_keys=True),
                 reject_reason_counts_json=json.dumps(metrics.reject_reason_counts, sort_keys=True),
                 skip_reason_counts_json=json.dumps(skip_counts, sort_keys=True),

@@ -1,0 +1,21 @@
+strategy,window,combo_count,attempted,completed,blocked,reason_if_blocked,notes
+pa_buy_sell_close_trend,qqq_2024h1,288,288,288,0,,completed with full coverage; no prefix slicing
+orb_continuation,qqq_2024h1,2592,2592,2592,0,,completed with full coverage; no prefix slicing
+orb_retest_continuation,qqq_2024h1,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+failed_orb,qqq_2024h1,384,384,384,0,,completed with full coverage; no prefix slicing
+gap_acceptance_failure,qqq_2024h1,576,576,576,0,,completed with full coverage; no prefix slicing
+vwap_trend_pullback,qqq_2024h1,648,648,648,0,,completed with full coverage; no prefix slicing
+vwap_reclaim_reject,qqq_2024h1,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+prior_day_level_trap,qqq_2024h1,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+cci_extreme_snapback,qqq_2024h1,864,864,864,0,,completed with full coverage; no prefix slicing
+stochastic_oversold_cross,qqq_2024h1,576,576,576,0,,completed with full coverage; no prefix slicing
+pa_buy_sell_close_trend,qqq_2024h2,288,288,288,0,,completed with full coverage; no prefix slicing
+orb_continuation,qqq_2024h2,2592,2592,2592,0,,completed with full coverage; no prefix slicing
+orb_retest_continuation,qqq_2024h2,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+failed_orb,qqq_2024h2,384,384,384,0,,completed with full coverage; no prefix slicing
+gap_acceptance_failure,qqq_2024h2,576,576,576,0,,completed with full coverage; no prefix slicing
+vwap_trend_pullback,qqq_2024h2,648,648,648,0,,completed with full coverage; no prefix slicing
+vwap_reclaim_reject,qqq_2024h2,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+prior_day_level_trap,qqq_2024h2,1296,1296,1296,0,,completed with full coverage; no prefix slicing
+cci_extreme_snapback,qqq_2024h2,864,864,864,0,,completed with full coverage; no prefix slicing
+stochastic_oversold_cross,qqq_2024h2,576,576,576,0,,completed with full coverage; no prefix slicing

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -62,6 +63,36 @@ def _write_dist_csv(path: Path, counts: dict[str, int]) -> None:
             w.writerow([k, counts[k]])
 
 
+def summarize_positive_drawdowns(values: list[float]) -> dict[str, float]:
+    """Summarize positive drawdown magnitudes with best <= median <= p75 <= worst."""
+    finite = sorted(float(v) for v in values if math.isfinite(float(v)))
+    if not finite:
+        return {
+            "best_max_drawdown_r": 0.0,
+            "median_max_drawdown_r": 0.0,
+            "p75_max_drawdown_r": 0.0,
+            "worst_max_drawdown_r": 0.0,
+        }
+
+    def percentile(p: float) -> float:
+        if len(finite) == 1:
+            return finite[0]
+        rank = (len(finite) - 1) * p
+        lower = math.floor(rank)
+        upper = math.ceil(rank)
+        if lower == upper:
+            return finite[int(rank)]
+        weight = rank - lower
+        return finite[lower] * (1.0 - weight) + finite[upper] * weight
+
+    return {
+        "best_max_drawdown_r": finite[0],
+        "median_max_drawdown_r": percentile(0.50),
+        "p75_max_drawdown_r": percentile(0.75),
+        "worst_max_drawdown_r": finite[-1],
+    }
+
+
 def write_config_manifest(artifact_root: Path, smoke_dict: dict[str, Any]) -> None:
     """Persist a copy of the smoke YAML-derived manifest for audit."""
     artifact_root.mkdir(parents=True, exist_ok=True)
@@ -86,6 +117,12 @@ _SWEEPS_HEADER = [
     "profit_factor_r",
     "max_drawdown_r",
     "avg_bars_held",
+    "avg_risk_per_share",
+    "median_risk_per_share",
+    "p10_risk_per_share",
+    "p90_risk_per_share",
+    "avg_cost_to_risk",
+    "median_cost_to_risk",
     "exit_reason_counts_json",
     "reject_reason_counts_json",
     "skip_reason_counts_json",
@@ -116,6 +153,12 @@ def _row_as_sweep_list(r: Layer1GridRow) -> list[Any]:
         pfr_cell,
         r.max_drawdown_r,
         r.avg_bars_held,
+        r.avg_risk_per_share,
+        r.median_risk_per_share,
+        r.p10_risk_per_share,
+        r.p90_risk_per_share,
+        r.avg_cost_to_risk,
+        r.median_cost_to_risk,
         r.exit_reason_counts_json,
         r.reject_reason_counts_json,
         r.skip_reason_counts_json,

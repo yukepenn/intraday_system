@@ -4,6 +4,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-19
 
+### Phase 16B — Expanded-grid runtime/reporting repair + controlled rerun
+
+- Fix(strategies): replace nested ORB retest prior-breakout and failed ORB prior-breach session rescans with semantics-preserving O(n) cumulative state passes.
+- Fix(layer1): add aggregate-only risk-per-share and cost-to-risk diagnostics to Layer1 grid summaries using execution-produced fields.
+- Fix(reports): add positive drawdown magnitude ordering guard (`best <= median <= p75 <= worst`).
+- Research(artifacts): add `artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/` with diagnosis, equivalence, benchmark, rerun manifest, reporting repair, validation, schema, and guardrail artifacts.
+- Test(unit): add ORB retest/failed ORB prior-state equivalence tests plus reporting/metrics guards.
+- Validation: data validation/load-bars passed for QQQ H1/H2 with H2 warning carried forward; grid-inspect and Layer1 grid rerun completed 20/20 Phase16 configs.
+- Decision: `PHASE16_EXPANDED_GRID_RUN_RESUMED_COMPLETE`; next `REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no candidate YAML, promotion, select-dry-run, Layer2/3, WFO, live/paper, strategy retuning, feature semantic change, execution truth change, prefix slicing, or post-result grid shrinking.
+
 ### Phase 16 — Layer1 10-strategy rational expanded grid design + partial run
 
 - Feat(config): add rational expanded grid YAMLs for exactly the 10 current active strategies plus 20 QQQ H1/H2 Phase16 Layer1 diagnostic configs.

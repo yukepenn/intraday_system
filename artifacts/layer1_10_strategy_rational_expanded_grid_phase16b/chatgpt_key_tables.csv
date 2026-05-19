@@ -1,0 +1,22 @@
+section,item,metric,value,interpretation
+phase,name,label,PHASE16B_RESOLVE_EXPANDED_GRID_RUNTIME_AND_REPORTING_BLOCKERS,repair phase
+phase,task_type,label,repair + infrastructure + validation + controlled rerun,not interpretation or promotion
+git,pre_task_head,sha,1ab2728,Codex review commit before Phase16B edits
+git,final_commit,sha,pending_until_commit,self-referential commit hash recorded in final Cursor response
+phase16_before,decision,label,LAYER1_10_STRATEGY_RATIONAL_EXPANDED_GRID_DESIGN_COMPLETE_RUN_BLOCKED,run incomplete before repair
+codex_before,verdict,label,NEEDS_FIX,repair required before Phase17
+runtime,orb_retest_diagnosis,label,strategy_signal_generation_prior_breakout,nested per-bar session scan was material bottleneck
+runtime,failed_orb_diagnosis,label,strategy_signal_generation_prior_breach,same pattern discovered during controlled rerun
+reporting,drawdown_fix_status,label,pass,"best=min, median=median, p75=p75, worst=max"
+reporting,risk_cost_fix_status,label,pass,aggregate diagnostics from TradeResult fields only
+data,curated_data_status,label,pass_with_h2_warning,H2 missing_minute_slots_total=540 carried forward
+run,remaining_configs_attempted,count,20,schema rerun included previously completed configs
+run,remaining_configs_completed,count,20,all intended Phase16 configs completed
+run,remaining_configs_blocked,count,0,no remaining Phase16B runtime blocker
+guardrail,candidate_yaml_created,boolean,false,no promotion artifact
+guardrail,select_dry_run_run,boolean,false,forbidden command not run
+guardrail,Layer2_created,boolean,false,Layer2 remains locked
+guardrail,WFO_run,boolean,false,forbidden command not run
+guardrail,live_paper_run,boolean,false,forbidden command not run
+decision,label,label,PHASE16_EXPANDED_GRID_RUN_RESUMED_COMPLETE,full intended Phase16 grid run completed
+next,recommended_next_step,label,REVIEW_10_STRATEGY_EXPANDED_GRID_RESULTS_BY_REGION,after Codex and ChatGPT Pro review

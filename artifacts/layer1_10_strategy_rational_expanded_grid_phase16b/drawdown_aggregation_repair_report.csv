@@ -1,0 +1,21 @@
+input_case,max_drawdown_values,best_max_drawdown_r,median_max_drawdown_r,p75_max_drawdown_r,worst_max_drawdown_r,ordering_ok,notes
+pa_buy_sell_close_trend_qqq_2024h1,n=288; min=4.60733; max=28.8792,4.60733433499,9.40731761783,17.7099466763,28.8791697131,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+orb_continuation_qqq_2024h1,n=2592; min=2.76719; max=26.4282,2.76718598624,6.6969469217,15.8158541485,26.4282214388,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+orb_retest_continuation_qqq_2024h1,n=1296; min=2.80915; max=33.7252,2.80914590126,7.00778715446,15.0567091209,33.7251914227,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+failed_orb_qqq_2024h1,n=384; min=1.6337; max=16.7933,1.63369863014,8.29692531282,11.492671967,16.7932526245,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+gap_acceptance_failure_qqq_2024h1,n=576; min=0; max=14.4707,0,1.02511134166,3.12010796221,14.470746034,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+vwap_trend_pullback_qqq_2024h1,n=648; min=1.01606; max=48.5492,1.01606040521,8.71144362363,17.0341282872,48.5491731705,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+vwap_reclaim_reject_qqq_2024h1,n=1296; min=0; max=25.9744,0,4.62201979595,12.0526600966,25.9743513241,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+prior_day_level_trap_qqq_2024h1,n=1296; min=2.14387; max=12.6688,2.14386643946,4.63985714196,6.29861487754,12.668783062,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+cci_extreme_snapback_qqq_2024h1,n=864; min=2.06559; max=47.0448,2.06559139785,12.9418621447,20.6891882215,47.0447932874,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+stochastic_oversold_cross_qqq_2024h1,n=576; min=4.94954; max=42.1571,4.94953535499,15.4916073182,24.7416299415,42.1571194382,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+pa_buy_sell_close_trend_qqq_2024h2,n=288; min=8.61187; max=33.1333,8.61186937401,18.8075242537,21.6285514828,33.1333431905,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+orb_continuation_qqq_2024h2,n=2592; min=4.57781; max=28.092,4.57780832512,8.12150536102,11.3937724713,28.0920195284,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+orb_retest_continuation_qqq_2024h2,n=1296; min=3.08144; max=33.746,3.0814399489,9.41058050062,19.4524885639,33.7460245828,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+failed_orb_qqq_2024h2,n=384; min=1.58662; max=23.4586,1.58662224646,8.26519168932,11.6454516407,23.4585883436,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+gap_acceptance_failure_qqq_2024h2,n=576; min=0; max=11.9336,0,1.0303030303,2.08666666667,11.933601716,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+vwap_trend_pullback_qqq_2024h2,n=648; min=1.02778; max=52.193,1.02777777778,7.73193201643,13.3389168297,52.1929775757,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+vwap_reclaim_reject_qqq_2024h2,n=1296; min=0; max=33.3683,0,3.17676329986,9.69467753928,33.3683054742,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+prior_day_level_trap_qqq_2024h2,n=1296; min=0; max=19.036,0,3.49335302925,11.2784010017,19.0360015053,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+cci_extreme_snapback_qqq_2024h2,n=864; min=3.07522; max=50.036,3.07522349936,15.8629873301,27.1247681404,50.0359924661,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates
+stochastic_oversold_cross_qqq_2024h2,n=576; min=5.44351; max=49.0224,5.44350931018,19.7460488325,26.6162772366,49.0224151544,True,positive drawdown magnitude convention from execution-produced max_drawdown_r aggregates

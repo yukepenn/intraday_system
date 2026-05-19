@@ -1,0 +1,19 @@
+artifact_path,artifact_type,parse_ok,expected_columns_ok,row_count,issue,notes
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/SOURCE_MAP.csv,csv,True,True,29,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/chatgpt_key_tables.csv,csv,True,True,21,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/validation_results.csv,csv,True,True,61,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/runtime_profile_summary.csv,csv,True,True,24,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/orb_retest_signal_equivalence_report.csv,csv,True,True,7,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/orb_retest_runtime_benchmark.csv,csv,True,True,2,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/drawdown_aggregation_repair_report.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/risk_cost_reporting_repair_report.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/curated_data_validation_or_repair_summary.csv,csv,True,True,2,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16b_run_manifest.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16_completion_delta_summary.csv,csv,True,True,5,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/remaining_grid_run_summary.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/risk_per_share_distribution.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/cost_to_risk_summary.csv,csv,True,True,20,,required Phase16B artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/CHATGPT_REVIEW_BUNDLE.md,md,True,n/a,69,,markdown artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/runtime_blocker_diagnosis.md,md,True,n/a,13,,markdown artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/non_promotion_guardrails.md,md,True,n/a,18,,markdown artifact
+artifacts/layer1_10_strategy_rational_expanded_grid_phase16b/phase16b_decision.md,md,True,n/a,11,,markdown artifact
