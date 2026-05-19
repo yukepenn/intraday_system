@@ -1,0 +1,18 @@
+key,value,notes
+phase,PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN,Review/design only.
+pre_task_head,9df439e8602d8366dfc21778e2dc640620e56b0e,HEAD before Phase15 edits.
+final_commit,pending_until_commit,Final hash reported in Cursor final response after commit.
+phase14_cursor_commit_reviewed_by_codex,407ee3827c7dc761498633bf2c001825fb4591f5,Target Cursor commit reviewed by Codex.
+latest_codex_review_commit,9df439e8602d8366dfc21778e2dc640620e56b0e,HEAD at Phase15 start; changed CODEX_REVIEW.md only.
+active_strategy_count,10,All Phase14 active long-only strategies covered.
+new_grid_runs,false,Phase15 did not run a new Layer1 grid.
+select_dry_run_run,false,Forbidden in Phase15.
+candidate_yaml_added,false,No runtime candidate YAML.
+layer2_added,false,Layer2 remains locked.
+wfo_added,false,No WFO.
+live_paper_added,false,No live/paper.
+phase14_h1_available,true,H1 observed design/diagnostic window.
+phase14_h2_warning,missing_minute_slots_total=540,H2 is sanity/plumbing only.
+focused_grid_run,false,Only future design spec produced.
+decision,LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE,Phase15 completed as review/design.
+next_step,RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID,Future bounded Phase16 diagnostic only; no promotion.

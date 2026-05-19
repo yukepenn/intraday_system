@@ -1,0 +1,31 @@
+artifact_path,artifact_type,parse_status,expected_columns_status,row_count,issue,notes
+artifacts/layer1_strategy_library_small_grid_phase14/per_strategy_grid_summary.csv,phase14_summary_csv,PASS,PASS,20,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/per_strategy_health_summary.csv,phase14_summary_csv,PASS,PASS,20,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/skip_reject_summary.csv,phase14_summary_csv,PASS,PASS,464,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/feature_signal_hash_summary.csv,phase14_summary_csv,PASS,PASS,464,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/data_availability_summary.csv,phase14_summary_csv,PASS,PASS,2,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/phase14_run_manifest.csv,phase14_summary_csv,PASS,PASS,20,,Required Phase14 input artifact parsed.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/cci_extreme_snapback/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/failed_orb/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/gap_acceptance_failure/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/orb_continuation/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/orb_retest_continuation/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/pa_buy_sell_close_trend/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,16,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/prior_day_level_trap/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/stochastic_oversold_cross/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/vwap_reclaim_reject/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h1/vwap_trend_pullback/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/cci_extreme_snapback/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/failed_orb/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/gap_acceptance_failure/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/orb_continuation/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/orb_retest_continuation/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/pa_buy_sell_close_trend/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,16,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/prior_day_level_trap/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/stochastic_oversold_cross/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/vwap_reclaim_reject/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_small_grid_phase14/runs/qqq_2024h2/vwap_trend_pullback/sweep_results.csv,phase14_sweep_results_csv,PASS,PASS,24,,Representative H1/H2 sweep artifact used for Phase15 review.
+artifacts/layer1_strategy_library_result_review_phase15/cross_window_metric_matrix.csv,phase15_generated_csv,PASS,PASS,10,,Generated from existing Phase14 artifacts only.
+artifacts/layer1_strategy_library_result_review_phase15/strategy_family_status_matrix.csv,phase15_generated_csv,PASS,PASS,10,,Generated from existing Phase14 artifacts only.
+artifacts/layer1_strategy_library_result_review_phase15/hold_watch_rationale.csv,phase15_generated_csv,PASS,PASS,10,,Generated from existing Phase14 artifacts only.
+artifacts/layer1_strategy_library_result_review_phase15/focused_grid_candidate_scope.csv,phase15_generated_csv,PASS,PASS,10,,Generated from existing Phase14 artifacts only.

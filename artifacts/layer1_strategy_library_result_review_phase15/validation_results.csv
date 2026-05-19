@@ -1,0 +1,25 @@
+command,status,exit_code,notes
+git status --short,PASS,0,Clean before Phase15 edits.
+git log --oneline -10,PASS,0,Captured Phase14 Cursor commit and latest Codex review commit.
+git branch --show-current,PASS,0,main
+git rev-parse HEAD,PASS,0,Pre-task HEAD 9df439e8602d8366dfc21778e2dc640620e56b0e.
+git show --name-only --format=... HEAD,PASS,0,Latest Codex review commit changed CODEX_REVIEW.md only.
+Phase15 artifact generation from existing Phase14 CSVs,PASS,0,"No Layer1 grid, select-dry-run, Layer2, WFO, live/paper, or candidate YAML generation."
+python -m compileall src tests,PASS,0,Compiled src and tests.
+python -m intraday.cli.main --help,PASS,0,CLI help rendered.
+python -m intraday.cli.main doctor,PASS,0,Doctor completed.
+python -m intraday.cli.main validate structure,PASS,0,Required paths present.
+python -m pytest -q tests/unit/test_phase14_artifact_csv_schema.py,PASS,0,1 passed.
+python -m pytest -q tests/unit/test_layer1_phase14_configs.py,PASS,0,2 passed.
+python -m pytest -q tests/unit/test_phase14_strategy_static_boundaries.py,PASS,0,1 passed.
+python -m pytest -q tests/unit/test_phase15_review_artifact_schema.py,PASS_INITIAL,0,3 passed before Ruff import-order fix.
+python -m pytest -q tests/unit/test_phase15_no_runtime_leakage.py,PASS_INITIAL,0,4 passed before Ruff formatting fix.
+python -m ruff check .,FAIL_PHASE15_TEST_FORMAT_THEN_FIXED,1,Found known pre-existing script issues plus new Phase15 test import ordering; Phase15 test issues were fixed.
+python -m ruff format --check .,FAIL_PHASE15_TEST_FORMAT_THEN_FIXED,1,Found known pre-existing script formatting plus Phase15 test formatting; Phase15 test formatting was fixed.
+python -m ruff check --fix tests/unit/test_phase15_review_artifact_schema.py tests/unit/test_phase15_no_runtime_leakage.py,PASS,0,Fixed 2 Phase15 test import-order issues only.
+python -m ruff format tests/unit/test_phase15_review_artifact_schema.py tests/unit/test_phase15_no_runtime_leakage.py,PASS,0,Formatted Phase15 tests only; 1 file reformatted.
+python -m pytest -q tests/unit/test_phase15_review_artifact_schema.py,PASS,0,3 passed after Ruff fixes.
+python -m pytest -q tests/unit/test_phase15_no_runtime_leakage.py,PASS,0,4 passed after Ruff fixes.
+python -m ruff check .,FAIL_KNOWN_PREEXISTING_RUFF_BASELINE,1,Remaining findings only in scripts/generate_phase7_dry_run.py and scripts/validate_repo.py.
+python -m ruff format --check .,FAIL_KNOWN_PREEXISTING_RUFF_BASELINE,1,Would reformat pre-existing scripts/generate_phase7_dry_run.py.
+python -m pytest -q tests/unit/test_phase15_review_artifact_schema.py tests/unit/test_phase15_no_runtime_leakage.py,PASS,0,7 passed after validation ledger update.

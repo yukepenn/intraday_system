@@ -285,6 +285,28 @@ Recommended next step: **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**.
 
 Longer roadmap: Phase 15 may design a focused diagnostic grid only after review. Candidate promotion remains gated by evidence and schema/reconstruction safety. Layer2 remains locked until a candidate pool exists.
 
+## Phase 15 — Layer1 strategy-library result review + focused-grid design — **complete**
+
+Goal: review existing Phase14 diagnostic artifacts and design a future focused diagnostic grid — **no new grid run, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO, no live/paper**.
+
+Highlights:
+
+- Parsed Phase14 summary artifacts and all 20 H1/H2 representative `sweep_results.csv` files.
+- Built `artifacts/layer1_strategy_library_result_review_phase15/` with cross-window metrics, strategy-family status matrix, hold/watch rationale, focused-grid design scope, H2 warning interpretation, data-window policy, promotion prerequisite gaps, Ruff triage, guardrails, and next-step decision matrix.
+- Classified all 10 active strategies with exactly one primary review status; every strategy remains `promotion_ready=false`.
+- Preserved H2 warning `missing_minute_slots_total=540`; H2 remains sanity/plumbing only, not confirmation.
+- First-scope future focused diagnostic eligibility is limited to `orb_continuation`; Phase14 top rows are not candidates.
+
+Decision label: **`LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE`**.
+
+Recommended next step: **`RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`** as bounded Phase16 diagnostic only.
+
+## Phase 16 — Bounded focused diagnostic grid — **future if Phase15 accepted**
+
+Goal: run a pre-registered, bounded focused diagnostic grid only. Still no candidate promotion, candidate YAML, select-dry-run, Layer2, Layer3, WFO, live, or paper.
+
+Candidate promotion remains a later phase only after evidence, data-quality, schema, resolved-config reconstruction, and review gates are satisfied. Layer2 remains later still, after an actual promoted candidate pool exists.
+
 ## Phase 8-R — Port GAP and CCI (original roadmap; superseded by Phase 11 ORB-first plan)
 
 ## Phase 11 — Layer2 controlled router (original roadmap Phase 9)
@@ -317,4 +339,4 @@ Longer roadmap: Phase 15 may design a focused diagnostic grid only after review.
 - `BOOTSTRAP_PHASE0_1A_COMPLETE`
 - `HOLD_AND_REVIEW`
 
-Superseded legacy note: Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). The old next step **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** and "Port GAP/CCI deferred until after ORB pipeline proof" note were superseded by Phase **13** (`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`) and Phase **14** (`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`). Current next step: **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**.
+Superseded legacy note: Phase **12** completed generic ORB feature foundation (`orb_core_v1`, `vwap_slope_5`, `orb_width_pct_15`). The old next step **`IMPLEMENT_SECOND_STRATEGY_FAMILY_MVP`** and "Port GAP/CCI deferred until after ORB pipeline proof" note were superseded by Phase **13** (`PRE_LAYER2_STRATEGY_LIBRARY_RUNTIME_COMPLETE`), Phase **14** (`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`), and Phase **15** (`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`). Current next step: **`RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`** as bounded diagnostic only.

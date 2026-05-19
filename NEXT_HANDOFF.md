@@ -1,6 +1,6 @@
 # NEXT_HANDOFF
 
-Last updated: **2026-05-18** (Phase **14** - preflight and Layer1 strategy-library small-grid diagnostic).
+Last updated: **2026-05-19** (Phase **15** - result review and focused-grid design).
 
 ---
 
@@ -8,105 +8,113 @@ Last updated: **2026-05-18** (Phase **14** - preflight and Layer1 strategy-libra
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `dbaeb3d96f32585d04ed9450affa0751b1a974e9`
-- Task commit hash: recorded in final Cursor response / `git log -1` after commit
-- Codex review pending: yes, after push
+- Pre-task HEAD: `9df439e8602d8366dfc21778e2dc640620e56b0e`
+- Phase14 Cursor task commit reviewed by Codex: `407ee3827c7dc761498633bf2c001825fb4591f5`
+- Latest Codex review commit: `9df439e8602d8366dfc21778e2dc640620e56b0e`
+- Codex review commit changed only `CODEX_REVIEW.md`.
+- Task commit hash: recorded in final Cursor response / `git log -1` after commit.
 - Cursor does not edit `CODEX_REVIEW.md`.
 
 ---
 
 ## B. Phase
 
-`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`
+`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`
 
 ---
 
 ## C. What Changed
 
-- Repaired 7 malformed Phase 13 CSV audit artifacts with parseable headers.
-- Updated README/status/phase-plan/progress/changelog away from stale Phase 12 ORB-only next-step language.
-- Added 20 Phase 14 Layer1 diagnostic configs: 10 QQQ 2024H1 primary + 10 exact QQQ 2024H2 repeat.
-- Generated bundle: `artifacts/layer1_strategy_library_small_grid_phase14/`.
-- Added tests for Phase 14 artifact CSV schemas, Layer1 diagnostic config hygiene, candidate-root hygiene, and strategy static boundaries.
+- Generated review-only bundle: `artifacts/layer1_strategy_library_result_review_phase15/`.
+- Parsed Phase14 summary CSVs and all 20 H1/H2 representative `sweep_results.csv` files.
+- Built H1/H2 cross-window matrix, strategy-family status matrix, hold/watch rationale, focused-grid design scope, H2 warning memo, data-window policy memo, promotion prerequisite gap list, Ruff triage, guardrails, and next-phase decision matrix.
+- Added Phase15 artifact-schema and runtime-leakage tests.
+- Updated status/roadmap docs for Phase15 completion.
 
 ---
 
-## D. Results
+## D. Artifacts Reviewed
 
-- QQQ 2024H1 curated data: available and clean (`48360` rows, `124` full sessions).
-- QQQ 2024H2 curated data: available with validation warning (`missing_minute_slots_total=540`), loaded `49380` rows.
-- Grid-inspect: PASS for 20/20 configs.
-- Grids run: H1 10/10; H2 exact-repeat sanity 10/10.
-- All per-strategy health labels: `CLEAN_PLUMBING`.
-- No promotion statement: Phase 14 results are diagnostic plumbing evidence only.
-- No candidate YAML statement: no runtime candidate YAMLs were added.
-- No Layer2/3/WFO/live/paper statement: none added or run.
-
-### Per-Strategy Diagnostic Summary
-
-H1 primary:
-
-| Strategy | Combos | Signals | Accepted | Rejected | Health |
-| --- | ---: | ---: | ---: | ---: | --- |
-| `pa_buy_sell_close_trend` | 16/16 | 56524 | 1908 | 0 | `CLEAN_PLUMBING` |
-| `orb_continuation` | 24/24 | 1848 | 1840 | 8 | `CLEAN_PLUMBING` |
-| `orb_retest_continuation` | 24/24 | 1728 | 1716 | 12 | `CLEAN_PLUMBING` |
-| `failed_orb` | 24/24 | 1284 | 1254 | 30 | `CLEAN_PLUMBING` |
-| `gap_acceptance_failure` | 24/24 | 176 | 176 | 0 | `CLEAN_PLUMBING` |
-| `vwap_trend_pullback` | 24/24 | 2730 | 2730 | 0 | `CLEAN_PLUMBING` |
-| `vwap_reclaim_reject` | 24/24 | 2304 | 2296 | 8 | `CLEAN_PLUMBING` |
-| `prior_day_level_trap` | 24/24 | 606 | 602 | 4 | `CLEAN_PLUMBING` |
-| `cci_extreme_snapback` | 24/24 | 2964 | 2954 | 10 | `CLEAN_PLUMBING` |
-| `stochastic_oversold_cross` | 24/24 | 2802 | 2784 | 18 | `CLEAN_PLUMBING` |
-
-H2 exact-repeat sanity:
-
-| Strategy | Combos | Signals | Accepted | Rejected | Health |
-| --- | ---: | ---: | ---: | ---: | --- |
-| `pa_buy_sell_close_trend` | 16/16 | 58316 | 1916 | 0 | `CLEAN_PLUMBING` |
-| `orb_continuation` | 24/24 | 2052 | 2052 | 0 | `CLEAN_PLUMBING` |
-| `orb_retest_continuation` | 24/24 | 1860 | 1860 | 0 | `CLEAN_PLUMBING` |
-| `failed_orb` | 24/24 | 1452 | 1431 | 21 | `CLEAN_PLUMBING` |
-| `gap_acceptance_failure` | 24/24 | 132 | 130 | 2 | `CLEAN_PLUMBING` |
-| `vwap_trend_pullback` | 24/24 | 2544 | 2536 | 8 | `CLEAN_PLUMBING` |
-| `vwap_reclaim_reject` | 24/24 | 2040 | 2040 | 0 | `CLEAN_PLUMBING` |
-| `prior_day_level_trap` | 24/24 | 462 | 458 | 4 | `CLEAN_PLUMBING` |
-| `cci_extreme_snapback` | 24/24 | 3066 | 3050 | 16 | `CLEAN_PLUMBING` |
-| `stochastic_oversold_cross` | 24/24 | 2802 | 2790 | 12 | `CLEAN_PLUMBING` |
+- Phase14 bundle: `artifacts/layer1_strategy_library_small_grid_phase14/`.
+- Key inputs: `per_strategy_grid_summary.csv`, `per_strategy_health_summary.csv`, `skip_reject_summary.csv`, `feature_signal_hash_summary.csv`, `data_availability_summary.csv`, `phase14_run_manifest.csv`, `layer1_config_inventory.csv`.
+- Representative run artifacts: all 20 H1/H2 `sweep_results.csv` files under Phase14 `runs/`.
+- Current contracts, Phase14 configs, strategy grids, feature configs, candidate/Layer2 placeholders, and Layer1 reporting/runtime code were read for boundary checks.
 
 ---
 
-## E. Validation
+## E. Strategy-Family Classification Summary
 
-- `compileall`: PASS
-- Full `pytest`: PASS (`445 passed`)
-- Smoke `pytest`: PASS (`25 passed`)
-- CLI/data/features/strategies/grid-inspect/grid commands: PASS except H2 data validation warning recorded.
-- CSV schema validation: PASS.
-- Ruff full-repo: unrelated pre-existing script findings remain in `scripts/generate_phase7_dry_run.py` and `scripts/validate_repo.py`; Phase14 tests were lint-fixed.
+- `orb_continuation`: `FOCUSED_DIAGNOSTIC_CANDIDATE`.
+- `pa_buy_sell_close_trend`: `LEGACY_HOLD`.
+- `orb_retest_continuation`: `WATCH_REGIME_FLIP`.
+- `failed_orb`: `HOLD_WEAK_OR_NEGATIVE`.
+- `gap_acceptance_failure`: `WATCH_LOW_SAMPLE`.
+- `vwap_trend_pullback`: `WATCH_HIGH_DRAWDOWN`.
+- `vwap_reclaim_reject`: `WATCH_REGIME_FLIP`.
+- `prior_day_level_trap`: `WATCH_REGIME_FLIP`.
+- `cci_extreme_snapback`: `WATCH_HIGH_DRAWDOWN`.
+- `stochastic_oversold_cross`: `WATCH_HIGH_DRAWDOWN`.
 
----
-
-## F. Known Limitations
-
-- QQQ-only diagnostic windows.
-- Tiny controlled grids only.
-- Performance is not promotion evidence.
-- H2 exact-repeat sanity run is not confirmation/promotion.
-- Review should focus on plumbing health, skip/reject distributions, artifact quality, and whether a focused diagnostic grid is warranted later.
+Every strategy has `promotion_ready=false`. `focused_grid_ready=true` means future diagnostic-design eligibility only, not candidate readiness.
 
 ---
 
-## G. Decision
+## F. H2 Data-Warning Interpretation
 
-### `LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC_COMPLETE`
+- Exact warning: `missing_minute_slots_total=540`.
+- QQQ 2024H2 remains an exact-repeat sanity/plumbing run only.
+- H2 is not confirmation evidence and must not be used alone to promote, tune, or rank strategies.
+- H2 should be investigated or repaired before it is used for stronger evidence.
 
 ---
 
-## H. Recommended Next Step
+## G. Focused-Grid Design Recommendation
 
-### `REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`
+Recommended next step is a future bounded diagnostic Phase16:
 
-Do not recommend candidate promotion, candidate YAML, Layer2, Layer3, WFO, live, or paper.
+`RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`
 
-After push, Codex should review `main`.
+This means only a pre-registered, bounded, reviewable diagnostic grid. It does not mean candidate selection, candidate promotion, candidate YAML, Layer2, Layer3, WFO, live, or paper. First-scope eligibility is limited to `orb_continuation`; watch/hold families stay out unless a later prompt explicitly defines a separate bounded shadow diagnostic.
+
+---
+
+## H. Promotion Prerequisite Gaps
+
+Promotion remains blocked until a future phase provides full resolved config capture or deterministic reconstruction with hash verification, exact base/grid/feature/execution provenance, multi-window and fresh-holdout evidence, data-quality clean windows, selection gates, drawdown/sample/stability gates, artifact schema validation, candidate YAML schema, no duplicated PnL truth, Codex review, and ChatGPT strategic approval.
+
+---
+
+## I. Ruff / Hygiene Triage
+
+Full-repo Ruff remains red due pre-existing script files:
+
+- `scripts/generate_phase7_dry_run.py`
+- `scripts/validate_repo.py`
+
+This does not block Phase15 unless tests fail. Recommended hygiene label if prioritized: `REPAIR_PREEXISTING_RUFF_SCRIPT_BASELINE`.
+
+---
+
+## J. Commands Run
+
+See `artifacts/layer1_strategy_library_result_review_phase15/validation_results.csv`.
+
+---
+
+## K. Non-Goals Preserved
+
+No new Layer1 grid, no select-dry-run, no candidate YAML, no promotion, no Layer2, no Layer3, no WFO, no live/paper, no strategy retuning, no feature semantics changes, no execution truth changes, no QT runtime dependency, and no heavy/local artifacts.
+
+---
+
+## L. Decision
+
+### `LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE`
+
+---
+
+## M. Recommended Next Step
+
+### `RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`
+
+Future Phase16 remains diagnostic only. After push, Codex should review `main`.

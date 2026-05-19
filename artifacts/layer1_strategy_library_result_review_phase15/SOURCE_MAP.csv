@@ -1,0 +1,24 @@
+file,category,purpose,changed,must_review,notes
+artifacts/layer1_strategy_library_result_review_phase15/CHATGPT_REVIEW_BUNDLE.md,artifact,Phase15 review bundle,true,true,Primary audit bundle.
+artifacts/layer1_strategy_library_result_review_phase15/SOURCE_MAP.csv,artifact,Phase15 source map,true,true,Lists changed review artifacts/docs/tests.
+artifacts/layer1_strategy_library_result_review_phase15/chatgpt_key_tables.csv,artifact,Phase15 key facts,true,true,Review-only status facts.
+artifacts/layer1_strategy_library_result_review_phase15/phase15_input_artifact_parse_validation.csv,artifact,Input parse validation,true,true,Validates Phase14 artifacts and Phase15 generated CSVs.
+artifacts/layer1_strategy_library_result_review_phase15/cross_window_metric_matrix.csv,artifact,H1/H2 metric matrix,true,true,All 10 strategies.
+artifacts/layer1_strategy_library_result_review_phase15/strategy_family_status_matrix.csv,artifact,Status matrix,true,true,Exactly one primary status per strategy.
+artifacts/layer1_strategy_library_result_review_phase15/hold_watch_rationale.csv,artifact,Rationale table,true,true,Evidence-backed hold/watch/focused reasons.
+artifacts/layer1_strategy_library_result_review_phase15/focused_grid_candidate_scope.csv,artifact,Future focused-grid scope,true,true,Design-only and non-runtime.
+artifacts/layer1_strategy_library_result_review_phase15/focused_grid_design_recommendation.md,artifact,Focused-grid design memo,true,true,Future Phase16 diagnostic design only.
+artifacts/layer1_strategy_library_result_review_phase15/data_window_policy_memo.md,artifact,Data-window policy,true,true,Fresh holdout policy.
+artifacts/layer1_strategy_library_result_review_phase15/h2_data_warning_interpretation.md,artifact,H2 warning memo,true,true,Preserves missing_minute_slots_total=540.
+artifacts/layer1_strategy_library_result_review_phase15/promotion_prerequisite_gap_list.md,artifact,Promotion gap list,true,true,Blocks candidate YAML/Layer2.
+artifacts/layer1_strategy_library_result_review_phase15/ruff_and_hygiene_triage.md,artifact,Ruff triage,true,true,Known pre-existing scripts.
+artifacts/layer1_strategy_library_result_review_phase15/non_promotion_guardrails.md,artifact,Non-promotion guardrails,true,true,Explicit non-goals.
+artifacts/layer1_strategy_library_result_review_phase15/next_phase_decision_matrix.csv,artifact,Next-step decision matrix,true,true,Candidate promotion and Layer2 forbidden.
+artifacts/layer1_strategy_library_result_review_phase15/validation_results.csv,artifact,Phase15 command ledger,true,true,Filled after validation commands.
+NEXT_HANDOFF.md,doc,Phase15 handoff,true,true,Updated after artifact generation.
+PROJECT_STATUS.md,doc,Current status,true,true,Updated after artifact generation.
+PROGRESS.md,doc,Progress log,true,true,Updated after artifact generation.
+CHANGES.md,doc,Changelog,true,true,Updated after artifact generation.
+docs/PHASE_PLAN.md,doc,Roadmap,true,true,Updated after artifact generation.
+tests/unit/test_phase15_review_artifact_schema.py,test,Phase15 artifact schema guard,true,true,Added if present.
+tests/unit/test_phase15_no_runtime_leakage.py,test,Phase15 runtime leakage guard,true,true,Added if present.

@@ -2,6 +2,16 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
+## [Unreleased] – 2026-05-19
+
+### Phase 15 — Layer1 strategy-library result review and focused-grid design
+
+- Research(artifacts): add `artifacts/layer1_strategy_library_result_review_phase15/` with Phase14 parse validation, H1/H2 cross-window metrics, strategy-family status matrix, hold/watch rationale, focused-grid design scope, data-window policy, H2 warning memo, promotion prerequisite gaps, Ruff triage, guardrails, and next-phase decision matrix.
+- Docs(status): update handoff, project status, progress, and phase plan for review/design-only Phase15 completion.
+- Test(unit): add Phase15 artifact-schema and runtime-leakage guards.
+- Decision: `LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_COMPLETE`; next `RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID` as a future bounded diagnostic only.
+- Explicit non-goals: no new grid, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, strategy retuning, feature semantic change, execution truth change, QT runtime dependency, or heavy/local artifact.
+
 ## [Unreleased] – 2026-05-18
 
 ### Phase 14 — Preflight and Layer1 strategy-library small-grid diagnostic

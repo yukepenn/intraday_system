@@ -112,7 +112,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 14 complete:** **`PHASE14_PREFLIGHT_AND_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_DIAGNOSTIC`** repaired Phase 13 CSV audit artifacts, refreshed stale status docs, added one tiny Layer1 controlled-grid diagnostic config per active strategy for QQQ 2024H1 plus exact QQQ 2024H2 repeat configs, and ran the Layer1 small-grid plumbing diagnostic. Bundle `artifacts/layer1_strategy_library_small_grid_phase14/`.
 
-**Next:** **`REVIEW_LAYER1_STRATEGY_LIBRARY_SMALL_GRID_RESULTS`**. This is review of diagnostic/plumbing smoke only: not candidate promotion, not candidate YAML generation, not Layer2, not WFO, and not live/paper.
+**Phase 15 complete:** **`PHASE15_LAYER1_STRATEGY_LIBRARY_RESULT_REVIEW_AND_FOCUSED_GRID_DESIGN`** reviewed existing Phase14 results only, built cross-window/status/rationale artifacts for all 10 strategies, preserved the H2 warning `missing_minute_slots_total=540`, and designed a future bounded focused diagnostic grid. Bundle `artifacts/layer1_strategy_library_result_review_phase15/`.
+
+**Next:** **`RUN_LAYER1_STRATEGY_LIBRARY_FOCUSED_DIAGNOSTIC_GRID`** as a future bounded diagnostic only. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, or paper.
 
 See:
 
