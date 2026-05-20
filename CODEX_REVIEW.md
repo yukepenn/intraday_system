@@ -4,74 +4,74 @@
 
 - Repo: `https://github.com/yukepenn/intraday_system.git`
 - Branch: `main`
-- Latest commit at review time: `4b4758d724fc1021688fb07872dd418e0d479f8b`
-- Target Cursor commit reviewed: `4b4758d724fc1021688fb07872dd418e0d479f8b`
-- Target commit parent: `bdf572c606cb903b6d9ee48fcaf4ea71a6593a53`
-- Substantive Phase18C implementation commit reviewed as current-state context: `259c0eb`
+- Latest commit at review time: `c292ee30d6301126631d50dde83861b582321d3b`
+- Target Cursor commit reviewed: `c292ee30d6301126631d50dde83861b582321d3b`
+- Target commit parent: `6a97e9ee22c3d01f1d0c14ede7914dc5f02b3260`
+- Substantive Phase18D implementation commit reviewed as current-state context: `6a97e9ee22c3d01f1d0c14ede7914dc5f02b3260`
 - Cursor handoff reviewed: `NEXT_HANDOFF.md`
-- Phase / task identified: Phase 18C, `PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS`; latest target commit is a follow-up key-table artifact hash correction.
-- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `README.md`, `docs/PHASE_PLAN.md`, `docs/DESIGN_BASELINE.md`, `docs/CONFIG_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `intraday_system_design_instructions.txt`, `artifacts/existing_10_strategy_refinement_repair_phase18c/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, `v2_runtime_field_inventory.csv`, `validation_gap_repair_matrix.csv`, Phase18C test files, `src/intraday/strategies/config_validation.py`, and representative changed strategy validators.
+- Phase / task identified: Phase 18D, `PHASE18D_CURRENT10_REFINED_READINESS_AND_ONBOARDING_CHECKLIST`; latest target commit is a follow-up status/key-table update recording the Phase18D implementation commit.
+- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `README.md`, `docs/PHASE_PLAN.md`, `docs/DESIGN_BASELINE.md`, `docs/CONFIG_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `intraday_system_design_instructions.txt`, `artifacts/current10_refined_readiness_phase18d/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, readiness/inspect/contract-alignment tables, `strategy_onboarding_checklist_v2.md`, `phase19_strategy_addition_template.md`, `src/intraday/core/arrays.py`, `src/intraday/core/errors.py`, `src/intraday/strategies/contracts.py`, representative `failed_orb` v2 feature/strategy/grid/Layer1 configs, and Phase18C/18D tests.
 
 ## B. Summary Verdict
 
 - PASS_WITH_WARNINGS
 
-The latest target commit is a small artifact-status repair that replaces `pending_until_commit` with the substantive Phase18C implementation hash `259c0eb` in `chatgpt_key_tables.csv`; that change is accurate and consistent with the handoff. The current repo state credibly addresses the prior Codex Phase18B validation/test gaps by adding finite/int/bool/enum validation, branch tests, missing-feature checks, and curated review artifacts without candidate promotion or Layer1/Layer2 movement. The repo is ready for ChatGPT final review, with warnings: validation claims were not independently rerun by Codex per the review boundary, and an untracked local Phase16 `runs/` artifact tree remains present and should be cleaned or ignored in a future hygiene pass. The next Cursor prompt should proceed only after ChatGPT review, preferably to Phase18D smoke/grid-inspect review rather than promotion or candidate YAML.
+The latest target commit is a small status/artifact correction over the substantive Phase18D implementation commit `6a97e9e`, and the current repo state is consistent with the Phase18D handoff: it validates inspectability for the refined current-10 v2 package, operationalizes onboarding checklist/template artifacts, standardizes missing-feature failures to `ConfigError`, and preserves the no-promotion/no-economic-claim boundary. The repo is ready for ChatGPT final review. The next Cursor prompt should proceed only after ChatGPT review, and should move to Phase19 design/onboarding work rather than candidate YAML, select-dry-run, promotion, Layer2/3, WFO, live, or paper. Warnings: Codex did not rerun validation commands per review boundary, and a local untracked Phase16 `runs/` artifact tree remains hygiene debt.
 
 ## C. Cursor Run Consistency
 
-- Did the run follow the intended phase? Yes. Phase18C is a repair/validation-only phase for the current 10 v2 strategies.
-- Did it match `NEXT_HANDOFF.md`? Yes for scope, artifacts, non-actions, and provisional next step. `NEXT_HANDOFF.md` records the substantive task commit `259c0eb`; the latest reviewed commit `4b4758d` only records that hash into a key table.
-- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. Status files preserve current-10 scope and keep candidate promotion blocked.
-- Any scope creep? None found.
-- Any premature phase movement? No. Phase18D is recommended only provisionally after Codex and ChatGPT review.
-- Any skipped prerequisites? No blocker found. Economic validation is explicitly out of scope.
-- Any duplicated structure or architecture drift? None found in the inspected paths.
+- Did the run follow the intended phase? Yes. Phase18D was validation-only, diagnostic/readiness, and onboarding-checklist operationalization.
+- Did it match `NEXT_HANDOFF.md`? Yes. `NEXT_HANDOFF.md` accurately records Phase18D scope, non-actions, artifacts, validation claims, and the substantive implementation commit `6a97e9e`.
+- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. Status docs now mark Phase18D complete and keep Layer2/promotion locked.
+- Any scope creep? Minimal acceptable polish only: `FeatureMatrix.column()` now raises `ConfigError` for missing columns, matching `STRATEGY_CONTRACT.md`.
+- Any premature phase movement? No runtime movement found. Phase19 is only the provisional next design step after review.
+- Any skipped prerequisites? No blocker found. Phase18C repair warnings were carried forward and the missing-feature error-shape warning was addressed.
+- Any duplicated structure or architecture drift? None found in inspected paths.
 
 ## D. Code / Architecture Findings
 
 - High-risk findings: None found.
 - Medium-risk findings: None found.
 - Low-risk findings:
-  - Phase18C missing-feature tests accept either `ConfigError` or `KeyError`; this is acceptable for fail-closed behavior, but ChatGPT should decide whether strategy-facing missing feature failures should converge on `ConfigError` for cleaner contracts.
-  - The latest commit is artifact-only and depends on the prior implementation commit `259c0eb`; reviewers should inspect both when judging Phase18C.
-- Relevant code paths inspected: `src/intraday/strategies/config_validation.py`, changed strategy validators under `orb/`, `gap/`, `vwap/`, `levels/`, `cci/`, and `stochastic/`, and Phase18C unit tests.
-- Representative path inspected: `configs/strategies/base/phase18b/<strategy>_v2.yaml` and runtime-used v2 field inventory -> `validate_strategy_config` / per-strategy validation helpers -> strategy branch behavior tests -> Phase18C artifact matrices -> `NEXT_HANDOFF.md` validation claims.
-- Module-boundary concerns: None found. Strategies still emit signals only; no execution/PnL logic was moved into strategies.
-- Single-source-of-truth concerns: None found. YAML remains runtime truth; CSV/MD artifacts are audit only.
-- Runtime/config/schema alignment concerns: Prior gaps appear repaired for the inspected finite numeric, strict integer, bool-like, enum, and ordered-pair fields.
+  - Validation and inspect claims are credible from artifacts/tests but were not independently rerun by Codex.
+  - `FeatureMatrix.column()` is a core container method, so changing its missing-column exception from `KeyError` to `ConfigError` is a project-wide behavior change. It appears contract-aligned and narrow, but ChatGPT should confirm no external caller expects `KeyError`.
+- Relevant code paths inspected: `src/intraday/core/arrays.py`, `src/intraday/core/errors.py`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/orb/failed_orb.py`, `tests/unit/test_phase18c_missing_features.py`, `tests/unit/test_phase18c_strategy_v2_branches.py`, `tests/unit/test_phase18d_artifact_schema.py`, and `tests/unit/test_phase18d_no_runtime_leakage.py`.
+- Representative path inspected: `configs/features/opening_core_v2.yaml` and `configs/strategies/base/phase18b/failed_orb_v2.yaml` -> `FeatureMatrix.column()` / `require_feature_columns()` / `generate_failed_orb_signals()` -> `configs/strategies/grids/phase18b/failed_orb_v2_rational.yaml` and `configs/layer1/phase18b_current10_smoke/qqq_2024h1_failed_orb_v2_grid_inspect.yaml` -> Phase18D readiness/grid-inspect artifact tables -> Phase18D tests -> `NEXT_HANDOFF.md` claims.
+- Module-boundary concerns: None found. Features remain market facts, strategies remain signal-only, and execution/accounting truth was not touched.
+- Single-source-of-truth concerns: None found. YAML remains runtime truth; CSV/MD artifacts are audit-only.
+- Runtime/config/schema alignment concerns: No blocker found. The representative v2 config path matches the readiness matrix and Layer1 grid-inspect-only artifact claims.
 
 ## E. Validation / Artifact Hygiene
 
-- Validation credibility: Credible from reviewed test files and `validation_results.csv`, but not independently rerun by Codex.
-- Missing tests or weak tests: No blocker. Remaining polish would be asserting `ConfigError` rather than allowing `KeyError` in missing-feature tests if strict error shape becomes required.
-- Claims accepted from validation artifacts but not independently rerun: compileall, CLI help/doctor/structure, Phase18C tests, Phase18B tests, current-10 tests, smoke tests, Ruff, feature inspect, strategy inspect, and Layer1 grid-inspect commands.
-- Artifact hygiene issues: A pre-existing untracked `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` tree is present. It contains local sweep-style CSV/MD outputs and was not staged.
-- Heavy/raw/cache/parquet/log/generated-file issues: No committed parquet, cache, raw data, `.npy`, `.npz`, `.memmap`, logs, row-level trades/equity, or run directories found in the Phase18C commit range inspected. The untracked Phase16 `runs/` tree should remain local-only or be explicitly cleaned/ignored.
-- Working tree / git cleanliness: Before review, only `?? artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` was present. No unrelated tracked modified files or staged files were present.
-- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`.
-- Suspicious untracked files present before review: None requiring stop; the `runs/` directory is generated local run output, not needed for this review, but it should not be committed.
-- Review bundle completeness: Complete for a medium repair task: `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, validation/result matrices, and guardrail artifacts are present.
-- SOURCE_MAP / key-table completeness if applicable: Present and consistent; latest commit correctly updates the key table final implementation commit to `259c0eb`.
+- Validation credibility: Credible from changed tests, artifact schema tests, validation table, and inspected contract alignment, but not independently rerun.
+- Missing tests or weak tests: No blocker. A small future improvement would be a direct unit assertion that `FeatureMatrix.column("missing")` raises `ConfigError`, since existing tightened tests exercise it through strategy paths rather than the core array test.
+- Claims accepted from validation artifacts but not independently rerun: CLI help/doctor/structure, feature inspect, strategy inspect, Layer1 grid-inspect-only commands, compileall, Phase18B/18C/current-10/smoke/Phase18D tests, Ruff, and format check.
+- Artifact hygiene issues: Pre-existing untracked local `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains present.
+- Heavy/raw/cache/parquet/log/generated-file issues: No committed Phase18D parquet, raw data, cache, `.npy`, `.npz`, `.memmap`, logs, row-level trades, equity curves, candidate YAMLs, or runtime run directories found in the inspected change set.
+- Working tree / git cleanliness: Before review, only `?? artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` was present. No staged files or unrelated tracked modifications were present.
+- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`, containing prior local run-output style directories `qqq_2024h1/` and `qqq_2024h2/`.
+- Suspicious untracked files present before review: None requiring stop. The `runs/` tree is generated local run output and not needed for this review, but it must not be staged.
+- Review bundle completeness: Complete for this task size: `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, validation results, readiness matrices, contract alignment, onboarding checklist, Phase19 template, guardrails, and decision artifact are present.
+- SOURCE_MAP / key-table completeness if applicable: Present and consistent; the latest target commit correctly updates `chatgpt_key_tables.csv` to record final commit `6a97e9e`.
 
 ## F. Contract / Reproducibility Risks
 
-- Data contract: No data-path or curated/raw parquet changes found.
-- Feature contract: No feature-kernel semantic changes found in this target/current-state review.
-- Strategy contract: Current-10 v2 strategy validation and branch tests align with the strategy signal-layer contract from inspection.
-- Execution/accounting truth: No execution/accounting changes found; Phase18C explicitly avoids PnL truth changes.
-- Config/YAML contract: No runtime candidate YAML or promotion config created. Existing v2 strategy YAMLs remain the config inputs under test.
-- Timestamp/session/lookahead: Representative no-lookahead/session tests are present for prior-state branches; not rerun by Codex.
-- Candidate/promotion contract if relevant: Candidate promotion remains blocked; no `configs/candidates/**/*.yaml` changes found.
-- Local path / GitHub reproducibility: Phase18C artifacts are small CSV/MD files and do not require local parquet. The untracked Phase16 run-output tree is local-only hygiene debt.
-- Cache/artifact reproducibility: No cache files committed. Validation/artifact regeneration was not independently performed.
+- Data contract: No data contract changes found; no raw/curated parquet committed.
+- Feature contract: No feature kernel semantic changes found. Five v2 feature configs are reported inspect-pass.
+- Strategy contract: Missing required feature columns now standardize to `ConfigError`, matching `docs/STRATEGY_CONTRACT.md`.
+- Execution/accounting truth: No execution/accounting files changed; no second PnL truth introduced.
+- Config/YAML contract: No runtime candidate YAML or promotion config created. Phase18D reads existing v2 YAMLs as runtime truth and writes CSV/MD audit artifacts only.
+- Timestamp/session/lookahead: No timestamp/session engine changes found. Existing no-lookahead/session claims are accepted from Phase18C/current tests, not rerun.
+- Candidate/promotion contract if relevant: Candidate selection/promotion remains explicitly blocked. No `configs/candidates/**/*.yaml` changes found in the inspected target range.
+- Local path / GitHub reproducibility: Committed configs inspected use relative paths. Local Phase16 run-output tree remains untracked and should be cleaned or ignored in a future hygiene pass.
+- Cache/artifact reproducibility: Phase18D artifacts are small committed CSV/MD files. Artifact regeneration was not independently performed by Codex.
 
 ## G. Recommended Next Review or Next Step
 
-- What ChatGPT should analyze next: Review the substantive Phase18C implementation commit `259c0eb` plus the latest key-table correction `4b4758d`, focusing on validation coverage completeness, missing-feature error shape, and whether Phase18D should remain smoke/grid-inspect-only.
-- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed after ChatGPT review, with a Phase18D smoke/grid-inspect review prompt. Do not proceed directly to candidate YAML, select-dry-run, promotion, Layer2/3, WFO, live, or paper.
-- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `CODEX_REVIEW.md`, `artifacts/existing_10_strategy_refinement_repair_phase18c/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, Phase18C tests, and changed strategy validators.
-- What must be explicitly forbidden in the next prompt: Candidate YAML creation, select-dry-run, promotion, Layer2/3, WFO, live/paper, strategies 11-50, economic claims from grid-inspect-only work, heavy run artifacts, raw/curated parquet commits, cache commits, and staging local `artifacts/**/runs/`.
+- What ChatGPT should analyze next: Review Phase18D implementation commit `6a97e9e` plus target status commit `c292ee3`, focusing on the `FeatureMatrix.column()` exception-shape change, readiness matrix completeness, and whether the Phase19 onboarding checklist/template is sufficiently strict.
+- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed after ChatGPT review, with a Phase19 design/onboarding prompt. Do not proceed to candidate YAML, select-dry-run, promotion, Layer2/3, WFO, live, paper, or economic ranking.
+- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `CODEX_REVIEW.md`, `artifacts/current10_refined_readiness_phase18d/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, `strategy_onboarding_checklist_v2.md`, `phase19_strategy_addition_template.md`, `src/intraday/core/arrays.py`, and Phase18D tests.
+- What must be explicitly forbidden in the next prompt: Candidate YAML creation, select-dry-run, promotion, Layer2/3, WFO, live/paper, economics claims from inspect-only evidence, H2 confirmation claims, top-row retuning, broad/full grids, heavy run artifacts, raw/curated parquet commits, cache commits, and staging local `artifacts/**/runs/`.
 - Whether another Codex review should be required after the next Cursor run: Yes.
 
 ## H. Explicit Non-Actions
@@ -90,34 +90,31 @@ The latest target commit is a small artifact-status repair that replaces `pendin
 ## I. Evidence Quality
 
 - Directly verified:
-  - latest commit hash and parent
-  - latest target commit diff is one CSV line in `chatgpt_key_tables.csv`
-  - working tree had only one untracked local artifact directory before review
-  - Phase18C handoff/status docs align on scope and non-actions
-  - Phase18C bundle includes required review artifacts
-  - representative validation helpers and strategy validators now cover prior finite/int/bool/enum gaps
-  - no candidate/promotion/Layer2/Layer3/heavy file names appeared in the inspected commit name scan
+  - Latest HEAD `c292ee30d6301126631d50dde83861b582321d3b` and parent `6a97e9ee22c3d01f1d0c14ede7914dc5f02b3260`.
+  - Latest target commit changes only `NEXT_HANDOFF.md` and `artifacts/current10_refined_readiness_phase18d/chatgpt_key_tables.csv`.
+  - Phase18D implementation commit changed status docs, `src/intraday/core/arrays.py`, Phase18C/18D tests, and Phase18D CSV/MD artifacts.
+  - Working tree had only the untracked local Phase16 `runs/` tree before review.
+  - Representative `failed_orb` v2 config/grid/Layer1 inspect path is consistent with Phase18D artifact claims.
 - Inferred from Cursor artifacts:
-  - exact validation command pass results in `validation_results.csv`
-  - counts of runtime fields, repaired gaps, branch tests, missing-feature tests, and no-lookahead tests
+  - All CLI inspect, compileall, pytest, Ruff, and format-check validation commands passed as recorded.
+  - All ten v2 strategy configs and Layer1 grid-inspect-only configs passed inspection.
 - Accepted from Codex inspection:
-  - Phase18C is validation/test hardening, not economic validation
-  - module boundaries and config truth remain intact in inspected paths
+  - The missing-feature `ConfigError` polish is contract-aligned and narrow.
+  - Phase18D artifacts are CSV/MD only and do not create runtime promotion state.
 - Not verified:
-  - tests not rerun
-  - commands not rerun
-  - artifacts not regenerated
-  - no full source review of every changed branch implementation
-  - no independent Layer1 grid-inspect rerun
+  - Tests not rerun.
+  - Commands not rerun.
+  - Artifacts not regenerated.
+  - Inspect command outputs not reproduced independently.
 - Claims requiring caution:
-  - "70 passed" and other validation counts are accepted from artifacts only.
-  - Branch tests are synthetic and do not establish economic quality.
+  - "Ready for Phase19 template use" means integration/checklist readiness only, not economic validation.
+  - The local Phase16 `runs/` tree remains visible in `git status` and must stay untracked.
 
 ## J. Review Depth
 
-- Representative path inspected: v2 base strategy config / runtime field inventory -> per-strategy config validation -> strategy branch behavior/missing-feature/no-lookahead tests -> Phase18C artifacts -> `NEXT_HANDOFF.md`.
-- Important files inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `README.md`, `docs/PHASE_PLAN.md`, `docs/DESIGN_BASELINE.md`, `docs/CONFIG_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `intraday_system_design_instructions.txt`, Phase18C review bundle/artifacts, `src/intraday/strategies/config_validation.py`, representative changed strategy files, and Phase18C tests.
-- Important files not inspected: Every full changed strategy implementation line-by-line, every Phase18B config, every older architecture/contract doc, and all historical artifacts.
-- Reason not inspected: Review was bounded to latest Cursor state, current Phase18C claims, and lightweight read-only commands; tests and heavy commands were explicitly forbidden.
-- Areas that should be reviewed by ChatGPT Pro: Full semantic review of each v2 branch test versus intended trading logic, strictness of missing-feature error shape, and whether Phase18D should include any extra non-run validation before grid-inspect.
-- Areas that should be reviewed by future Codex review: Phase18D artifacts, any generated grid-inspect outputs, and continued enforcement that local run-output directories are not staged.
+- Representative path inspected: `opening_core_v2` feature config -> `failed_orb_v2` strategy config -> `FeatureMatrix.column()` / failed ORB runtime logic -> v2 rational grid skeleton -> Layer1 grid-inspect-only config -> Phase18D readiness/validation artifacts -> `NEXT_HANDOFF.md`.
+- Important files inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `README.md`, `docs/PHASE_PLAN.md`, `docs/DESIGN_BASELINE.md`, `docs/CONFIG_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `intraday_system_design_instructions.txt`, `src/intraday/core/arrays.py`, `src/intraday/core/errors.py`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/orb/failed_orb.py`, Phase18D artifact bundle files, and Phase18C/18D tests.
+- Important files not inspected: Every strategy runtime, every v2 config, every feature kernel, and every older Phase18B/18C artifact.
+- Reason not inspected: Review was intentionally lightweight and focused on the latest commit/current state, with one representative end-to-end path and artifact consistency checks.
+- Areas that should be reviewed by ChatGPT Pro: Full Phase18D readiness matrix, onboarding checklist strictness, Phase19 template adequacy, and the project-wide implications of changing `FeatureMatrix.column()` missing-column errors to `ConfigError`.
+- Areas that should be reviewed by future Codex review: The next Phase19 Cursor run, especially any new strategy runtime/config/grid additions and artifact hygiene around generated runs.
