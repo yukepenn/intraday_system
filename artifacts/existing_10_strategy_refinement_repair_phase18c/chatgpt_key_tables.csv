@@ -1,0 +1,22 @@
+section,item,metric,value,interpretation
+phase,phase,name,PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS,repair phase
+task_type,scope,task_type,repair + validation-only + strategy-config contract hardening + targeted branch tests,not smoke/grid/research
+pre_task_head,git,sha,a9ba56d,from preflight
+final_commit,git,sha,pending_until_commit,final hash reported in Cursor response/NEXT_HANDOFF
+strategies,coverage,strategies_covered_count,10,current active strategy universe only
+inventory,runtime_fields,runtime_fields_inventoried_count,87,all runtime-used v2 fields inventoried
+validation,gaps,validation_gaps_found_count,27,Codex-named plus integer/order/bool/enum gaps
+validation,gaps,validation_gaps_repaired_count,27,all repaired or confirmed not-applicable
+branches,tests,branches_tested_count,57,targeted synthetic branch behaviors
+missing_features,tests,missing_feature_tests_count,8,optional feature branches fail closed
+no_lookahead,tests,no_lookahead_tests_count,7,representative branch-level/stateful coverage
+deferred,branches,deferred_branches_count,0,none deferred
+non_runs,new_grid_runs,new_grid_runs,false,no Layer1 grid
+non_runs,candidate_yaml,candidate_yaml_created,false,none
+non_runs,select_dry_run,select_dry_run_run,false,none
+non_runs,layer2,layer2_created,false,none
+non_runs,wfo,wfo_run,false,none
+non_runs,live_paper,live_paper_run,false,none
+truth,execution,execution_truth_changed,false,no execution/accounting changes
+decision,phase18c,decision,PHASE18C_V2_VALIDATION_AND_BRANCH_TEST_REPAIR_COMPLETE,repair complete
+next,roadmap,recommended_next_step,PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW,provisional; Codex + ChatGPT Pro review required

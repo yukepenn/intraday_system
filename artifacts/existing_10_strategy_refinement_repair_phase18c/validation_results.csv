@@ -1,0 +1,27 @@
+command,status,notes
+git status --short; git log --oneline -10; git branch --show-current,pass,Preflight; only known untracked Phase16 run-output directory present.
+python -m compileall -q src tests,pass,Compile passed.
+python -m intraday.cli.main --help,pass,CLI help rendered.
+python -m intraday.cli.main doctor,pass,Environment diagnostics passed.
+python -m intraday.cli.main validate structure,pass,Required repo structure present.
+python -m pytest -q tests/unit/test_phase18c_v2_validation_repair.py,pass,Included in combined Phase18C run.
+python -m pytest -q tests/unit/test_phase18c_strategy_v2_branches.py,pass,Included in combined Phase18C run.
+python -m pytest -q tests/unit/test_phase18c_missing_features.py,pass,Included in combined Phase18C run.
+python -m pytest -q tests/unit/test_phase18c_artifact_schema.py,pass,Included in combined Phase18C run.
+python -m pytest -q tests/unit/test_phase18c_no_runtime_leakage.py,pass,Combined Phase18C run: 70 passed.
+python -m pytest -q tests/unit/test_phase18b_feature_configs.py,pass,3 passed.
+python -m pytest -q tests/unit/test_phase18b_strategy_configs.py,pass,31 passed.
+python -m pytest -q tests/unit/test_phase18b_no_runtime_leakage.py,pass,3 passed.
+python -m pytest -q tests/unit/test_phase18b_artifact_schema.py,pass,3 passed.
+python -m pytest -q tests/unit/test_strategy_<current10>.py,pass,49 current-strategy tests passed across 10 files.
+python -m pytest -q tests/smoke,pass,25 passed.
+python -m ruff check src tests,pass,All checks passed after auto-fixing import/format issues.
+python -m ruff format --check src tests,pass,234 files already formatted.
+python -m intraday.cli.main features list,pass,Builtin feature groups listed.
+python -m intraday.cli.main features inspect --config configs/features/<5 v2 configs>.yaml,pass,All five v2 feature configs inspect successfully.
+python -m intraday.cli.main strategies list,pass,All 10 current strategies listed.
+python -m intraday.cli.main strategies inspect --strategy <current10> --config configs/strategies/base/phase18b/<strategy>_v2.yaml,pass,All 10 v2 base strategy configs inspect successfully.
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase18b_current10_smoke/<each config>.yaml,pass,All 10 grid-inspect-only configs passed; no Layer1 grid run executed.
+python -m intraday.cli.main layer1 grid ...,not_run,Forbidden by Phase18C.
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,Forbidden by Phase18C.
+Layer2 / Layer3 / WFO / live / paper commands,not_run,Forbidden by Phase18C.

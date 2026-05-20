@@ -1,0 +1,12 @@
+artifact,required_columns,parse_status,notes
+SOURCE_MAP.csv,file_path|purpose|required_for_review|generated_or_source|local_only_dependency|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+chatgpt_key_tables.csv,section|item|metric|value|interpretation,pass,CSV written with csv.DictWriter; no character-split headers.
+validation_results.csv,command|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+v2_runtime_field_inventory.csv,strategy|field|config_section|used_in_strategy_logic|runtime_conversion|validator_function|validated_finite|validated_range|validated_type|branch_test_exists|missing_feature_test_exists|no_lookahead_test_exists|repair_needed|repair_status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+validation_gap_repair_matrix.csv,strategy|field|gap_type|repair_action|validator_added_or_confirmed|test_name|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+branch_behavior_test_matrix.csv,strategy|branch_name|option_fields|test_name|behavior_tested|expected_effect|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+missing_feature_test_matrix.csv,strategy|option_field|required_feature_column|test_name|missing_feature_behavior|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+no_lookahead_branch_test_matrix.csv,strategy|branch_name|test_name|session_reset_tested|future_perturbation_tested|current_bar_self_count_prevented|helper_level_or_branch_level|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+deferred_branch_decisions.csv,strategy|branch_or_field|reason_deferred|risk_if_left_enabled|disabled_or_deferred|future_phase|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+backward_compatibility_recheck.csv,strategy|v1_config_still_valid|v2_config_still_valid|default_behavior_preserved|tests|status|notes,pass,CSV written with csv.DictWriter; no character-split headers.
+artifact_schema_validation.csv,artifact|required_columns|parse_status|notes,pass,CSV written with csv.DictWriter; no character-split headers.

@@ -8,6 +8,7 @@ from typing import Any
 import numpy as np
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
+from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
     build_signal_matrix,
@@ -18,6 +19,7 @@ from intraday.strategies.common import (
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_long_only_strategy_base,
+    validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
     validate_optional_probability,
@@ -54,6 +56,7 @@ def validate_vwap_trend_pullback_config(config: Mapping[str, Any]) -> None:
         allowed_stop_modes=("signal_low", "vwap_atr_buffer", "atr_buffer", "rolling_low_20"),
     )
     sig = config.get("signal", {})
+    validate_optional_finite_float(sig, "min_vwap_slope", "signal.min_vwap_slope")
     validate_optional_nonnegative_float(sig, "max_pullback_atr", "signal.max_pullback_atr")
     validate_optional_nonnegative_float(
         sig, "min_pullback_depth_atr", "signal.min_pullback_depth_atr"
@@ -67,6 +70,12 @@ def validate_vwap_trend_pullback_config(config: Mapping[str, Any]) -> None:
     )
     validate_optional_positive_float(sig, "min_rel_volume_20", "signal.min_rel_volume_20")
     validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
+    if (
+        "min_pullback_depth_atr" in sig
+        and "max_pullback_atr" in sig
+        and float(sig["min_pullback_depth_atr"]) > float(sig["max_pullback_atr"])
+    ):
+        raise ConfigError("signal.min_pullback_depth_atr must be <= max_pullback_atr")
 
 
 def generate_vwap_trend_pullback_signals(

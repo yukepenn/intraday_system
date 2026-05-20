@@ -18,8 +18,10 @@ from intraday.strategies.common import (
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_long_only_strategy_base,
+    validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
+    validate_optional_positive_int,
     validate_optional_probability,
 )
 from intraday.strategies.contracts import (
@@ -56,6 +58,10 @@ def validate_orb_continuation_config(config: Mapping[str, Any]) -> None:
     sig = config.get("signal", {})
     if int(sig.get("orb_open_minutes", 15)) <= 0:
         raise ConfigError("signal.orb_open_minutes must be > 0")
+    validate_optional_positive_int(sig, "orb_open_minutes", "signal.orb_open_minutes")
+    validate_optional_finite_float(sig, "min_vwap_slope", "signal.min_vwap_slope")
+    validate_optional_nonnegative_float(sig, "min_orb_width_pct", "signal.min_orb_width_pct")
+    validate_optional_nonnegative_float(sig, "max_orb_width_pct", "signal.max_orb_width_pct")
     min_w = float(sig.get("min_orb_width_pct", 0.0))
     max_w = float(sig.get("max_orb_width_pct", 1e18))
     if min_w < 0 or max_w < 0 or min_w > max_w:

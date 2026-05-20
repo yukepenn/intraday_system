@@ -20,8 +20,10 @@ from intraday.strategies.common import (
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_long_only_strategy_base,
+    validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
+    validate_optional_positive_int,
     validate_optional_probability,
 )
 from intraday.strategies.contracts import (
@@ -67,13 +69,15 @@ def validate_gap_acceptance_failure_config(config: Mapping[str, Any]) -> None:
     ):
         raise ConfigError("signal.min_gap_pct must be <= max_gap_pct")
     validate_optional_nonnegative_float(sig, "reclaim_buffer_atr", "signal.reclaim_buffer_atr")
-    validate_optional_positive_float(sig, "reclaim_lookback_bars", "signal.reclaim_lookback_bars")
+    validate_optional_positive_int(sig, "reclaim_lookback_bars", "signal.reclaim_lookback_bars")
+    validate_optional_finite_float(sig, "min_vwap_slope", "signal.min_vwap_slope")
     parse_bool_like(sig.get("require_reclaim_cross", False), "signal.require_reclaim_cross")
     parse_bool_like(
         sig.get("require_gap_down_open_below_reclaim", False),
         "signal.require_gap_down_open_below_reclaim",
     )
     validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
+    parse_bool_like(sig.get("require_close_above_vwap", False), "signal.require_close_above_vwap")
 
 
 def generate_gap_acceptance_failure_signals(

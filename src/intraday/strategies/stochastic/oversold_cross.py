@@ -20,8 +20,9 @@ from intraday.strategies.common import (
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_long_only_strategy_base,
+    validate_optional_finite_float,
     validate_optional_nonnegative_float,
-    validate_optional_positive_float,
+    validate_optional_positive_int,
     validate_optional_probability,
 )
 from intraday.strategies.contracts import (
@@ -47,12 +48,15 @@ def validate_stochastic_oversold_cross_config(config: Mapping[str, Any]) -> None
         allowed_stop_modes=("signal_low", "rolling_low_20", "atr_buffer"),
     )
     sig = config.get("signal", {})
-    validate_optional_positive_float(sig, "oversold_lookback_bars", "signal.oversold_lookback_bars")
+    validate_optional_finite_float(sig, "oversold_threshold", "signal.oversold_threshold")
+    validate_optional_positive_int(sig, "oversold_lookback_bars", "signal.oversold_lookback_bars")
     validate_optional_nonnegative_float(
         sig, "min_k_d_spread_after_cross", "signal.min_k_d_spread_after_cross"
     )
+    validate_optional_finite_float(sig, "min_k_slope", "signal.min_k_slope")
     validate_optional_probability(sig, "close_position_min", "signal.close_position_min")
     validate_optional_nonnegative_float(sig, "max_vwap_dist_pct", "signal.max_vwap_dist_pct")
+    parse_bool_like(sig.get("require_close_above_vwap", False), "signal.require_close_above_vwap")
     parse_bool_like(
         sig.get("require_vwap_slope_positive", False),
         "signal.require_vwap_slope_positive",

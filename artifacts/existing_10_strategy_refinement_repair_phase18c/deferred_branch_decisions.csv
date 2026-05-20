@@ -1,0 +1,2 @@
+strategy,branch_or_field,reason_deferred,risk_if_left_enabled,disabled_or_deferred,future_phase,notes
+all_current_10,none_deferred,no unsafe branches required deferral after validation and targeted tests,not_applicable,no,not_applicable,Phase18C kept Phase18B v2 scope enabled with repaired validation/test coverage.

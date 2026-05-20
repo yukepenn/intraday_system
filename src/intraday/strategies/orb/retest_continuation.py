@@ -19,8 +19,10 @@ from intraday.strategies.common import (
 from intraday.strategies.config_validation import (
     parse_bool_like,
     validate_long_only_strategy_base,
+    validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
+    validate_optional_positive_int,
     validate_optional_probability,
 )
 from intraday.strategies.contracts import (
@@ -57,9 +59,11 @@ def validate_orb_retest_continuation_config(config: Mapping[str, Any]) -> None:
     sig = config.get("signal", {})
     if int(sig.get("orb_open_minutes", 15)) <= 0:
         raise ConfigError("signal.orb_open_minutes must be > 0")
+    validate_optional_positive_int(sig, "orb_open_minutes", "signal.orb_open_minutes")
+    validate_optional_finite_float(sig, "min_vwap_slope", "signal.min_vwap_slope")
     validate_optional_positive_float(sig, "retest_tolerance_atr", "signal.retest_tolerance_atr")
-    validate_optional_positive_float(sig, "min_breakout_age_bars", "signal.min_breakout_age_bars")
-    validate_optional_positive_float(sig, "max_breakout_age_bars", "signal.max_breakout_age_bars")
+    validate_optional_positive_int(sig, "min_breakout_age_bars", "signal.min_breakout_age_bars")
+    validate_optional_positive_int(sig, "max_breakout_age_bars", "signal.max_breakout_age_bars")
     if (
         "min_breakout_age_bars" in sig
         and "max_breakout_age_bars" in sig

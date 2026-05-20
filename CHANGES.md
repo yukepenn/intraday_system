@@ -2,6 +2,17 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
+## [Unreleased] – 2026-05-20
+
+### Phase 18C — Existing-10 v2 validation and branch-test repair
+
+- Fix(strategies): harden runtime-used v2 config validation for finite numeric fields, strict integer bar counts, ordered pairs, bool-like fields, and enums across the current 10 strategies.
+- Test(unit): add Phase18C invalid-value, branch behavior, missing-feature fail-closed, artifact-schema, and no-runtime-leakage tests using synthetic fixtures only.
+- Research(artifacts): add `artifacts/existing_10_strategy_refinement_repair_phase18c/` with runtime-field inventory, validation repair matrix, branch/missing-feature/no-lookahead matrices, compatibility recheck, guardrails, and decision artifact.
+- Validation: compileall, CLI help/doctor/structure, feature inspect, strategy inspect, grid-inspect-only configs, Phase18C tests, Phase18B tests, current-10 strategy tests, smoke tests, Ruff check, and Ruff format check passed.
+- Decision: `PHASE18C_V2_VALIDATION_AND_BRANCH_TEST_REPAIR_COMPLETE`; provisional next `PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no new grids, Layer1 grid run, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, strategies 11-50, short-side implementation, H2 confirmation, top-row retuning, or execution truth changes.
+
 ## [Unreleased] – 2026-05-19
 
 ### Phase 18B — Existing-10 v2 refinement implementation

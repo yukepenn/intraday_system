@@ -37,10 +37,22 @@ def _as_float(value: Any, field: str) -> float:
 
 
 def _as_int(value: Any, field: str) -> int:
+    if isinstance(value, bool):
+        raise ConfigError(f"{field} must be int, got {value!r}")
     try:
-        return int(value)
+        out = float(value)
     except (TypeError, ValueError) as exc:
         raise ConfigError(f"{field} must be int, got {value!r}") from exc
+    if not math.isfinite(out):
+        raise ConfigError(f"{field} must be finite, got {value!r}")
+    if not out.is_integer():
+        raise ConfigError(f"{field} must be an integer value, got {value!r}")
+    return int(out)
+
+
+def validate_optional_finite_float(config: Mapping[str, Any], key: str, field: str) -> None:
+    if key in config:
+        _as_float(config[key], field)
 
 
 def validate_optional_nonnegative_float(config: Mapping[str, Any], key: str, field: str) -> None:

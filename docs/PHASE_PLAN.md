@@ -374,7 +374,23 @@ Status:
 
 Decision label: **`PHASE18B_EXISTING_10_REFINEMENT_IMPLEMENTATION_COMPLETE`**.
 
-Recommended next step: **`PHASE18C_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review.
+Recommended next step: **`PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS`** after Codex `NEEDS_FIX` review.
+
+## Phase 18C ? Existing-10 v2 validation and branch-test repair ? **complete**
+
+Goal: repair Phase18B acceptance gaps by hardening runtime-used v2 strategy config validation and adding targeted invalid-value, branch behavior, missing-feature, and no-lookahead/session tests.
+
+Status:
+
+- Inventoried runtime-used v2 fields across all 10 current strategies.
+- Repaired finite/type/range/int/enum/bool validation gaps without changing execution/accounting truth.
+- Added Phase18C invalid-value, branch behavior, missing-feature, artifact-schema, and no-runtime-leakage tests.
+- Generated curated Phase18C repair artifacts.
+- No new grids, no Layer1 grid run, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no short side, and no strategies 11-50.
+
+Decision label: **`PHASE18C_V2_VALIDATION_AND_BRANCH_TEST_REPAIR_COMPLETE`**.
+
+Recommended next step: **`PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review.
 
 ## Phase 19 ? Add strategies 11-20 ? **future**
 

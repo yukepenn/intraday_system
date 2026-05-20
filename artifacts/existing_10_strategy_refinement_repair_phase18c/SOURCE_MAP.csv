@@ -1,0 +1,35 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/strategies/config_validation.py,strict finite/int helper validation,yes,source,no,Rejects non-finite numerics and fractional bar-counts.
+src/intraday/strategies/orb/continuation.py,v2 field validation repair,yes,source,no,"Adds min_vwap_slope, ORB width, integer ORB-minute validation."
+src/intraday/strategies/orb/retest_continuation.py,v2 field validation repair,yes,source,no,Adds finite slope and strict age bar-count validation.
+src/intraday/strategies/orb/failed_orb.py,v2 field validation repair,yes,source,no,Adds finite slope and strict breach-age validation.
+src/intraday/strategies/gap/acceptance_failure.py,v2 field validation repair,yes,source,no,"Adds finite slope, strict reclaim lookback, bool validation."
+src/intraday/strategies/vwap/trend_pullback.py,v2 field validation repair,yes,source,no,Adds finite slope and pullback ordered-pair validation.
+src/intraday/strategies/vwap/reclaim_reject.py,v2 field validation repair,yes,source,no,Adds finite slope and strict lookback/age validation.
+src/intraday/strategies/levels/prior_day_level_trap.py,v2 field validation repair,yes,source,no,Adds strict breach lookbacks and prior-low buffer validation.
+src/intraday/strategies/cci/extreme_snapback.py,v2 field validation repair,yes,source,no,Adds min_cci_slope and oscillator threshold finite validation.
+src/intraday/strategies/stochastic/oversold_cross.py,v2 field validation repair,yes,source,no,Adds min_k_slope and threshold finite validation.
+tests/unit/test_phase18c_v2_validation_repair.py,invalid value tests,yes,source,no,Table-driven invalid/non-finite/range tests.
+tests/unit/test_phase18c_strategy_v2_branches.py,branch/no-lookahead tests,yes,source,no,Synthetic BarMatrix/FeatureMatrix branch behavior tests.
+tests/unit/test_phase18c_missing_features.py,missing feature tests,yes,source,no,Fail-closed optional column tests.
+tests/unit/test_phase18c_artifact_schema.py,artifact schema tests,yes,source,no,Phase18C CSV/MD schema guard.
+tests/unit/test_phase18c_no_runtime_leakage.py,no runtime leakage tests,yes,source,no,Candidate/Layer2/grid-run/Codex guardrails.
+NEXT_HANDOFF.md,phase handoff status,yes,source,no,Updated after validation.
+PROJECT_STATUS.md,phase status,yes,source,no,Updated after validation.
+PROGRESS.md,dated progress log,yes,source,no,Updated after validation.
+CHANGES.md,dated changelog,yes,source,no,Updated after validation.
+docs/PHASE_PLAN.md,roadmap update,yes,source,no,Updated after validation.
+artifacts/existing_10_strategy_refinement_repair_phase18c/CHATGPT_REVIEW_BUNDLE.md,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/SOURCE_MAP.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/chatgpt_key_tables.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/validation_results.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/v2_runtime_field_inventory.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/validation_gap_repair_matrix.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/branch_behavior_test_matrix.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/missing_feature_test_matrix.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/no_lookahead_branch_test_matrix.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/deferred_branch_decisions.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/backward_compatibility_recheck.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/non_promotion_guardrails.md,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/artifact_schema_validation.csv,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.
+artifacts/existing_10_strategy_refinement_repair_phase18c/phase18c_decision.md,Phase18C curated review artifact,yes,generated,no,Small CSV/MD audit artifact.

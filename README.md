@@ -120,7 +120,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 18 complete:** **`PHASE18_EXISTING_10_STRATEGY_IMPROVEMENT_DESIGN`** converted Phase17 artifacts and Codex warnings into design-only improvement matrices and plans for the existing 10 strategies. Bundle: `artifacts/existing_10_strategy_improvement_design_phase18/`.
 
-**Next:** **`IMPLEMENT_PHASE18_APPROVED_EXISTING_10_STRATEGY_IMPROVEMENTS`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50.
+**Phase 18C complete:** **`PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS`** repaired Phase18B Codex `NEEDS_FIX` validation/test gaps for the existing 10 v2 strategies. Bundle: `artifacts/existing_10_strategy_refinement_repair_phase18c/`.
+
+**Next:** **`PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50.
 
 See:
 

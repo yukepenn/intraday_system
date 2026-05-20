@@ -1,0 +1,11 @@
+strategy,v1_config_still_valid,v2_config_still_valid,default_behavior_preserved,tests,status,notes
+pa_buy_sell_close_trend,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+orb_continuation,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+orb_retest_continuation,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+failed_orb,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+gap_acceptance_failure,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+vwap_trend_pullback,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+vwap_reclaim_reject,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+prior_day_level_trap,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+cci_extreme_snapback,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
+stochastic_oversold_cross,yes,yes,yes,Phase18B strategy config tests; current strategy tests; Phase18C validation tests,pass,v2 fields remain optional/config-driven; execution truth unchanged.
