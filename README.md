@@ -122,7 +122,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 18C complete:** **`PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS`** repaired Phase18B Codex `NEEDS_FIX` validation/test gaps for the existing 10 v2 strategies. Bundle: `artifacts/existing_10_strategy_refinement_repair_phase18c/`.
 
-**Next:** **`PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50.
+**Phase 18D complete:** **`PHASE18D_CURRENT10_REFINED_READINESS_AND_ONBOARDING_CHECKLIST`** validated the refined current-10 v2 package through inspect-only checks and operationalized existing contracts into the Phase19-22 onboarding checklist/template. Bundle: `artifacts/current10_refined_readiness_phase18d/`.
+
+**Next:** **`DESIGN_PHASE19_STRATEGIES_11_TO_20`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or economic ranking.
 
 See:
 

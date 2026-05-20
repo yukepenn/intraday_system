@@ -1,45 +1,47 @@
-# NEXT_HANDOFF
+﻿# NEXT_HANDOFF
 
-Last updated: **2026-05-20** (Phase **18C** - existing-10 v2 validation and branch-test repair).
+Last updated: **2026-05-20** (Phase **18D** - current-10 refined readiness and onboarding checklist).
 
 ## A. Git
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `a9ba56d`
-- Task commit hash: `259c0eb`.
+- Pre-task HEAD: `5c2a8dd`
+- Task commit hash: `pending_until_commit`.
 - Codex review pending: yes.
 - ChatGPT Pro review pending: yes.
 - Cursor did not edit `CODEX_REVIEW.md`.
 
 ## B. Phase
 
-`PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS`
+`PHASE18D_CURRENT10_REFINED_READINESS_AND_ONBOARDING_CHECKLIST`
+
+Alternative label: `PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`.
 
 ## C. Task Type
 
-Repair + validation-only + strategy-config contract hardening + targeted branch tests.
+Validation-only + diagnostic + integration-readiness review + onboarding-checklist operationalization.
 
 ## D. What Was Done
 
-- Inventoried runtime-used v2 fields across all 10 current strategies.
-- Repaired validation for finite numeric fields, strict integer bar-count fields, ordered pairs, bool-like fields, and enums used by v2 runtime branches.
-- Added table-driven invalid-value tests for bad strings, NaN, infinity, ordered-pair violations, bad enums, and fractional bar counts.
-- Added targeted synthetic branch behavior tests for current-10 v2 branches.
-- Added missing-feature fail-closed tests for optional feature branches.
-- Added representative no-lookahead/session/current-bar self-count tests for prior-state branches.
-- Rechecked backward compatibility for v1/v2 config validation and grid-inspect-only configs.
-- Generated curated Phase18C repair artifacts.
+- Re-ran v2 feature inspect for all five refined current-10 feature configs.
+- Re-ran v2 strategy inspect for all 10 current strategy configs.
+- Rechecked all 10 v2 rational grid skeletons through Layer1 `grid-inspect` only.
+- Produced the current-10 v2 readiness matrix and contract-alignment table.
+- Operationalized existing contract docs into `strategy_onboarding_checklist_v2.md`.
+- Produced `phase19_strategy_addition_template.md` and the Phase19-22 onboarding gate matrix.
+- Standardized missing-feature error shape from `KeyError` to `ConfigError` in the shared `FeatureMatrix.column()` accessor and tightened existing tests.
+- Added Phase18D artifact schema and no-runtime-leakage tests.
 
 ## E. What Was Intentionally Not Done
 
-No new grids, no Layer1 grid run, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no strategies 11-50, no short-side implementation, no execution truth changes, no H2 confirmation, and no top-row retuning.
+No actual Layer1 grids, no expanded/full grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no strategies 11-50, no economic claims, no H2 confirmation, no top-row retuning, and no execution truth changes.
 
 ## F. Key Artifacts
 
-Primary Phase18C bundle:
+Primary Phase18D bundle:
 
-`artifacts/existing_10_strategy_refinement_repair_phase18c/`
+`artifacts/current10_refined_readiness_phase18d/`
 
 Key files:
 
@@ -47,61 +49,68 @@ Key files:
 - `SOURCE_MAP.csv`
 - `chatgpt_key_tables.csv`
 - `validation_results.csv`
-- `v2_runtime_field_inventory.csv`
-- `validation_gap_repair_matrix.csv`
-- `branch_behavior_test_matrix.csv`
-- `missing_feature_test_matrix.csv`
-- `no_lookahead_branch_test_matrix.csv`
-- `deferred_branch_decisions.csv`
-- `backward_compatibility_recheck.csv`
+- `current10_v2_readiness_matrix.csv`
+- `v2_feature_inspect_summary.csv`
+- `v2_strategy_inspect_summary.csv`
+- `v2_grid_inspect_summary.csv`
+- `v2_layer1_grid_inspect_summary.csv`
+- `v2_package_contract_alignment.csv`
+- `strategy_onboarding_checklist_v2.md`
+- `phase19_strategy_addition_template.md`
+- `phase19_to_22_onboarding_gate_matrix.csv`
+- `missing_feature_error_shape_assessment.md`
+- `local_artifact_hygiene_note.md`
 - `non_promotion_guardrails.md`
 - `artifact_schema_validation.csv`
-- `phase18c_decision.md`
+- `phase18d_decision.md`
 
 Supporting tests:
 
-- `tests/unit/test_phase18c_v2_validation_repair.py`
-- `tests/unit/test_phase18c_strategy_v2_branches.py`
-- `tests/unit/test_phase18c_missing_features.py`
-- `tests/unit/test_phase18c_artifact_schema.py`
-- `tests/unit/test_phase18c_no_runtime_leakage.py`
+- `tests/unit/test_phase18d_artifact_schema.py`
+- `tests/unit/test_phase18d_no_runtime_leakage.py`
+- Tightened `tests/unit/test_phase18c_missing_features.py`
+- Tightened `tests/unit/test_phase18c_strategy_v2_branches.py`
 
 ## G. Validation
 
-- `python -m compileall -q src tests` - pass.
 - `python -m intraday.cli.main --help` - pass.
 - `python -m intraday.cli.main doctor` - pass.
 - `python -m intraday.cli.main validate structure` - pass.
-- Phase18C tests - pass, 70 passed.
-- Phase18B tests - pass, 40 passed across 4 files.
+- `python -m intraday.cli.main features list` - pass.
+- Five v2 `features inspect` commands - pass.
+- `python -m intraday.cli.main strategies list` - pass.
+- Ten v2 `strategies inspect` commands - pass.
+- Ten Phase18B current-10 `layer1 grid-inspect` commands - pass; no actual grid run.
+- `python -m compileall -q src tests` - pass.
+- Phase18C validation repair tests - pass.
+- Phase18B feature/config tests - pass.
 - Current-10 strategy tests - pass, 49 passed.
 - `python -m pytest -q tests/smoke` - pass, 25 passed.
-- `python -m ruff check src tests` - pass.
+- Tightened missing-feature tests - pass, 29 passed.
+- Phase18D artifact/no-leakage tests - pass, 8 passed.
+- `python -m ruff check src tests` - cache write error on Windows `.ruff_cache`; `python -m ruff check --no-cache src tests` - pass.
 - `python -m ruff format --check src tests` - pass.
-- `features list` and five v2 feature inspect commands - pass.
-- `strategies list` and ten v2 strategy inspect commands - pass.
-- Ten Phase18B Layer1 `grid-inspect` commands - pass; no actual grid run.
 
-See `artifacts/existing_10_strategy_refinement_repair_phase18c/validation_results.csv`.
+See `artifacts/current10_refined_readiness_phase18d/validation_results.csv`.
 
 ## H. Risks / Blockers
 
-- Phase18C repairs validation and branch-test coverage only; it does not evaluate economics.
+- No Phase18D readiness blocker remains.
+- Phase18D proves inspectability and template readiness only; it does not evaluate economics.
+- Missing-feature error shape is now standardized to `ConfigError` through a narrow shared accessor polish.
+- Local `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains untracked local-only hygiene debt and must not be staged.
 - H2 remains diagnostic-only and is not clean confirmation evidence.
 - Candidate selection remains blocked: no candidate YAML, no select-dry-run, no promotion, and no Layer2 candidate pool.
-- Codex and ChatGPT Pro review are still required before Phase18D.
 
 ## I. Decision
 
-### `PHASE18C_V2_VALIDATION_AND_BRANCH_TEST_REPAIR_COMPLETE`
+### `PHASE18D_CURRENT10_REFINED_READINESS_COMPLETE`
 
 ## J. Cursor Provisional Recommended Next Step
 
-### `PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`
+### `DESIGN_PHASE19_STRATEGIES_11_TO_20`
 
-Allowed alternatives after review: `REPAIR_PHASE18C_REMAINING_VALIDATION_GAPS` or `HOLD_AND_REVIEW_EXISTING_10_REFINEMENTS`.
-
-Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50 from this phase.
+Do not proceed to candidate YAML, promotion, select-dry-run, Layer2, WFO, live, paper, or strategies 11-50 from Phase18D artifacts alone.
 
 ## K. Note
 

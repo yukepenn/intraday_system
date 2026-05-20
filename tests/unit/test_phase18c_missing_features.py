@@ -74,5 +74,5 @@ def test_phase18c_missing_optional_feature_columns_fail_closed(
     feature_cols = cols(bars.n_bars)
     feature_cols.pop(missing_column, None)
 
-    with pytest.raises((ConfigError, KeyError)):
+    with pytest.raises(ConfigError):
         _generate(strategy, cfg, bars, feature_cols)

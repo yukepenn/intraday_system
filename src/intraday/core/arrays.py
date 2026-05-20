@@ -12,6 +12,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from intraday.core.errors import ConfigError
+
 
 def _ensure_1d(name: str, arr: np.ndarray) -> None:
     if not isinstance(arr, np.ndarray):
@@ -109,7 +111,7 @@ class FeatureMatrix:
 
     def column(self, name: str) -> np.ndarray:
         if name not in self.columns:
-            raise KeyError(f"unknown feature column: {name!r}")
+            raise ConfigError(f"unknown feature column: {name!r}")
         return self.values[:, self.columns[name]]
 
 

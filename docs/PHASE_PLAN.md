@@ -392,9 +392,26 @@ Decision label: **`PHASE18C_V2_VALIDATION_AND_BRANCH_TEST_REPAIR_COMPLETE`**.
 
 Recommended next step: **`PHASE18D_CURRENT10_REFINED_SMOKE_AND_GRID_INSPECT_REVIEW`** after Codex and ChatGPT Pro review.
 
+## Phase 18D ? Current-10 refined readiness and onboarding checklist ? **complete**
+
+Goal: validate the refined current-10 v2 package as inspectable/integration-ready and operationalize existing contracts into a Phase19-22 onboarding checklist.
+
+Status:
+
+- Re-ran inspect checks for all five v2 feature configs.
+- Re-ran strategy inspect for all 10 current v2 strategy configs.
+- Rechecked all 10 v2 rational grid skeletons and all 10 Phase18B Layer1 grid-inspect-only configs.
+- Standardized missing feature-column failures to `ConfigError`.
+- Generated `artifacts/current10_refined_readiness_phase18d/`, including the current-10 readiness matrix, contract alignment, `strategy_onboarding_checklist_v2.md`, `phase19_strategy_addition_template.md`, and non-promotion guardrails.
+- No actual Layer1 grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, economic claims, H2 confirmation, top-row retuning, execution truth changes, or strategies 11-50.
+
+Decision label: **`PHASE18D_CURRENT10_REFINED_READINESS_COMPLETE`**.
+
+Recommended next step: **`DESIGN_PHASE19_STRATEGIES_11_TO_20`** after Codex and ChatGPT Pro review.
+
 ## Phase 19 ? Add strategies 11-20 ? **future**
 
-Add the next 10 strategies after separate brainstorming, including necessary generic features/configs/tests/grids.
+Add the next 10 strategies after separate brainstorming, using the Phase18D onboarding checklist/template and necessary generic features/configs/tests/grids. This is strategy-library onboarding, not candidate promotion.
 
 ## Phase 20 ? Add strategies 21-30 ? **future**
 

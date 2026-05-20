@@ -1,0 +1,80 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+docs/FEATURE_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/STRATEGY_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/CONFIG_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/LAYER1_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/EXECUTION_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/BACKTEST_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/QT_REFERENCE_POLICY.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/LAYER_FLOW.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+intraday_system_design_instructions.txt,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/DESIGN_BASELINE.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/ARCHITECTURE.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/DATA_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/CACHE_CONTRACT.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+docs/DEVELOPMENT_WORKFLOW.md,existing contract/design source used to operationalize checklist,yes,source,no,Contract docs remain authoritative.
+NEXT_HANDOFF.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+PROJECT_STATUS.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+PROGRESS.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+CHANGES.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+docs/PHASE_PLAN.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+README.md,Phase18D status/handoff documentation,yes,source,no,Updated after Phase18D validation.
+src/intraday/core/arrays.py,Phase18D narrow missing-feature polish or artifact guard test,yes,source,no,
+tests/unit/test_phase18c_missing_features.py,Phase18D narrow missing-feature polish or artifact guard test,yes,source,no,
+tests/unit/test_phase18c_strategy_v2_branches.py,Phase18D narrow missing-feature polish or artifact guard test,yes,source,no,
+tests/unit/test_phase18d_artifact_schema.py,Phase18D narrow missing-feature polish or artifact guard test,yes,source,no,
+tests/unit/test_phase18d_no_runtime_leakage.py,Phase18D narrow missing-feature polish or artifact guard test,yes,source,no,
+configs/strategies/base/phase18b/pa_buy_sell_close_trend_v2.yaml,pa_buy_sell_close_trend v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/pa_buy_sell_close_trend_v2_rational.yaml,pa_buy_sell_close_trend v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_pa_buy_sell_close_trend_v2_grid_inspect.yaml,pa_buy_sell_close_trend Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/orb_continuation_v2.yaml,orb_continuation v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/orb_continuation_v2_rational.yaml,orb_continuation v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_orb_continuation_v2_grid_inspect.yaml,orb_continuation Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/orb_retest_continuation_v2.yaml,orb_retest_continuation v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/orb_retest_continuation_v2_rational.yaml,orb_retest_continuation v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_orb_retest_continuation_v2_grid_inspect.yaml,orb_retest_continuation Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/failed_orb_v2.yaml,failed_orb v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/failed_orb_v2_rational.yaml,failed_orb v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_failed_orb_v2_grid_inspect.yaml,failed_orb Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/gap_acceptance_failure_v2.yaml,gap_acceptance_failure v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/gap_acceptance_failure_v2_rational.yaml,gap_acceptance_failure v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_gap_acceptance_failure_v2_grid_inspect.yaml,gap_acceptance_failure Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/vwap_trend_pullback_v2.yaml,vwap_trend_pullback v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/vwap_trend_pullback_v2_rational.yaml,vwap_trend_pullback v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_vwap_trend_pullback_v2_grid_inspect.yaml,vwap_trend_pullback Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/vwap_reclaim_reject_v2.yaml,vwap_reclaim_reject v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/vwap_reclaim_reject_v2_rational.yaml,vwap_reclaim_reject v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_vwap_reclaim_reject_v2_grid_inspect.yaml,vwap_reclaim_reject Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/prior_day_level_trap_v2.yaml,prior_day_level_trap v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/prior_day_level_trap_v2_rational.yaml,prior_day_level_trap v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_prior_day_level_trap_v2_grid_inspect.yaml,prior_day_level_trap Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/cci_extreme_snapback_v2.yaml,cci_extreme_snapback v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/cci_extreme_snapback_v2_rational.yaml,cci_extreme_snapback v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_cci_extreme_snapback_v2_grid_inspect.yaml,cci_extreme_snapback Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/strategies/base/phase18b/stochastic_oversold_cross_v2.yaml,stochastic_oversold_cross v2 base config inspected,yes,source,no,Runtime YAML truth.
+configs/strategies/grids/phase18b/stochastic_oversold_cross_v2_rational.yaml,stochastic_oversold_cross v2 rational grid skeleton inspected,yes,source,no,Diagnostic skeleton only.
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_stochastic_oversold_cross_v2_grid_inspect.yaml,stochastic_oversold_cross Layer1 grid-inspect-only config inspected,yes,source,no,No actual grid run.
+configs/features/opening_core_v2.yaml,opening_core_v2 feature config inspected,yes,source,no,Runtime YAML truth.
+configs/features/vwap_level_core_v2.yaml,vwap_level_core_v2 feature config inspected,yes,source,no,Runtime YAML truth.
+configs/features/gap_level_core_v2.yaml,gap_level_core_v2 feature config inspected,yes,source,no,Runtime YAML truth.
+configs/features/indicator_core_v2.yaml,indicator_core_v2 feature config inspected,yes,source,no,Runtime YAML truth.
+configs/features/pa_core_v2.yaml,pa_core_v2 feature config inspected,yes,source,no,Runtime YAML truth.
+artifacts/current10_refined_readiness_phase18d/CHATGPT_REVIEW_BUNDLE.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/SOURCE_MAP.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/chatgpt_key_tables.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/validation_results.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/current10_v2_readiness_matrix.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/v2_feature_inspect_summary.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/v2_strategy_inspect_summary.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/v2_grid_inspect_summary.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/v2_layer1_grid_inspect_summary.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/v2_package_contract_alignment.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/strategy_onboarding_checklist_v2.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/phase19_strategy_addition_template.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/phase19_to_22_onboarding_gate_matrix.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/missing_feature_error_shape_assessment.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/local_artifact_hygiene_note.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/non_promotion_guardrails.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/artifact_schema_validation.csv,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.
+artifacts/current10_refined_readiness_phase18d/phase18d_decision.md,Phase18D curated review artifact,yes,generated,no,CSV/MD audit artifact only.

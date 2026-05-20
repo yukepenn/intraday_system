@@ -1,0 +1,28 @@
+command,status,notes
+git status --short; git log --oneline -10; git branch --show-current,pass,Branch main at pre-task HEAD 5c2a8dd; only known untracked local Phase16 runs/ tree present.
+python -m intraday.cli.main --help,pass,CLI help rendered.
+python -m intraday.cli.main doctor,pass,Environment diagnostics passed.
+python -m intraday.cli.main validate structure,pass,Required repo structure present.
+python -m intraday.cli.main features list,pass,Builtin feature groups listed.
+python -m intraday.cli.main features inspect --config configs/features/<5 v2 configs>.yaml,pass,All five v2 feature configs inspected successfully.
+python -m intraday.cli.main strategies list,pass,All current-10 strategies listed.
+python -m intraday.cli.main strategies inspect --strategy <current10> --config configs/strategies/base/phase18b/<strategy>_v2.yaml,pass,All ten v2 strategy base configs inspected successfully.
+python -m intraday.cli.main layer1 grid-inspect --config configs/layer1/phase18b_current10_smoke/<each config>.yaml,pass,All ten Layer1 grid-inspect-only configs passed; no actual grid run.
+python -m compileall -q src tests,pass,Compile passed.
+python -m pytest -q tests/unit/test_phase18c_v2_validation_repair.py,pass,34 passed.
+python -m pytest -q tests/unit/test_phase18c_strategy_v2_branches.py,pass,21 passed before polish; included in tightened missing-feature rerun.
+python -m pytest -q tests/unit/test_phase18c_missing_features.py,pass,8 passed before polish; tightened ConfigError-only rerun also passed.
+python -m pytest -q tests/unit/test_phase18c_artifact_schema.py,pass,3 passed.
+python -m pytest -q tests/unit/test_phase18c_no_runtime_leakage.py,pass,4 passed.
+python -m pytest -q tests/unit/test_phase18b_feature_configs.py,pass,3 passed.
+python -m pytest -q tests/unit/test_phase18b_strategy_configs.py,pass,31 passed.
+python -m pytest -q tests/unit/test_strategy_<current10>.py,pass,49 current-strategy tests passed across ten files.
+python -m pytest -q tests/smoke,pass,25 passed.
+python -m pytest -q tests/unit/test_phase18c_missing_features.py tests/unit/test_phase18c_strategy_v2_branches.py,pass,29 passed after ConfigError-only missing-feature polish.
+python -m pytest -q tests/unit/test_phase18d_artifact_schema.py tests/unit/test_phase18d_no_runtime_leakage.py tests/unit/test_phase18c_missing_features.py tests/unit/test_phase18c_strategy_v2_branches.py,pass,37 changed tests passed after Phase18D artifact tests and import-order fix.
+python -m ruff check src tests,cache_error,"Initial cached run hit Windows .ruff_cache access denied; rerun with --no-cache."
+python -m ruff check --no-cache src tests,pass,All checks passed.
+python -m ruff format --check src tests,pass,236 files already formatted.
+python -m intraday.cli.main layer1 grid ...,not_run,Forbidden by Phase18D.
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,Forbidden by Phase18D.
+Layer2 / Layer3 / WFO / live / paper commands,not_run,Forbidden by Phase18D.

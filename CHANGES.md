@@ -4,6 +4,16 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-20
 
+### Phase 18D — Current-10 refined readiness and onboarding checklist
+
+- Validate(config): re-run inspect checks for all five v2 feature configs, all 10 v2 strategy configs, all 10 v2 rational grid skeletons, and all 10 Layer1 grid-inspect-only configs.
+- Fix(core): standardize missing `FeatureMatrix` column failures to `ConfigError` and tighten Phase18C missing-feature tests to require the cleaner error shape.
+- Test(unit): add Phase18D artifact-schema and no-runtime-leakage tests for readiness artifacts and non-promotion guardrails.
+- Research(artifacts): add `artifacts/current10_refined_readiness_phase18d/` with readiness matrices, contract alignment, validation results, onboarding checklist v2, Phase19 strategy-addition template, guardrails, hygiene note, and decision artifact.
+- Validation: compileall, CLI help/doctor/structure, feature inspect, strategy inspect, Layer1 grid-inspect-only configs, Phase18C/18B tests, current-10 strategy tests, smoke tests, Phase18D artifact tests, Ruff check, and Ruff format check passed.
+- Decision: `PHASE18D_CURRENT10_REFINED_READINESS_COMPLETE`; provisional next `DESIGN_PHASE19_STRATEGIES_11_TO_20` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no actual Layer1 grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, strategies 11-50, economic claims, H2 confirmation, top-row retuning, or execution truth changes.
+
 ### Phase 18C — Existing-10 v2 validation and branch-test repair
 
 - Fix(strategies): harden runtime-used v2 config validation for finite numeric fields, strict integer bar counts, ordered pairs, bool-like fields, and enums across the current 10 strategies.

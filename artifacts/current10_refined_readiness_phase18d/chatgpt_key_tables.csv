@@ -1,0 +1,22 @@
+section,item,metric,value,interpretation
+phase,phase,name,PHASE18D_CURRENT10_REFINED_READINESS_AND_ONBOARDING_CHECKLIST,readiness and onboarding checklist phase
+task_type,scope,task_type,validation-only + diagnostic + integration-readiness review + onboarding-checklist operationalization,no economic validation
+pre_task_head,git,sha,5c2a8dd,from preflight
+final_commit,git,sha,pending_until_commit,reported after commit/push
+coverage,current10,current_strategies_checked_count,10,exact current active universe
+coverage,features,v2_feature_configs_checked_count,5,opening/vwap/gap/indicator/pa v2 configs
+coverage,strategies,v2_strategy_configs_checked_count,10,one v2 base config per current strategy
+coverage,grids,v2_grid_skeletons_checked_count,10,one rational skeleton per current strategy
+coverage,layer1,layer1_grid_inspect_configs_checked_count,10,one inspect-only Layer1 config per current strategy
+non_runs,layer1,actual_layer1_grid_runs,0,grid-inspect only
+non_runs,select_dry_run,select_dry_run_run,false,not allowed
+non_runs,candidate_yaml,candidate_yaml_created,false,not allowed
+non_runs,layer2,layer2_created,false,not allowed
+non_runs,wfo,wfo_run,false,not allowed
+non_runs,live_paper,live_paper_run,false,not allowed
+non_runs,strategy_expansion,strategies_11_to_50_added,false,not allowed
+claims,economics,economic_claims_made,false,inspect is not alpha evidence
+deliverables,checklist,onboarding_checklist_created,true,strategy_onboarding_checklist_v2.md
+deliverables,template,phase19_template_created,true,phase19_strategy_addition_template.md
+decision,phase18d,decision,PHASE18D_CURRENT10_REFINED_READINESS_COMPLETE,all inspect/validation checks passed
+next,roadmap,recommended_next_step,DESIGN_PHASE19_STRATEGIES_11_TO_20,provisional after Codex + ChatGPT Pro review

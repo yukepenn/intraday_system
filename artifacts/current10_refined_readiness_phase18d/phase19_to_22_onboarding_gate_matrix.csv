@@ -1,0 +1,14 @@
+gate,required_for_each_new_strategy,source_contract,acceptance_evidence,blocks_phase_completion_if_missing,notes
+strategy_source_file,true,docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md; docs/STRATEGY_CONTRACT.md,source file under src/intraday/strategies plus no execution/PnL static check,true,One file per strategy/family module.
+strategy_def_registration,true,docs/STRATEGY_CONTRACT.md,strategies list/inspect includes new strategy,true,Stable identity and signal_v1 unless contract bump.
+feature_audit,true,docs/FEATURE_CONTRACT.md; docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,feature audit artifact maps every market fact,true,Generic facts only.
+base_config_yaml,true,docs/CONFIG_CONTRACT.md,strategy inspect passes on base config,true,YAML runtime truth.
+metadata_config,true,docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,metadata file or audit metadata present,true,Audit-only.
+rational_grid_skeleton,true,docs/CONFIG_CONTRACT.md; docs/LAYER1_CONTRACT.md,grid-inspect reports bounded combo count,true,No broad sweep.
+layer1_grid_inspect_config,true,docs/LAYER1_CONTRACT.md,layer1 grid-inspect passes,true,No actual Layer1 grid run during onboarding.
+config_validation_tests,true,docs/STRATEGY_CONTRACT.md,invalid-value tests pass,true,Finite/int/bool/enum/range/order coverage.
+missing_feature_tests,true,docs/STRATEGY_CONTRACT.md,missing columns raise ConfigError,true,Fail closed.
+signal_contract_tests,true,docs/STRATEGY_CONTRACT.md,SignalMatrix tests pass,true,Includes stop and target_r validity.
+branch_no_lookahead_session_tests,true,docs/FEATURE_CONTRACT.md; docs/STRATEGY_CONTRACT.md,branch/no-lookahead/session tests pass,true,"Current-bar allowed, future bars forbidden."
+artifact_bundle,true,docs/DEVELOPMENT_WORKFLOW.md,review bundle/source map/key tables/validation ledger present,true,CSV/MD audit only.
+non_promotion_guardrails,true,docs/LAYER1_CONTRACT.md; docs/LAYER_FLOW.md,no candidate YAML/select-dry-run/Layer2/WFO/live/paper,true,Onboarding is not promotion.
