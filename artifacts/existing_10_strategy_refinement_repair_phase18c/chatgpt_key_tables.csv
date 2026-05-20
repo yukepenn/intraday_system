@@ -2,7 +2,7 @@ section,item,metric,value,interpretation
 phase,phase,name,PHASE18C_REPAIR_EXISTING_10_V2_VALIDATION_AND_BRANCH_TESTS,repair phase
 task_type,scope,task_type,repair + validation-only + strategy-config contract hardening + targeted branch tests,not smoke/grid/research
 pre_task_head,git,sha,a9ba56d,from preflight
-final_commit,git,sha,pending_until_commit,final hash reported in Cursor response/NEXT_HANDOFF
+final_commit,git,sha,259c0eb,Phase18C implementation commit hash; status hash recorded in follow-up docs commit.
 strategies,coverage,strategies_covered_count,10,current active strategy universe only
 inventory,runtime_fields,runtime_fields_inventoried_count,87,all runtime-used v2 fields inventoried
 validation,gaps,validation_gaps_found_count,27,Codex-named plus integer/order/bool/enum gaps
