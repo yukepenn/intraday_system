@@ -4,7 +4,7 @@ Phase: `PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_WITH_SIDE_MODE_VALIDATION_GATE`
 
 Task type: multi-strategy implementation + validation + strategy onboarding.
 
-Git baseline: `abb1b71`; final commit pending at artifact creation.
+Git baseline: `abb1b71`; final implementation commit `d3c8c0d` recorded post-commit.
 
 Why needed: Codex warned that current long-only validators did not reject non-long `signal.side_mode` even though Layer1 now interprets side mode globally.
 
