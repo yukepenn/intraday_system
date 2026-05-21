@@ -4,6 +4,20 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-21
 
+### Phase 19 Immediate Fix - Setup codes, side consistency, current-10 short retrofit
+
+- Repair(strategies): align Phase19B setup codes to the accepted namespace (7101-7107 / 7201-7207) by sourcing them from the new authoritative registry `src/intraday/strategies/setup_codes.py`; remove hard-coded 1101-1702 leakage from source/configs/metadata/artifacts.
+- Repair(strategies): introduce `brooks_bool` helper and replace every `bool(sig.get(...))` / `bool(config.get(...))` pattern in Phase19B strategies so runtime boolean semantics match validation; add a static-source-scan test to keep the pattern out.
+- Repair(metadata): extend `StrategyDef` with `setup_code_long`/`setup_code_short`/`allowed_side_modes`/`default_side_mode`/`required_feature_columns` and update CLI `strategies inspect` to surface them with metadata cross-check.
+- Feat(strategies): add generic side-aware helpers `compute_short_stop`, `build_side_aware_signal_matrix`, `crossed_below` in `common.py`, plus `validate_side_aware_strategy_base` and `CURRENT10_SIDE_MODES` in `config_validation.py`.
+- Feat(strategies): retrofit all 10 current-10 strategies with `signal.side_mode`-gated short branches and approved short setup codes (8001 / 9001-9003 / 10001 / 11001-11002 / 12001 / 13001-13002); default behavior remains `long_only`; missing `side_mode` validates as `long_only`; legacy `signal.side: long_only` still validates.
+- Feat(config): migrate canonical current-10 base configs to `signal.side_mode: long_only` while preserving long-only behavior; add inspect-only side-aware grid skeletons in `configs/strategies/grids/phase19_immediate_fix_current10_side_aware/` and Layer1 grid-inspect configs in `configs/layer1/phase19_immediate_fix_current10_side_aware_grid_inspect/`.
+- Docs(setup-code): add `docs/SETUP_CODE_REGISTRY.md` setup-code governance policy.
+- Test(unit): add setup-code-registry, boolean-coercion, metadata/inspect-authority, side-mode-config, short-signal-generation, missing-feature, no-lookahead/session, long-only-backcompat tests; total unit suite now passes 1105 tests / 4 skipped, smoke 25 passing.
+- Research(artifacts): add `artifacts/phase19_immediate_fix_setup_codes_side_consistency/` review bundle with setup-code registry/policy mirrors, repair matrices, retrofit inventory, test matrices, contract audit, guardrails, key tables, source map, validation results, and decision artifact.
+- Decision: `PHASE19_IMMEDIATE_FIX_COMPLETE`; provisional next `REVIEW_PHASE19_IMMEDIATE_FIX` then ChatGPT Pro roadmap decision.
+- Explicit non-goals: no actual Layer1 economic grids, no expanded/full grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no execution PnL/R changes, no strategies 18-50, and no economic claims.
+
 ### Phase 19B - Core Brooks PA strategies 11-17
 
 - Fix(strategies): harden current-10 config validation so unsupported non-long `signal.side_mode` values are rejected while missing/`long_only` behavior remains unchanged.

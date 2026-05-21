@@ -7,8 +7,10 @@ from typing import Any
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.strategies.base import StrategyDef
-from intraday.strategies.contracts import SIGNAL_CONTRACT_VERSION
+from intraday.strategies.contracts import SIDE_MODE_LONG_ONLY, SIGNAL_CONTRACT_VERSION
 from intraday.strategies.pa.brooks_common import (
+    BROOKS_SIDE_MODES,
+    brooks_bool,
     build_brooks_signal_matrix,
     deterministic_score,
     in_entry_window,
@@ -16,11 +18,13 @@ from intraday.strategies.pa.brooks_common import (
     require_brooks_feature_columns,
     validate_brooks_strategy_config,
 )
+from intraday.strategies.setup_codes import get_setup_codes
 
 STRATEGY_NAME = "pa_breakout_pullback_continuation"
 FEATURE_SET = "pa_brooks_core_v1"
-SETUP_CODE_LONG = 1501
-SETUP_CODE_SHORT = 1502
+_SPEC = get_setup_codes(STRATEGY_NAME)
+SETUP_CODE_LONG = _SPEC.long_code
+SETUP_CODE_SHORT = _SPEC.short_code
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "pa_strong_bull_bo_score_20",
@@ -56,8 +60,8 @@ def generate_pa_breakout_pullback_continuation_signals(
     bo_window = int(sig.get("breakout_window", 20))
     max_bars = float(sig.get("pullback_max_bars", 6))
     max_depth = float(sig.get("pullback_max_depth_atr", 1.2))
-    require_signal = bool(sig.get("require_signal_bar", True))
-    require_ai = bool(sig.get("require_always_in_with_side", False))
+    require_signal = brooks_bool(sig, "require_signal_bar", True)
+    require_ai = brooks_bool(sig, "require_always_in_with_side", False)
 
     prior_bull_bo = prior_condition_within(
         features.column("pa_strong_bull_bo_score_20") >= bo_min, bars.session_id, bo_window
@@ -109,4 +113,9 @@ PA_BREAKOUT_PULLBACK_CONTINUATION_DEF = StrategyDef(
     signal_contract_version=SIGNAL_CONTRACT_VERSION,
     generate_reference=generate_pa_breakout_pullback_continuation_signals,
     validate_config=validate_pa_breakout_pullback_continuation_config,
+    setup_code_long=SETUP_CODE_LONG,
+    setup_code_short=SETUP_CODE_SHORT,
+    allowed_side_modes=BROOKS_SIDE_MODES,
+    default_side_mode=SIDE_MODE_LONG_ONLY,
+    required_feature_columns=REQUIRED_COLUMNS,
 )

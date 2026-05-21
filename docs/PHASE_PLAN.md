@@ -483,6 +483,23 @@ Decision label: **`PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_ONBOARDED`**.
 
 Recommended next step: **`REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES`** after Codex and ChatGPT Pro review. Phase19C diagnostic strategies 18-20 may be designed only after review; Phase20 should wait.
 
+## Phase 19 Immediate Fix - setup codes, side consistency, current-10 short retrofit - **complete**
+
+Goal: resolve the Codex-flagged Phase19B blockers (setup-code namespace drift 1101-1702, runtime boolean coercion mismatch) and the lower-priority metadata/inspect weakness; make all setup-code / side-mode / feature-strategy policy generic and consistent; retrofit current-10 with short branches where structurally supported while keeping long-only the default.
+
+- Authoritative runtime setup-code registry: `src/intraday/strategies/setup_codes.py` plus governance doc `docs/SETUP_CODE_REGISTRY.md`.
+- Phase19B strategies 11-17 now derive setup codes from the registry; codes corrected to 7101-7107 (long) / 7201-7207 (short); current-10 short codes assigned at 8001 / 9001-9003 / 10001 / 11001-11002 / 12001 / 13001-13002; future ranges 7301-7810 reserved.
+- `brooks_bool` helper added to `src/intraday/strategies/pa/brooks_common.py`; every `bool(sig.get(...))` / `bool(config.get(...))` pattern in Phase19B strategies replaced; static source scan in tests prevents reintroduction.
+- `StrategyDef` extended with `setup_code_long`, `setup_code_short`, `allowed_side_modes`, `default_side_mode`, `required_feature_columns`; CLI `strategies inspect` now reports them with a metadata cross-check.
+- Generic helpers added in `src/intraday/strategies/common.py` (`compute_short_stop`, `build_side_aware_signal_matrix`, `crossed_below`) and `config_validation.py` (`validate_side_aware_strategy_base`, `CURRENT10_SIDE_MODES`).
+- All 10 current-10 strategies retrofitted with `signal.side_mode`-gated short branches; canonical base configs migrated to `signal.side_mode: long_only`; new inspect-only side-aware grid skeletons and Layer1 configs added.
+- Tests: setup-code registry, boolean coercion + static scan, metadata alignment, inspect metadata, current-10 side-aware configs, short-signal generation, missing-feature, no-lookahead/session, long-only backcompat.
+- No actual Layer1 grids, expanded/full grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO/live/paper, execution truth change, or economic claims.
+
+Decision label: **`PHASE19_IMMEDIATE_FIX_COMPLETE`**.
+
+Recommended next step: **`REVIEW_PHASE19_IMMEDIATE_FIX`** with Codex and ChatGPT Pro. Final roadmap decision (whether to do Phase19C diagnostic 18-20 design, a targeted Phase19D polish phase, or move on to Layer2 design) belongs to ChatGPT Pro + the user after that review.
+
 ## Phase 20 ? Add strategies 21-30 ? **future**
 
 Continue strategy-library expansion after review.

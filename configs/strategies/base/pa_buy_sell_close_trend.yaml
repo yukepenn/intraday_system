@@ -8,7 +8,9 @@ features:
   feature_config: configs/features/pa_core_v1.yaml
 
 signal:
-  side: long_only
+  # Phase19 immediate fix: canonical current-10 configs migrate to side_mode.
+  # Default remains long_only; short branches activate only when side_mode permits.
+  side_mode: long_only
   entry_start_minute: 60
   entry_end_minute: 300
 

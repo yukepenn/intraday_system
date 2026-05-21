@@ -1,4 +1,8 @@
-"""Failed ORB downside trap / reclaim (long-only signal MVP)."""
+"""Failed ORB downside trap / reclaim with side-aware short retrofit.
+
+Failed-ORB long: prior breach below ORB low then reclaim back above.
+Failed-ORB short: prior breach above ORB high then reject back below.
+"""
 
 from __future__ import annotations
 
@@ -12,27 +16,34 @@ from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
     bars_since_prior_condition,
-    build_signal_matrix,
+    build_side_aware_signal_matrix,
     compute_long_stop,
-    thin_first_n_per_session,
+    compute_short_stop,
 )
 from intraday.strategies.config_validation import (
+    CURRENT10_SIDE_MODES,
     parse_bool_like,
-    validate_long_only_strategy_base,
     validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
     validate_optional_positive_int,
     validate_optional_probability,
+    validate_side_aware_strategy_base,
 )
 from intraday.strategies.contracts import (
+    SIDE_MODE_LONG_ONLY,
     SIGNAL_CONTRACT_VERSION,
     clip_finite,
+    normalize_side_mode,
     require_feature_columns,
 )
+from intraday.strategies.setup_codes import get_setup_codes
 
 STRATEGY_NAME = "failed_orb"
-SETUP_CODE = 2003
+_SPEC = get_setup_codes(STRATEGY_NAME)
+SETUP_CODE_LONG = _SPEC.long_code
+SETUP_CODE_SHORT = _SPEC.short_code
+SETUP_CODE = SETUP_CODE_LONG  # backward-compat alias
 FEATURE_SET = "opening_core_v1"
 FEATURE_SETS = ("opening_core_v1", "opening_core_v2")
 
@@ -47,12 +58,13 @@ REQUIRED_COLUMNS: tuple[str, ...] = (
 
 
 def validate_failed_orb_config(config: Mapping[str, Any]) -> None:
-    validate_long_only_strategy_base(
+    validate_side_aware_strategy_base(
         config,
         strategy_name=STRATEGY_NAME,
         family="orb",
         required_feature_set=FEATURE_SETS,
         allowed_stop_modes=("signal_low", "orb_low", "atr_buffer"),
+        allowed_side_modes=CURRENT10_SIDE_MODES,
     )
     sig = config.get("signal", {})
     mode = str(sig.get("reclaim_level", "orb_low"))
@@ -94,6 +106,24 @@ def _breach_below(
     )
 
 
+def _breach_above(
+    close: np.ndarray,
+    orb_high: np.ndarray,
+    atr: np.ndarray,
+    minute: np.ndarray,
+    om: int,
+    min_depth_atr: float,
+    max_depth_atr: float,
+) -> np.ndarray:
+    depth = (close - orb_high) / atr
+    return (
+        (minute >= om - 1)
+        & np.isfinite(depth)
+        & (depth >= min_depth_atr)
+        & (depth <= max_depth_atr)
+    )
+
+
 def _prior_breach_below(
     close: np.ndarray,
     orb_low: np.ndarray,
@@ -107,6 +137,13 @@ def _prior_breach_below(
     return bars_since_prior_condition(breach_now, session_id) >= 1
 
 
+_LONG_TO_SHORT_STOP: dict[str, str] = {
+    "signal_low": "signal_high",
+    "atr_buffer": "atr_buffer",
+    "orb_low": "orb_high",
+}
+
+
 def generate_failed_orb_signals(
     bars: BarMatrix,
     features: FeatureMatrix,
@@ -115,6 +152,8 @@ def generate_failed_orb_signals(
     validate_failed_orb_config(config)
     sig = config["signal"]
     risk = config["risk"]
+    side_mode = normalize_side_mode(sig)
+    short_enabled = side_mode != SIDE_MODE_LONG_ONLY
     om = int(sig.get("orb_open_minutes", 15))
     suf = f"_{om}"
     cols = tuple(c.replace("_15", suf) if "_15" in c else c for c in REQUIRED_COLUMNS)
@@ -139,12 +178,13 @@ def generate_failed_orb_signals(
     minute = bars.minute.astype(np.int32, copy=False)
     orb_low = features.column(f"orb_low{suf}")
     orb_mid = features.column(f"orb_mid{suf}")
+    orb_high = features.column(f"orb_high{suf}")
     vwap = features.column("vwap")
     vwap_slope = features.column("vwap_slope_5")
     atr = features.column("atr_like_20")
 
-    reclaim = orb_low if reclaim_level == "orb_low" else orb_mid
-    breach_now = _breach_below(
+    long_reclaim = orb_low if reclaim_level == "orb_low" else orb_mid
+    breach_now_long = _breach_below(
         close,
         orb_low,
         atr,
@@ -153,51 +193,110 @@ def generate_failed_orb_signals(
         float(sig.get("min_breach_depth_atr", 0.0)),
         float(sig.get("max_breach_depth_atr", 1e18)),
     )
-    breach_age = bars_since_prior_condition(breach_now, bars.session_id)
-    prior_breach = breach_age >= 1
+    breach_age_long = bars_since_prior_condition(breach_now_long, bars.session_id)
+    prior_breach_long = breach_age_long >= 1
     if "max_bars_since_breach" in sig:
-        prior_breach &= breach_age <= int(sig["max_bars_since_breach"])
+        prior_breach_long &= breach_age_long <= int(sig["max_bars_since_breach"])
     orb_ready = minute >= (om - 1)
     in_window = (minute >= es) & (minute <= ee)
-    reclaim_threshold = reclaim + float(sig.get("reclaim_buffer_atr", 0.0)) * atr
-    cand = (
+    reclaim_buf = float(sig.get("reclaim_buffer_atr", 0.0))
+    long_reclaim_thr = long_reclaim + reclaim_buf * atr
+    long_cand = (
         in_window
         & orb_ready
-        & prior_breach
-        & (close > reclaim_threshold)
+        & prior_breach_long
+        & (close > long_reclaim_thr)
         & np.isfinite(atr)
         & (atr > 0)
     )
     if req_vwap:
-        cand &= close > vwap
+        long_cand &= close > vwap
     if min_slope > -1e17:
-        cand &= vwap_slope >= min_slope
+        long_cand &= vwap_slope >= min_slope
     if "close_position_min" in sig:
-        cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
+        long_cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
     if "min_rel_volume_20" in sig:
-        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+        long_cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
 
-    stop_arr = compute_long_stop(
+    short_cand = np.zeros_like(long_cand, dtype=bool)
+    short_reject_thr = orb_high.copy()
+    if short_enabled:
+        short_reject_level = orb_high if reclaim_level == "orb_low" else orb_mid
+        short_reject_thr = short_reject_level - reclaim_buf * atr
+        breach_now_short = _breach_above(
+            close,
+            orb_high,
+            atr,
+            minute,
+            om,
+            float(sig.get("min_breach_depth_atr", 0.0)),
+            float(sig.get("max_breach_depth_atr", 1e18)),
+        )
+        breach_age_short = bars_since_prior_condition(breach_now_short, bars.session_id)
+        prior_breach_short = breach_age_short >= 1
+        if "max_bars_since_breach" in sig:
+            prior_breach_short &= breach_age_short <= int(sig["max_bars_since_breach"])
+        short_cand = (
+            in_window
+            & orb_ready
+            & prior_breach_short
+            & (close < short_reject_thr)
+            & np.isfinite(atr)
+            & (atr > 0)
+        )
+        if req_vwap:
+            short_cand &= close < vwap
+        if min_slope > -1e17:
+            short_cand &= vwap_slope <= -min_slope
+        if "close_position_min" in sig:
+            short_cand &= (1.0 - features.column("close_position_in_range")) >= float(
+                sig["close_position_min"]
+            )
+        if "min_rel_volume_20" in sig:
+            short_cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+
+    long_stop_mode = str(risk.get("stop_mode", "signal_low"))
+    long_stop = compute_long_stop(
         bars,
         features,
-        str(risk.get("stop_mode", "signal_low")),
+        long_stop_mode,
         atr_mult=float(risk.get("atr_buffer_mult", 0.35)),
         orb_low=orb_low,
     )
-    entry = cand & np.isfinite(stop_arr) & (stop_arr < close)
-    entry = thin_first_n_per_session(entry, bars.session_id, int(risk.get("max_trades_per_day", 1)))
+    long_score = clip_finite((close - long_reclaim_thr) / atr, -3.0, 3.0)
+    if short_enabled:
+        short_stop_mode = str(
+            sig.get("short_stop_mode", _LONG_TO_SHORT_STOP.get(long_stop_mode, "signal_high"))
+        )
+        short_stop = compute_short_stop(
+            bars,
+            features,
+            short_stop_mode,
+            atr_mult=float(risk.get("atr_buffer_mult", 0.35)),
+            orb_high=orb_high,
+        )
+        short_score = clip_finite((short_reject_thr - close) / atr, -3.0, 3.0)
+    else:
+        short_stop = np.full(bars.n_bars, np.nan, dtype=np.float64)
+        short_score = np.full(bars.n_bars, np.nan, dtype=np.float64)
 
-    score = clip_finite((close - reclaim_threshold) / atr, -3.0, 3.0)
-    return build_signal_matrix(
+    max_trades = int(risk.get("max_trades_per_day", 1))
+    return build_side_aware_signal_matrix(
         bars=bars,
-        entry=entry,
-        stop=stop_arr,
-        target_r_val=float(risk["target_r"]),
-        setup_code_val=SETUP_CODE,
-        score=score,
-        strategy_name=STRATEGY_NAME,
+        features=features,
         config=dict(config),
-        feature_hash=features.feature_hash,
+        strategy_name=STRATEGY_NAME,
+        long_entry=long_cand,
+        short_entry=short_cand,
+        long_stop=long_stop,
+        short_stop=short_stop,
+        long_score=long_score,
+        short_score=short_score,
+        target_r_val=float(risk["target_r"]),
+        setup_code_long=SETUP_CODE_LONG,
+        setup_code_short=SETUP_CODE_SHORT,
+        side_mode=side_mode,
+        max_trades_per_day=max_trades,
     )
 
 
@@ -209,4 +308,9 @@ FAILED_ORB_DEF = StrategyDef(
     signal_contract_version=SIGNAL_CONTRACT_VERSION,
     generate_reference=generate_failed_orb_signals,
     validate_config=validate_failed_orb_config,
+    setup_code_long=SETUP_CODE_LONG,
+    setup_code_short=SETUP_CODE_SHORT,
+    allowed_side_modes=CURRENT10_SIDE_MODES,
+    default_side_mode=SIDE_MODE_LONG_ONLY,
+    required_feature_columns=REQUIRED_COLUMNS,
 )

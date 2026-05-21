@@ -38,6 +38,16 @@ BROOKS_SIDE_MODES: tuple[str, ...] = (
 )
 
 
+def brooks_bool(signal_config: Mapping[str, Any], key: str, default: bool) -> bool:
+    """Strict boolean coercion for Brooks strategy runtime config reads.
+
+    Mirrors the validation-time semantics of ``parse_bool_like`` so that
+    ``"false"`` / ``"true"`` / ``0`` / ``1`` cannot diverge between validation
+    and runtime. Raises ``ConfigError`` on invalid values.
+    """
+    return parse_bool_like(signal_config.get(key, default), f"signal.{key}")
+
+
 def validate_brooks_strategy_config(
     config: Mapping[str, Any],
     *,

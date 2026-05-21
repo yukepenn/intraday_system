@@ -1,0 +1,9 @@
+strategy_name,scope,before_pattern,after_helper,keys_repaired,tests_added
+pa_second_entry_pullback,phase19b,bool(sig.get(...)),brooks_bool(sig,...),require_second_entry,test_phase19_immediate_boolean_config_coercion.py
+pa_trading_range_bls_hs,phase19b,bool(sig.get(...)),brooks_bool(sig,...),require_signal_bar; require_micro_channel,test_phase19_immediate_boolean_config_coercion.py
+pa_failed_breakout_trap,phase19b,bool(sig.get(...)),brooks_bool(sig,...),n/a (no boolean signal flags),test_phase19_immediate_boolean_config_coercion.py
+pa_opening_reversal_sr,phase19b,bool(sig.get(...)),brooks_bool(sig,...),require_reversal_bar,test_phase19_immediate_boolean_config_coercion.py
+pa_breakout_pullback_continuation,phase19b,bool(sig.get(...)),brooks_bool(sig,...),require_prior_strong_breakout; require_weak_countertrend_pullback,test_phase19_immediate_boolean_config_coercion.py
+pa_tight_channel_pullback,phase19b,bool(sig.get(...)),brooks_bool(sig,...),require_micro_channel,test_phase19_immediate_boolean_config_coercion.py
+pa_broad_channel_zone,phase19b,bool(sig.get(...)),brooks_bool(sig,...),block_tight_tr; block_late_trend,test_phase19_immediate_boolean_config_coercion.py
+static_scan,strategies,src/intraday/strategies/**/*.py,grep-free of bool(sig.get(/ bool(config.get(,n/a,test_no_strategy_runtime_uses_bool_sig_get

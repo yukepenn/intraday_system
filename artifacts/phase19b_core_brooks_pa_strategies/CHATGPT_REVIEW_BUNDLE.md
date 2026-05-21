@@ -10,7 +10,7 @@ Why needed: Codex warned that current long-only validators did not reject non-lo
 
 Side-mode gate: current-10 non-long side modes reject; Brooks strategies explicitly accept `long_only`, `short_only`, and `both`.
 
-Strategies 11-17: all seven approved core Brooks PA strategies implemented and registered with setup codes 1101/1102 through 1701/1702. Strategies emit SignalMatrix only, target_r only, and do not call execution.
+Strategies 11-17: all seven approved core Brooks PA strategies implemented and registered. Setup codes are governed by `src/intraday/strategies/setup_codes.py` and now match the accepted Phase19 namespace (7101/7201 through 7107/7207). The placeholder Phase19B codes 1101/1102 through 1701/1702 were repaired during the Phase19 immediate fix. Strategies emit SignalMatrix only, target_r only, and do not call execution.
 
 Configs/metadata/grid skeletons: Phase19 base configs, metadata, controlled-small rational skeletons, and Layer1 grid-inspect-only configs created for all seven strategies.
 

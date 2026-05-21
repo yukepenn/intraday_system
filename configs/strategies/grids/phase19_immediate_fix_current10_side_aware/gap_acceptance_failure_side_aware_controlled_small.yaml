@@ -1,0 +1,21 @@
+strategy: gap_acceptance_failure
+base_config: configs/strategies/base/gap_acceptance_failure.yaml
+description: Phase19 immediate-fix side-aware controlled-small grid skeleton for gap_acceptance_failure; inspect only.
+diagnostic_only: true
+grid_inspect_only: true
+broad_sweep_allowed: false
+economic_claims_allowed: false
+
+fixed:
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+  backtest.eod_exit_minute: 389
+
+grid:
+  signal.side_mode: [long_only, short_only, both]
+  risk.target_r: [1.0, 1.5]
+  backtest.max_hold_minutes: [30, 60]

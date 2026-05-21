@@ -16,7 +16,6 @@ from intraday.strategies.loader import (
     resolve_strategy_config,
     validate_strategy_config,
 )
-from intraday.strategies.pa.buy_sell_close_trend import PA_REQUIRED_FEATURE_COLUMNS
 from intraday.strategies.registry import get_strategy, list_strategies, register_builtin_strategies
 
 
@@ -24,6 +23,15 @@ def cmd_strategies_list() -> int:
     register_builtin_strategies()
     print(json.dumps({"strategies": list_strategies()}, indent=2))
     return 0
+
+
+def _strategydef_setup_codes(defn) -> dict[str, int]:
+    out: dict[str, int] = {}
+    if defn.setup_code_long is not None:
+        out["long"] = int(defn.setup_code_long)
+    if defn.setup_code_short is not None:
+        out["short"] = int(defn.setup_code_short)
+    return out
 
 
 def cmd_strategies_inspect(*, strategy: str, config: str) -> int:
@@ -35,28 +43,52 @@ def cmd_strategies_inspect(*, strategy: str, config: str) -> int:
         cfg_path = root / cfg_path
     cfg = resolve_strategy_config(cfg_path)
     validate_strategy_config(strategy, cfg)
+
+    # Setup codes: StrategyDef is the authoritative runtime source. Metadata YAML
+    # is read only as an audit cross-check and is reported separately so any
+    # drift is visible.
+    setup_codes = _strategydef_setup_codes(defn)
     meta_path = root / "configs/strategies/metadata" / f"{strategy}.yaml"
-    setup_codes: dict[str, int] = {}
+    if not meta_path.exists():
+        meta_path = root / "configs/strategies/metadata/phase19" / f"{strategy}.yaml"
+    metadata_setup_codes: dict[str, int] = {}
+    metadata_diagnostic_only: bool | None = None
+    metadata_grid_inspect_only: bool | None = None
     if meta_path.exists():
         meta = load_strategy_config(meta_path)
-        setup_codes = {str(k): v for k, v in (meta.get("setup_codes") or {}).items()}
-    print(
-        json.dumps(
-            {
-                "strategy": defn.name,
-                "family": defn.family,
-                "version": defn.version,
-                "required_feature_set": defn.required_feature_set,
-                "signal_contract_version": defn.signal_contract_version,
-                "signal_side": (cfg.get("signal") or {}).get("side"),
-                "setup_codes": setup_codes,
-                "required_feature_columns": list(PA_REQUIRED_FEATURE_COLUMNS)
-                if strategy == "pa_buy_sell_close_trend"
-                else [],
-            },
-            indent=2,
-        )
-    )
+        raw_codes = meta.get("setup_codes") or {}
+        if isinstance(raw_codes, dict):
+            for k, v in raw_codes.items():
+                try:
+                    metadata_setup_codes[str(k)] = int(v)
+                except (TypeError, ValueError):
+                    continue
+        if "diagnostic_only" in meta:
+            metadata_diagnostic_only = bool(meta["diagnostic_only"])
+        if "grid_inspect_only" in meta:
+            metadata_grid_inspect_only = bool(meta["grid_inspect_only"])
+
+    sig_cfg = cfg.get("signal") or {}
+    configured_side_mode = sig_cfg.get("side_mode")
+    legacy_side = sig_cfg.get("side")
+
+    payload: dict[str, object] = {
+        "strategy": defn.name,
+        "family": defn.family,
+        "version": defn.version,
+        "required_feature_set": defn.required_feature_set,
+        "signal_contract_version": defn.signal_contract_version,
+        "signal_side": legacy_side,
+        "configured_side_mode": configured_side_mode,
+        "default_side_mode": defn.default_side_mode,
+        "allowed_side_modes": list(defn.allowed_side_modes),
+        "setup_codes": setup_codes,
+        "required_feature_columns": list(defn.required_feature_columns),
+        "metadata_setup_codes": metadata_setup_codes,
+        "metadata_diagnostic_only": metadata_diagnostic_only,
+        "metadata_grid_inspect_only": metadata_grid_inspect_only,
+    }
+    print(json.dumps(payload, indent=2))
     return 0
 
 

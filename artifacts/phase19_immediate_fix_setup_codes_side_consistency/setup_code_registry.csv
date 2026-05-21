@@ -1,0 +1,21 @@
+strategy_name,family,long_code,short_code,status,notes
+pa_buy_sell_close_trend,pa,1001,8001,active,current-10
+orb_continuation,orb,2001,9001,active,current-10
+orb_retest_continuation,orb,2002,9002,active,current-10
+failed_orb,orb,2003,9003,active,current-10
+gap_acceptance_failure,gap,3001,10001,active,current-10
+vwap_trend_pullback,vwap,4001,11001,active,current-10
+vwap_reclaim_reject,vwap,4002,11002,active,current-10
+prior_day_level_trap,levels,5001,12001,active,current-10
+cci_extreme_snapback,cci,6001,13001,active,current-10
+stochastic_oversold_cross,stochastic,6002,13002,active,current-10
+pa_second_entry_pullback,pa_brooks,7101,7201,active,Phase19 core 11
+pa_trading_range_bls_hs,pa_brooks,7102,7202,active,Phase19 core 12
+pa_failed_breakout_trap,pa_brooks,7103,7203,active,Phase19 core 13
+pa_opening_reversal_sr,pa_brooks,7104,7204,active,Phase19 core 14
+pa_breakout_pullback_continuation,pa_brooks,7105,7205,active,Phase19 core 15
+pa_tight_channel_pullback,pa_brooks,7106,7206,active,Phase19 core 16
+pa_broad_channel_zone,pa_brooks,7107,7207,active,Phase19 core 17
+pa_mtr_reversal_diagnostic,pa_brooks,7108,7208,reserved,Phase19 diagnostic 18 (deferred)
+pa_wedge_reversal_diagnostic,pa_brooks,7109,7209,reserved,Phase19 diagnostic 19 (deferred)
+pa_climax_reversal_diagnostic,pa_brooks,7110,7210,reserved,Phase19 diagnostic 20 (deferred)

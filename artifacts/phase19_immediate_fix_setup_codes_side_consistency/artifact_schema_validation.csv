@@ -1,0 +1,20 @@
+artifact,format,parseable,required_columns_present,notes
+setup_code_registry.csv,csv,true,true,setup_code policy mirror
+setup_code_repair_matrix.csv,csv,true,true,before/after codes for current10 + phase19b
+phase19b_setup_code_repair_matrix.csv,csv,true,true,phase19b namespace drift repair
+boolean_config_coercion_repair_matrix.csv,csv,true,true,brooks_bool repair scope
+metadata_semantics_repair_matrix.csv,csv,true,true,diagnostic_only vs grid_inspect_only
+current10_short_retrofit_inventory.csv,csv,true,true,inventory of retrofitted current10 strategies
+current10_side_mode_test_matrix.csv,csv,true,true,added tests for current10 side aware
+phase19b_repair_test_matrix.csv,csv,true,true,added tests for phase19b repair
+validation_results.csv,csv,true,true,Phase19 immediate fix validation commands
+SOURCE_MAP.csv,csv,true,true,SOURCE_MAP for review bundle
+chatgpt_key_tables.csv,csv,true,true,key tables for ChatGPT review
+artifact_schema_validation.csv,csv,true,true,this file
+setup_code_policy.md,markdown,true,true,setup code policy mirror
+strategy_inspect_metadata_repair_summary.md,markdown,true,true,inspect repair summary
+current10_short_retrofit_design.md,markdown,true,true,per-strategy short logic table
+feature_strategy_contract_audit.md,markdown,true,true,contract compliance audit
+non_promotion_guardrails.md,markdown,true,true,non-promotion guardrails
+phase19_immediate_fix_decision.md,markdown,true,true,decision label
+CHATGPT_REVIEW_BUNDLE.md,markdown,true,true,review bundle index

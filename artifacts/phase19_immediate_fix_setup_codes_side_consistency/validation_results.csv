@@ -1,0 +1,28 @@
+command,status,notes
+python -m intraday.cli.main --help,passed,CLI top-level help works
+python -m intraday.cli.main doctor,passed,doctor returns 0
+python -m intraday.cli.main validate structure,passed,structure validates
+python -m compileall -q src tests,passed,no syntax errors
+python -m pytest -q tests/unit/test_setup_code_registry.py,passed,setup-code registry tests pass
+python -m pytest -q tests/unit/test_phase19_immediate_boolean_config_coercion.py,passed,brooks_bool + static scan tests pass (3 skipped for pa_failed_breakout_trap which has no boolean signal flags)
+python -m pytest -q tests/unit/test_strategy_metadata_alignment.py,passed,86 tests pass
+python -m pytest -q tests/unit/test_strategy_inspect_metadata.py,passed,68 tests pass
+python -m pytest -q tests/unit/test_current10_side_aware_configs.py,passed,70 tests pass
+python -m pytest -q tests/unit/test_current10_short_signal_generation.py,passed,5 tests pass
+python -m pytest -q tests/unit/test_current10_side_aware_missing_features.py,passed,2 tests pass
+python -m pytest -q tests/unit/test_current10_side_aware_no_lookahead_session.py,passed,2 tests pass
+python -m pytest -q tests/unit/test_current10_long_only_backward_compatibility.py,passed,20 tests pass
+python -m pytest -q tests/unit/test_phase19b_*.py,passed,Phase19B tests pass with corrected setup codes
+python -m pytest -q tests/unit/test_phase19a_*.py,passed,leakage tests updated to reflect Phase19B implementation
+python -m pytest -q tests/unit/test_phase18c_*.py,passed,Phase18C regression tests pass
+python -m pytest -q tests/unit,passed,1105 passed / 4 skipped
+python -m pytest -q tests/smoke,passed,25 smoke tests pass
+python -m ruff check --no-cache src tests,passed,no lint errors after auto-fix
+python -m ruff format --check --no-cache src tests,passed,all files formatted
+python -m intraday.cli.main strategies list,passed,17 strategies registered (current-10 + Phase19B 11-17)
+python -m intraday.cli.main strategies inspect ...,passed,inspect surfaces setup_codes / required_feature_columns / allowed_side_modes for every strategy
+python -m intraday.cli.main layer1 grid-inspect (current-10 side-aware),passed,combo_count=12 for pa_buy_sell_close_trend side-aware grid inspect
+python -m intraday.cli.main layer1 grid ...,not_run,actual Layer1 economic grid forbidden in this phase
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,forbidden
+Layer2 / Layer3 / WFO / live / paper commands,not_run,forbidden
+candidate export / promotion,not_run,forbidden

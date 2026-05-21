@@ -7,19 +7,23 @@ from typing import Any
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.strategies.base import StrategyDef
-from intraday.strategies.contracts import SIGNAL_CONTRACT_VERSION
+from intraday.strategies.contracts import SIDE_MODE_LONG_ONLY, SIGNAL_CONTRACT_VERSION
 from intraday.strategies.pa.brooks_common import (
+    BROOKS_SIDE_MODES,
+    brooks_bool,
     build_brooks_signal_matrix,
     deterministic_score,
     in_entry_window,
     require_brooks_feature_columns,
     validate_brooks_strategy_config,
 )
+from intraday.strategies.setup_codes import get_setup_codes
 
 STRATEGY_NAME = "pa_broad_channel_zone"
 FEATURE_SET = "pa_brooks_core_v1"
-SETUP_CODE_LONG = 1701
-SETUP_CODE_SHORT = 1702
+_SPEC = get_setup_codes(STRATEGY_NAME)
+SETUP_CODE_LONG = _SPEC.long_code
+SETUP_CODE_SHORT = _SPEC.short_code
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "pa_broad_bull_channel_score_20",
@@ -55,8 +59,8 @@ def generate_pa_broad_channel_zone_signals(
     broad_min = float(sig.get("broad_score_min", 0.4))
     max_depth = float(sig.get("pullback_max_depth_atr", 1.5))
     tr_block = float(sig.get("block_trading_range_score_max", 0.85))
-    require_second = bool(sig.get("require_second_entry", False))
-    require_reversal = bool(sig.get("require_reversal_bar", True))
+    require_second = brooks_bool(sig, "require_second_entry", False)
+    require_reversal = brooks_bool(sig, "require_reversal_bar", True)
 
     depth_ok = features.column("pa_pullback_depth_atr") <= max_depth
     not_tight_tr = features.column("pa_trading_range_score_20") < tr_block
@@ -111,4 +115,9 @@ PA_BROAD_CHANNEL_ZONE_DEF = StrategyDef(
     signal_contract_version=SIGNAL_CONTRACT_VERSION,
     generate_reference=generate_pa_broad_channel_zone_signals,
     validate_config=validate_pa_broad_channel_zone_config,
+    setup_code_long=SETUP_CODE_LONG,
+    setup_code_short=SETUP_CODE_SHORT,
+    allowed_side_modes=BROOKS_SIDE_MODES,
+    default_side_mode=SIDE_MODE_LONG_ONLY,
+    required_feature_columns=REQUIRED_COLUMNS,
 )

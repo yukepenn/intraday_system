@@ -24,7 +24,9 @@ def test_pa_base_config_loads_and_validates() -> None:
 def test_pa_metadata_loads() -> None:
     root = repo_root()
     meta = load_strategy_metadata(root / "configs/strategies/metadata/pa_buy_sell_close_trend.yaml")
-    assert meta["setup_codes"][1001] == "PA_BUY_SELL_CLOSE_TREND_LONG"
+    assert int(meta["setup_codes"]["long"]) == 1001
+    assert int(meta["setup_codes"]["short"]) == 8001
+    assert meta["setup_code_label_long"] == "PA_BUY_SELL_CLOSE_TREND_LONG"
 
 
 def test_pa_grid_loads() -> None:
@@ -42,10 +44,11 @@ def test_resolve_strategy_config_from_dict() -> None:
 
 
 def test_invalid_side_rejected() -> None:
+    """Phase19 immediate fix: current-10 accepts long_only/short_only/both but rejects unknown."""
     root = repo_root()
     cfg = load_strategy_config(root / "configs/strategies/base/pa_buy_sell_close_trend.yaml")
     cfg = dict(cfg)
     cfg["signal"] = dict(cfg["signal"])
-    cfg["signal"]["side"] = "short_only"
+    cfg["signal"]["side"] = "not_a_side"
     with pytest.raises(ConfigError):
         validate_strategy_config("pa_buy_sell_close_trend", cfg)

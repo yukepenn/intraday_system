@@ -1,4 +1,4 @@
-"""ORB breakout continuation (long-only signal MVP)."""
+"""ORB breakout continuation with side-aware short retrofit."""
 
 from __future__ import annotations
 
@@ -11,27 +11,36 @@ from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
 from intraday.strategies.common import (
-    build_signal_matrix,
+    build_side_aware_signal_matrix,
     compute_long_stop,
-    thin_first_n_per_session,
+    compute_short_stop,
 )
 from intraday.strategies.config_validation import (
+    CURRENT10_SIDE_MODES,
     parse_bool_like,
-    validate_long_only_strategy_base,
     validate_optional_finite_float,
     validate_optional_nonnegative_float,
     validate_optional_positive_float,
     validate_optional_positive_int,
     validate_optional_probability,
+    validate_side_aware_strategy_base,
 )
 from intraday.strategies.contracts import (
+    SIDE_MODE_LONG_ONLY,
     SIGNAL_CONTRACT_VERSION,
     clip_finite,
+    normalize_side_mode,
     require_feature_columns,
 )
+from intraday.strategies.setup_codes import get_setup_codes
 
 STRATEGY_NAME = "orb_continuation"
-SETUP_CODE = 2001
+_SPEC = get_setup_codes(STRATEGY_NAME)
+SETUP_CODE_LONG = _SPEC.long_code
+SETUP_CODE_SHORT = _SPEC.short_code
+# Backward-compat alias retained for tests / callers that imported the
+# legacy single-code constant before Phase19 side-aware retrofit.
+SETUP_CODE = SETUP_CODE_LONG
 FEATURE_SET = "opening_core_v1"
 FEATURE_SETS = ("opening_core_v1", "opening_core_v2")
 
@@ -48,12 +57,13 @@ REQUIRED_COLUMNS: tuple[str, ...] = (
 
 
 def validate_orb_continuation_config(config: Mapping[str, Any]) -> None:
-    validate_long_only_strategy_base(
+    validate_side_aware_strategy_base(
         config,
         strategy_name=STRATEGY_NAME,
         family="orb",
         required_feature_set=FEATURE_SETS,
         allowed_stop_modes=("orb_mid", "orb_low", "atr_buffer", "signal_low"),
+        allowed_side_modes=CURRENT10_SIDE_MODES,
     )
     sig = config.get("signal", {})
     if int(sig.get("orb_open_minutes", 15)) <= 0:
@@ -73,6 +83,14 @@ def validate_orb_continuation_config(config: Mapping[str, Any]) -> None:
     validate_optional_nonnegative_float(sig, "max_vwap_dist_pct", "signal.max_vwap_dist_pct")
 
 
+_LONG_TO_SHORT_STOP: dict[str, str] = {
+    "signal_low": "signal_high",
+    "atr_buffer": "atr_buffer",
+    "orb_low": "orb_high",
+    "orb_mid": "orb_mid",
+}
+
+
 def _orb_suffix(config: Mapping[str, Any]) -> str:
     om = int(config.get("signal", {}).get("orb_open_minutes", 15))
     return f"_{om}"
@@ -89,6 +107,8 @@ def generate_orb_continuation_signals(
 
     sig = config["signal"]
     risk = config["risk"]
+    side_mode = normalize_side_mode(sig)
+    short_enabled = side_mode != SIDE_MODE_LONG_ONLY
     om = int(sig.get("orb_open_minutes", 15))
     es = int(sig["entry_start_minute"])
     ee = int(sig["entry_end_minute"])
@@ -128,49 +148,93 @@ def generate_orb_continuation_signals(
         & (atr > 0)
         & np.isfinite(orb_width)
     )
-    breakout_level = orb_high.copy()
-    if "breakout_buffer_atr" in sig:
-        breakout_level = breakout_level + float(sig["breakout_buffer_atr"]) * atr
-    if "breakout_buffer_pct" in sig:
-        breakout_level = breakout_level * (1.0 + float(sig["breakout_buffer_pct"]))
-    cand = in_window & orb_ready & finite & (close > breakout_level)
-    cand &= (orb_width >= min_w) & (orb_width <= max_w)
-    if req_vwap:
-        cand &= close > vwap
-    if min_slope > -1e17:
-        cand &= vwap_slope >= min_slope
-    if "close_position_min" in sig:
-        cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
-    if "min_rel_volume_20" in sig:
-        cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
-    if "max_vwap_dist_pct" in sig:
-        cand &= np.abs(features.column("vwap_dist_pct")) <= float(sig["max_vwap_dist_pct"])
+    width_ok = (orb_width >= min_w) & (orb_width <= max_w)
 
-    stop_arr = compute_long_stop(
+    long_breakout = orb_high.copy()
+    if "breakout_buffer_atr" in sig:
+        long_breakout = long_breakout + float(sig["breakout_buffer_atr"]) * atr
+    if "breakout_buffer_pct" in sig:
+        long_breakout = long_breakout * (1.0 + float(sig["breakout_buffer_pct"]))
+    long_cand = in_window & orb_ready & finite & width_ok & (close > long_breakout)
+    if req_vwap:
+        long_cand &= close > vwap
+    if min_slope > -1e17:
+        long_cand &= vwap_slope >= min_slope
+    if "close_position_min" in sig:
+        long_cand &= features.column("close_position_in_range") >= float(sig["close_position_min"])
+    if "min_rel_volume_20" in sig:
+        long_cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+    if "max_vwap_dist_pct" in sig:
+        long_cand &= np.abs(features.column("vwap_dist_pct")) <= float(sig["max_vwap_dist_pct"])
+
+    short_breakout = orb_low.copy()
+    if "breakout_buffer_atr" in sig:
+        short_breakout = short_breakout - float(sig["breakout_buffer_atr"]) * atr
+    if "breakout_buffer_pct" in sig:
+        short_breakout = short_breakout * (1.0 - float(sig["breakout_buffer_pct"]))
+    short_cand = np.zeros_like(long_cand, dtype=bool)
+    if short_enabled:
+        short_cand = in_window & orb_ready & finite & width_ok & (close < short_breakout)
+        if req_vwap:
+            short_cand &= close < vwap
+        if min_slope > -1e17:
+            # Symmetric requirement: vwap_slope must be <= -min_slope for shorts.
+            short_cand &= vwap_slope <= -min_slope
+        if "close_position_min" in sig:
+            short_cand &= (1.0 - features.column("close_position_in_range")) >= float(
+                sig["close_position_min"]
+            )
+        if "min_rel_volume_20" in sig:
+            short_cand &= features.column("rel_volume_20") >= float(sig["min_rel_volume_20"])
+        if "max_vwap_dist_pct" in sig:
+            short_cand &= np.abs(features.column("vwap_dist_pct")) <= float(
+                sig["max_vwap_dist_pct"]
+            )
+
+    long_stop_mode = str(risk.get("stop_mode", "signal_low"))
+    long_stop = compute_long_stop(
         bars,
         features,
-        str(risk.get("stop_mode", "signal_low")),
+        long_stop_mode,
         atr_mult=float(risk.get("atr_buffer_mult", 0.35)),
         orb_low=orb_low,
         orb_mid=orb_mid,
     )
-    valid_stop = np.isfinite(stop_arr) & (stop_arr < close)
-    entry = cand & valid_stop
+    long_score = clip_finite((close - long_breakout) / atr, -3.0, 3.0)
+    if short_enabled:
+        short_stop_mode = str(
+            sig.get("short_stop_mode", _LONG_TO_SHORT_STOP.get(long_stop_mode, "signal_high"))
+        )
+        short_stop = compute_short_stop(
+            bars,
+            features,
+            short_stop_mode,
+            atr_mult=float(risk.get("atr_buffer_mult", 0.35)),
+            orb_high=orb_high,
+            orb_mid=orb_mid,
+        )
+        short_score = clip_finite((short_breakout - close) / atr, -3.0, 3.0)
+    else:
+        short_stop = np.full(bars.n_bars, np.nan, dtype=np.float64)
+        short_score = np.full(bars.n_bars, np.nan, dtype=np.float64)
 
     max_trades = int(risk.get("max_trades_per_day", 1))
-    entry = thin_first_n_per_session(entry, bars.session_id, max_trades)
-
-    score = clip_finite((close - breakout_level) / atr, -3.0, 3.0)
-    return build_signal_matrix(
+    return build_side_aware_signal_matrix(
         bars=bars,
-        entry=entry,
-        stop=stop_arr,
-        target_r_val=float(risk["target_r"]),
-        setup_code_val=SETUP_CODE,
-        score=score,
-        strategy_name=STRATEGY_NAME,
+        features=features,
         config=dict(config),
-        feature_hash=features.feature_hash,
+        strategy_name=STRATEGY_NAME,
+        long_entry=long_cand,
+        short_entry=short_cand,
+        long_stop=long_stop,
+        short_stop=short_stop,
+        long_score=long_score,
+        short_score=short_score,
+        target_r_val=float(risk["target_r"]),
+        setup_code_long=SETUP_CODE_LONG,
+        setup_code_short=SETUP_CODE_SHORT,
+        side_mode=side_mode,
+        max_trades_per_day=max_trades,
     )
 
 
@@ -182,4 +246,9 @@ ORB_CONTINUATION_DEF = StrategyDef(
     signal_contract_version=SIGNAL_CONTRACT_VERSION,
     generate_reference=generate_orb_continuation_signals,
     validate_config=validate_orb_continuation_config,
+    setup_code_long=SETUP_CODE_LONG,
+    setup_code_short=SETUP_CODE_SHORT,
+    allowed_side_modes=CURRENT10_SIDE_MODES,
+    default_side_mode=SIDE_MODE_LONG_ONLY,
+    required_feature_columns=REQUIRED_COLUMNS,
 )

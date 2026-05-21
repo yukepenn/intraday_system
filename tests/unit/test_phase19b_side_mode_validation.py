@@ -36,23 +36,29 @@ def _phase18b_config(strategy: str) -> dict:
 
 
 @pytest.mark.parametrize("strategy", CURRENT10)
-@pytest.mark.parametrize("side_mode", ("short_only", "both"))
-def test_current10_reject_nonlong_side_mode(strategy: str, side_mode: str) -> None:
+@pytest.mark.parametrize("side_mode", ("long_only", "short_only", "both"))
+def test_current10_accept_all_side_modes(strategy: str, side_mode: str) -> None:
+    """Phase19 immediate fix: current-10 now accepts long_only, short_only, both."""
     cfg = copy.deepcopy(_base_config(strategy))
     cfg["signal"].pop("side", None)
     cfg["signal"]["side_mode"] = side_mode
-
-    with pytest.raises(ConfigError, match="side_mode"):
-        validate_strategy_config(strategy, cfg)
+    validate_strategy_config(strategy, cfg)
 
 
 @pytest.mark.parametrize("strategy", CURRENT10)
-@pytest.mark.parametrize("side_mode", ("short_only", "both"))
-def test_current10_phase18b_reject_nonlong_side_mode(strategy: str, side_mode: str) -> None:
+@pytest.mark.parametrize("side_mode", ("long_only", "short_only", "both"))
+def test_current10_phase18b_accept_all_side_modes(strategy: str, side_mode: str) -> None:
     cfg = copy.deepcopy(_phase18b_config(strategy))
     cfg["signal"].pop("side", None)
     cfg["signal"]["side_mode"] = side_mode
+    validate_strategy_config(strategy, cfg)
 
+
+@pytest.mark.parametrize("strategy", CURRENT10)
+def test_current10_reject_unknown_side_mode(strategy: str) -> None:
+    cfg = copy.deepcopy(_base_config(strategy))
+    cfg["signal"].pop("side", None)
+    cfg["signal"]["side_mode"] = "not_a_side"
     with pytest.raises(ConfigError, match="side_mode"):
         validate_strategy_config(strategy, cfg)
 

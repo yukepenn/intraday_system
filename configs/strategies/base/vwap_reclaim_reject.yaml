@@ -8,7 +8,8 @@ features:
   feature_config: configs/features/vwap_level_core_v1.yaml
 
 signal:
-  side: long_only
+  # Phase19 immediate fix: canonical configs use side_mode (side is legacy).
+  side_mode: long_only
   entry_start_minute: 15
   entry_end_minute: 330
   min_vwap_slope: 0.0

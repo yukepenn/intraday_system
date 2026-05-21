@@ -1,0 +1,22 @@
+section,item,metric,value,interpretation
+phase,name,phase,PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT,Phase19 immediate fix
+phase,task_type,task_type,repair+infrastructure+validation+controlled side-aware retrofit,Repair + retrofit
+git,pre_task_head,pre_task_head,ca216cb,baseline commit
+git,final_commit,final_commit,TBD,filled after commit
+setup-code,registry_created,setup_code_registry_created,true,setup_codes.py is the authoritative runtime registry
+setup-code,registry_tests_passed,setup_code_registry_tests_passed,true,unique/int16/expected codes/no wrong leak
+phase19b,setup_codes_repaired,phase19b_setup_codes_repaired,true,7101-7107 / 7201-7207 in source + metadata + tests
+phase19b,boolean_coercion_repaired,boolean_coercion_repaired,true,brooks_bool + static scan
+phase19b,metadata_inspect_repaired,metadata_inspect_repaired,true,StrategyDef + CLI inspect surface codes/features/side modes
+current-10,short_retrofit_completed,current10_short_retrofit_completed_count,10,all current-10 retrofitted
+current-10,short_retrofit_expected,current10_short_retrofit_expected_count,10,target
+runs,actual_layer1_grid_runs,actual_layer1_grid_runs,0,no economic grids
+runs,candidate_yaml_created,candidate_yaml_created,false,non-promotional
+runs,select_dry_run_run,select_dry_run_run,false,non-promotional
+layer,layer2_created,layer2_created,false,deferred
+runs,wfo_run,wfo_run,false,deferred
+runs,live_paper_run,live_paper_run,false,deferred
+claims,economic_claims_made,economic_claims_made,false,non-promotional
+execution,execution_truth_changed,execution_truth_changed,false,no PnL/R semantic change
+decision,label,decision,PHASE19_IMMEDIATE_FIX_COMPLETE,all 5 gates pass
+next_step,recommended,recommended_next_step,Codex review of immediate fix then ChatGPT Pro roadmap decision,Provisional cursor recommendation

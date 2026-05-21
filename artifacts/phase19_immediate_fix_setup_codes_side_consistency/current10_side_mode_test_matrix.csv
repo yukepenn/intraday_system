@@ -1,0 +1,13 @@
+test_file,test_name,strategies_covered,assertion_summary
+tests/unit/test_setup_code_registry.py,registry tests,all,unique/int16/expected codes/no wrong phase19b leak
+tests/unit/test_phase19_immediate_boolean_config_coercion.py,boolean coercion,phase19b,brooks_bool semantics + static scan
+tests/unit/test_strategy_metadata_alignment.py,metadata/StrategyDef alignment,current10 + phase19,setup codes / diagnostic flags / required features match registry
+tests/unit/test_strategy_inspect_metadata.py,inspect CLI,current10 + phase19,inspect reports nonempty setup_codes/required_feature_columns
+tests/unit/test_current10_side_aware_configs.py,side_mode validation,current10,accept long_only/short_only/both via side_mode; reject unknown
+tests/unit/test_current10_short_signal_generation.py,short signal generation,pa_buy_sell_close_trend,short_only emits side=-1 with approved code and stop>close
+tests/unit/test_current10_side_aware_missing_features.py,missing features,pa_buy_sell_close_trend,ConfigError when short branch needs missing feature
+tests/unit/test_current10_side_aware_no_lookahead_session.py,no lookahead / session,pa_buy_sell_close_trend,future perturbation does not change signal at t; session reset works
+tests/unit/test_current10_long_only_backward_compatibility.py,long-only backcompat,current10,canonical base + legacy side + missing side_mode all validate
+tests/unit/test_phase19b_brooks_strategy_signals.py,phase19b signal hashes,phase19b,setup codes are 7101-7107/7201-7207
+tests/unit/test_phase19b_brooks_common.py,phase19b helpers,phase19b,build_brooks_signal_matrix uses correct codes
+tests/unit/test_phase19b_side_mode_validation.py,side_mode validation gate,phase19b + current10,current10 accepts all three modes; phase19b accepts all three modes

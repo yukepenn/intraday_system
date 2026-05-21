@@ -1,0 +1,8 @@
+strategy_name,wrong_long,wrong_short,correct_long,correct_short,source_file_repaired,metadata_yaml_repaired,test_updated
+pa_second_entry_pullback,1101,1102,7101,7201,src/intraday/strategies/pa/second_entry_pullback.py,configs/strategies/metadata/phase19/pa_second_entry_pullback.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_trading_range_bls_hs,1201,1202,7102,7202,src/intraday/strategies/pa/trading_range_bls_hs.py,configs/strategies/metadata/phase19/pa_trading_range_bls_hs.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_failed_breakout_trap,1301,1302,7103,7203,src/intraday/strategies/pa/failed_breakout_trap.py,configs/strategies/metadata/phase19/pa_failed_breakout_trap.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_opening_reversal_sr,1401,1402,7104,7204,src/intraday/strategies/pa/opening_reversal_sr.py,configs/strategies/metadata/phase19/pa_opening_reversal_sr.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_breakout_pullback_continuation,1501,1502,7105,7205,src/intraday/strategies/pa/breakout_pullback_continuation.py,configs/strategies/metadata/phase19/pa_breakout_pullback_continuation.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_tight_channel_pullback,1601,1602,7106,7206,src/intraday/strategies/pa/tight_channel_pullback.py,configs/strategies/metadata/phase19/pa_tight_channel_pullback.yaml,tests/unit/test_phase19b_brooks_common.py
+pa_broad_channel_zone,1701,1702,7107,7207,src/intraday/strategies/pa/broad_channel_zone.py,configs/strategies/metadata/phase19/pa_broad_channel_zone.yaml,tests/unit/test_phase19b_brooks_common.py

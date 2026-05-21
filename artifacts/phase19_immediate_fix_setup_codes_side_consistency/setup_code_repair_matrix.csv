@@ -1,0 +1,18 @@
+strategy_name,scope,before_long_code,before_short_code,after_long_code,after_short_code,repair_kind,notes
+pa_second_entry_pullback,phase19b,1101,1102,7101,7201,setup_code_repair,namespace drift repaired via setup_codes.py
+pa_trading_range_bls_hs,phase19b,1201,1202,7102,7202,setup_code_repair,
+pa_failed_breakout_trap,phase19b,1301,1302,7103,7203,setup_code_repair,
+pa_opening_reversal_sr,phase19b,1401,1402,7104,7204,setup_code_repair,
+pa_breakout_pullback_continuation,phase19b,1501,1502,7105,7205,setup_code_repair,
+pa_tight_channel_pullback,phase19b,1601,1602,7106,7206,setup_code_repair,
+pa_broad_channel_zone,phase19b,1701,1702,7107,7207,setup_code_repair,
+pa_buy_sell_close_trend,current10,1001,,1001,8001,short_retrofit,short code newly registered
+orb_continuation,current10,2001,,2001,9001,short_retrofit,
+orb_retest_continuation,current10,2002,,2002,9002,short_retrofit,
+failed_orb,current10,2003,,2003,9003,short_retrofit,
+gap_acceptance_failure,current10,3001,,3001,10001,short_retrofit,
+vwap_trend_pullback,current10,4001,,4001,11001,short_retrofit,
+vwap_reclaim_reject,current10,4002,,4002,11002,short_retrofit,
+prior_day_level_trap,current10,5001,,5001,12001,short_retrofit,
+cci_extreme_snapback,current10,6001,,6001,13001,short_retrofit,
+stochastic_oversold_cross,current10,6002,,6002,13002,short_retrofit,

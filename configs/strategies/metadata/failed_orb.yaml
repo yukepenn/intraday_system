@@ -1,16 +1,26 @@
 strategy: failed_orb
 family: orb
 phase_added: Phase 13
-purpose: Long-only failed_orb MVP (signal only).
-setup_code: 2003
-long_only_mvp: true
+description: Failed ORB downside trap / reclaim with side-aware retrofit support.
+required_feature_set: opening_core_v1
 feature_config: configs/features/opening_core_v1.yaml
+core_or_diagnostic: core
+diagnostic_only: false
+grid_inspect_only: true
+side_mode_allowed: [long_only, short_only, both]
+default_side_mode: long_only
+setup_codes:
+  long: 2003
+  short: 9003
+broad_sweep_allowed: false
+economic_claims_allowed: false
+candidate_eligible_now: false
+promotion_allowed_now: false
 no_lookahead_notes: Entry at bar close; same-session state only where noted.
-qt_reference_files_read: []
 non_goals:
   - no candidate promotion
   - no Layer2
   - no Layer3
   - no WFO
   - no live/paper
-  - no short side in signal_v1
+  - no economic claims in this phase

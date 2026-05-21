@@ -4,10 +4,14 @@ phase: phase19b
 status: onboarded_grid_inspect_only
 core_or_diagnostic: core
 side_mode_allowed: [long_only, short_only, both]
-diagnostic_only: true
+default_side_mode: long_only
+diagnostic_only: false
+grid_inspect_only: true
 broad_sweep_allowed: false
 economic_claims_allowed: false
+candidate_eligible_now: false
+promotion_allowed_now: false
 setup_codes:
-  long: 1101
-  short: 1102
+  long: 7101
+  short: 7201
 notes: Phase19B strategy onboarding artifact; inspect/grid-inspect only, no promotion.

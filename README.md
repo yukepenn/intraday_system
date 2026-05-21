@@ -132,7 +132,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 19B complete:** **`PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_WITH_SIDE_MODE_VALIDATION_GATE`** hardened current-10 side-mode validation and onboarded Brooks PA strategies 11-17 with configs, metadata, grid skeletons, Layer1 grid-inspect-only configs, tests, and curated artifacts. Bundle: `artifacts/phase19b_core_brooks_pa_strategies/`.
 
-**Next:** **`REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES`** with Codex and ChatGPT Pro. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
+**Phase 19 Immediate Fix complete:** **`PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT`** introduced the authoritative setup-code registry (`src/intraday/strategies/setup_codes.py` + `docs/SETUP_CODE_REGISTRY.md`), repaired Phase19B namespace drift to 7101-7107 / 7201-7207, repaired runtime boolean coercion with the `brooks_bool` helper, extended `StrategyDef` and CLI `strategies inspect` to surface setup codes / required feature columns / side modes, added generic side-aware strategy helpers, and retrofitted all 10 current-10 strategies with `signal.side_mode`-gated short branches using approved short setup codes (default behavior remains `long_only`). Bundle: `artifacts/phase19_immediate_fix_setup_codes_side_consistency/`.
+
+**Next:** **`REVIEW_PHASE19_IMMEDIATE_FIX`** with Codex and ChatGPT Pro. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
 
 See:
 

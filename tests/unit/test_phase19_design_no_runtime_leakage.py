@@ -1,8 +1,11 @@
 """Phase19 design guardrails: no runtime promotion or heavy artifact leakage.
 
-Design-only test. Asserts that the Phase19 design artifact bundle does
-not leak runtime/candidate/heavy/binary files and that Phase19 design
-has not modified runtime source/configs.
+Originally a design-only test. Phase19B legitimately implemented strategies
+11-17 runtime files; the design-phase "must-not-exist" guards on those files
+have been intentionally retired in the Phase19 Immediate Fix. The remaining
+guardrails enforce that the Phase19 design artifact bundle did not leak
+runtime/candidate/heavy/binary files and that diagnostic strategies 18-20
+remain deferred.
 """
 
 from __future__ import annotations
@@ -31,25 +34,13 @@ FORBIDDEN_PATH_PARTS = {
     "equity",
 }
 
-PHASE19_RUNTIME_PATH_HINTS = {
-    "src/intraday/strategies/pa/second_entry_pullback.py",
-    "src/intraday/strategies/pa/trading_range_bls_hs.py",
-    "src/intraday/strategies/pa/failed_breakout_trap.py",
-    "src/intraday/strategies/pa/opening_reversal_sr.py",
-    "src/intraday/strategies/pa/breakout_pullback_continuation.py",
-    "src/intraday/strategies/pa/tight_channel_pullback.py",
-    "src/intraday/strategies/pa/broad_channel_zone.py",
+PHASE19_DIAGNOSTIC_STRATEGIES_STILL_DEFERRED = {
     "src/intraday/strategies/pa/mtr_reversal_diagnostic.py",
     "src/intraday/strategies/pa/wedge_reversal_diagnostic.py",
     "src/intraday/strategies/pa/climax_reversal_diagnostic.py",
-    "src/intraday/strategies/pa/brooks_common.py",
     "configs/features/pa_brooks_opening_v1.yaml",
     "configs/features/pa_brooks_reversal_v1.yaml",
     "configs/features/pa_brooks_magnet_v1.yaml",
-    "configs/strategies/base/phase19/",
-    "configs/strategies/grids/phase19/",
-    "configs/strategies/metadata/phase19/",
-    "configs/layer1/phase19_brooks_pa_grid_inspect/",
 }
 
 
@@ -79,12 +70,14 @@ def test_phase19_source_map_has_no_runtime_candidate_or_layer_leakage() -> None:
     assert forbidden == [], f"forbidden entries in SOURCE_MAP.csv: {forbidden}"
 
 
-def test_phase19_design_phase_did_not_create_phase19_runtime_files() -> None:
-    """The Phase19 design phase must not create any of the future runtime files."""
+def test_phase19_diagnostic_strategies_18_to_20_still_deferred() -> None:
+    """Phase19B implemented 11-17. Diagnostic strategies 18-20 and Brooks
+    opening/reversal/magnet feature kernels remain deferred."""
 
-    leaked = [hint for hint in PHASE19_RUNTIME_PATH_HINTS if Path(hint).exists()]
+    leaked = [hint for hint in PHASE19_DIAGNOSTIC_STRATEGIES_STILL_DEFERRED if Path(hint).exists()]
     assert leaked == [], (
-        "Phase19 design-only phase must not create Phase19 runtime files. " f"Leaked: {leaked}"
+        "Diagnostic strategies 18-20 and Brooks opening/reversal/magnet feature "
+        f"kernels must remain deferred. Leaked: {leaked}"
     )
 
 
@@ -98,35 +91,17 @@ def test_phase19_validation_records_forbidden_commands_as_not_run() -> None:
     assert command_status["Layer2 / Layer3 / WFO / live / paper commands"] == "not_run"
 
 
-def test_phase19_file_plan_marks_runtime_files_as_future_only() -> None:
-    """The file plan must enumerate future runtime files (new files) that
-    have not been created yet. ``source-edit`` rows reference EXISTING files
-    that the future implementation phase will edit; those must already exist
-    today and are not "leaked"."""
+def test_phase19_file_plan_source_edit_targets_exist() -> None:
+    """``source-edit`` rows reference EXISTING files that an implementation
+    phase will edit; those must already exist today.
+
+    NOTE: the historical "must not yet exist" guard on ``source``/``config``
+    rows was retired in the Phase19 Immediate Fix because Phase19B has
+    legitimately implemented strategies 11-17.
+    """
 
     with (ARTIFACT_DIR / "phase19_file_plan.csv").open(newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-
-    phase19a_allowed = {
-        "configs/features/pa_brooks_core_v1.yaml",
-        "configs/features/pa_brooks_range_v1.yaml",
-    }
-    new_runtime_rows = [
-        row
-        for row in rows
-        if row["file_type"] in {"source", "config"}
-        and not row["future_file_path"].startswith("artifacts/")
-        and row["future_file_path"] not in phase19a_allowed
-    ]
-    assert new_runtime_rows, "phase19_file_plan.csv should enumerate future runtime files"
-    leaked = [
-        row["future_file_path"]
-        for row in new_runtime_rows
-        if Path(row["future_file_path"]).exists()
-    ]
-    assert leaked == [], (
-        "Phase19 design-only phase must not create future runtime files yet. " f"Leaked: {leaked}"
-    )
 
     edit_rows = [row for row in rows if row["file_type"] == "source-edit"]
     missing_targets = [

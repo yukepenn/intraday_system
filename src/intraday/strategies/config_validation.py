@@ -9,7 +9,20 @@ from typing import Any
 from intraday.core.config import require_keys
 from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
-from intraday.strategies.contracts import SIDE_MODE_LONG_ONLY, normalize_side_mode
+from intraday.strategies.contracts import (
+    SIDE_MODE_BOTH,
+    SIDE_MODE_LONG_ONLY,
+    SIDE_MODE_SHORT_ONLY,
+    normalize_side_mode,
+)
+
+# All current-10 strategies support all three side modes after the Phase19
+# immediate fix. ``side_mode`` defaults to ``long_only`` when omitted.
+CURRENT10_SIDE_MODES: tuple[str, ...] = (
+    SIDE_MODE_LONG_ONLY,
+    SIDE_MODE_SHORT_ONLY,
+    SIDE_MODE_BOTH,
+)
 
 
 def parse_bool_like(value: Any, field: str) -> bool:
@@ -145,7 +158,7 @@ def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
     if not isinstance(sig, Mapping):
         raise ConfigError("signal section required")
 
-    validate_long_only_side_mode(sig)
+    validate_side_mode_allowed(sig, allowed=CURRENT10_SIDE_MODES)
 
     es = _as_int(sig.get("entry_start_minute"), "signal.entry_start_minute")
     ee = _as_int(sig.get("entry_end_minute"), "signal.entry_end_minute")
@@ -231,15 +244,22 @@ def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
                 raise ConfigError("backtest.max_hold_minutes must be > 0")
 
 
-def validate_long_only_strategy_base(
+def validate_side_aware_strategy_base(
     config: Mapping[str, Any],
     *,
     strategy_name: str,
     family: str,
     required_feature_set: str | tuple[str, ...],
     allowed_stop_modes: tuple[str, ...],
+    allowed_side_modes: tuple[str, ...],
 ) -> None:
-    """Shared long-only MVP config checks for Phase 13 strategies."""
+    """Shared side-aware base-config checks for current-10 strategies.
+
+    The Phase19 immediate fix replaces the long-only-only validator. Long-only
+    is still the default behavior when ``signal.side_mode`` is missing, but
+    strategies that register ``allowed_side_modes`` may also accept
+    ``short_only`` and ``both``.
+    """
     if config.get("strategy") != strategy_name:
         raise ConfigError(f"strategy must be {strategy_name}, got {config.get('strategy')!r}")
     if "family" in config and config["family"] != family:
@@ -255,7 +275,7 @@ def validate_long_only_strategy_base(
     sig = config.get("signal")
     if not isinstance(sig, Mapping):
         raise ConfigError("signal section required")
-    validate_long_only_side_mode(sig)
+    validate_side_mode_allowed(sig, allowed=allowed_side_modes)
 
     es = _as_int(sig.get("entry_start_minute"), "signal.entry_start_minute")
     ee = _as_int(sig.get("entry_end_minute"), "signal.entry_end_minute")
@@ -276,6 +296,18 @@ def validate_long_only_strategy_base(
     atr_mult = _as_float(risk.get("atr_buffer_mult", 0), "risk.atr_buffer_mult")
     if atr_mult < 0:
         raise ConfigError("risk.atr_buffer_mult must be >= 0")
+    short_stop_mode = sig.get("short_stop_mode")
+    if short_stop_mode is not None:
+        if str(short_stop_mode) not in (
+            "signal_high",
+            "rolling_high_20",
+            "atr_buffer",
+            "orb_high",
+            "orb_mid",
+            "vwap_atr_buffer",
+            "prior_high_buffer",
+        ):
+            raise ConfigError(f"signal.short_stop_mode invalid: {short_stop_mode!r}")
     if "max_trades_per_day" in risk:
         if _as_int(risk["max_trades_per_day"], "risk.max_trades_per_day") <= 0:
             raise ConfigError("risk.max_trades_per_day must be > 0")
@@ -288,6 +320,29 @@ def validate_long_only_strategy_base(
     if isinstance(backtest, Mapping) and "max_hold_minutes" in backtest:
         if _as_int(backtest["max_hold_minutes"], "backtest.max_hold_minutes") <= 0:
             raise ConfigError("backtest.max_hold_minutes must be > 0")
+
+
+def validate_long_only_strategy_base(
+    config: Mapping[str, Any],
+    *,
+    strategy_name: str,
+    family: str,
+    required_feature_set: str | tuple[str, ...],
+    allowed_stop_modes: tuple[str, ...],
+) -> None:
+    """Backward-compatible long-only-only validator.
+
+    Retained for callers that explicitly want to reject non-long ``side_mode``.
+    Current-10 validators now use :func:`validate_side_aware_strategy_base`.
+    """
+    validate_side_aware_strategy_base(
+        config,
+        strategy_name=strategy_name,
+        family=family,
+        required_feature_set=required_feature_set,
+        allowed_stop_modes=allowed_stop_modes,
+        allowed_side_modes=(SIDE_MODE_LONG_ONLY,),
+    )
 
 
 def validate_strategy_config_for_name(

@@ -1,8 +1,8 @@
 strategy_number,strategy,implemented,side_modes,setup_code_long,setup_code_short,feature_set,notes
-11,pa_second_entry_pullback,true,long_only|short_only|both,1101,1102,pa_brooks_core_v1,reduced Slice F1 variant where needed
-12,pa_trading_range_bls_hs,true,long_only|short_only|both,1201,1202,pa_brooks_range_v1,reduced Slice F1 variant where needed
-13,pa_failed_breakout_trap,true,long_only|short_only|both,1301,1302,pa_brooks_range_v1,reduced Slice F1 variant where needed
-14,pa_opening_reversal_sr,true,long_only|short_only|both,1401,1402,pa_brooks_range_v1,reduced Slice F1 variant where needed
-15,pa_breakout_pullback_continuation,true,long_only|short_only|both,1501,1502,pa_brooks_core_v1,reduced Slice F1 variant where needed
-16,pa_tight_channel_pullback,true,long_only|short_only|both,1601,1602,pa_brooks_core_v1,reduced Slice F1 variant where needed
-17,pa_broad_channel_zone,true,long_only|short_only|both,1701,1702,pa_brooks_core_v1,reduced Slice F1 variant where needed
+11,pa_second_entry_pullback,true,long_only|short_only|both,7101,7201,pa_brooks_core_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+12,pa_trading_range_bls_hs,true,long_only|short_only|both,7102,7202,pa_brooks_range_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+13,pa_failed_breakout_trap,true,long_only|short_only|both,7103,7203,pa_brooks_range_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+14,pa_opening_reversal_sr,true,long_only|short_only|both,7104,7204,pa_brooks_range_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+15,pa_breakout_pullback_continuation,true,long_only|short_only|both,7105,7205,pa_brooks_core_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+16,pa_tight_channel_pullback,true,long_only|short_only|both,7106,7206,pa_brooks_core_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix
+17,pa_broad_channel_zone,true,long_only|short_only|both,7107,7207,pa_brooks_core_v1,reduced Slice F1 variant where needed; setup codes repaired in Phase19 immediate fix

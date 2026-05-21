@@ -53,8 +53,8 @@ def test_build_brooks_signal_matrix_conventions() -> None:
         short_stop=bars.high,
         long_score=np.array([np.nan, 0.7, np.nan]),
         short_score=np.array([np.nan, np.nan, 0.8]),
-        setup_code_long=1101,
-        setup_code_short=1102,
+        setup_code_long=7101,
+        setup_code_short=7201,
     )
     assert signals.side.tolist() == [0, int(Side.LONG), int(Side.SHORT)]
     assert np.isnan(signals.stop[0])
@@ -79,8 +79,8 @@ def test_build_brooks_signal_matrix_honors_side_mode() -> None:
         short_stop=bars.high,
         long_score=np.array([0.7, np.nan]),
         short_score=np.array([np.nan, 0.8]),
-        setup_code_long=1101,
-        setup_code_short=1102,
+        setup_code_long=7101,
+        setup_code_short=7201,
     )
     assert signals.side.tolist() == [0, int(Side.SHORT)]
 

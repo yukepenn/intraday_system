@@ -1,0 +1,11 @@
+test_file,test_name,assertion_focus,result
+tests/unit/test_setup_code_registry.py,test_phase19_core_codes_match_design,7101-7107/7201-7207,pass
+tests/unit/test_setup_code_registry.py,test_no_current_source_uses_wrong_phase19b_codes,no 1101-1702 in src/intraday/strategies/pa/*.py,pass
+tests/unit/test_setup_code_registry.py,test_no_current_metadata_uses_wrong_phase19b_codes,no 1101-1702 in configs/strategies/metadata/phase19,pass
+tests/unit/test_phase19_immediate_boolean_config_coercion.py,brooks_bool semantics,"true/false/0/1; invalid raises",pass
+tests/unit/test_phase19_immediate_boolean_config_coercion.py,test_no_strategy_runtime_uses_bool_sig_get,static scan,pass
+tests/unit/test_phase19b_brooks_common.py,test_build_brooks_signal_matrix_conventions,setup_code_long/short use 7xxx,pass
+tests/unit/test_phase19b_brooks_common.py,test_build_brooks_signal_matrix_honors_side_mode,setup_code_long/short use 7xxx and side filter,pass
+tests/unit/test_phase19b_side_mode_validation.py,test_current10_accept_all_side_modes,current10 accepts all 3 modes via side_mode,pass
+tests/unit/test_phase19b_side_mode_validation.py,test_current10_reject_unknown_side_mode,unknown side_mode raises ConfigError,pass
+tests/unit/test_strategy_metadata_alignment.py,test_strategydef_setup_codes_match_registry,setup codes match registry for all 17,pass

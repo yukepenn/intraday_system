@@ -7,19 +7,23 @@ from typing import Any
 
 from intraday.core.arrays import BarMatrix, FeatureMatrix, SignalMatrix
 from intraday.strategies.base import StrategyDef
-from intraday.strategies.contracts import SIGNAL_CONTRACT_VERSION
+from intraday.strategies.contracts import SIDE_MODE_LONG_ONLY, SIGNAL_CONTRACT_VERSION
 from intraday.strategies.pa.brooks_common import (
+    BROOKS_SIDE_MODES,
+    brooks_bool,
     build_brooks_signal_matrix,
     deterministic_score,
     in_entry_window,
     require_brooks_feature_columns,
     validate_brooks_strategy_config,
 )
+from intraday.strategies.setup_codes import get_setup_codes
 
 STRATEGY_NAME = "pa_tight_channel_pullback"
 FEATURE_SET = "pa_brooks_core_v1"
-SETUP_CODE_LONG = 1601
-SETUP_CODE_SHORT = 1602
+_SPEC = get_setup_codes(STRATEGY_NAME)
+SETUP_CODE_LONG = _SPEC.long_code
+SETUP_CODE_SHORT = _SPEC.short_code
 
 REQUIRED_COLUMNS: tuple[str, ...] = (
     "pa_tight_bull_channel_score_20",
@@ -58,8 +62,8 @@ def generate_pa_tight_channel_pullback_signals(
     tight_min = float(sig.get("tight_score_min", 0.65))
     max_depth = float(sig.get("pullback_max_depth_atr", 0.8))
     late_max = float(sig.get("late_trend_score_max", 0.95))
-    require_micro = bool(sig.get("require_micro_channel", False))
-    require_ai = bool(sig.get("require_always_in_with_side", False))
+    require_micro = brooks_bool(sig, "require_micro_channel", False)
+    require_ai = brooks_bool(sig, "require_always_in_with_side", False)
 
     depth_ok = features.column("pa_pullback_depth_atr") <= max_depth
     not_late = features.column("pa_late_trend_score_20") <= late_max
@@ -116,4 +120,9 @@ PA_TIGHT_CHANNEL_PULLBACK_DEF = StrategyDef(
     signal_contract_version=SIGNAL_CONTRACT_VERSION,
     generate_reference=generate_pa_tight_channel_pullback_signals,
     validate_config=validate_pa_tight_channel_pullback_config,
+    setup_code_long=SETUP_CODE_LONG,
+    setup_code_short=SETUP_CODE_SHORT,
+    allowed_side_modes=BROOKS_SIDE_MODES,
+    default_side_mode=SIDE_MODE_LONG_ONLY,
+    required_feature_columns=REQUIRED_COLUMNS,
 )

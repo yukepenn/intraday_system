@@ -1,9 +1,30 @@
 strategy: pa_buy_sell_close_trend
 family: pa
-description: Strong price-action trend-continuation long setup.
-side: long_only
+description: Strong price-action trend-continuation setup with side-aware retrofit support.
+phase_added: Phase 13
 required_feature_set: pa_core_v1
+feature_config: configs/features/pa_core_v1.yaml
+core_or_diagnostic: core
+diagnostic_only: false
+grid_inspect_only: true
+side_mode_allowed: [long_only, short_only, both]
+default_side_mode: long_only
 setup_codes:
-  1001: PA_BUY_SELL_CLOSE_TREND_LONG
+  long: 1001
+  short: 8001
+setup_code_label_long: PA_BUY_SELL_CLOSE_TREND_LONG
+setup_code_label_short: PA_BUY_SELL_CLOSE_TREND_SHORT
+broad_sweep_allowed: false
+economic_claims_allowed: false
+candidate_eligible_now: false
+promotion_allowed_now: false
 conflict_group: QQQ_directional
 default_priority: 80
+no_lookahead_notes: Entry at bar close; same-session state only where noted.
+non_goals:
+  - no candidate promotion
+  - no Layer2
+  - no Layer3
+  - no WFO
+  - no live/paper
+  - no economic claims in this phase
