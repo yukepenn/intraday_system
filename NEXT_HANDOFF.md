@@ -7,7 +7,7 @@ Last updated: **2026-05-21** (Phase **19A** side support + Brooks feature founda
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
 - Pre-task HEAD: `5eb067b`
-- Task commit hash: pending until commit.
+- Task commit hash: `66de791b8a00425233f821c8626657e04382a899`.
 - Codex review pending: yes.
 - ChatGPT Pro review pending: yes.
 - Cursor did not edit `CODEX_REVIEW.md`.
