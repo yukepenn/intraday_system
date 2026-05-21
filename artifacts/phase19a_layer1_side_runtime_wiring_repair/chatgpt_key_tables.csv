@@ -2,7 +2,7 @@ section,item,metric,value,interpretation
 phase,name,value,PHASE19A_REPAIR_LAYER1_SIDE_RUNTIME_WIRING,Narrow Layer1 side-runtime wiring repair.
 phase,task_type,value,repair + validation + Layer1 side-runtime integration,No strategy expansion or promotion.
 git,pre_task_head,sha,202faea,Baseline before repair.
-git,final_commit,sha,pending_before_commit,Commit hash is not known until after commit creation.
+git,final_commit,sha,a6486c7,Repair commit hash recorded after commit creation.
 runner,runner_smoke_reference_close_wired,boolean,true,Smoke path passes bars.close to validate_signal_matrix.
 runner,runner_grid_reference_close_wired,boolean,true,Controlled-grid path passes bars.close to validate_signal_matrix.
 runner,runner_smoke_allowed_sides_wired,boolean,true,Smoke path passes side-mode-derived allowed_sides to adapter.
