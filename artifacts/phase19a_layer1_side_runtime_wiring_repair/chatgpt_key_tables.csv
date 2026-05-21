@@ -1,0 +1,22 @@
+section,item,metric,value,interpretation
+phase,name,value,PHASE19A_REPAIR_LAYER1_SIDE_RUNTIME_WIRING,Narrow Layer1 side-runtime wiring repair.
+phase,task_type,value,repair + validation + Layer1 side-runtime integration,No strategy expansion or promotion.
+git,pre_task_head,sha,202faea,Baseline before repair.
+git,final_commit,sha,pending_before_commit,Commit hash is not known until after commit creation.
+runner,runner_smoke_reference_close_wired,boolean,true,Smoke path passes bars.close to validate_signal_matrix.
+runner,runner_grid_reference_close_wired,boolean,true,Controlled-grid path passes bars.close to validate_signal_matrix.
+runner,runner_smoke_allowed_sides_wired,boolean,true,Smoke path passes side-mode-derived allowed_sides to adapter.
+runner,runner_grid_allowed_sides_wired,boolean,true,Controlled-grid path passes side-mode-derived allowed_sides to adapter.
+execution,short_intent_reaches_execution_when_allowed,boolean,true,Synthetic short_only and both tests prove short TradeIntent reaches execution boundary.
+execution,execution_short_not_allowed_audit_preserved,boolean,true,allow_short=false rejects short with SHORT_NOT_ALLOWED after adapter pass-through.
+regression,current10_regression_passed,boolean,true,Default missing side_mode remains long_only and long-only Layer1 output remains valid.
+scope,strategies_11_to_17_created,boolean,false,No strategy source files created.
+scope,actual_layer1_grid_runs,count,0,No actual Layer1 grid command run.
+scope,candidate_yaml_created,boolean,false,No candidate YAML created.
+scope,select_dry_run_run,boolean,false,No select-dry-run run.
+scope,layer2_created,boolean,false,No Layer2 work.
+scope,wfo_run,boolean,false,No WFO run.
+scope,live_paper_run,boolean,false,No live/paper run.
+execution,execution_truth_changed,boolean,false,No execution PnL/R/accounting semantic changes.
+decision,decision,label,PHASE19A_LAYER1_SIDE_RUNTIME_WIRING_REPAIR_COMPLETE,Repair complete.
+decision,recommended_next_step,label,IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17,Provisional only after Codex and ChatGPT Pro review.

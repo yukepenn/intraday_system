@@ -1,0 +1,7 @@
+check,scope,expected_behavior,status,notes
+default_missing_side_mode,Layer1 helper,Missing signal.side_mode normalizes to long_only,pass,_allowed_sides_from_strategy_cfg returns LONG only.
+default_execution_allow_short_false,execution config,Default execution remains long-only,pass,Phase19A regression test still passes.
+current10_base_configs_long_only,current-10 base YAMLs,Current-10 base configs normalize to long_only,pass,Existing Phase19A current-10 regression passes.
+current10_phase18b_configs_long_only,current-10 refined YAMLs,Phase18B current-10 configs normalize to long_only,pass,Existing Phase19A current-10 regression passes.
+long_only_layer1_signal_flow,Layer1 smoke synthetic,Long-only signal remains valid and executable,pass,New repair current-10 behavioral-equivalence test passes.
+current10_short_retrofit,current-10 strategy sources,No current-10 short retrofit,pass,No current-10 strategy source files modified.

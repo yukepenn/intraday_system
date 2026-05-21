@@ -1,0 +1,24 @@
+command,area,status,notes
+git status --short,preflight,pass,Completed; showed tracked repair files plus pre-existing untracked Phase16 runs hygiene debt.
+git log --oneline -10,preflight,pass,Completed; pre-task HEAD 202faea.
+git branch --show-current,preflight,pass,Completed; branch main.
+python -m intraday.cli.main --help,core_validation,pass,CLI help rendered.
+python -m intraday.cli.main doctor,core_validation,pass,Doctor completed.
+python -m intraday.cli.main validate structure,core_validation,pass,All required paths present.
+python -m compileall -q src tests,compile,pass,Source and tests compiled.
+python -m pytest -q tests/unit/test_phase19a_layer1_side_runtime_wiring.py,new_repair_tests,pass,10 passed.
+python -m pytest -q tests/unit/test_phase19a_side_support_contract.py,phase19a_regression,pass,8 passed.
+python -m pytest -q tests/unit/test_phase19a_signal_adapter_side_support.py,phase19a_regression,pass,4 passed.
+python -m pytest -q tests/unit/test_phase19a_short_execution_boundary.py,phase19a_regression,pass,2 passed.
+python -m pytest -q tests/unit/test_phase19a_current10_long_only_regression.py,phase19a_regression,pass,3 passed.
+python -m pytest -q tests/unit/test_signal_adapter.py,adapter_contract_regression,pass,7 passed.
+python -m pytest -q tests/unit/test_strategy_contract.py,strategy_contract_regression,pass,6 passed.
+python -m pytest -q tests/unit/test_execution_reference.py tests/unit/test_execution_costs.py,execution_regression,pass,29 passed.
+python -m pytest -q tests/unit/test_phase19a_brooks_feature_configs.py,brooks_slice_f1_regression,pass,5 passed.
+python -m pytest -q tests/unit/test_phase19a_brooks_features_no_lookahead.py,brooks_slice_f1_regression,pass,2 passed.
+python -m pytest -q tests/unit/test_phase19a_brooks_features_session_reset.py,brooks_slice_f1_regression,pass,2 passed.
+python -m pytest -q tests/unit/test_phase19a_artifact_schema.py,artifact_regression,pass,5 passed.
+python -m pytest -q tests/unit/test_phase19a_no_runtime_leakage.py,artifact_regression,pass,4 passed.
+python -m pytest -q tests/smoke,smoke,pass,25 passed.
+python -m ruff check src tests,ruff,fixed_then_pass,Initial import-order issue in new test fixed; final run passed.
+python -m ruff format --check src tests,ruff,fixed_then_pass,Initial new-test formatting diff fixed; final run passed with 249 files already formatted.

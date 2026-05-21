@@ -440,6 +440,24 @@ Status:
 
 Decision label: **`PHASE19A_SIDE_SUPPORT_AND_FEATURE_SLICE_COMPLETE`**.
 
+Follow-up repair completed before Phase19B strategy implementation.
+
+## Phase 19A Repair - Layer1 side runtime wiring - **complete**
+
+Goal: complete the bridge from strategy config `signal.side_mode` to Layer1 validation and adapter intent construction, without changing execution PnL/R semantics or implementing strategies 11-20.
+
+Status:
+
+- `run_layer1_smoke(...)` passes `reference_close=bars.close` into `validate_signal_matrix(...)`.
+- `run_layer1_controlled_grid(...)` passes `reference_close=bars.close` into `validate_signal_matrix(...)`.
+- Both runner paths derive `allowed_sides` from strategy config `signal.side_mode` via shared contract helpers.
+- Both runner paths pass `allowed_sides` into `build_trade_intents_from_signals(...)`.
+- Execution remains final authority for `allow_short` / `SHORT_NOT_ALLOWED`.
+- Current-10 default long-only behavior is preserved.
+- No strategies 11-20, feature work, actual grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO/live/paper, execution truth changes, or economic claims.
+
+Decision label: **`PHASE19A_LAYER1_SIDE_RUNTIME_WIRING_REPAIR_COMPLETE`**.
+
 Recommended next step: **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review.
 
 ## Phase 19B ? Add core Brooks PA strategies 11-17 ? **future**

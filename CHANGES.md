@@ -4,6 +4,14 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-21
 
+### Phase 19A Repair - Layer1 side runtime wiring
+
+- Repair(layer1): wire smoke and controlled-grid paths to validate signals with `reference_close=bars.close` and pass side-mode-derived `allowed_sides` into the signal adapter.
+- Test(unit): add synthetic Phase19A Layer1 side-runtime tests for reference-close validation, `short_only` / `both` intent creation, long-only default behavior, execution `SHORT_NOT_ALLOWED` authority, short-enabled acceptance, and current-10 regression.
+- Research(artifacts): add `artifacts/phase19a_layer1_side_runtime_wiring_repair/` with review bundle, source map, key tables, validation ledger, wiring summary, test matrix, current-10 summary, guardrails, schema validation, and decision artifact.
+- Decision: `PHASE19A_LAYER1_SIDE_RUNTIME_WIRING_REPAIR_COMPLETE`; provisional next `IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no strategies 11-20, no feature work, no actual Layer1 grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no execution PnL/R changes, and no economic claims.
+
 ### Phase 19A — Side support and Brooks feature foundation slice
 
 - Infrastructure(side): add side-aware SignalMatrix validation helpers and adapter allowed-side behavior while preserving default long-only behavior.

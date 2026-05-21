@@ -128,6 +128,8 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 19A complete:** **`PHASE19A_IMPLEMENT_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION_SLICE`** implemented shared side-aware SignalMatrix/adapter support with strict long-only defaults and Brooks PA Slice F1 feature configs (`pa_brooks_core_v1`, `pa_brooks_range_v1`). Bundle: `artifacts/phase19a_side_support_brooks_feature_foundation/`.
 
+**Phase 19A repair complete:** **`PHASE19A_REPAIR_LAYER1_SIDE_RUNTIME_WIRING`** wired Layer1 smoke and controlled-grid paths to pass `reference_close=bars.close` into SignalMatrix validation and side-mode-derived `allowed_sides` into the signal adapter. Bundle: `artifacts/phase19a_layer1_side_runtime_wiring_repair/`.
+
 **Next:** **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
 
 See:

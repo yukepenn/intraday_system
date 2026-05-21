@@ -1,0 +1,13 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/layer1/runner.py,Layer1 smoke/grid orchestration repair,true,source,false,Derives allowed_sides from strategy signal.side_mode and passes reference_close to validation.
+tests/unit/test_phase19a_layer1_side_runtime_wiring.py,Synthetic repair regression tests,true,source,false,"Covers smoke/grid reference_close, allowed_sides, short/both intent flow, execution boundary, and current-10 default behavior."
+artifacts/phase19a_layer1_side_runtime_wiring_repair/CHATGPT_REVIEW_BUNDLE.md,Review bundle narrative,true,generated,false,"Summarizes repair scope, validation, non-runs, decision, and next step."
+artifacts/phase19a_layer1_side_runtime_wiring_repair/SOURCE_MAP.csv,Review source map,true,generated,false,Maps changed files and artifacts to review purpose.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/chatgpt_key_tables.csv,Key audit facts,true,generated,false,Boolean wiring/non-run facts for ChatGPT review.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/validation_results.csv,Validation command ledger,true,generated,false,Records required commands and outcomes.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/side_runtime_wiring_summary.md,Runtime wiring explanation,true,generated,false,"Explains side_mode, allowed_sides, reference_close, and execution authority."
+artifacts/phase19a_layer1_side_runtime_wiring_repair/side_runtime_test_matrix.csv,Required test matrix,true,generated,false,Lists all required repair tests.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/current10_regression_summary.csv,Current-10 regression summary,true,generated,false,Documents unchanged long-only defaults.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/non_promotion_guardrails.md,Scope guardrails,true,generated,false,Records forbidden work not done.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/artifact_schema_validation.csv,Artifact schema checklist,true,generated,false,Confirms required artifacts and columns.
+artifacts/phase19a_layer1_side_runtime_wiring_repair/phase19a_repair_decision.md,Decision artifact,true,generated,false,Records completion label and blocked future paths.

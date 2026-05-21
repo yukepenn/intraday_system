@@ -40,7 +40,11 @@ from intraday.layer1.result import (
     Layer1SmokeResult,
     layer1_smoke_result_to_jsonable,
 )
-from intraday.strategies.contracts import validate_signal_matrix
+from intraday.strategies.contracts import (
+    allowed_sides_for_mode,
+    normalize_side_mode,
+    validate_signal_matrix,
+)
 from intraday.strategies.loader import load_strategy_config, validate_strategy_config
 from intraday.strategies.registry import get_strategy, register_builtin_strategies
 
@@ -72,6 +76,14 @@ def _qty_and_hold(strategy_cfg: Mapping[str, Any]) -> tuple[float, int]:
     qty = float(bt.get("quantity", 1.0))
     hold = int(bt.get("max_hold_minutes", 0))
     return qty, hold
+
+
+def _allowed_sides_from_strategy_cfg(strategy_cfg: Mapping[str, Any]) -> tuple[int, ...]:
+    signal_cfg = strategy_cfg.get("signal")
+    if not isinstance(signal_cfg, Mapping):
+        signal_cfg = {}
+    side_mode = normalize_side_mode(signal_cfg)
+    return allowed_sides_for_mode(side_mode)
 
 
 ExecutionMode = Literal["reference", "fast", "both"]
@@ -181,7 +193,8 @@ def run_layer1_smoke(config_path: Path) -> Layer1SmokeResult:
     validate_strategy_config(smoke.strategy_name, strat_cfg)
     defn = get_strategy(smoke.strategy_name)
     signals = defn.generate_reference(bars, fm, strat_cfg)
-    validate_signal_matrix(signals, bars.n_bars)
+    allowed_sides = _allowed_sides_from_strategy_cfg(strat_cfg)
+    validate_signal_matrix(signals, bars.n_bars, reference_close=bars.close)
 
     qty, max_hold_bars = _qty_and_hold(strat_cfg)
     adapter = build_trade_intents_from_signals(
@@ -189,6 +202,7 @@ def run_layer1_smoke(config_path: Path) -> Layer1SmokeResult:
         qty=qty,
         max_hold_bars=max_hold_bars,
         candidate_id=1,
+        allowed_sides=allowed_sides,
     )
 
     base_spec = load_execution_spec(exe_path)
@@ -278,7 +292,8 @@ def run_layer1_controlled_grid(config_path: Path) -> Layer1GridResult:
         strat_cfg = combo.resolved_config
         validate_strategy_config(cfg.strategy_name, strat_cfg)
         signals = defn.generate_reference(bars, fm, strat_cfg)
-        validate_signal_matrix(signals, bars.n_bars)
+        allowed_sides = _allowed_sides_from_strategy_cfg(strat_cfg)
+        validate_signal_matrix(signals, bars.n_bars, reference_close=bars.close)
 
         qty, max_hold_bars = _qty_and_hold(strat_cfg)
         adapter = build_trade_intents_from_signals(
@@ -286,6 +301,7 @@ def run_layer1_controlled_grid(config_path: Path) -> Layer1GridResult:
             qty=qty,
             max_hold_bars=max_hold_bars,
             candidate_id=1,
+            allowed_sides=allowed_sides,
         )
         spec = merge_execution_spec_with_strategy(base_spec, strat_cfg)
 

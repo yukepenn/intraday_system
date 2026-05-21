@@ -1,0 +1,11 @@
+artifact,type,required_schema,status,notes
+CHATGPT_REVIEW_BUNDLE.md,markdown,phase/task/git/why/files/wiring/current10/validation/non-runs/risks/decision/next-step,pass,Present and parseable.
+SOURCE_MAP.csv,csv,"file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes",pass,Headers present.
+chatgpt_key_tables.csv,csv,"section,item,metric,value,interpretation",pass,Headers present.
+validation_results.csv,csv,"command,area,status,notes",pass,Headers present.
+side_runtime_wiring_summary.md,markdown,missing/patch/mapping/adapter/execution/current-default,pass,Present and parseable.
+side_runtime_test_matrix.csv,csv,"test_name,area,path_tested,expected_behavior,status,notes",pass,Headers present and includes all required tests.
+current10_regression_summary.csv,csv,"check,scope,expected_behavior,status,notes",pass,Headers present.
+non_promotion_guardrails.md,markdown,explicit non-goals,pass,Present and parseable.
+artifact_schema_validation.csv,csv,"artifact,type,required_schema,status,notes",pass,This schema ledger.
+phase19a_repair_decision.md,markdown,decision/completion/current10/next/blocked paths,pass,Present and parseable.
