@@ -4,166 +4,85 @@
 
 - Repo: `https://github.com/yukepenn/intraday_system.git`
 - Branch: `main`
-- Latest commit at review time: `938452a4cf3a6d50ea1403b8ef3ccd1778b77f86`
-- Target Cursor commit reviewed: `938452a4cf3a6d50ea1403b8ef3ccd1778b77f86`
-- Target commit parent: `20f4c80b437f1989ad1228f5a682ef7e03e65861`
-- Substantive Phase19 design commit reviewed as current-state context: `20f4c80b437f1989ad1228f5a682ef7e03e65861`
+- Latest commit at review time: `6c072a0efef707ff33969e3d29a56f6e502f1373`
+- Target Cursor commit reviewed: `6c072a0efef707ff33969e3d29a56f6e502f1373`
+- Target commit parent: `66de7914e6c3073e35d58e482c86591d8ecbddd3`
+- Substantive Phase19A implementation commit reviewed as current-state context: `66de791b8a00425233f821c8626657e04382a899`
 - Cursor handoff reviewed: `NEXT_HANDOFF.md`
-- Phase / task identified: `PHASE19_DESIGN_BROOKS_PA_STRATEGIES_11_TO_20_WITH_SIDE_SUPPORT`; latest target commit is a small handoff/key-table update over the substantive Phase19 design commit.
-- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `docs/PHASE_PLAN.md`, `intraday_system_design_instructions.txt`, `docs/DESIGN_BASELINE.md`, `docs/ARCHITECTURE.md`, `docs/DATA_CONTRACT.md`, `docs/CONFIG_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `docs/LAYER1_CONTRACT.md`, `docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md`, `docs/QT_REFERENCE_POLICY.md`, `docs/LAYER_FLOW.md`, Phase18D review/checklist/template artifacts, prior `CODEX_REVIEW.md`, all required files under `artifacts/phase19_brooks_pa_design/`, and the two Phase19 design-only tests.
+- Phase / task identified: `PHASE19A_IMPLEMENT_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION_SLICE`; latest target commit records the substantive Phase19A commit hash in handoff/key-table artifacts.
+- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/DESIGN_BASELINE.md`, `docs/ARCHITECTURE.md`, `docs/PHASE_PLAN.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `docs/BACKTEST_CONTRACT.md`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/common.py`, `src/intraday/backtest/signal_adapter.py`, `src/intraday/layer1/runner.py`, `src/intraday/features/specs.py`, `src/intraday/features/registry.py`, `src/intraday/features/kernels/brooks.py`, `src/intraday/execution/intent.py`, `configs/features/pa_brooks_core_v1.yaml`, `configs/features/pa_brooks_range_v1.yaml`, Phase19A unit tests, Phase19A review bundle, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, and the pre-review git status.
 
 ## B. Summary Verdict
 
 - PASS_WITH_WARNINGS
 
-Cursor kept the Phase19 repo state design-only: no Phase19 runtime strategy files, feature kernels, runtime YAMLs, adapter/execution changes, candidate YAMLs, Layer2/3 configs, WFO/live/paper paths, actual Layer1 grids, select-dry-run, or economic claims were found in the target range or current state. The design package is broad and mostly executable for the next phase, with strong side-support guardrails, non-promotion boundaries, and strategy specs for exactly strategies 11-20. The repo is ready for ChatGPT final review, but the next Cursor prompt should repair/clarify two documentation/design ambiguities before or during implementation: `README.md` is stale and still points to designing Phase19 as the next step, and the Brooks swing-core feature packaging is inconsistently described as a feature group/config dependency without a matching future YAML/file-plan row.
+Phase19A is directionally consistent with the roadmap: it implements side-aware signal/adaptor helpers, preserves current long-only defaults, adds only Brooks Slice F1 feature configs/kernels, updates status docs, and ships a complete CSV/MD review bundle without strategy 11-20 source files, runtime strategy YAMLs, candidate YAMLs, Layer1 economic grids, Layer2/3, WFO/live/paper, or economic claims. The repo is ready for ChatGPT final review, but the next Cursor prompt should include a repair/guardrail clause: side geometry validation and side-mode-to-adapter wiring are helper-level today, not yet fully integrated into Layer1 runtime call sites.
 
-Recommended next Cursor posture: proceed to ChatGPT review first, then continue to implementation only with an explicit clarification that `pa_brooks_swing_core` features live inside a named planned YAML (`pa_brooks_core_v1` or `pa_brooks_reversal_v1`) or are split into a real `pa_brooks_swing_v1.yaml` with file/test-plan updates.
+Recommended next Cursor posture: proceed to ChatGPT review, then repair/complete the runtime side-support wiring before or as the first part of Phase19B strategy implementation.
 
-## C. Phase19 Design-Only Scope Consistency
+## C. Cursor Run Consistency
 
-- Did Cursor keep Phase19 design-only? Yes.
-- Did Cursor avoid runtime implementation? Yes; no `src/intraday/` runtime changes were made by Phase19.
-- Did Cursor avoid strategy source files? Yes; future Phase19 source files are only named in `phase19_file_plan.csv`.
-- Did Cursor avoid feature kernels? Yes.
-- Did Cursor avoid signal adapter / execution changes? Yes.
-- Did Cursor avoid runtime strategy configs? Yes; no Phase19 YAMLs under `configs/` were created.
-- Did Cursor avoid actual grids / select-dry-run? Yes; validation artifacts record those as `not_run`.
-- Did Cursor avoid candidate YAML / promotion / Layer2? Yes.
-- Did Cursor avoid economic claims? Yes; artifacts consistently state inspect/design readiness only.
+- Did the run follow the intended phase? Yes. Phase19A is infrastructure + limited feature implementation, not strategy expansion or promotion.
+- Did it match `NEXT_HANDOFF.md`? Mostly yes. The handoff accurately names the substantive implementation commit `66de791`, the Phase19A scope, deferred work, validation ledger, and local Phase16 untracked artifact debt.
+- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. The docs now point to Phase19B core Brooks strategies 11-17 after Codex/ChatGPT review.
+- Any scope creep? No blocking scope creep found. Added runtime feature configs/kernels and side-support helpers are within Phase19A.
+- Any premature phase movement? No. Strategies 11-20 remain absent, and no candidate/promotion path was opened.
+- Any skipped prerequisites? One integration prerequisite remains before real short-capable Phase19B use: Layer1 must derive adapter `allowed_sides` from validated strategy side mode, and runtime validation should enforce side-specific stop geometry.
+- Any duplicated structure or architecture drift? No major duplication. Brooks feature groups are integrated into the existing feature registry/spec system.
 
-## D. Side-Support Design Review
+## D. Code / Architecture Findings
 
-- Is side support system-wide, not PA-only? Yes. `side_support_design.md` frames side support as a strategy/adapter/execution contract uplift usable by all families.
-- Does it preserve current long-only defaults? Yes. Default execution remains `allow_short=false`; current-10 YAMLs retain long-only semantics.
-- Does it define side_mode clearly? Yes: `long_only`, `short_only`, `both`.
-- Does it define adapter behavior before short support? Yes. Adapter accepts `side in {+1,-1}`, keeps `invalid_side` for other values, and stays strategy-agnostic.
-- Does it define execution allow_short boundary? Yes. Strategy `side_mode` does not override `ExecutionSpec.allow_short`; shorts are rejected by execution unless explicitly allowed.
-- Does it define SignalMatrix long/short/non-entry conventions? Yes: long `side=+1`, stop below close, finite positive `target_r`; short `side=-1`, stop above close, finite positive `target_r`; non-entry side `0` with NaNs and setup code `0`.
-- Are required tests sufficient? Yes, including contract, adapter, execution reject/accept, side_mode, stop geometry, no-lookahead, session, hash, and current-10 regression tests.
-- Any risk of accidentally enabling shorts? Low. The design explicitly keeps current defaults long-only and forbids current-10 short retrofits. Future risk exists if implementation adds a short-enabled execution YAML too casually; the design marks that as optional and approval-gated.
+- High-risk findings: None found in this review.
+- Medium-risk findings:
+  - Side-support is not fully wired through runtime orchestration yet. `validate_signal_matrix` enforces long/short stop geometry only when `reference_close` is provided, but current strategy/common and Layer1 call sites use `validate_signal_matrix(signals, bars.n_bars)` without close context (`src/intraday/strategies/common.py`, `src/intraday/strategies/pa/buy_sell_close_trend.py`, `src/intraday/layer1/runner.py`). Likewise, `build_trade_intents_from_signals` defaults to `allowed_sides=(Side.LONG,)`, and Layer1 calls it without deriving `allowed_sides` from `signal.side_mode`. This is acceptable for Phase19A defaults but must be fixed before short/both Phase19B strategies are expected to run rather than be silently skipped.
+- Low-risk findings:
+  - `docs/STRATEGY_CONTRACT.md` says `validate_signal_matrix(signals, n_bars)` enforces conventions, while the new side-specific stop geometry is optional via `reference_close`; ChatGPT/Cursor should clarify the normative validation call.
+  - Phase19A no-runtime-leakage tests cover the expected forbidden Phase19 strategy/config paths but should be expanded in Phase19B to cover side-mode adapter wiring and geometry validation at runner boundaries.
+- Relevant code paths inspected: signal contract helpers, signal adapter, Layer1 runner calls, execution short boundary, Brooks feature spec/registry/kernels, Brooks feature YAMLs, and Phase19A tests.
+- Representative path inspected:
+  - input/config: `configs/features/pa_brooks_core_v1.yaml`, `configs/features/pa_brooks_range_v1.yaml`
+  - runtime logic: `src/intraday/features/specs.py`, `src/intraday/features/registry.py`, `src/intraday/features/kernels/brooks.py`, `src/intraday/strategies/contracts.py`, `src/intraday/backtest/signal_adapter.py`
+  - output artifact/result: `artifacts/phase19a_side_support_brooks_feature_foundation/CHATGPT_REVIEW_BUNDLE.md`, `validation_results.csv`, `chatgpt_key_tables.csv`
+  - validation/test: Phase19A side-support, adapter, execution-boundary, feature-config, no-lookahead, session-reset, artifact-schema, and no-runtime-leakage tests
+  - handoff claim: `NEXT_HANDOFF.md` Phase19A complete, no strategy/promotion/economic-grid work
+- Module-boundary concerns: Side-mode ownership is split correctly between strategy config, adapter, and execution, but the Layer1 bridge does not yet pass side-mode-derived allowed sides.
+- Single-source-of-truth concerns: No PnL/accounting drift found. Execution remains short authority via `ExecutionSpec.allow_short`.
+- Runtime/config/schema alignment concerns: Brooks feature configs align with spec/registry. Side schema alignment is helper-level and needs runner integration in the next phase.
 
-## E. Brooks PA Feature Foundation Review
+## E. Validation / Artifact Hygiene
 
-- Feature config names designed: `pa_brooks_core_v1`, `pa_brooks_range_v1`, `pa_brooks_opening_v1`, `pa_brooks_reversal_v1`, optional `pa_brooks_magnet_v1`.
-- Generic market facts only? Mostly yes. The design rejects trade-decision and outcome labels and defines Brooks ideas as observable proxies/scores.
-- Any hidden labels / outcome labels / PnL labels? No hidden PnL/outcome labels found. `pa_regime_label` is a derived observable regime code, not a trade outcome label.
-- No-lookahead/session reset design: Present and explicit for rolling/cumulative features.
-- Centered pivot risk: Explicitly rejected.
-- Prior-exclusive / delayed-confirmed swing design: Present and emphasized.
-- Feature scope too large? Yes, potentially. The design acknowledges four required configs plus optional magnet and includes a split escape hatch.
-- Any concepts that should be filters/management, not features? Magnet/measured-move target concepts are correctly pushed out of strategies/targets; optional magnet distance features are marked deferred.
-- Warning: `pa_brooks_swing_core` appears as a required feature-group dependency in strategy specs/matrix, but the future feature YAML plan lists only core/range/opening/reversal/magnet. Implementation needs a single explicit packaging decision for swing features.
+- Validation credibility: Credible for the claimed Phase19A scope from direct artifact/code inspection. I did not rerun pytest, compileall, Ruff, Layer1, or any long command.
+- Missing tests or weak tests: No test currently proves that Layer1 passes `reference_close` into signal validation or passes `allowed_sides_for_mode(normalize_side_mode(strategy_cfg["signal"]))` into the adapter.
+- Claims accepted from validation artifacts but not independently rerun: CLI help/doctor/structure, compileall, Phase19A tests, Phase18C/18D regression tests, signal adapter/strategy/execution tests, smoke tests, feature inspect, Ruff check, and Ruff format check.
+- Artifact hygiene issues: Pre-existing untracked Phase16 `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains present.
+- Heavy/raw/cache/parquet/log/generated-file issues: Phase19A committed bundle appears CSV/MD only. The untracked Phase16 `runs/` tree contains CSV/MD files, not parquet/npz/log files in the sample/count inspected.
+- Working tree / git cleanliness: Before review, no tracked modifications or staged files were present; only the untracked Phase16 `runs/` directory was shown by git status.
+- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` with `qqq_2024h1/` and `qqq_2024h2/`; recorded by Cursor as hygiene debt and not staged.
+- Suspicious untracked files present before review: None requiring stop. The Phase16 run tree is research-output shaped and should be cleaned, ignored, or intentionally curated by Cursor in a future hygiene pass.
+- Review bundle completeness: Complete for a medium implementation slice: `CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, validation ledger, side/test matrices, feature inventory, guardrails, deferred items, and decision artifact.
+- `SOURCE_MAP` / key-table completeness if applicable: Present and parseable. Latest target commit updated the key table final commit to the substantive `66de791` implementation hash.
 
-## F. Brooks PA Strategy Design Review
+## F. Contract / Reproducibility Risks
 
-- Strategies 11-20 all present? Yes.
-- Missing strategies: None.
-- Extra strategies: None.
-- Duplicates of current-10 avoided? Yes; the duplicate matrix rejects the expected current-10 overlaps.
-- Long setup completeness: Present for all 10.
-- Short setup completeness: Present for all 10, generally as concept-aware mirrors rather than blind copies.
-- side_mode behavior: Present for all 10.
-- stop geometry: Present for all 10, with long below close and short above close.
-- target_r-only policy: Present and repeatedly enforced.
-- setup codes: Present and disjoint: long `7101-7110`, short `7201-7210`.
-- feature dependencies: Present, but swing-core packaging needs clarification.
-- validation requirements: Present.
-- test requirements: Present.
-- core vs diagnostic designation: Present: 11-17 core, 18-20 diagnostic.
-- Diagnostic-only guardrails for strategies 18-20: Present in specs, matrix, guardrails, and decision artifact.
+- Data contract: No data/parquet changes found.
+- Feature contract: Brooks Slice F1 stays in market-fact territory and uses session-contained/prior-exclusive patterns. No strategy/outcome/PnL labels found in feature names.
+- Strategy contract: Side-aware `SignalMatrix` helpers now accept long/short entries, but stop geometry enforcement depends on `reference_close` being passed.
+- Execution/accounting truth: Execution remains the only short/PnL authority; default `allow_short=false` is preserved.
+- Config/YAML contract: New Brooks feature YAMLs live under `configs/features/` as runtime truth. No Phase19 strategy runtime YAMLs were created.
+- Timestamp/session/lookahead: Feature no-lookahead and session-reset tests exist and are plausible. I accepted their pass claims from artifacts.
+- Candidate/promotion contract if relevant: No candidate YAML, select-dry-run, promotion, Layer2/3, WFO/live/paper work found.
+- Local path / GitHub reproducibility: Phase19A committed artifacts are repo-relative. The local Phase16 `runs/` tree remains untracked hygiene debt and should not be staged.
+- Cache/artifact reproducibility: No cache or heavy generated artifacts were committed; Phase19A artifacts are small CSV/MD review outputs.
 
-## G. Duplicate / Non-Strategy Concept Review
+## G. Recommended Next Review or Next Step
 
-- Current-10 duplicates rejected? Yes: `pa_opening_breakout_continuation`, `pa_gap_open_reversal_failure`, `pa_prior_day_level_trap`, `pa_vwap_reclaim_reject`, `pa_orb_retest`, and `pa_orb_continuation`.
-- Router/market-cycle concepts kept out? Yes.
-- Tight TR / final flag / magnet / measured move handled as feature/filter/management concepts, not standalone strategies? Yes.
-- Discretionary Brooks concepts avoided? Yes.
-- Any duplicate leakage risk? Low. `pa_opening_reversal_sr` and `pa_failed_breakout_trap` have medium conceptual overlap with opening/current-10 families, but the artifacts distinguish rolling/SR/reversal-bar behavior from ORB/gap-specific strategies.
-
-## H. File Plan / Test Plan / Validation Plan Review
-
-- Future source file plan complete? Mostly yes: 10 strategy files, shared helper, registry, contract, adapter, validators.
-- Future config plan complete? Mostly yes: feature, base, metadata, grid, and Layer1 inspect configs are planned; swing-core packaging is the main ambiguity.
-- Future test plan complete? Yes at class level.
-- Side-support tests included? Yes.
-- Missing-feature tests included? Yes.
-- No-lookahead/session tests included? Yes.
-- No-runtime-leakage tests included? Yes.
-- Validation plan forbids actual grids? Yes; `layer1 grid` and `select-dry-run` are forbidden.
-- Implementation phase split if too large? Yes, the split escape hatch is explicit.
-- Warning: `README.md` was not updated for Phase19 completion and still names `DESIGN_PHASE19_STRATEGIES_11_TO_20` as next; status docs otherwise point to Phase19 implementation/review.
-
-## I. Non-Promotion / No-Leakage Review
-
-- Candidate YAML created? No.
-- select-dry-run run? No.
-- candidate promotion attempted? No.
-- Layer2/Layer3/WFO/live/paper introduced? No.
-- Actual Layer1 grids run? No Phase19 actual grids.
-- Runtime configs created? No Phase19 runtime configs.
-- Economic claims made? No.
-- QT runtime dependency introduced? No.
-
-## J. Validation / Artifact Hygiene
-
-- Validation credibility: Credible from artifact schema, validation ledger, design tests, and direct inspection. Codex did not rerun commands per review boundary.
-- Missing tests or weak artifact tests: Artifact tests cover required schemas and no-runtime leakage, but they do not catch the `pa_brooks_swing_core` packaging ambiguity or stale README status.
-- Claims accepted from Cursor artifacts but not independently rerun: CLI help/doctor/structure, compileall, Phase19 tests, Phase18D regression tests, full unit suite, Ruff check, and format check.
-- Artifact hygiene issues: Pre-existing untracked local `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains present.
-- Heavy/raw/cache/parquet/log/generated-file issues: No committed Phase19 heavy artifacts found; Phase19 artifact directory is CSV/MD only.
-- Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` with `qqq_2024h1/` and `qqq_2024h2/`.
-- Suspicious untracked files present before review: None requiring stop.
-- Working tree / git cleanliness: Before review, only the untracked Phase16 `runs/` tree was present; no staged files or unrelated tracked modifications were present.
-- Review bundle / source map / key table completeness: Present and parseable. The latest target commit updates the key-table final commit hash to `938452a`.
-
-## K. Contract / Reproducibility Risks
-
-- Data contract: No data changes or parquet artifacts.
-- Feature contract: Design follows market-fact/no-lookahead/session-reset principles; swing/MTR/wedge delayed-confirmation guardrails are explicit.
-- Strategy contract: Design preserves SignalMatrix/non-entry conventions and target_r-only strategy output.
-- Execution/accounting truth: No execution truth changes; execution remains responsible for target price, fills, PnL, and R.
-- SignalMatrix contract: Side-aware extension is well-specified; implementation must update the normative docs once code changes land.
-- Config/YAML contract: Runtime YAML remains under `configs/`; Phase19 design did not create runtime YAML. Future file plan is repo-relative.
-- Timestamp/session/lookahead: Adequately covered in design and tests.
-- Candidate/promotion contract: Promotion remains blocked; no candidate YAML pool exists.
-- Local path / GitHub reproducibility: Artifacts use repo-relative paths. Local untracked Phase16 runs remain hygiene debt and should be cleaned or ignored later.
-- Cache/artifact reproducibility: Phase19 artifacts are small CSV/MD; Codex did not regenerate them.
-
-## L. Evidence Quality
-
-- Directly verified:
-  - HEAD `938452a4cf3a6d50ea1403b8ef3ccd1778b77f86`; parent `20f4c80b437f1989ad1228f5a682ef7e03e65861`.
-  - Latest target commit changes only `NEXT_HANDOFF.md` and `artifacts/phase19_brooks_pa_design/chatgpt_key_tables.csv`.
-  - Substantive Phase19 range from `cd11ed9..938452a` changes status docs, Phase19 CSV/MD artifacts, and two design-only tests; no runtime source/config files.
-  - Required Phase19 artifacts exist and are parseable as CSV/MD.
-  - Current worktree had only the local Phase16 `runs/` tree before review.
-- Inferred from Cursor artifacts:
-  - Cursor ran and passed CLI, compileall, unit, Phase19/Phase18D, Ruff, and format checks.
-  - Cursor avoided `git add .` and avoided staging the local Phase16 runs tree.
-- Accepted from Codex inspection:
-  - Phase19 is design-only and non-promotional.
-  - Side-support design is system-wide and default-safe.
-  - Strategies 11-20 are complete enough for ChatGPT review, with swing-core packaging clarification needed.
-- Not verified:
-  - Tests not rerun.
-  - Commands not rerun.
-  - Artifacts not regenerated.
-  - Whether `git add .` was actually avoided beyond artifact claims and resulting committed file set.
-- Claims requiring caution:
-  - "Implementation allowed next" must mean after ChatGPT/user review and after resolving feature-packaging ambiguity.
-  - Inspectability in future implementation must not be interpreted as economic evidence.
-
-## M. Recommended Next Review or Next Step
-
-- What ChatGPT should analyze next: Review the side-support boundary, the Brooks feature split, and the strategy specs, with special attention to `pa_brooks_swing_core` packaging and whether Phase19 should be split before implementation.
-- Whether the next Cursor prompt should proceed, repair, redesign, pause, or continue to implementation: Proceed to ChatGPT review; next Cursor implementation prompt should include a small repair/clarification clause for README status and swing-core feature config ownership.
-- Whether implementation should be split into side-support first and Brooks feature foundation second: Strongly consider splitting. At minimum, implement Phase19A side support plus Slice F1 features first; defer strategies 18-20 until reversal/swing features are stable.
-- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `README.md`, `CODEX_REVIEW.md`, `docs/FEATURE_CONTRACT.md`, `docs/STRATEGY_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`, `artifacts/phase19_brooks_pa_design/CHATGPT_REVIEW_BUNDLE.md`, `side_support_design.md`, `brooks_pa_feature_foundation_design.md`, `brooks_pa_strategy_specs.md`, `phase19_file_plan.csv`, `phase19_test_plan.csv`, and `phase19_validation_plan.md`.
-- What must be explicitly forbidden in the next prompt: Candidate YAML, select-dry-run, promotion, Layer2/3, WFO, live/paper, actual Phase19 Layer1 grids, economic claims, target-price materialization in strategies, current-10 short retrofits, execution truth changes, QT runtime imports, heavy artifacts, and staging local `artifacts/**/runs/`.
+- What ChatGPT should analyze next: Review side-support runtime integration, especially whether Phase19B should first patch Layer1/strategy validation to pass `reference_close` and adapter `allowed_sides` from `signal.side_mode`.
+- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed after ChatGPT review, with a small repair/integration gate before implementing strategies 11-17.
+- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `CODEX_REVIEW.md`, `docs/STRATEGY_CONTRACT.md`, `docs/BACKTEST_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `docs/FEATURE_CONTRACT.md`, `src/intraday/strategies/contracts.py`, `src/intraday/backtest/signal_adapter.py`, `src/intraday/layer1/runner.py`, `configs/features/pa_brooks_core_v1.yaml`, `configs/features/pa_brooks_range_v1.yaml`, and the Phase19A review bundle.
+- What must be explicitly forbidden in the next prompt: Candidate YAML, select-dry-run, promotion, actual Layer1 economic grids, Layer2/3, WFO, live/paper, economic ranking/claims, target-price materialization in strategies, current-10 short retrofits, execution accounting truth changes, heavy artifacts, and staging `artifacts/**/runs/`.
 - Whether another Codex review should be required after the next Cursor run: Yes.
 
-## N. Explicit Non-Actions
+## H. Explicit Non-Actions
 
 - I did not edit source code.
 - I did not edit tests.
@@ -173,7 +92,39 @@ Recommended next Cursor posture: proceed to ChatGPT review first, then continue 
 - I did not run long commands.
 - I did not run pytest unless explicitly requested.
 - I did not run Layer/WFO/live/paper commands.
-- I did not run Layer1 grids or sweeps.
-- I did not run select-dry-run.
 - I did not stage or commit any local-only artifact directories.
 - I did not commit anything except `CODEX_REVIEW.md`.
+
+## I. Evidence Quality
+
+- Directly verified:
+  - HEAD at review time was `6c072a0efef707ff33969e3d29a56f6e502f1373`.
+  - Target parent was `66de7914e6c3073e35d58e482c86591d8ecbddd3`.
+  - Latest target commit only updated `NEXT_HANDOFF.md` and Phase19A `chatgpt_key_tables.csv` to record the substantive implementation commit hash.
+  - Substantive Phase19A range from `5eb067b..66de791` changed status docs, Phase19A artifacts, two Brooks feature configs, feature spec/registry/kernels, side contract/adapter code, contract docs, and Phase19A tests.
+  - No tracked or staged dirty files were present before review.
+  - The only pre-review untracked tree was `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`.
+- Inferred from Cursor artifacts:
+  - Cursor ran and passed the validation commands listed in `validation_results.csv`.
+  - Cursor avoided candidate/promotion/Layer1 economic-grid commands during Phase19A.
+- Accepted from Codex inspection:
+  - Phase19A is scoped correctly and non-promotional.
+  - Brooks Slice F1 feature configs are runtime YAML truth and do not encode outcome/PnL labels.
+  - Side-support default long-only behavior is preserved, with integration warnings for future short-capable use.
+- Not verified:
+  - Tests not rerun.
+  - Commands not rerun.
+  - Artifacts not regenerated.
+  - Full repo-wide source inspection not performed.
+- Claims requiring caution:
+  - "Side support implemented" currently means helper/adapter/execution-boundary support, not complete Layer1 side-mode orchestration.
+  - "Phase19B next" should not imply candidate generation, economic grids, or promotion.
+
+## J. Review Depth
+
+- Representative path inspected: Brooks feature YAML → feature spec/registry/kernel → feature tests/artifacts → handoff claim; plus side contract → adapter → execution boundary → Layer1 runner call-site check.
+- Important files inspected: `NEXT_HANDOFF.md`, status docs, key contracts, Phase19A source files, Brooks YAMLs, Phase19A tests, Phase19A artifacts, and git status.
+- Important files not inspected: Every existing current-10 strategy implementation, all historical artifacts, full Layer1 config loader/report writer internals, and full execution reference/fast implementation.
+- Reason not inspected: Review boundary requested lightweight inspection and no long commands; targeted inspection was sufficient for the latest Phase19A scope.
+- Areas that should be reviewed by ChatGPT Pro: Side-support runtime wiring, short/both strategy semantics for Phase19B, Brooks Slice F1 feature sufficiency, and whether strategies 18-20 should remain deferred.
+- Areas that should be reviewed by future Codex review: The next implementation run should verify side-mode adapter wiring, runtime stop-geometry validation, strategy 11-17 config/schema/tests, no current-10 regressions, and artifact hygiene.
