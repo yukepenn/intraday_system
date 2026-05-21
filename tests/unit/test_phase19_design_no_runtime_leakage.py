@@ -43,8 +43,6 @@ PHASE19_RUNTIME_PATH_HINTS = {
     "src/intraday/strategies/pa/wedge_reversal_diagnostic.py",
     "src/intraday/strategies/pa/climax_reversal_diagnostic.py",
     "src/intraday/strategies/pa/brooks_common.py",
-    "configs/features/pa_brooks_core_v1.yaml",
-    "configs/features/pa_brooks_range_v1.yaml",
     "configs/features/pa_brooks_opening_v1.yaml",
     "configs/features/pa_brooks_reversal_v1.yaml",
     "configs/features/pa_brooks_magnet_v1.yaml",
@@ -109,11 +107,16 @@ def test_phase19_file_plan_marks_runtime_files_as_future_only() -> None:
     with (ARTIFACT_DIR / "phase19_file_plan.csv").open(newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
 
+    phase19a_allowed = {
+        "configs/features/pa_brooks_core_v1.yaml",
+        "configs/features/pa_brooks_range_v1.yaml",
+    }
     new_runtime_rows = [
         row
         for row in rows
         if row["file_type"] in {"source", "config"}
         and not row["future_file_path"].startswith("artifacts/")
+        and row["future_file_path"] not in phase19a_allowed
     ]
     assert new_runtime_rows, "phase19_file_plan.csv should enumerate future runtime files"
     leaked = [

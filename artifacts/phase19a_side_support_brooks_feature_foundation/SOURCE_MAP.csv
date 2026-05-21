@@ -1,0 +1,27 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/strategies/contracts.py,Side-aware SignalMatrix contract and side_mode helpers,yes,source,no,Shared infrastructure change
+src/intraday/backtest/signal_adapter.py,Adapter allowed-side behavior,yes,source,no,Default long-only preserved
+src/intraday/features/specs.py,Brooks feature config resolution and column expansion,yes,source,no,Adds Slice F1 feature groups
+src/intraday/features/registry.py,Brooks feature group registration,yes,source,no,Reference kernels only
+src/intraday/features/kernels/brooks.py,Brooks Slice F1 feature kernels,yes,source,no,Market facts only
+configs/features/pa_brooks_core_v1.yaml,Brooks Slice F1 core feature config,yes,source,no,Includes lightweight swing-core packaging
+configs/features/pa_brooks_range_v1.yaml,Brooks Slice F1 range feature config,yes,source,no,Prior-exclusive range facts
+docs/STRATEGY_CONTRACT.md,Normative side-aware SignalMatrix doc update,yes,source,no,Limited contract update
+docs/BACKTEST_CONTRACT.md,Signal adapter behavior doc update,yes,source,no,Limited contract update
+docs/FEATURE_CONTRACT.md,Brooks Slice F1 feature doc update,yes,source,no,Limited contract update
+README.md,Status cleanup for Phase19A,yes,source,no,Updated by Phase19A
+PROJECT_STATUS.md,Status cleanup for Phase19A,yes,source,no,Updated by Phase19A
+PROGRESS.md,Progress log update,yes,source,no,Updated by Phase19A
+CHANGES.md,Changelog update,yes,source,no,Updated by Phase19A
+NEXT_HANDOFF.md,Handoff update,yes,source,no,Updated by Phase19A
+docs/PHASE_PLAN.md,Roadmap update,yes,source,no,Updated by Phase19A
+tests/unit/test_phase19a_side_support_contract.py,Side support contract tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_signal_adapter_side_support.py,Adapter side support tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_short_execution_boundary.py,Short execution boundary tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_current10_long_only_regression.py,Current-10 long-only regression,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_brooks_feature_configs.py,Brooks feature config tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_brooks_features_no_lookahead.py,Brooks no-lookahead tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_brooks_features_session_reset.py,Brooks session reset tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_artifact_schema.py,Phase19A artifact schema tests,yes,source,no,New Phase19A tests
+tests/unit/test_phase19a_no_runtime_leakage.py,Phase19A no-runtime leakage tests,yes,source,no,New Phase19A tests
+artifacts/phase19a_side_support_brooks_feature_foundation/,Phase19A curated artifact bundle,yes,generated,no,CSV/MD only

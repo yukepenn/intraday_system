@@ -1,0 +1,3 @@
+config_path,feature_set_id,groups,column_count,swing_packaging,notes
+configs/features/pa_brooks_core_v1.yaml,pa_brooks_core_v1,pa_brooks_bar_core|pa_brooks_regime_core|pa_brooks_swing_core,28,inside_core,Slice F1 core facts only
+configs/features/pa_brooks_range_v1.yaml,pa_brooks_range_v1,pa_brooks_range_core,33,n/a,Prior-exclusive range facts

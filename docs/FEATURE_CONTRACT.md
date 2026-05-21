@@ -98,3 +98,13 @@ Phase **13** added optional groups (included in resolved config only when presen
 Strategy-facing configs: `opening_core_v1`, `gap_level_core_v1`, `vwap_level_core_v1`, `indicator_core_v1`, `strategy_library_core_v1`.
 
 PA hold: do not expand PA-specific features while onboarding additional families. See `artifacts/strategy_family_onboarding_phase11/feature_requirements_audit.csv`.
+
+Phase **19A** adds Brooks PA Slice F1 market facts in new, isolated configs:
+
+| Config | Groups | Semantics |
+| --- | --- | --- |
+| `pa_brooks_core_v1` | `pa_brooks_bar_core`, `pa_brooks_regime_core`, `pa_brooks_swing_core` | Bar close strength, micro channels, bounded regime scores, always-in proxy, and lightweight prior-exclusive swing / second-entry proxies. |
+| `pa_brooks_range_v1` | `pa_brooks_range_core` | Prior-exclusive rolling range high/low/mid/thirds, width normalized by ATR-like range, range breakouts, and close-back-inside facts. |
+
+These are market facts only. They do not create Brooks strategies, candidate YAML, Layer1 grids,
+selection, promotion, Layer2/3, WFO, live/paper paths, or economic claims.

@@ -27,6 +27,7 @@ def build_trade_intents_from_signals(
     qty: float,
     max_hold_bars: int,
     candidate_id: int = 1,
+    allowed_sides: tuple[int | Side, ...] = (Side.LONG,),
 ) -> SignalAdapterResult:
     """One entry row -> one intent; invalid rows increment ``skip_reasons``."""
     entry = np.asarray(signals.entry, dtype=bool)
@@ -39,6 +40,7 @@ def build_trade_intents_from_signals(
     total_entries = int(np.sum(entry))
     skip_reasons: dict[str, int] = {}
     intents: list[TradeIntent] = []
+    allowed_side_ints = {int(s) for s in allowed_sides}
 
     def bump(reason: str) -> None:
         skip_reasons[reason] = skip_reasons.get(reason, 0) + 1
@@ -68,8 +70,11 @@ def build_trade_intents_from_signals(
 
     for i in np.flatnonzero(entry):
         si = int(side[i])
-        if si != int(Side.LONG):
+        if si not in (int(Side.LONG), int(Side.SHORT)):
             bump("invalid_side")
+            continue
+        if si not in allowed_side_ints:
+            bump("side_not_allowed")
             continue
         if not math.isfinite(float(stop[i])):
             bump("nonfinite_stop")
@@ -110,6 +115,7 @@ def signal_matrix_to_intents(
     qty: float,
     max_hold_bars: int,
     candidate_id: int = 1,
+    allowed_sides: tuple[int | Side, ...] = (Side.LONG,),
 ) -> SignalAdapterResult:
     """Alias for :func:`build_trade_intents_from_signals`."""
     return build_trade_intents_from_signals(
@@ -117,4 +123,5 @@ def signal_matrix_to_intents(
         qty=qty,
         max_hold_bars=max_hold_bars,
         candidate_id=candidate_id,
+        allowed_sides=allowed_sides,
     )

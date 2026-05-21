@@ -25,7 +25,16 @@ LEGACY_GROUP_ORDER: tuple[str, ...] = (
 
 OPTIONAL_GROUP_ORDER: tuple[str, ...] = ("levels", "indicators")
 
-CANONICAL_GROUP_ORDER: tuple[str, ...] = LEGACY_GROUP_ORDER + OPTIONAL_GROUP_ORDER
+BROOKS_GROUP_ORDER: tuple[str, ...] = (
+    "pa_brooks_bar_core",
+    "pa_brooks_regime_core",
+    "pa_brooks_swing_core",
+    "pa_brooks_range_core",
+)
+
+CANONICAL_GROUP_ORDER: tuple[str, ...] = (
+    LEGACY_GROUP_ORDER + OPTIONAL_GROUP_ORDER + BROOKS_GROUP_ORDER
+)
 
 ALLOWED_OUTPUTS: dict[str, frozenset[str]] = {
     "vwap": frozenset({"vwap", "vwap_dist", "vwap_dist_pct", "vwap_side", "vwap_slope_5"}),
@@ -56,6 +65,59 @@ ALLOWED_OUTPUTS: dict[str, frozenset[str]] = {
         }
     ),
     "indicators": frozenset({"cci", "stoch_k", "stoch_d"}),
+    "pa_brooks_bar_core": frozenset(
+        {
+            "strong_bull_close",
+            "strong_bear_close",
+            "weak_bull_close",
+            "weak_bear_close",
+            "bull_signal_bar",
+            "bear_signal_bar",
+            "failed_bull_signal_bar",
+            "failed_bear_signal_bar",
+            "bull_micro_channel",
+            "bear_micro_channel",
+        }
+    ),
+    "pa_brooks_regime_core": frozenset(
+        {
+            "pa_always_in_side",
+            "pa_strong_bull_bo_score",
+            "pa_strong_bear_bo_score",
+            "pa_tight_bull_channel_score",
+            "pa_tight_bear_channel_score",
+            "pa_broad_bull_channel_score",
+            "pa_broad_bear_channel_score",
+            "pa_trading_range_score",
+            "pa_late_trend_score",
+        }
+    ),
+    "pa_brooks_swing_core": frozenset(
+        {
+            "pa_leg_direction",
+            "pa_pullback_bar_count",
+            "pa_pullback_depth_atr",
+            "pa_two_leg_pullback_down",
+            "pa_two_leg_pullback_up",
+            "pa_second_entry_buy_proxy",
+            "pa_second_entry_sell_proxy",
+        }
+    ),
+    "pa_brooks_range_core": frozenset(
+        {
+            "pa_tr_high",
+            "pa_tr_low",
+            "pa_tr_mid",
+            "pa_tr_upper_third",
+            "pa_tr_lower_third",
+            "pa_tr_width_atr",
+            "pa_close_in_lower_third",
+            "pa_close_in_upper_third",
+            "pa_range_breakout_up",
+            "pa_range_breakout_down",
+            "pa_close_back_inside_range",
+        }
+    ),
 }
 
 
@@ -231,6 +293,63 @@ def resolve_feature_config(config: Mapping[str, Any]) -> dict[str, Any]:
                 )
         resolved_features[group] = gcfg
 
+    for group in BROOKS_GROUP_ORDER:
+        if group not in feats_raw:
+            continue
+        block = feats_raw[group]
+        if not isinstance(block, dict):
+            raise ConfigError(f"features.{group} must be a mapping")
+        if not _as_bool(block.get("enabled", False), field=f"features.{group}.enabled"):
+            continue
+
+        allowed = ALLOWED_OUTPUTS[group]
+        outs = block.get("outputs")
+        if not isinstance(outs, list) or not outs:
+            raise ConfigError(f"features.{group}.outputs must be a non-empty list")
+        outs_s = [str(o) for o in outs]
+        if len(set(outs_s)) != len(outs_s):
+            raise ConfigError(f"features.{group}.outputs contains duplicates: {outs_s!r}")
+        unknown = [o for o in outs_s if o not in allowed]
+        if unknown:
+            raise ConfigError(f"features.{group}.outputs unknown: {unknown!r}")
+
+        gcfg = {"enabled": True, "outputs": outs_s}
+        if group == "pa_brooks_bar_core":
+            gcfg["micro_channel_lengths"] = _positive_ints(
+                block.get("micro_channel_lengths", [3]),
+                field="features.pa_brooks_bar_core.micro_channel_lengths",
+            )
+            gcfg["signal_window"] = int(block.get("signal_window", 5))
+            if gcfg["signal_window"] <= 0:
+                raise ConfigError("features.pa_brooks_bar_core.signal_window must be > 0")
+            gcfg["min_signal_body_pct"] = float(block.get("min_signal_body_pct", 0.5))
+        elif group == "pa_brooks_regime_core":
+            gcfg["windows"] = _positive_ints(
+                block.get("windows"), field="features.pa_brooks_regime_core.windows"
+            )
+            if not gcfg["windows"]:
+                raise ConfigError("pa_brooks_regime_core requires windows")
+        elif group == "pa_brooks_swing_core":
+            gcfg["swing_window"] = int(block.get("swing_window", 5))
+            if gcfg["swing_window"] <= 1:
+                raise ConfigError("features.pa_brooks_swing_core.swing_window must be > 1")
+            gcfg["atr_window"] = int(block.get("atr_window", 20))
+            if gcfg["atr_window"] <= 0:
+                raise ConfigError("features.pa_brooks_swing_core.atr_window must be > 0")
+        elif group == "pa_brooks_range_core":
+            gcfg["range_windows"] = _positive_ints(
+                block.get("range_windows"), field="features.pa_brooks_range_core.range_windows"
+            )
+            if not gcfg["range_windows"]:
+                raise ConfigError("pa_brooks_range_core requires range_windows")
+            gcfg["atr_window"] = int(block.get("atr_window", 20))
+            if gcfg["atr_window"] <= 0:
+                raise ConfigError("features.pa_brooks_range_core.atr_window must be > 0")
+            gcfg["back_inside_bars"] = int(block.get("back_inside_bars", 3))
+            if gcfg["back_inside_bars"] <= 0:
+                raise ConfigError("features.pa_brooks_range_core.back_inside_bars must be > 0")
+        resolved_features[group] = gcfg
+
     for key in feats_raw:
         if key not in CANONICAL_GROUP_ORDER:
             raise ConfigError(f"unknown feature group: {key!r}")
@@ -320,6 +439,38 @@ def expand_column_names(group: str, gcfg: Mapping[str, Any]) -> list[str]:
                 for w in gcfg["stochastic_windows"]:
                     for sm in gcfg["stochastic_smooth_windows"]:
                         names.append(f"stoch_d_{w}_{sm}")
+        return names
+
+    if group == "pa_brooks_bar_core":
+        for o in outputs:
+            if o == "bull_micro_channel":
+                for k in gcfg["micro_channel_lengths"]:
+                    names.append(f"bull_micro_channel_{k}")
+            elif o == "bear_micro_channel":
+                for k in gcfg["micro_channel_lengths"]:
+                    names.append(f"bear_micro_channel_{k}")
+            else:
+                names.append(o)
+        return names
+
+    if group == "pa_brooks_regime_core":
+        for o in outputs:
+            if o == "pa_always_in_side":
+                names.append(o)
+            else:
+                for w in gcfg["windows"]:
+                    names.append(f"{o}_{w}")
+        return names
+
+    if group == "pa_brooks_swing_core":
+        for o in outputs:
+            names.append(o)
+        return names
+
+    if group == "pa_brooks_range_core":
+        for o in outputs:
+            for w in gcfg["range_windows"]:
+                names.append(f"{o}_{w}")
         return names
 
     raise ConfigError(f"expand_column_names: unknown group {group!r}")

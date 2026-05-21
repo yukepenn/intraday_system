@@ -23,6 +23,10 @@ Orchestration **must not**:
 
 - One `SignalMatrix` entry row → at most one `TradeIntent` (invalid rows skipped with counted reasons).
 - Maps `backtest.quantity` → `TradeIntent.qty`, `backtest.max_hold_minutes` → `TradeIntent.max_hold_bars` (1m bars for Phase 6).
+- Phase19A makes the adapter side-aware while preserving long-only defaults: by default only
+  `Side.LONG` intents are accepted; callers must explicitly allow `Side.SHORT`. Invalid side
+  values still use `invalid_side`, while configured-but-disallowed sides use `side_not_allowed`.
+  Execution remains the final `SHORT_NOT_ALLOWED` authority.
 
 ## Metrics
 

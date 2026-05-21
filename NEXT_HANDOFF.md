@@ -1,66 +1,60 @@
 ﻿# NEXT_HANDOFF
 
-Last updated: **2026-05-20** (Phase **19** design - Brooks PA strategies 11-20 with side support).
+Last updated: **2026-05-21** (Phase **19A** side support + Brooks feature foundation slice).
 
 ## A. Git
 
 - Branch: `main`
 - Remote: `https://github.com/yukepenn/intraday_system.git`
-- Pre-task HEAD: `cd11ed9`
-- Task commit hash: `20f4c80b437f1989ad1228f5a682ef7e03e65861`.
+- Pre-task HEAD: `5eb067b`
+- Task commit hash: pending until commit.
 - Codex review pending: yes.
 - ChatGPT Pro review pending: yes.
 - Cursor did not edit `CODEX_REVIEW.md`.
 
 ## B. Phase
 
-`PHASE19_DESIGN_BROOKS_PA_STRATEGIES_11_TO_20_WITH_SIDE_SUPPORT`
+`PHASE19A_IMPLEMENT_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION_SLICE`
 
 ## C. Task Type
 
-Design-only + multi-strategy design + side-support architecture design + Brooks PA feature/strategy design + onboarding plan.
+Infrastructure + limited feature implementation + validation.
 
 ## D. What Was Done
 
-- Produced Phase19A system-wide side-support foundation design (`signal.side_mode ∈ {long_only, short_only, both}`; SignalMatrix long/short/non-entry conventions; signal adapter side-aware uplift plan; default execution config preservation; setup-code namespace `7101..7110` / `7201..7210`).
-- Produced Phase19B Brooks PA feature foundation design (5 feature groups across 4 future feature configs + 1 optional; market-fact-only rules; no-lookahead and session-reset guards; prior-exclusive / delayed-confirmed pivot doctrine; rejected strategy-label features; 4-slice implementation plan with split escape hatch).
-- Produced Phase19C Brooks PA strategy specs for strategies 11-20 (7 core, 3 diagnostic) with side-aware setups, stop geometry, target_r-only policy, required features, rational bounded grid skeletons, and per-strategy validation rules.
-- Produced Phase19C duplicate-avoidance matrix explicitly rejecting current-10 duplicates and feature/filter/management concepts as standalone strategies.
-- Produced Phase19D future implementation file plan, test plan, and validation plan.
-- Produced Phase19 non-goals, non-promotion guardrails, and decision artifact.
-- Added Phase19 design-only artifact schema test and no-runtime-leakage guardrail test under `tests/unit/`.
-- Updated status docs (NEXT_HANDOFF, PROJECT_STATUS, PROGRESS, CHANGES, docs/PHASE_PLAN).
+- README/status cleanup for Phase19 design completion and Phase19A implementation scope.
+- Resolved swing-core packaging: lightweight `pa_brooks_swing_core` is packaged inside `pa_brooks_core_v1.yaml`; no separate swing YAML in Phase19A.
+- Implemented system-wide side-aware SignalMatrix validation helpers with default long-only compatibility.
+- Implemented side-aware signal adapter allowed-side behavior: default long-only, short accepted only when explicitly allowed by adapter caller.
+- Preserved execution as final short authority: `ExecutionSpec.allow_short=false` still rejects shorts with `SHORT_NOT_ALLOWED`.
+- Added Brooks PA Slice F1 feature groups/configs:
+  - `configs/features/pa_brooks_core_v1.yaml`
+  - `configs/features/pa_brooks_range_v1.yaml`
+- Added side-support, short execution boundary, current-10 regression, Brooks feature config/no-lookahead/session-reset, artifact-schema, and no-runtime-leakage tests.
+- Added curated Phase19A artifact bundle.
 
 ## E. What Was Intentionally Not Done
 
-- No runtime implementation code.
-- No new strategy source files for Phase19.
-- No new feature kernels.
-- No edits to `src/intraday/backtest/signal_adapter.py`.
-- No edits to `src/intraday/strategies/contracts.py`.
-- No edits to `src/intraday/execution/*.py`.
-- No edits to current-10 strategy source files, base YAMLs, grid YAMLs, or metadata YAMLs.
-- No new runtime feature YAMLs (`pa_brooks_*_v1.yaml` not created).
-- No new runtime strategy YAMLs under `configs/strategies/base/phase19/`, `configs/strategies/grids/phase19/`, `configs/strategies/metadata/phase19/`.
-- No new Layer1 inspect configs under `configs/layer1/phase19_brooks_pa_grid_inspect/`.
+- No strategies 11-20 source files.
+- No Phase19 strategy runtime YAMLs.
+- No Phase19 strategy grid YAMLs.
+- No Phase19 Layer1 grid-inspect configs.
 - No actual Layer1 grid runs.
-- No `layer1 select-dry-run`.
+- No select-dry-run.
 - No candidate YAML.
 - No promotion.
-- No Layer2 / Layer3.
-- No WFO / mini-WFO.
-- No live / paper.
+- No Layer2/3.
+- No WFO/live/paper.
 - No economic claims.
-- No top-row ranking.
-- No H2 confirmation.
-- No QT runtime dependency, no QT import, no QT folder layout copy.
-- No strategies 21-50.
+- No current-10 short retrofit.
+- No execution truth or PnL/R accounting changes.
+- No target-price materialization in strategies.
 
 ## F. Key Artifacts
 
-Primary Phase19 design bundle:
+Primary bundle:
 
-`artifacts/phase19_brooks_pa_design/`
+`artifacts/phase19a_side_support_brooks_feature_foundation/`
 
 Key files:
 
@@ -68,69 +62,59 @@ Key files:
 - `SOURCE_MAP.csv`
 - `chatgpt_key_tables.csv`
 - `validation_results.csv`
-- `side_support_design.md`
-- `side_support_test_plan.csv`
-- `brooks_pa_feature_foundation_design.md`
-- `brooks_pa_feature_audit_matrix.csv`
-- `brooks_pa_strategy_design_matrix.csv`
-- `brooks_pa_strategy_specs.md`
-- `brooks_pa_duplicate_avoidance_matrix.csv`
-- `phase19_file_plan.csv`
-- `phase19_test_plan.csv`
-- `phase19_validation_plan.md`
-- `phase19_non_goals.md`
+- `swing_core_packaging_decision.md`
+- `side_support_implementation_summary.md`
+- `side_support_test_matrix.csv`
+- `brooks_feature_slice_decision.md`
+- `brooks_feature_config_inventory.csv`
+- `brooks_feature_test_matrix.csv`
+- `current10_backward_compatibility_summary.csv`
+- `implementation_scope_deferred_items.md`
 - `non_promotion_guardrails.md`
-- `phase19_design_decision.md`
 - `artifact_schema_validation.csv`
-
-Supporting tests:
-
-- `tests/unit/test_phase19_design_artifact_schema.py`
-- `tests/unit/test_phase19_design_no_runtime_leakage.py`
+- `phase19a_decision.md`
 
 ## G. Validation
 
-- `python -m intraday.cli.main --help` - pass.
-- `python -m intraday.cli.main doctor` - pass.
-- `python -m intraday.cli.main validate structure` - pass.
-- `python -m compileall -q src tests` - pass.
-- `python -m pytest -q tests/unit/test_phase19_design_artifact_schema.py tests/unit/test_phase19_design_no_runtime_leakage.py` - 18 passed.
-- `python -m pytest -q tests/unit/test_phase18d_artifact_schema.py tests/unit/test_phase18d_no_runtime_leakage.py` - 8 passed (regression).
-- `python -m ruff check src tests` - pass.
-- `python -m ruff format --check src tests` - pass after applying ruff format to two new Phase19 design tests.
+See `artifacts/phase19a_side_support_brooks_feature_foundation/validation_results.csv`.
 
-See `artifacts/phase19_brooks_pa_design/validation_results.csv`.
+Commands already passed during implementation:
+
+- `python -m pytest -q tests/unit/test_phase19a_side_support_contract.py` - 8 passed.
+- `python -m pytest -q tests/unit/test_phase19a_signal_adapter_side_support.py` - 4 passed.
+- `python -m pytest -q tests/unit/test_phase19a_short_execution_boundary.py` - 2 passed.
+- `python -m pytest -q tests/unit/test_phase19a_current10_long_only_regression.py` - 3 passed.
+- `python -m pytest -q tests/unit/test_phase19a_brooks_feature_configs.py` - 5 passed.
+- `python -m pytest -q tests/unit/test_phase19a_brooks_features_no_lookahead.py` - 2 passed.
+- `python -m pytest -q tests/unit/test_phase19a_brooks_features_session_reset.py` - 2 passed.
+
+Final validation commands are recorded in the validation ledger.
 
 ## H. Risks / Blockers
 
-- Side support is system-wide infrastructure. The Phase19 implementation phase must implement it before any Phase19 strategy is allowed to emit `side=-1` end-to-end against a non-default execution config.
-- The Brooks feature foundation spans 4 feature configs. If the implementation phase finds the bundle exceeds `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md` §9 (two-new-groups guidance), it must split into sub-phases with `SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`.
-- Diagnostic strategies 18-20 (`pa_mtr_reversal_diagnostic`, `pa_wedge_reversal_diagnostic`, `pa_climax_reversal_diagnostic`) must stay diagnostic in implementation; they cannot be promoted to candidate status from Phase19 evidence alone.
-- `target_r`-only contract must be preserved even where natural target-price interpretations exist (range mid, opposite third, zone ceiling/floor, climax extreme). Target engineering belongs in management/Layer2.
-- Pivot proxies (swing/wedge/three-push/MTR) must be prior-exclusive or delayed-confirmed; centered pivots are forbidden.
-- Local `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains untracked local-only hygiene debt and must not be staged.
-- H2 remains diagnostic-only and is not clean confirmation evidence.
-- Candidate selection remains blocked: no candidate YAML, no select-dry-run, no promotion, and no Layer2 candidate pool.
+- No side-support blocker remains.
+- No short execution contract blocker remains.
+- No Brooks Slice F1 no-lookahead/session blocker remains.
+- Opening/reversal/magnet Brooks features remain deferred.
+- Strategies 11-20 remain unimplemented by design.
+- Local untracked Phase16 `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` hygiene debt remains and must not be staged.
 
 ## I. Decision
 
-### `PHASE19_BROOKS_PA_DESIGN_COMPLETE`
+### `PHASE19A_SIDE_SUPPORT_AND_FEATURE_SLICE_COMPLETE`
 
 ## J. Cursor Provisional Recommended Next Step
 
-### `IMPLEMENT_PHASE19A_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`
-
-Alternative if the implementation phase finds the bundle too broad:
-
-### `SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`
+### `IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`
 
 Forbidden next steps:
 
 - candidate YAML / promotion / select-dry-run
+- actual Layer1 economic grids
 - Layer2 / Layer3
 - WFO / live / paper
-- economic grid runs at Phase19 scope
+- economic ranking or claims
 
 ## K. Note
 
-Cursor recommendation is provisional only. Codex review and ChatGPT Pro + user review are required next. The final roadmap decision belongs to ChatGPT Pro and the user after Codex review of this Phase19 design.
+Cursor recommendation is provisional only. Codex review and ChatGPT Pro review are required next. The final roadmap decision belongs to ChatGPT Pro and the user after Codex review.

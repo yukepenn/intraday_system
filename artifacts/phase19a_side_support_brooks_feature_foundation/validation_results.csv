@@ -1,0 +1,30 @@
+command,status,notes
+git status --short; git log --oneline -10; git branch --show-current,pass,Preflight baseline collected
+python -m intraday.cli.main --help,pass,CLI help passed
+python -m intraday.cli.main doctor,pass,Doctor passed
+python -m intraday.cli.main validate structure,pass,Structure validation passed
+python -m compileall -q src tests,pass,Compile passed
+python -m pytest -q tests/unit/test_phase19a_side_support_contract.py,pass,8 passed
+python -m pytest -q tests/unit/test_phase19a_signal_adapter_side_support.py,pass,4 passed
+python -m pytest -q tests/unit/test_phase19a_short_execution_boundary.py,pass,2 passed
+python -m pytest -q tests/unit/test_phase19a_current10_long_only_regression.py,pass,3 passed
+python -m pytest -q tests/unit/test_phase19a_brooks_feature_configs.py,pass,5 passed
+python -m pytest -q tests/unit/test_phase19a_brooks_features_no_lookahead.py,pass,2 passed
+python -m pytest -q tests/unit/test_phase19a_brooks_features_session_reset.py,pass,2 passed
+python -m pytest -q tests/unit/test_phase19a_artifact_schema.py,pass,5 passed
+python -m pytest -q tests/unit/test_phase19a_no_runtime_leakage.py,pass,4 passed
+python -m pytest -q tests/unit/test_phase18d_artifact_schema.py tests/unit/test_phase18d_no_runtime_leakage.py,pass,8 passed
+python -m pytest -q tests/unit/test_phase18c_v2_validation_repair.py tests/unit/test_phase18c_strategy_v2_branches.py tests/unit/test_phase18c_missing_features.py,pass,63 passed
+python -m pytest -q tests/unit/test_signal_adapter.py,pass,7 passed
+python -m pytest -q tests/unit/test_strategy_contract.py,pass,6 passed
+python -m pytest -q tests/unit/test_execution_reference.py tests/unit/test_execution_costs.py,pass,29 passed
+python -m pytest -q tests/smoke,pass,25 passed
+python -m intraday.cli.main features list,pass,Brooks groups listed
+python -m intraday.cli.main features inspect --config configs/features/pa_brooks_core_v1.yaml,pass,28 columns inspected
+python -m intraday.cli.main features inspect --config configs/features/pa_brooks_range_v1.yaml,pass,33 columns inspected
+python -m ruff check src tests,cache_error,OneDrive .ruff_cache access denied; reran no-cache
+python -m ruff check --no-cache src tests,pass,All checks passed after formatting/import fixes
+python -m ruff format --check src tests --no-cache,pass,248 files already formatted
+python -m intraday.cli.main layer1 grid ...,not_run,Forbidden in Phase19A
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,Forbidden in Phase19A
+Layer2 / Layer3 / WFO / live / paper commands,not_run,Forbidden in Phase19A

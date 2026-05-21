@@ -1,0 +1,4 @@
+test_file,test_area,status,notes
+tests/unit/test_phase19a_brooks_feature_configs.py,Feature config/schema/columns/labels/warmup,pass,2 configs and 61 columns covered
+tests/unit/test_phase19a_brooks_features_no_lookahead.py,Future perturbation no-lookahead,pass,core and range prefixes unchanged when future bars change
+tests/unit/test_phase19a_brooks_features_session_reset.py,Session reset,pass,range warmups and core micro/swing reset at session boundary

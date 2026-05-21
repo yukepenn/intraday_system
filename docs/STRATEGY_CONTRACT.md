@@ -48,15 +48,21 @@ When `entry` is false:
 - `stop`, `target_r`, `score` = `nan`
 - `setup_code = 0`
 
-### Entry convention (Phase 5 long-only)
+### Entry convention
 
 When `entry` is true:
 
-- `side = +1`
-- `stop` finite and below `close` (long)
+- `side = +1` for long or `side = -1` for short
+- long `stop` finite and below `close`
+- short `stop` finite and above `close`
 - `target_r` finite and `> 0`
 - `score` finite
 - `setup_code` non-zero stable code
+
+Current strategy configs remain long-only by default. Side-aware strategy configs may use
+`signal.side_mode: long_only | short_only | both`; legacy `signal.side: long_only` remains
+accepted for current-10 compatibility. Execution `allow_short` is still the final authority:
+a short signal does not trade unless the execution config explicitly allows shorts.
 
 ## Timing / no-lookahead
 

@@ -1,0 +1,27 @@
+feature_set_id: pa_brooks_range_v1
+version: feature_set_v1
+description: Phase19A Brooks PA Slice F1 prior-exclusive trading-range market facts.
+
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+
+features:
+  pa_brooks_range_core:
+    enabled: true
+    range_windows: [30, 60, 90]
+    atr_window: 20
+    back_inside_bars: 3
+    outputs:
+      - pa_tr_high
+      - pa_tr_low
+      - pa_tr_mid
+      - pa_tr_upper_third
+      - pa_tr_lower_third
+      - pa_tr_width_atr
+      - pa_close_in_lower_third
+      - pa_close_in_upper_third
+      - pa_range_breakout_up
+      - pa_range_breakout_down
+      - pa_close_back_inside_range

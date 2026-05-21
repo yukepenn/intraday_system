@@ -424,9 +424,27 @@ Decision label: **`PHASE19_BROOKS_PA_DESIGN_COMPLETE`**.
 
 Recommended next step: **`IMPLEMENT_PHASE19A_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`** (alternative **`SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`**) after Codex and ChatGPT Pro review.
 
-## Phase 19 implementation ? Add strategies 11-20 ? **future**
+## Phase 19A ? Side support + Brooks feature foundation slice ? **complete**
 
-Implement the Phase19 design: system-wide side-support uplift (SignalMatrix + signal adapter side awareness; `signal.side_mode`), Brooks PA feature foundation (Slices F1/F2/F3 with optional F4), and strategies 11-20 (7 core + 3 diagnostic) following the onboarding checklist and template. This is strategy-library onboarding, not candidate promotion.
+Goal: implement the shared side-support foundation and Brooks PA Slice F1 feature facts before any strategy 11-20 code ships.
+
+Status:
+
+- Extended SignalMatrix validation to accept long and short entries with side-specific stop geometry when reference closes are supplied.
+- Added shared side-mode parsing helpers for `long_only`, `short_only`, and `both`.
+- Made the signal adapter side-aware with conservative default long-only behavior; shorts require explicit adapter allowance and execution `allow_short` remains the final authority.
+- Added Brooks Slice F1 feature configs `pa_brooks_core_v1` and `pa_brooks_range_v1`.
+- Resolved swing-core packaging: lightweight swing facts live inside `pa_brooks_core_v1`; no separate swing YAML in Phase19A.
+- Added no-lookahead/session-reset tests and current-10 long-only regression tests.
+- No strategies 11-20 source files, Phase19 strategy runtime YAMLs, Layer1 grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper, current-10 short retrofits, execution accounting changes, or economic claims.
+
+Decision label: **`PHASE19A_SIDE_SUPPORT_AND_FEATURE_SLICE_COMPLETE`**.
+
+Recommended next step: **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review.
+
+## Phase 19B ? Add core Brooks PA strategies 11-17 ? **future**
+
+Implement only core Brooks PA strategies 11-17 against Phase19A side-support and Slice F1 feature facts. This is strategy-library onboarding, not candidate promotion. Strategies 18-20 remain deferred until reversal/swing features are stable.
 
 ## Phase 20 ? Add strategies 21-30 ? **future**
 

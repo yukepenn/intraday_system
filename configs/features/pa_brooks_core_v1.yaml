@@ -1,0 +1,51 @@
+feature_set_id: pa_brooks_core_v1
+version: feature_set_v1
+description: Phase19A Brooks PA Slice F1 bar/regime/swing market-fact foundation.
+
+engine:
+  mode: reference
+  session_reset: true
+  dtype: float64
+
+features:
+  pa_brooks_bar_core:
+    enabled: true
+    signal_window: 5
+    min_signal_body_pct: 0.5
+    micro_channel_lengths: [3, 4, 5]
+    outputs:
+      - strong_bull_close
+      - strong_bear_close
+      - weak_bull_close
+      - weak_bear_close
+      - bull_signal_bar
+      - bear_signal_bar
+      - bull_micro_channel
+      - bear_micro_channel
+
+  pa_brooks_regime_core:
+    enabled: true
+    windows: [20]
+    outputs:
+      - pa_always_in_side
+      - pa_strong_bull_bo_score
+      - pa_strong_bear_bo_score
+      - pa_tight_bull_channel_score
+      - pa_tight_bear_channel_score
+      - pa_broad_bull_channel_score
+      - pa_broad_bear_channel_score
+      - pa_trading_range_score
+      - pa_late_trend_score
+
+  pa_brooks_swing_core:
+    enabled: true
+    swing_window: 5
+    atr_window: 20
+    outputs:
+      - pa_leg_direction
+      - pa_pullback_bar_count
+      - pa_pullback_depth_atr
+      - pa_two_leg_pullback_down
+      - pa_two_leg_pullback_up
+      - pa_second_entry_buy_proxy
+      - pa_second_entry_sell_proxy

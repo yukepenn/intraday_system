@@ -43,6 +43,7 @@ def register_builtin_features() -> None:
     if _BUILTIN_REGISTERED:
         return
 
+    from intraday.features.kernels import brooks as brooks_k
     from intraday.features.kernels import indicators as ind_k
     from intraday.features.kernels import levels as levels_k
     from intraday.features.kernels import orb as orb_k
@@ -138,6 +139,83 @@ def register_builtin_features() -> None:
             required_inputs=("high", "low", "close", "session_id"),
             outputs=("cci", "stoch_k", "stoch_d"),
             compute_reference=ind_k.compute_indicators_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="pa_brooks_bar_core",
+            version="v1",
+            required_inputs=("open", "high", "low", "close", "session_id"),
+            outputs=(
+                "strong_bull_close",
+                "strong_bear_close",
+                "weak_bull_close",
+                "weak_bear_close",
+                "bull_signal_bar",
+                "bear_signal_bar",
+                "failed_bull_signal_bar",
+                "failed_bear_signal_bar",
+                "bull_micro_channel",
+                "bear_micro_channel",
+            ),
+            compute_reference=brooks_k.compute_pa_brooks_bar_core_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="pa_brooks_regime_core",
+            version="v1",
+            required_inputs=("high", "low", "close", "session_id"),
+            outputs=(
+                "pa_always_in_side",
+                "pa_strong_bull_bo_score",
+                "pa_strong_bear_bo_score",
+                "pa_tight_bull_channel_score",
+                "pa_tight_bear_channel_score",
+                "pa_broad_bull_channel_score",
+                "pa_broad_bear_channel_score",
+                "pa_trading_range_score",
+                "pa_late_trend_score",
+            ),
+            compute_reference=brooks_k.compute_pa_brooks_regime_core_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="pa_brooks_swing_core",
+            version="v1",
+            required_inputs=("high", "low", "close", "session_id"),
+            outputs=(
+                "pa_leg_direction",
+                "pa_pullback_bar_count",
+                "pa_pullback_depth_atr",
+                "pa_two_leg_pullback_down",
+                "pa_two_leg_pullback_up",
+                "pa_second_entry_buy_proxy",
+                "pa_second_entry_sell_proxy",
+            ),
+            compute_reference=brooks_k.compute_pa_brooks_swing_core_group,
+        )
+    )
+    register_feature(
+        FeatureDef(
+            name="pa_brooks_range_core",
+            version="v1",
+            required_inputs=("high", "low", "close", "session_id"),
+            outputs=(
+                "pa_tr_high",
+                "pa_tr_low",
+                "pa_tr_mid",
+                "pa_tr_upper_third",
+                "pa_tr_lower_third",
+                "pa_tr_width_atr",
+                "pa_close_in_lower_third",
+                "pa_close_in_upper_third",
+                "pa_range_breakout_up",
+                "pa_range_breakout_down",
+                "pa_close_back_inside_range",
+            ),
+            compute_reference=brooks_k.compute_pa_brooks_range_core_group,
         )
     )
     _BUILTIN_REGISTERED = True

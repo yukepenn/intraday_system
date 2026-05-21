@@ -1,0 +1,6 @@
+item,status,notes
+default_execution_allow_short_false,pass,configs/execution/intraday_default.yaml remains long-only
+current10_base_configs_long_only,pass,10 current base configs normalize to long_only
+current10_phase18b_configs_long_only,pass,10 current refined configs normalize to long_only
+current10_strategy_source_short_retrofits,not_done,No current-10 strategy source files were edited for short support
+execution_pnl_r_semantics_changed,false,No execution accounting semantics changed

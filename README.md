@@ -124,7 +124,11 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 18D complete:** **`PHASE18D_CURRENT10_REFINED_READINESS_AND_ONBOARDING_CHECKLIST`** validated the refined current-10 v2 package through inspect-only checks and operationalized existing contracts into the Phase19-22 onboarding checklist/template. Bundle: `artifacts/current10_refined_readiness_phase18d/`.
 
-**Next:** **`DESIGN_PHASE19_STRATEGIES_11_TO_20`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer2, WFO, live, paper, or economic ranking.
+**Phase 19 design complete:** **`PHASE19_DESIGN_BROOKS_PA_STRATEGIES_11_TO_20_WITH_SIDE_SUPPORT`** produced the side-support design, Brooks PA feature foundation design, strategy specs for strategies 11-20, duplicate-avoidance matrix, and future implementation plan. Bundle: `artifacts/phase19_brooks_pa_design/`.
+
+**Phase 19A complete:** **`PHASE19A_IMPLEMENT_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION_SLICE`** implemented shared side-aware SignalMatrix/adapter support with strict long-only defaults and Brooks PA Slice F1 feature configs (`pa_brooks_core_v1`, `pa_brooks_range_v1`). Bundle: `artifacts/phase19a_side_support_brooks_feature_foundation/`.
+
+**Next:** **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
 
 See:
 

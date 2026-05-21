@@ -1,0 +1,5 @@
+test_file,test_area,status,notes
+tests/unit/test_phase19a_side_support_contract.py,SignalMatrix side-aware contract,pass,long/short/non-entry/mixed/side_mode covered
+tests/unit/test_phase19a_signal_adapter_side_support.py,Signal adapter side support,pass,long default accepted; short default rejected; short allowed accepted
+tests/unit/test_phase19a_short_execution_boundary.py,Execution short boundary,pass,allow_short false rejects; allow_short true accepts/materializes
+tests/unit/test_phase19a_current10_long_only_regression.py,Current-10 default preservation,pass,default execution and current-10 configs remain long-only

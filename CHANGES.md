@@ -2,7 +2,17 @@
 
 Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangelog.com/) with project-specific decision/phase entries.
 
-## [Unreleased] – 2026-05-20
+## [Unreleased] – 2026-05-21
+
+### Phase 19A — Side support and Brooks feature foundation slice
+
+- Infrastructure(side): add side-aware SignalMatrix validation helpers and adapter allowed-side behavior while preserving default long-only behavior.
+- Feat(features): add Brooks PA Slice F1 feature configs `pa_brooks_core_v1` and `pa_brooks_range_v1`, including lightweight swing-core packaging inside core.
+- Test(unit): add Phase19A side-support, short execution boundary, current-10 long-only regression, Brooks feature config/no-lookahead/session-reset, artifact-schema, and no-runtime-leakage tests.
+- Docs(status): update README, NEXT_HANDOFF, PROJECT_STATUS, PROGRESS, CHANGES, docs/PHASE_PLAN, and relevant contract docs for Phase19A.
+- Research(artifacts): add `artifacts/phase19a_side_support_brooks_feature_foundation/` with review bundle, source map, key tables, validation ledger, packaging decision, implementation summaries, test matrices, guardrails, and decision artifact.
+- Decision: `PHASE19A_SIDE_SUPPORT_AND_FEATURE_SLICE_COMPLETE`; provisional next `IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17` after Codex and ChatGPT Pro review.
+- Explicit non-goals: no strategies 11-20 source files, no Phase19 strategy runtime YAMLs, no Layer1 economic grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no current-10 short retrofit, no target-price materialization, and no economic claims.
 
 ### Phase 19 — Design Brooks PA strategies 11-20 with side support
 

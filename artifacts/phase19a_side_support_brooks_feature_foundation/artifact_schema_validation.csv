@@ -1,0 +1,15 @@
+artifact,required,present,schema_status,notes
+CHATGPT_REVIEW_BUNDLE.md,true,true,md,Review bundle present
+SOURCE_MAP.csv,true,true,pass,Required source-map columns
+chatgpt_key_tables.csv,true,true,pass,Required key metrics included
+validation_results.csv,true,true,pass,Validation ledger included
+swing_core_packaging_decision.md,true,true,md,Packaging decision recorded
+side_support_implementation_summary.md,true,true,md,Side support summary recorded
+side_support_test_matrix.csv,true,true,pass,Side support tests listed
+brooks_feature_slice_decision.md,true,true,md,Slice decision recorded
+brooks_feature_config_inventory.csv,true,true,pass,Feature configs inventoried
+brooks_feature_test_matrix.csv,true,true,pass,Feature tests listed
+current10_backward_compatibility_summary.csv,true,true,pass,Compatibility status listed
+implementation_scope_deferred_items.md,true,true,md,Deferred items recorded
+non_promotion_guardrails.md,true,true,md,Guardrails recorded
+phase19a_decision.md,true,true,md,Decision recorded

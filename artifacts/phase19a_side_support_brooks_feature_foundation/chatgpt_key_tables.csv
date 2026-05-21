@@ -1,0 +1,21 @@
+section,item,metric,value,interpretation
+phase,phase,phase,PHASE19A_IMPLEMENT_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION_SLICE,Phase19A implementation slice
+task_type,scope,task_type,infrastructure + limited feature implementation + validation,No strategies or economic grids
+pre_task_head,git,pre_task_head,5eb067b,HEAD at Phase19A preflight
+final_commit,git,final_commit,pending_until_commit,Commit hash is reported by Cursor final response
+coverage,side_support,side_support_implemented,true,SignalMatrix and adapter side foundations implemented
+coverage,side_support,current_default_long_only_preserved,true,Default adapter and execution remain long-only
+coverage,side_support,current10_regression_passed,true,Current-10 long-only tests passed
+coverage,features,brooks_feature_configs_created_count,2,pa_brooks_core_v1 and pa_brooks_range_v1
+coverage,features,brooks_feature_columns_created_count,61,28 core columns plus 33 range columns
+coverage,features,swing_core_packaging,inside_pa_brooks_core_v1,Option A selected
+non_runs,strategies,strategies_11_to_20_created,false,Forbidden in Phase19A
+non_runs,layer1,actual_layer1_grid_runs,0,Forbidden in Phase19A
+non_runs,candidates,candidate_yaml_created,false,Forbidden in Phase19A
+non_runs,select_dry_run,select_dry_run_run,false,Forbidden in Phase19A
+non_runs,layer2,layer2_created,false,Locked
+non_runs,wfo,wfo_run,false,Locked
+non_runs,live_paper,live_paper_run,false,Locked
+non_runs,economic,economic_claims_made,false,No performance ranking or claims
+decision,phase19a,decision,PHASE19A_SIDE_SUPPORT_AND_FEATURE_SLICE_COMPLETE,Side support and Slice F1 complete
+next,roadmap,recommended_next_step,IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17,Provisional pending Codex and ChatGPT Pro review
