@@ -11,6 +11,7 @@ from intraday.core.paths import repo_root
 from intraday.data.loader import load_bars_from_curated
 from intraday.features.engine import build_feature_matrix
 from intraday.features.specs import load_feature_config
+from intraday.strategies.config_validation import parse_bool_like
 from intraday.strategies.loader import (
     load_strategy_config,
     resolve_strategy_config,
@@ -64,9 +65,13 @@ def cmd_strategies_inspect(*, strategy: str, config: str) -> int:
                 except (TypeError, ValueError):
                     continue
         if "diagnostic_only" in meta:
-            metadata_diagnostic_only = bool(meta["diagnostic_only"])
+            metadata_diagnostic_only = parse_bool_like(
+                meta["diagnostic_only"], "metadata.diagnostic_only"
+            )
         if "grid_inspect_only" in meta:
-            metadata_grid_inspect_only = bool(meta["grid_inspect_only"])
+            metadata_grid_inspect_only = parse_bool_like(
+                meta["grid_inspect_only"], "metadata.grid_inspect_only"
+            )
 
     sig_cfg = cfg.get("signal") or {}
     configured_side_mode = sig_cfg.get("side_mode")
@@ -90,6 +95,30 @@ def cmd_strategies_inspect(*, strategy: str, config: str) -> int:
     }
     print(json.dumps(payload, indent=2))
     return 0
+
+
+def _signal_smoke_entry_diagnostics(signals, bars) -> dict[str, object]:
+    """Return side-aware entry diagnostics for strategy smoke output."""
+    entry = np.asarray(signals.entry, dtype=bool)
+    side = np.asarray(signals.side)
+    close = np.asarray(bars.close, dtype=np.float64)
+    stop = np.asarray(signals.stop, dtype=np.float64)
+
+    long_entry = entry & (side == 1)
+    short_entry = entry & (side == -1)
+    bad_long_stop = long_entry & (~np.isfinite(stop) | (stop >= close))
+    bad_short_stop = short_entry & (~np.isfinite(stop) | (stop <= close))
+    bad_stop = bad_long_stop | bad_short_stop
+
+    return {
+        "invalid_stop_on_entry": int(bad_stop.sum()),
+        "invalid_stop_on_long_entry": int(bad_long_stop.sum()),
+        "invalid_stop_on_short_entry": int(bad_short_stop.sum()),
+        "entry_side_distribution": {
+            "long": int(long_entry.sum()),
+            "short": int(short_entry.sum()),
+        },
+    }
 
 
 def cmd_strategies_generate_smoke(
@@ -151,6 +180,6 @@ def cmd_strategies_generate_smoke(
             int(c): int(n) for c, n in zip(codes, counts, strict=True)
         }
         out["nan_stop_on_entry"] = int(np.isnan(signals.stop[entry]).sum())
-        out["invalid_stop_on_entry"] = int((signals.stop[entry] >= bars.close[entry]).sum())
+        out.update(_signal_smoke_entry_diagnostics(signals, bars))
     print(json.dumps(out, indent=2))
     return 0

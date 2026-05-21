@@ -50,6 +50,20 @@ Phase **10** (complete): PA risk-path diagnostic grid (12 combos) on QQQ 2024H1/
 
 Smoke configs may set `execution.mode` to `reference`, `fast`, or `both`. Canonical metrics in Phase 6 use **reference** results; `both` runs fast for parity assertion only.
 
+## Phase19A+ side-runtime bridge
+
+- Layer1 smoke and controlled-grid paths must call
+  `validate_signal_matrix(..., reference_close=bars.close)` so long stops are
+  checked below close and short stops above close before adaptation.
+- Layer1 derives adapter `allowed_sides` from the resolved strategy
+  `signal.side_mode` and passes that allow-list to the signal adapter.
+- Side-aware diagnostics use side-specific stop tests: long invalid stop is
+  non-finite or `stop >= close`; short invalid stop is non-finite or
+  `stop <= close`.
+- Grid-inspect configs may include `signal.side_mode` axes for bounded
+  onboarding/diagnostic inspection. Actual economic grid runs require explicit
+  authorization and are outside Phase19 polish.
+
 ## Related
 
 - `docs/BACKTEST_CONTRACT.md` — backtest orchestration vs execution ownership.

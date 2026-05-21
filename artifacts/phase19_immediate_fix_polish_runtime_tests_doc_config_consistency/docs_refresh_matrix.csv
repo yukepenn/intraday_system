@@ -1,0 +1,18 @@
+file_path,refresh_type,phase19_policy_added,notes
+docs/PHASE_PLAN.md,current_next_step,true,Added Phase19 polish subsection and non-goals
+docs/CONFIG_CONTRACT.md,canonical_side_mode,true,Documents side_mode canonical and signal.side legacy
+docs/STRATEGY_CONTRACT.md,setup_code_side_contract,true,Adds Phase19 setup-code addendum and StrategyDef fields
+docs/LAYER1_CONTRACT.md,side_runtime_bridge,true,Documents reference_close and side-aware invalid stops
+docs/BACKTEST_CONTRACT.md,adapter_execution_separation,true,Adapter should not suppress shorts due to execution allow_short
+docs/CACHE_CONTRACT.md,hash_policy,true,Config-key migration can change signal_hash
+docs/EXECUTION_CONTRACT.md,allow_short_authority,true,Execution remains final short authority
+docs/FEATURE_CONTRACT.md,feature_policy,true,No labels/outcome/PnL features
+docs/LAYER_FLOW.md,phase19_flow,true,Side-aware flow and setup-code registry
+docs/DESIGN_BASELINE.md,baseline_policy,true,Layer1 promotion and side separation
+docs/DEVELOPMENT_WORKFLOW.md,workflow_policy,true,Codex/Cursor file ownership and artifact ledgers
+docs/PROJECT_STRUCTURE.md,current_tree,true,Lists current contract docs and Phase19 config dirs
+docs/QT_REFERENCE_POLICY.md,qt_boundary,true,No committed QT path/runtime dependency
+docs/SETUP_CODE_REGISTRY.md,registry_governance,true,StrategyDef/metadata/promotion audit rules
+docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,onboarding_rules,true,Setup-code and side-mode onboarding tests
+docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md,candidate_schema,true,Future side/setup-code preservation
+docs/DATA_CONTRACT.md,minimal_data_note,true,Side support does not alter data contract

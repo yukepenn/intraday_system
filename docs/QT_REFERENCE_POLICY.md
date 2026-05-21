@@ -4,7 +4,7 @@ How `QT/` (the legacy research archive) relates to this repo.
 
 ## 1. QT is read-only reference
 
-`QT/` lives outside this repo at **`<qt-reference-root>`** (local-only on your machine). It contains years of strategy/feature research and Layer1/Layer2/Layer3 vocabulary.
+`QT/` lives outside this repo at **`<qt-reference-root>`** (local-only on your machine). It contains years of strategy/feature research and Layer1/Layer2/Layer3 vocabulary. Do not commit the local QT path.
 
 `intraday_system/` is the clean final system. It is independent of QT at runtime.
 
@@ -35,6 +35,8 @@ How `QT/` (the legacy research archive) relates to this repo.
 - Do **not** depend on QT artifacts at runtime.
 - It is acceptable to **read** QT files during research and reproduce logic in this repo, with attribution in commit messages or doc comments.
 - It is acceptable to add **regression tests** in `tests/regression/` that compare this repo's output against numbers exported from QT for a fixed window.
+- QT may inspire generic ideas, but it is not a source of runtime dependency,
+  setup-code truth, execution truth, or config truth for `intraday_system`.
 
 ## 5. QT becomes
 

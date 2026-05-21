@@ -1,0 +1,7 @@
+surface,alignment_rule,status,notes
+runtime_registry,src/intraday/strategies/setup_codes.py is authoritative,pass,Registry unchanged in polish
+StrategyDef,setup_code_long/short mirror registry,pass,Tested by metadata alignment and doc consistency tests
+metadata_yaml,setup_codes.long/short mirror registry,pass,Tested for current-10 and Phase19 11-17
+strategy_inspect,CLI exposes runtime and metadata setup codes,pass,Existing inspect tests plus strict bool parse
+docs,SETUP_CODE_REGISTRY documents governance,pass,Updated with promotion audit and rejected-code rules
+artifacts,CSV/MD mirror only,pass,Runtime never reads artifact setup-code tables

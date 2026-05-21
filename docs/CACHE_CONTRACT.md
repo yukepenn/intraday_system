@@ -75,6 +75,9 @@ data/cache/layer2_precompute/
 - Changing a router rule must **not** rebuild Layer1 signals.
 - Changing execution cost must **not** rebuild features/signals.
 - Changing raw bars (new data_hash) invalidates every downstream cache for the affected window.
+- Migrating a strategy config key, such as `signal.side` to canonical
+  `signal.side_mode`, can legitimately change `strategy_config_hash` and
+  `signal_hash` even when generated long-only behavior is equivalent.
 
 If a cache miss occurs, the engine recomputes and writes the cache (when caching is enabled). If a cache hit occurs, the loaded artifact's `meta.json` must match the expected hashes — mismatch is a hard error.
 
@@ -115,3 +118,13 @@ If a cache miss occurs, the engine recomputes and writes the cache (when caching
 - Using cache contents to override config truth.
 - Hashing pandas DataFrames directly (use canonical dict/JSON form).
 - Mutable hash inputs (e.g. dicts with unsorted keys).
+
+## 9. Config-key migration and cache identity
+
+Behavioral equivalence does not imply hash identity. `compute_signal_hash(...)`
+includes `hash_config(resolved_strategy_config)`, so two configs with identical
+runtime behavior but different key spelling or explicit/default fields may
+produce different `strategy_config_hash` / `signal_hash` values. Phase19 polish
+therefore treats `signal.side` -> `signal.side_mode` migration as a cache
+identity change unless a test intentionally proves identical resolved config
+identity.

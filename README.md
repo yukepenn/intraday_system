@@ -134,7 +134,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 19 Immediate Fix complete:** **`PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT`** introduced the authoritative setup-code registry (`src/intraday/strategies/setup_codes.py` + `docs/SETUP_CODE_REGISTRY.md`), repaired Phase19B namespace drift to 7101-7107 / 7201-7207, repaired runtime boolean coercion with the `brooks_bool` helper, extended `StrategyDef` and CLI `strategies inspect` to surface setup codes / required feature columns / side modes, added generic side-aware strategy helpers, and retrofitted all 10 current-10 strategies with `signal.side_mode`-gated short branches using approved short setup codes (default behavior remains `long_only`). Bundle: `artifacts/phase19_immediate_fix_setup_codes_side_consistency/`.
 
-**Next:** **`REVIEW_PHASE19_IMMEDIATE_FIX`** with Codex and ChatGPT Pro. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
+**Phase 19 Immediate Fix Polish complete:** **`PHASE19_IMMEDIATE_FIX_POLISH_RUNTIME_TESTS_AND_DOC_CONFIG_CONSISTENCY`** repaired side-aware `strategies generate-smoke` invalid-stop diagnostics, broadened direct synthetic current-10 short runtime/missing-feature/no-lookahead tests to all 10 current strategies, corrected long-only compatibility from raw hash preservation to behavior equivalence, and refreshed normative docs/config READMEs. Bundle: `artifacts/phase19_immediate_fix_polish_runtime_tests_doc_config_consistency/`.
+
+**Next:** **`REVIEW_PHASE19_IMMEDIATE_FIX_POLISH`** with Codex and ChatGPT Pro. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
 
 See:
 

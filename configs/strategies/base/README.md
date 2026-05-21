@@ -9,4 +9,14 @@ Canonical strategy base configs (no grid). Each file corresponds to one strategy
 
 Base configs are referenced by grid files. The runtime merges base → fixed → combo deterministically; fixed/grid overlap is a hard error.
 
-Phase 0/1A intentionally does NOT commit real strategy bases. They land in Phase 5 (PA) and Phase 7 (GAP, CCI).
+Current policy:
+
+- Canonical current-10 configs live at this directory root and use
+  `signal.side_mode: long_only` by default.
+- `phase19/` contains Brooks PA strategies 11-17, also defaulting to
+  `signal.side_mode: long_only`.
+- `phase18b/` is historical/refined compatibility material and may retain
+  legacy config patterns. Do not silently migrate historical configs unless a
+  phase explicitly authorizes it.
+- Strategy YAML never sets `execution.allow_short`; execution configs own fill
+  permission.

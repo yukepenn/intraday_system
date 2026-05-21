@@ -37,6 +37,13 @@ docs/
   CONFIG_CONTRACT.md          # YAML runtime truth rules
   CACHE_CONTRACT.md           # hashing + cache invalidation
   EXECUTION_CONTRACT.md       # ExecutionSpec, parity discipline
+  FEATURE_CONTRACT.md         # market-fact feature rules
+  STRATEGY_CONTRACT.md        # SignalMatrix and strategy rules
+  BACKTEST_CONTRACT.md        # strategy-to-execution orchestration
+  LAYER1_CONTRACT.md          # Layer1 smoke/grid scope
+  LAYER1_CANDIDATE_SELECTION_CONTRACT.md  # candidate-selection doctrine
+  STRATEGY_FAMILY_ONBOARDING_CONTRACT.md  # onboarding gates
+  SETUP_CODE_REGISTRY.md      # setup-code governance
   LAYER_FLOW.md               # end-to-end data flow
   PHASE_PLAN.md               # phase roadmap
   QT_REFERENCE_POLICY.md      # how to use QT as reference, not runtime
@@ -62,11 +69,18 @@ configs/
     cci_core_v1.yaml         # CCI-required features
   strategies/
     base/                    # canonical base configs
+      phase18b/              # historical/refined compatibility configs
+      phase19/               # Brooks PA strategies 11-17
     grids/                   # focused / controlled grids
+      phase19/               # Brooks PA grid-inspect skeletons
+      phase19_immediate_fix_current10_side_aware/
     metadata/                # routing metadata (priority, family)
+      phase19/               # Brooks PA metadata
   candidates/                # frozen Layer1 outputs (committed)
     README.md
   layer1/                    # Layer1 run configs
+    phase19_brooks_pa_grid_inspect/
+    phase19_immediate_fix_current10_side_aware_grid_inspect/
   layer2/                    # Layer2 run configs
   layer3/                    # Layer3 fold + frozen configs
   reports/

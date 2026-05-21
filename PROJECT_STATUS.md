@@ -2,31 +2,30 @@
 
 ## Current phase
 
-**Phase 19 Immediate Fix - Setup codes, side consistency, current-10
-short retrofit (`PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT`)** -
-authoritative setup-code registry, Phase19B namespace repair, boolean
-coercion repair, metadata + inspect authority repair, generic
-side-aware strategy helpers, and controlled current-10 short retrofit
-behind `signal.side_mode`.
+**Phase 19 Immediate Fix Polish - runtime tests and doc/config consistency
+(`PHASE19_IMMEDIATE_FIX_POLISH_RUNTIME_TESTS_AND_DOC_CONFIG_CONSISTENCY`)** -
+validation-only polish for Codex PASS_WITH_WARNINGS items: all-current-10
+direct short runtime tests, side-aware `strategies generate-smoke`
+diagnostics, behavior-equivalence hash policy correction, docs/config README
+refresh, and consistency artifacts.
 
 ## Decision
 
-**`PHASE19_IMMEDIATE_FIX_COMPLETE`** - all five hard gates passed:
-setup-code registry, Phase19B repair, boolean coercion, metadata /
-inspect authority, generic side-aware helpers; current-10 short
-retrofit completed for all 10 strategies behind `side_mode` with
-approved short setup codes; default behavior remains long-only;
-execution truth unchanged.
+**`PHASE19_IMMEDIATE_FIX_POLISH_COMPLETE`** - all polish gates passed:
+`generate-smoke` stop diagnostics are side-aware; all 10 current-10 short
+branches have direct synthetic runtime, missing-feature, and
+no-lookahead/session coverage; hash policy now states behavior equivalence
+instead of raw signal-hash preservation; docs/config READMEs are aligned with
+`signal.side_mode`, setup-code registry, and YAML-runtime-truth policy.
 
 ## Recommended next step (exactly one)
 
-**`REVIEW_PHASE19_IMMEDIATE_FIX`** - open a Codex review focused on the
-20+ audit points listed in the task spec (setup-code coherence,
-boolean coercion, metadata/inspect authority, current-10 short
-retrofit safety, non-promotion guardrails, artifact hygiene). Do not
-move to candidate YAML, select-dry-run, promotion, actual Layer1
-economic grids, Layer2/3, WFO, live/paper, or economic ranking. Final
-roadmap decision belongs to ChatGPT Pro + the user after Codex review.
+**`REVIEW_PHASE19_IMMEDIATE_FIX_POLISH`** - open a Codex review focused on
+scope discipline, no economic grids/candidates/promotion, all-current-10
+direct short tests, side-aware generate-smoke diagnostics, hash-policy
+correction, docs/config consistency, setup-code alignment, artifact hygiene,
+and confirming `CODEX_REVIEW.md` was untouched. Final roadmap decision belongs
+to ChatGPT Pro + the user after Codex review.
 
 ## Snapshot
 
@@ -38,6 +37,8 @@ roadmap decision belongs to ChatGPT Pro + the user after Codex review.
 - Phase19A repair bundle: `artifacts/phase19a_layer1_side_runtime_wiring_repair/`
 - Phase19B bundle: `artifacts/phase19b_core_brooks_pa_strategies/`
 - Phase19 immediate-fix bundle: `artifacts/phase19_immediate_fix_setup_codes_side_consistency/`
+- Phase19 immediate-fix polish bundle:
+  `artifacts/phase19_immediate_fix_polish_runtime_tests_doc_config_consistency/`
 - Authoritative setup-code registry: `src/intraday/strategies/setup_codes.py`
   + `docs/SETUP_CODE_REGISTRY.md`.
 - Current inspect-ready strategy universe is still 17 strategies: the
@@ -45,7 +46,7 @@ roadmap decision belongs to ChatGPT Pro + the user after Codex review.
   default `long_only`) plus Brooks PA strategies 11-17 (now with
   correct 7101-7107 / 7201-7207 setup codes). Strategies 18-20 and
   21-50 remain unimplemented.
-- This phase did not run actual Layer1 grids, expanded/full grids,
+- This polish did not run actual Layer1 grids, expanded/full grids,
   select-dry-run, candidate YAML, promotion, Layer2/3, WFO, live/paper,
   or economic ranking.
 - H2 warning preserved; H2 remains diagnostic-only.

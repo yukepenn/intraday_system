@@ -106,3 +106,9 @@ accepted Phase19 codes above.
    `long:` and (optionally) `short:` keys.
 7. CSV/MD review artifacts must mirror the registry; if the registry changes,
    the artifacts must be regenerated, not the runtime read back from them.
+8. `StrategyDef` metadata must mirror the registry, and metadata YAML must
+   mirror both. `strategies inspect` must expose registry setup codes for audit.
+9. Future candidate promotion must verify emitted setup codes against this
+   registry and reject mismatches.
+10. Rejected Phase19B placeholder codes `1101-1702` must never be reused.
+11. Artifact CSVs are mirrors only; they are never setup-code truth.

@@ -1,0 +1,21 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/cli/strategy_cmds.py,Side-aware generate-smoke diagnostics and strict inspect bool parsing,true,source,false,Narrow diagnostic/tooling repair
+tests/unit/test_strategy_generate_smoke_side_aware.py,Unit tests for side-aware smoke stop diagnostics,true,source,false,Synthetic only
+tests/unit/test_current10_short_signal_generation.py,All-current-10 direct short runtime tests,true,source,false,Synthetic fixtures only
+tests/unit/test_current10_side_aware_missing_features.py,All-current-10 missing-feature fail-closed tests,true,source,false,Synthetic fixtures only
+tests/unit/test_current10_side_aware_no_lookahead_session.py,All-current-10 no-lookahead/session short tests,true,source,false,Synthetic fixtures only
+tests/unit/test_current10_long_only_backward_compatibility.py,Behavior-equivalence backcompat tests,true,source,false,No raw hash equality claim
+tests/unit/test_phase19_polish_docs_config_consistency.py,Doc/config consistency guard tests,true,source,false,Policy tests
+docs/CONFIG_CONTRACT.md,Canonical side_mode config policy,true,source,false,Legacy side compatibility documented
+docs/STRATEGY_CONTRACT.md,Strategy side/setup-code contract refresh,true,source,false,Setup registry referenced
+docs/CACHE_CONTRACT.md,Hash policy correction,true,source,false,Behavior equivalence vs hash identity
+docs/LAYER1_CONTRACT.md,Layer1 side-runtime bridge and diagnostics,true,source,false,No economic grids authorized
+configs/README.md,Top-level config policy refresh,true,source,false,Side mode and setup-code policy
+configs/features/README.md,Feature config inventory/policy,true,source,false,No labels/outcomes
+configs/layer2/README.md,Layer2 lock policy,true,source,false,No Layer2 created
+configs/layer3/README.md,Layer3 lock policy,true,source,false,No WFO/frozen validation
+artifacts/phase19_immediate_fix_polish_runtime_tests_doc_config_consistency/,Curated review bundle,true,generated,false,CSV/MD only
+NEXT_HANDOFF.md,Next-session handoff,true,source,false,Updated after validation
+PROJECT_STATUS.md,Current phase/status,true,source,false,Updated after validation
+PROGRESS.md,Chronological status,true,source,false,Updated with date
+CHANGES.md,Curated changelog,true,source,false,Updated with date

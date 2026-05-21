@@ -1,0 +1,5 @@
+scope,path_pattern,expected_side_mode,notes
+current10_base,configs/strategies/base/*.yaml,long_only,All 10 current strategies default long_only
+phase19_base,configs/strategies/base/phase19/*.yaml,long_only,Brooks 11-17 default long_only
+current10_side_aware_grids,configs/strategies/grids/phase19_immediate_fix_current10_side_aware/*.yaml,long_only|short_only|both,Inspect-only grid axis
+phase19_grids,configs/strategies/grids/phase19/*.yaml,long_only|short_only|both,Inspect-only/onboarding skeletons

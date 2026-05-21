@@ -174,6 +174,9 @@ As of Phase **8b**, a typical dev workspace may have:
 - Curated RTH QQQ **2024H1** (design window) and **2024H2** (confirmation window) under `data/curated/bars_1m_rth/`.
 
 Parquet is **local-only**; never commit raw/curated/cache to the repo.
+Strategy side support does not change data contracts: raw/curated/cache
+parquet remains local-only, and strategies continue to consume `BarMatrix`
+only.
 
 ## 8. Forbidden
 

@@ -52,7 +52,8 @@ QT is consulted for ideas and logic; never imported at runtime. See `QT_REFERENC
 - **Strategies** = signals. No PnL, no execution.
 - **Execution** = trades / fills / PnL. Owns slippage, commission, stop/target/EOD/max-hold.
 - **Management** = position management modes (fixed_r, scaleout, trailing, no-followthrough).
-- **Layer1** = produces candidate YAMLs from disciplined parameter sweeps.
+- **Layer1** = orchestrates inspections/sweeps and may produce candidate YAMLs
+  only in an explicitly authorized promotion phase.
 - **Layer2** = selects/routes/manages candidates. Owns conflict + daily risk state.
 - **Layer3** = validates frozen systems on folds. Never tunes.
 - **Portfolio** = sizing, risk limits, equity tracking.
@@ -78,6 +79,10 @@ Rule: changing a strategy threshold must not rebuild VWAP/ORB features. Changing
 - No runtime system depends on Markdown or CSV.
 - Strategy YAMLs use **base + fixed + grid**. Fixed/grid overlap is a hard error.
 - No prefix-biased max-combos.
+- `signal.side_mode` controls signal/intent eligibility; execution config
+  controls short fill permission.
+- Setup codes are stable runtime registry identifiers, not YAML knobs or grid
+  axes.
 
 ## 9. CLI principle
 

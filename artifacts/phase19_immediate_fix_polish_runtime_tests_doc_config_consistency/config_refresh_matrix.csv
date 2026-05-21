@@ -1,0 +1,19 @@
+file_path,action,notes
+configs/README.md,updated,Canonical side_mode/setup-code/allow_short policy
+configs/data/README.md,added,Runtime data config and parquet local-only policy
+configs/execution/README.md,added,Execution allow_short authority
+configs/features/README.md,added,Feature config inventory and market-fact policy
+configs/strategies/base/README.md,updated,Current-10/phase19/phase18b roles
+configs/strategies/base/phase19/README.md,added,Brooks 11-17 scope
+configs/strategies/metadata/README.md,updated,Required metadata fields
+configs/strategies/metadata/phase19/README.md,added,Phase19 metadata scope
+configs/strategies/grids/README.md,updated,Grid axis and setup-code policy
+configs/strategies/grids/phase19/README.md,added,Phase19 grid-inspect-only
+configs/strategies/grids/phase19_immediate_fix_current10_side_aware/README.md,added,Current-10 side-aware inspect-only
+configs/layer1/README.md,updated,Layer1 config categories and inspect-only dirs
+configs/layer1/phase19_brooks_pa_grid_inspect/README.md,added,Brooks inspect-only
+configs/layer1/phase19_immediate_fix_current10_side_aware_grid_inspect/README.md,added,Current-10 inspect-only
+configs/candidates/README.md,updated,Future side-aware candidate schema notes
+configs/layer2/README.md,updated,Layer2 locked
+configs/layer3/README.md,updated,Layer3 locked
+configs/reports/README.md,added,Report-only policy

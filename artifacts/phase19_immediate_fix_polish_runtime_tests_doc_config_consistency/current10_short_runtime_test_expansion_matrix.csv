@@ -1,0 +1,11 @@
+strategy_name,short_setup_code,direct_short_generation_test,missing_feature_test,no_lookahead_test,session_test,long_only_regression,both_mode_check
+pa_buy_sell_close_trend,8001,true,true,true,true,true,true
+orb_continuation,9001,true,true,true,true,true,true
+orb_retest_continuation,9002,true,true,true,true,true,true
+failed_orb,9003,true,true,true,true,true,true
+gap_acceptance_failure,10001,true,true,true,true,true,true
+vwap_trend_pullback,11001,true,true,true,true,true,true
+vwap_reclaim_reject,11002,true,true,true,true,true,true
+prior_day_level_trap,12001,true,true,true,true,true,true
+cci_extreme_snapback,13001,true,true,true,true,true,true
+stochastic_oversold_cross,13002,true,true,true,true,true,true

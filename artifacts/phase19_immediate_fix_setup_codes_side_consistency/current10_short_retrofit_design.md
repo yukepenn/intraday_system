@@ -51,4 +51,9 @@ activate only when `signal.side_mode` is `short_only` or `both`.
 - Default behavior of every current-10 strategy remains `long_only`.
 - Missing `side_mode` validates as `long_only`.
 - Legacy `signal.side: long_only` still validates.
-- Long-only signal hashes are unchanged on the canonical base configs.
+- Compatibility is defined as behavior equivalence, not raw hash identity.
+  `compute_signal_hash(...)` includes the resolved strategy config hash, so
+  migrating a config key from `signal.side` to canonical `signal.side_mode`
+  can legitimately change `strategy_config_hash` / `signal_hash` even when
+  generated entries, sides, stops, targets, scores, setup codes, and trade
+  behavior are equivalent.

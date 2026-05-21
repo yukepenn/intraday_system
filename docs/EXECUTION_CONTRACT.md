@@ -29,6 +29,9 @@ class ExecutionSpec:
 - `eod_exit_minute` is inclusive: if the entry bar’s `minute == eod_exit_minute`, the trade may still **EOD-exit on that bar** after intrabar stop/target checks if neither fired.
 - `max_hold_bars_default`: `None` means “no default cap”; otherwise must be `>= 1`.
 - `allow_short` is parsed with safe bool-like coercion (YAML booleans and common strings); unsafe string truthiness is avoided.
+- Strategy YAML never enables short execution. Strategy `signal.side_mode`
+  controls signal/intent eligibility only; `ExecutionSpec.allow_short` remains
+  the final execution authority.
 
 Default values live in `configs/execution/intraday_default.yaml`. Use `ExecutionSpec.from_config` / `load_execution_spec` for validated construction.
 
@@ -57,6 +60,9 @@ class TradeIntent:
 - `raw_stop_price` must be finite; else `INVALID_STOP` (non-finite stop is not a valid risk anchor).
 
 Strategies emit `TradeIntent`s (one per fired signal bar). Execution consumes them.
+The signal adapter should pass structurally valid short intents when
+`signal.side_mode` allows them; it must not preemptively suppress shorts solely
+because an execution config has `allow_short: false`.
 
 ## 4. TradeResult
 

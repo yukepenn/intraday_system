@@ -9,4 +9,6 @@ Layer2 router run configs. Each file defines:
 - `management:` defaults
 - `output:` artifact root
 
-Phase 0/1A intentionally does NOT commit real Layer2 configs. They land in Phase 8.
+Layer2 is locked until a real promoted candidate YAML pool exists. Side-aware
+strategy support and inspect-only grids do not unlock Layer2. No Phase19 polish
+work may add Layer2 runtime configs.

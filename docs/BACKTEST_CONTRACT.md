@@ -27,6 +27,10 @@ Orchestration **must not**:
   `Side.LONG` intents are accepted; callers must explicitly allow `Side.SHORT`. Invalid side
   values still use `invalid_side`, while configured-but-disallowed sides use `side_not_allowed`.
   Execution remains the final `SHORT_NOT_ALLOWED` authority.
+- `signal.side_mode` controls which signal sides may become intents. The
+  adapter should not suppress short intents solely because
+  `ExecutionSpec.allow_short` is false; execution owns that final fill
+  permission and deterministic `SHORT_NOT_ALLOWED` reject.
 
 ## Metrics
 

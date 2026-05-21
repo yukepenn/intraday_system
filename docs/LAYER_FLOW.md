@@ -102,6 +102,12 @@ data → features → strategy signals → execution → Layer1 candidates → L
 
 **Phase 5 note:** Strategies consume `BarMatrix` + `FeatureMatrix` and emit `SignalMatrix` at bar close (current-bar features allowed; no future bars). Execution enters next bar open. Strategies do not call execution or compute PnL. Phase 5 ships `pa_buy_sell_close_trend` only (long-only MVP).
 
+**Phase 19+ note:** The current-10 strategies and Brooks PA strategies 11-17
+can emit side-aware `SignalMatrix` rows when `signal.side_mode` permits them.
+`setup_code` comes from the runtime setup-code registry. The adapter builds
+long/short `TradeIntent`s only for sides allowed by `side_mode`; execution
+remains short-permission authority and the only PnL/R truth.
+
 A router rule change does NOT invalidate features or Layer1 signals.
 
 ## 4. Trust boundaries

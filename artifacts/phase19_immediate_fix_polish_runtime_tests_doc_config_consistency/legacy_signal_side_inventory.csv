@@ -1,0 +1,5 @@
+file_path,scope,legacy_signal_side_present,allowed,notes
+configs/strategies/base/*.yaml,current10,false,false,Canonical configs use signal.side_mode
+configs/strategies/base/phase19/*.yaml,phase19,false,false,Canonical configs use signal.side_mode
+configs/strategies/base/phase18b/*.yaml,historical,possible,true,Historical compatibility configs may retain legacy patterns
+tests/unit/test_current10_long_only_backward_compatibility.py,test_fixture,true,true,Explicit compatibility fixture

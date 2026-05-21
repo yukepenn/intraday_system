@@ -1,55 +1,19 @@
-"""Phase19 immediate fix: short-branch no-lookahead and session-boundary tests."""
+"""Phase19 polish: current-10 short-branch no-lookahead/session tests."""
 
 from __future__ import annotations
 
 import numpy as np
-from intraday.strategies.contracts import SIGNAL_CONTRACT_VERSION
-from intraday.strategies.pa.buy_sell_close_trend import (
-    generate_pa_buy_sell_close_trend_signals,
-)
+import pytest
+from intraday.core.arrays import BarMatrix, FeatureMatrix
+from intraday.strategies.registry import get_strategy, register_builtin_strategies
 
 from tests.helpers.bars import make_bar_matrix
 from tests.helpers.strategy import make_feature_matrix_with_columns
-
-
-def _pa_short_cfg() -> dict:
-    return {
-        "strategy": "pa_buy_sell_close_trend",
-        "version": "strategy_v1",
-        "signal_contract_version": SIGNAL_CONTRACT_VERSION,
-        "signal": {
-            "side_mode": "short_only",
-            "entry_start_minute": 60,
-            "entry_end_minute": 300,
-            "body_pct_min": 0.5,
-            "close_position_min": 0.5,
-            "trend_slope_min": 0.0,
-            "close_vs_mean_min": 0.0,
-            "require_vwap_side": False,
-        },
-        "risk": {
-            "stop_mode": "signal_low",
-            "target_mode": "fixed_r",
-            "target_r": 1.35,
-            "atr_buffer_mult": 0.35,
-        },
-    }
-
-
-def _bear_feats(n: int, **overrides) -> dict:
-    base = {
-        "body_pct": np.full(n, 0.8),
-        "close_position_in_range": np.full(n, 0.1),
-        "trend_slope_like_20": np.full(n, -1.0),
-        "close_vs_rolling_mean_20": np.full(n, -0.5),
-        "vwap_side": np.full(n, -1.0),
-        "atr_like_20": np.full(n, 1.0),
-        "rolling_low_20": np.full(n, 95.0),
-        "rolling_high_20": np.full(n, 110.0),
-        "bar_range": np.full(n, 5.0),
-    }
-    base.update(overrides)
-    return base
+from tests.unit.test_current10_short_signal_generation import (
+    CURRENT10_CASES,
+    Current10Case,
+    case_ids,
+)
 
 
 def _signals_unchanged_up_to(a, b, k: int) -> None:
@@ -64,42 +28,100 @@ def _signals_unchanged_up_to(a, b, k: int) -> None:
             assert np.allclose(x, y, equal_nan=True)
 
 
-def test_short_branch_no_lookahead_future_body_pct() -> None:
-    n = 6
-    k = 2
-    bars = make_bar_matrix([100.0] * n, [105.0] * n, [100.0] * n, [100.0] * n, minute=[120] * n)
-    feats0 = make_feature_matrix_with_columns(n, _bear_feats(n), feature_hash="fh_t0")
-    s0 = generate_pa_buy_sell_close_trend_signals(bars, feats0, _pa_short_cfg())
-
-    body = _bear_feats(n)["body_pct"].copy()
-    body[k + 1 :] = 0.01  # perturb future bars only
-    feats1 = make_feature_matrix_with_columns(
-        n, _bear_feats(n, body_pct=body), feature_hash="fh_t0"
+def _copy_bars_with_future_perturbation(bars: BarMatrix, k: int) -> BarMatrix:
+    open_ = bars.open.copy()
+    high = bars.high.copy()
+    low = bars.low.copy()
+    close = bars.close.copy()
+    if k + 1 < bars.n_bars:
+        open_[k + 1 :] += 7.0
+        high[k + 1 :] += 9.0
+        low[k + 1 :] -= 9.0
+        close[k + 1 :] += 5.0
+    return make_bar_matrix(
+        open_.tolist(),
+        high.tolist(),
+        low.tolist(),
+        close.tolist(),
+        session_id=bars.session_id.tolist(),
+        minute=bars.minute.tolist(),
+        session_date=bars.session_date.tolist(),
+        ts_ns=bars.ts_ns.copy(),
+        data_hash=bars.data_hash,
     )
-    s1 = generate_pa_buy_sell_close_trend_signals(bars, feats1, _pa_short_cfg())
-    _signals_unchanged_up_to(s0, s1, k)
 
 
-def test_short_branch_session_boundary_does_not_leak_state() -> None:
-    """Session change between bars must reset short-branch state."""
-    n = 6
-    # First three bars in session 0, last three in session 1, all valid entry times.
-    bars = make_bar_matrix(
-        [100.0] * n,
-        [105.0] * n,
-        [100.0] * n,
-        [100.0] * n,
-        session_id=[0, 0, 0, 1, 1, 1],
-        minute=[120, 121, 122, 60, 61, 62],
+def _copy_features_with_future_perturbation(features: FeatureMatrix, k: int) -> FeatureMatrix:
+    cols = {}
+    for name, idx in features.columns.items():
+        arr = features.values[:, idx].copy()
+        if k + 1 < arr.shape[0]:
+            arr[k + 1 :] = np.where(np.isfinite(arr[k + 1 :]), arr[k + 1 :] + 3.0, arr[k + 1 :])
+        cols[name] = arr
+    return make_feature_matrix_with_columns(
+        features.n_bars, cols, feature_hash=features.feature_hash
     )
-    feats = make_feature_matrix_with_columns(n, _bear_feats(n), feature_hash="fh_sess")
-    s = generate_pa_buy_sell_close_trend_signals(bars, feats, _pa_short_cfg())
-    # Should still emit short entries in BOTH sessions (state did not leak).
-    # max_trades_per_day is not set in this config -> no thinning, so multiple
-    # entries can occur within a session.
-    sess0_entries = int(s.entry[bars.session_id == 0].sum())
-    sess1_entries = int(s.entry[bars.session_id == 1].sum())
-    assert sess0_entries > 0
-    assert sess1_entries > 0
-    # Sides must be -1 wherever entry fires.
-    assert (s.side[s.entry] == -1).all()
+
+
+def _duplicate_two_sessions(
+    bars: BarMatrix,
+    features: FeatureMatrix,
+) -> tuple[BarMatrix, FeatureMatrix]:
+    n = bars.n_bars
+    two_bars = make_bar_matrix(
+        np.concatenate([bars.open, bars.open]).tolist(),
+        np.concatenate([bars.high, bars.high]).tolist(),
+        np.concatenate([bars.low, bars.low]).tolist(),
+        np.concatenate([bars.close, bars.close]).tolist(),
+        session_id=([0] * n) + ([1] * n),
+        minute=np.concatenate([bars.minute, bars.minute]).astype(int).tolist(),
+        session_date=([20240102] * n) + ([20240103] * n),
+    )
+    cols = {
+        name: np.concatenate([features.values[:, idx], features.values[:, idx]])
+        for name, idx in features.columns.items()
+    }
+    return two_bars, make_feature_matrix_with_columns(
+        2 * n, cols, feature_hash=features.feature_hash
+    )
+
+
+@pytest.fixture(scope="module", autouse=True)
+def _register() -> None:
+    register_builtin_strategies()
+
+
+@pytest.mark.parametrize("case", CURRENT10_CASES, ids=case_ids)
+def test_current10_short_branch_future_perturbation_does_not_change_prior_signal(
+    case: Current10Case,
+) -> None:
+    bars, feats = case.fixture_factory()
+    cfg = case.config_factory(side_mode="short_only")
+    base = get_strategy(case.strategy).generate_reference(bars, feats, cfg)
+    first_entry = int(np.flatnonzero(base.entry)[0])
+    k = min(first_entry, bars.n_bars - 2)
+
+    changed = get_strategy(case.strategy).generate_reference(
+        _copy_bars_with_future_perturbation(bars, k),
+        _copy_features_with_future_perturbation(feats, k),
+        cfg,
+    )
+    _signals_unchanged_up_to(base, changed, k)
+
+
+@pytest.mark.parametrize("case", CURRENT10_CASES, ids=case_ids)
+def test_current10_short_branch_session_boundary_does_not_leak_state(
+    case: Current10Case,
+) -> None:
+    bars, feats = case.fixture_factory()
+    two_bars, two_feats = _duplicate_two_sessions(bars, feats)
+    cfg = case.config_factory(side_mode="short_only")
+    signals = get_strategy(case.strategy).generate_reference(two_bars, two_feats, cfg)
+
+    sess0 = two_bars.session_id == 0
+    sess1 = two_bars.session_id == 1
+    assert int(signals.entry[sess0].sum()) > 0
+    assert int(signals.entry[sess1].sum()) > 0
+    assert (signals.side[signals.entry] == -1).all()
+    if not case.first_row_entry_expected:
+        assert not bool(signals.entry[bars.n_bars]), f"{case.strategy} leaked prior session state"

@@ -33,7 +33,7 @@ features:
   # required feature parameters here
 
 signal:
-  side: long_only
+  side_mode: long_only  # canonical: long_only | short_only | both
   entry_start_minute: 60
   entry_end_minute: 300
   # strategy-specific thresholds
@@ -164,3 +164,16 @@ validation_rules:
 - `intraday strategies validate --strategy ...`
 - `intraday validate candidates --root configs/candidates/...`
 - `intraday validate artifacts`
+
+## 11. Phase19+ side/config policy
+
+- New strategy configs must use `signal.side_mode` as the canonical side
+  eligibility key: `long_only`, `short_only`, or `both`.
+- legacy `signal.side: long_only` is accepted only for historical
+  compatibility and explicit tests/fixtures. Do not add it to new configs.
+- Strategy YAML must never set `execution.allow_short`; short execution
+  permission lives only in `configs/execution/*.yaml`.
+- `signal.side_mode` controls signal and adapter intent eligibility.
+  `ExecutionSpec.allow_short` remains the final fill permission.
+- Setup codes come from `src/intraday/strategies/setup_codes.py`. They are
+  stable audit identifiers, not YAML runtime knobs and never grid parameters.

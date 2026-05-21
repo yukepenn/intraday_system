@@ -17,6 +17,10 @@ Frozen Layer1 **candidate roots**. Each subfolder is a named root (e.g. `l1_pa_c
 ## Rules
 
 - Runtime candidate YAML **`config`** must be the **full resolved strategy config** (base + fixed + grid combo).
+- Future side-aware candidate YAML must preserve emitted side,
+  `signal.side_mode`, side-specific setup code, and full resolved config.
+- Promotion must verify setup code against the runtime setup-code registry and
+  reject mismatches.
 - CSV/MD are **audit/review only** — never runtime config.
 - Do not place sample YAML files under `configs/candidates/` (use `artifacts/` with SAMPLE ONLY labels).
 - Do not place row-level trade files, caches, or parquet here.

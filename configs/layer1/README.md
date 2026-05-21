@@ -9,4 +9,13 @@ Layer1 run configs. Each file defines a candidate-factory run:
 - `selection:` gates (min_trades, min_profit_factor_r, etc.)
 - `output:` (artifact_root, candidate_root)
 
-Phase 0/1A intentionally does NOT commit real Layer1 configs. Smoke and controlled configs land in Phase 6 and Phase 7.
+Config categories:
+
+- Smoke: one strategy/config plumbing checks.
+- Controlled diagnostic: small authorized economic diagnostics from prior phases.
+- Grid-inspect-only: validates config/grid shape without running economic grids.
+- Actual Layer1 grid: forbidden unless a phase explicitly authorizes it.
+
+`phase19_brooks_pa_grid_inspect/` and
+`phase19_immediate_fix_current10_side_aware_grid_inspect/` are inspect-only.
+Actual Layer1 economic grids are forbidden in Phase19 polish.

@@ -1,0 +1,21 @@
+section,item,metric,value,interpretation
+phase,phase_name,label,PHASE19_IMMEDIATE_FIX_POLISH_RUNTIME_TESTS_AND_DOC_CONFIG_CONSISTENCY,Polish phase only
+phase,task_type,label,validation-only+narrow repair+docs/config consistency+diagnostic tooling repair,No economic research
+git,pre_task_head,sha,b3d9f18,Starting commit
+git,final_commit,sha,pending_until_commit,See final response and NEXT_HANDOFF
+tests,current10_short_direct_tests_count,count,10,All current-10 strategies directly covered
+tests,current10_short_direct_tests_expected_count,count,10,Expected coverage
+repair,generate_smoke_side_aware_repaired,bool,true,Side-aware invalid stop diagnostics added
+repair,hash_policy_corrected,bool,true,Behavior-equivalence policy replaces raw hash identity claim
+docs,docs_refreshed_count,count,17,Normative docs touched or verified
+configs,configs_readmes_refreshed_count,count,18,README files refreshed or added
+non_runs,actual_layer1_grid_runs,count,0,Forbidden
+non_runs,candidate_yaml_created,bool,false,Forbidden
+non_runs,select_dry_run_run,bool,false,Forbidden
+non_runs,layer2_created,bool,false,Forbidden
+non_runs,wfo_run,bool,false,Forbidden
+non_runs,live_paper_run,bool,false,Forbidden
+claims,economic_claims_made,bool,false,No performance/ranking claim
+execution,execution_truth_changed,bool,false,No PnL/R/accounting semantic change
+decision,label,value,PHASE19_IMMEDIATE_FIX_POLISH_COMPLETE,Ready for Codex review if validations remain green
+next,recommended_next_step,label,REVIEW_PHASE19_IMMEDIATE_FIX_POLISH,Codex then ChatGPT Pro/user review

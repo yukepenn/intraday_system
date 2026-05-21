@@ -25,5 +25,11 @@ Runtime truth lives here. YAML only. No CSV/MD as runtime config.
 - Fixed/grid overlap inside a strategy grid file is a hard error.
 - No prefix-biased max-combos. The engine resolves the full cartesian product (with explicit slicing only via separately committed grid variants).
 - Strategy configs use `base + fixed + grid`; the loader merges them deterministically.
+- New strategy configs use canonical `signal.side_mode`. Legacy
+  `signal.side` is compatibility-only for historical configs/fixtures.
+- Strategy YAML does not set `execution.allow_short`; execution configs own
+  short fill permission.
+- Setup codes come from `src/intraday/strategies/setup_codes.py`. They are not
+  YAML knobs and never grid axes.
 
 See `docs/CONFIG_CONTRACT.md` for the full contract.

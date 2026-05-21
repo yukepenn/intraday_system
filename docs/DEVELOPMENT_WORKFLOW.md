@@ -47,6 +47,11 @@ Every PR or significant commit:
 - Update `CHANGES.md` under `[Unreleased]` with a curated entry.
 - Update `NEXT_HANDOFF.md` so the next session has full context.
 - Update `PROJECT_STATUS.md` if phase or decision changes.
+- Each phase should also refresh the review bundle, source map, key tables,
+  validation ledger, and explicit non-goals/guardrails when artifacts are part
+  of the deliverable.
+- Cursor must not edit `CODEX_REVIEW.md`; Codex review threads may update only
+  `CODEX_REVIEW.md`.
 
 ## 5. Configs and paths
 

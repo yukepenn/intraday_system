@@ -43,6 +43,9 @@ Each family registers one or more `StrategyDef` entries via `register_builtin_st
 | `generate_reference` | `BarMatrix` + `FeatureMatrix` + config → `SignalMatrix` |
 | `validate_config` | Raises `ConfigError` on invalid YAML |
 | `generate_fast` | optional; parity later |
+| `setup_code_long` / `setup_code_short` | Mirrors runtime setup-code registry |
+| `allowed_side_modes` / `default_side_mode` | Declares side-mode support |
+| `required_feature_columns` | Inspectable fail-closed feature contract |
 
 **Prohibited inside strategy modules:**
 
@@ -65,6 +68,14 @@ Grid YAML must use explicit `fixed` + `grid` axes (no prefix-biased `max-combos`
 
 No absolute paths. No CSV/MD as runtime config.
 
+Required side/setup-code onboarding items:
+
+- Add setup-code registry entry before implementation.
+- Add metadata YAML with matching setup codes.
+- Add a side-mode test matrix.
+- Add setup-code alignment tests covering registry, `StrategyDef`, metadata,
+  and emitted `SignalMatrix` setup codes.
+
 ## 5. Required tests
 
 | Test class | Intent |
@@ -78,6 +89,14 @@ No absolute paths. No CSV/MD as runtime config.
 | No execution in strategy | Static/import analysis or contract test |
 | Deterministic `signal_hash` | Same inputs → same hash |
 | Layer1 smoke (synthetic) | End-to-end plumbing without curated parquet |
+
+Side-aware strategies must additionally test:
+
+- `long_only` emits no shorts.
+- `short_only` emits no longs.
+- `both` permits configured sides.
+- Short stops are above reference close.
+- Emitted setup code matches emitted side.
 
 ## 6. Required Layer1 onboarding sequence
 
@@ -147,6 +166,8 @@ If more than **two** new generic feature groups are required, prefer `NEEDS_FEAT
 
 - PA path is **held** after Phase 10; do not refine PA grids while onboarding a new family
 - One new family MVP at a time
+- Multi-strategy onboarding is allowed only when bounded and explicitly
+  approved.
 - Design window first; confirmation second; no promotion from single-window argmax
 - Same gates (`excessive_drawdown`, `negative_total_r`, etc.) apply to all families
 - Families are compared on **pipeline fit**, not expected alpha

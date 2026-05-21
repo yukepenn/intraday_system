@@ -1,0 +1,24 @@
+command,status,notes
+git status --short,passed,Preflight showed no tracked dirty files; local Phase16 runs tree left unstaged
+git log --oneline -10,passed,Recent Phase19 immediate fix and Codex commits present
+git branch --show-current,passed,main
+python -m intraday.cli.main --help,passed,CLI help rendered
+python -m intraday.cli.main doctor,passed,Dependencies and required paths ok
+python -m intraday.cli.main validate structure,passed,Required structure present
+python -m compileall -q src tests,passed,No compile errors
+python -m pytest -q tests/unit/test_strategy_generate_smoke_side_aware.py tests/unit/test_current10_short_signal_generation.py tests/unit/test_current10_side_aware_missing_features.py tests/unit/test_current10_side_aware_no_lookahead_session.py tests/unit/test_current10_long_only_backward_compatibility.py tests/unit/test_phase19_polish_docs_config_consistency.py,passed,109 passed
+python -m pytest -q tests/unit/test_setup_code_registry.py tests/unit/test_strategy_metadata_alignment.py tests/unit/test_strategy_inspect_metadata.py tests/unit/test_phase19_immediate_boolean_config_coercion.py tests/unit/test_phase19b_*.py tests/unit/test_phase19a_*.py tests/unit/test_phase18c_*.py tests/smoke,not_collected,PowerShell did not expand pytest wildcard paths; rerun explicitly
+python -m pytest -q explicit Phase19B/Phase19A/Phase18C regression files plus tests/smoke,passed,538 passed; 4 skipped expected boolean-flag coverage skips
+python -m intraday.cli.main strategies list,passed,17 strategies listed
+python -m intraday.cli.main strategies inspect for all 17 inspect-ready strategies,passed,All inspect commands completed
+python -m intraday.cli.main strategies generate-smoke current10 long_only sample,passed,pa_buy_sell_close_trend QQQ 2024-01-02..2024-01-05; side-aware fields present
+python -m intraday.cli.main strategies generate-smoke current10 short_only sample,not_run,No committed short_only standalone strategy runtime config; covered by direct synthetic unit tests without creating temp/candidate YAML
+python -m intraday.cli.main strategies generate-smoke Phase19 Brooks sample,passed,pa_breakout_pullback_continuation QQQ 2024-01-02..2024-01-05; side-aware fields present
+python -m intraday.cli.main layer1 grid-inspect representative current10 side-aware config,passed,combo_count=12; inspect only
+python -m intraday.cli.main layer1 grid-inspect representative Phase19 Brooks config,passed,combo_count=12; inspect only
+python -m ruff check --no-cache src tests,passed,Initial import/format fixes applied; final check clean
+python -m ruff format --check --no-cache src tests,passed,278 files already formatted
+python -m intraday.cli.main layer1 grid ...,not_run,Forbidden actual economic grid
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,Forbidden
+candidate export / promotion,not_run,Forbidden
+Layer2 / Layer3 / WFO / live / paper commands,not_run,Forbidden

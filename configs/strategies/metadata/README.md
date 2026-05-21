@@ -14,4 +14,20 @@ default_active_start_minute: 60
 default_active_end_minute: 300
 ```
 
-Phase 0/1A intentionally does NOT commit real metadata.
+Required current fields:
+
+- `core_or_diagnostic`
+- `diagnostic_only`
+- `grid_inspect_only`
+- `side_mode_allowed`
+- `default_side_mode`
+- `setup_codes.long` / `setup_codes.short`
+- `required_feature_columns`
+- `broad_sweep_allowed`
+- `economic_claims_allowed`
+- `candidate_eligible_now`
+- `promotion_allowed_now`
+
+Metadata is an audit mirror. Runtime setup-code truth lives in
+`src/intraday/strategies/setup_codes.py` and runtime strategy metadata is
+exposed by `StrategyDef` / `strategies inspect`.

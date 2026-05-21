@@ -112,6 +112,10 @@ Required top-level sections:
 - `selection`: `gate_label`, `decision`, `rank`, `reject_reasons`, `warning_flags`, `selection_phase`
 - `metadata`: conflict group, priority, setup tags
 
+Side-aware candidate records must preserve the emitted side, side-specific
+setup code, full resolved `signal.side_mode`, and a setup-code registry audit
+check. Promotion must reject any setup-code mismatch.
+
 Hashing:
 
 - `resolved_config_hash` must equal grid-run `config_hash`.

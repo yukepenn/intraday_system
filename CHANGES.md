@@ -4,6 +4,17 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-21
 
+### Phase 19 Immediate Fix Polish - runtime tests and doc/config consistency
+
+- Fix(cli): make `strategies generate-smoke` invalid-stop diagnostics side-aware while preserving `invalid_stop_on_entry`; add long/short invalid-stop counts and entry-side distribution.
+- Test(unit): expand current-10 direct synthetic short runtime, missing-feature, and no-lookahead/session tests to all 10 current strategies.
+- Test(unit): update long-only compatibility tests to assert behavior equivalence instead of raw signal-hash identity across canonical, legacy, and missing side-mode forms.
+- Docs(config): refresh normative docs and config READMEs for canonical `signal.side_mode`, legacy `signal.side` compatibility, setup-code registry authority, YAML runtime truth, and execution `allow_short` separation.
+- Test(unit): add Phase19 polish doc/config consistency guards.
+- Research(artifacts): add `artifacts/phase19_immediate_fix_polish_runtime_tests_doc_config_consistency/` review bundle, source map, key tables, refresh matrices, hash-policy correction, guardrails, validation ledger, and decision artifact.
+- Decision: `PHASE19_IMMEDIATE_FIX_POLISH_COMPLETE`; provisional next `REVIEW_PHASE19_IMMEDIATE_FIX_POLISH`.
+- Explicit non-goals: no actual Layer1 economic grids, expanded/full grids, select-dry-run, candidate YAML, promotion, Layer2/3, WFO/live/paper, strategies 18-50, execution PnL/R changes, or economic claims.
+
 ### Phase 19 Immediate Fix - Setup codes, side consistency, current-10 short retrofit
 
 - Repair(strategies): align Phase19B setup codes to the accepted namespace (7101-7107 / 7201-7207) by sourcing them from the new authoritative registry `src/intraday/strategies/setup_codes.py`; remove hard-coded 1101-1702 leakage from source/configs/metadata/artifacts.

@@ -59,10 +59,10 @@ When `entry` is true:
 - `score` finite
 - `setup_code` non-zero stable code
 
-Current strategy configs remain long-only by default. Side-aware strategy configs may use
+Current strategy configs remain long-only by default. Side-aware strategy configs must use
 `signal.side_mode: long_only | short_only | both`; legacy `signal.side: long_only` remains
-accepted for current-10 compatibility. Execution `allow_short` is still the final authority:
-a short signal does not trade unless the execution config explicitly allows shorts.
+accepted for current-10 compatibility only. Execution `allow_short` is still the final
+authority: a short signal does not trade unless the execution config explicitly allows shorts.
 
 ## Timing / no-lookahead
 
@@ -104,7 +104,8 @@ New families must follow `docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md`. Phase **
 
 ## Validation
 
-`validate_signal_matrix(signals, n_bars)` enforces shape and entry/non-entry conventions.
+`validate_signal_matrix(signals, n_bars, reference_close=bars.close)` enforces shape,
+entry/non-entry conventions, and side-aware stop geometry in runtime and Layer1 validation.
 
 Strategy-specific config validation lives in `intraday.strategies.config_validation` and per-`StrategyDef.validate_config`.
 
@@ -116,3 +117,21 @@ Strategy-specific config validation lives in `intraday.strategies.config_validat
 2. Strategy consumption of generic regime/volatility context already available in `pa_core_v1`.
 
 Phase **9** confirmation (QQQ 2024H2) rejected all controlled-grid rows; see `artifacts/pa_features_logic_review_after_confirmation_phase9/`. Broader QT-like strategy families remain deferred per `docs/QT_REFERENCE_POLICY.md`.
+
+## Phase19 Immediate Fix addendum
+
+- The current-10 historical long setup codes remain unchanged; short setup
+  codes were added behind `signal.side_mode` and default configs remain
+  `long_only`.
+- Phase19 Brooks PA strategies 11-17 use long codes `7101-7107` and short
+  codes `7201-7207`.
+- Phase19 diagnostic strategies 18-20 are reserved but not implemented:
+  long `7108-7110`, short `7208-7210`.
+- `docs/SETUP_CODE_REGISTRY.md` and
+  `src/intraday/strategies/setup_codes.py` are authoritative for setup-code
+  policy and runtime values.
+- `StrategyDef` metadata should expose `setup_code_long`,
+  `setup_code_short`, `allowed_side_modes`, `default_side_mode`, and
+  `required_feature_columns`; `strategies inspect` reports these fields.
+- Strategies emit `target_r` only. They never compute target price, fill price,
+  realized R, or PnL.

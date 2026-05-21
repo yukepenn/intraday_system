@@ -1,0 +1,17 @@
+file_path,required,parseable,status,notes
+CHATGPT_REVIEW_BUNDLE.md,true,true,pass,Markdown bundle present
+SOURCE_MAP.csv,true,true,pass,CSV header present
+chatgpt_key_tables.csv,true,true,pass,CSV header present
+validation_results.csv,true,true,pass,Final validation ledger updated after commands
+docs_refresh_matrix.csv,true,true,pass,CSV header present
+config_refresh_matrix.csv,true,true,pass,CSV header present
+legacy_signal_side_inventory.csv,true,true,pass,CSV header present
+side_mode_config_inventory.csv,true,true,pass,CSV header present
+setup_code_doc_alignment_matrix.csv,true,true,pass,CSV header present
+config_readme_refresh_summary.md,true,true,pass,Markdown present
+doc_contract_refresh_summary.md,true,true,pass,Markdown present
+current10_short_runtime_test_expansion_matrix.csv,true,true,pass,CSV header present
+generate_smoke_side_aware_repair_summary.md,true,true,pass,Markdown present
+hash_policy_correction.md,true,true,pass,Markdown present
+non_promotion_guardrails.md,true,true,pass,Markdown present
+phase19_immediate_fix_polish_decision.md,true,true,pass,Markdown present

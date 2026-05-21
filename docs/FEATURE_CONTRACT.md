@@ -108,3 +108,11 @@ Phase **19A** adds Brooks PA Slice F1 market facts in new, isolated configs:
 
 These are market facts only. They do not create Brooks strategies, candidate YAML, Layer1 grids,
 selection, promotion, Layer2/3, WFO, live/paper paths, or economic claims.
+
+## Phase19 Immediate Fix note
+
+The current-10 short retrofit uses existing generic market-fact features only.
+It does not add `should_buy`, `should_short`, outcome, PnL/R, fill, or
+target-price labels. Future Brooks opening/reversal/magnet feature work remains
+deferred to explicit feature phases and must follow the same no-lookahead,
+session-aware market-fact policy.
