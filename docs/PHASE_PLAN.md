@@ -409,9 +409,24 @@ Decision label: **`PHASE18D_CURRENT10_REFINED_READINESS_COMPLETE`**.
 
 Recommended next step: **`DESIGN_PHASE19_STRATEGIES_11_TO_20`** after Codex and ChatGPT Pro review.
 
-## Phase 19 ? Add strategies 11-20 ? **future**
+## Phase 19 design ? Design Brooks PA strategies 11-20 with side support ? **complete**
 
-Add the next 10 strategies after separate brainstorming, using the Phase18D onboarding checklist/template and necessary generic features/configs/tests/grids. This is strategy-library onboarding, not candidate promotion.
+Goal: design (not implement) the system-wide side-support foundation, Brooks PA feature foundation, strategies 11-20, and the future implementation/file/test/validation plan.
+
+Status:
+
+- Generated `artifacts/phase19_brooks_pa_design/` with the review bundle, source map, key tables, validation results, Phase19A side-support design and test plan, Phase19B Brooks PA feature foundation design and audit matrix, Phase19C strategy design matrix / strategy specs (10 strategies; 7 core + 3 diagnostic) / duplicate-avoidance matrix (rejecting current-10 duplicates), Phase19D file plan / test plan / validation plan, non-goals, non-promotion guardrails, decision artifact, and artifact-schema validation.
+- Reserved Phase19 setup-code namespace (long 7101-7110; short 7201-7210), disjoint from current-10.
+- Added Phase19 design-only artifact-schema and no-runtime-leakage tests under `tests/unit/`.
+- No runtime implementation; no strategy source files; no feature kernels; no edits to signal_adapter, contracts, execution, current-10; no new Phase19 runtime YAMLs; no actual Layer1 grids; no select-dry-run; no candidate YAML; no promotion; no Layer2/3; no WFO/live/paper; no economic claims; no H2 confirmation; no top-row retuning; no QT runtime dependency; no strategies 21-50.
+
+Decision label: **`PHASE19_BROOKS_PA_DESIGN_COMPLETE`**.
+
+Recommended next step: **`IMPLEMENT_PHASE19A_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`** (alternative **`SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`**) after Codex and ChatGPT Pro review.
+
+## Phase 19 implementation ? Add strategies 11-20 ? **future**
+
+Implement the Phase19 design: system-wide side-support uplift (SignalMatrix + signal adapter side awareness; `signal.side_mode`), Brooks PA feature foundation (Slices F1/F2/F3 with optional F4), and strategies 11-20 (7 core + 3 diagnostic) following the onboarding checklist and template. This is strategy-library onboarding, not candidate promotion.
 
 ## Phase 20 ? Add strategies 21-30 ? **future**
 

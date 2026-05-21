@@ -1,0 +1,88 @@
+future_file_path,file_type,purpose,required_for_phase19_implementation,source_contract,notes
+src/intraday/strategies/pa/brooks_common.py,source,Shared helpers for Brooks PA strategies (side-aware validation utilities; setup-code constants; feature-column constants),yes,docs/STRATEGY_CONTRACT.md,Pure-Python; no parquet/cache/PnL; no execution call
+src/intraday/strategies/pa/second_entry_pullback.py,source,Strategy 11 implementation (StrategyDef + generate_reference + validate_config),yes,docs/STRATEGY_CONTRACT.md + docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,Side-aware (long/short/both)
+src/intraday/strategies/pa/trading_range_bls_hs.py,source,Strategy 12 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/failed_breakout_trap.py,source,Strategy 13 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/opening_reversal_sr.py,source,Strategy 14 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/breakout_pullback_continuation.py,source,Strategy 15 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/tight_channel_pullback.py,source,Strategy 16 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/broad_channel_zone.py,source,Strategy 17 implementation,yes,same,Side-aware
+src/intraday/strategies/pa/mtr_reversal_diagnostic.py,source,Strategy 18 diagnostic-only implementation,yes,same,Side-aware; diagnostic-only metadata
+src/intraday/strategies/pa/wedge_reversal_diagnostic.py,source,Strategy 19 diagnostic-only implementation,yes,same,Side-aware; diagnostic-only metadata
+src/intraday/strategies/pa/climax_reversal_diagnostic.py,source,Strategy 20 diagnostic-only implementation,yes,same,Side-aware; diagnostic-only metadata
+src/intraday/strategies/contracts.py,source-edit,Extend validate_signal_matrix to accept side=-1 with stop>close; keep long-only behavior byte-for-byte when only longs present,yes,docs/STRATEGY_CONTRACT.md,Phase19A side-support uplift; backward compatible
+src/intraday/backtest/signal_adapter.py,source-edit,Allow side in {LONG SHORT}; keep invalid_side bookkeeping for any other value; do not branch on side_mode,yes,docs/STRATEGY_CONTRACT.md + docs/EXECUTION_CONTRACT.md,Phase19A side-support uplift; strategy-agnostic
+src/intraday/strategies/registry.py,source-edit,Register Phase19 StrategyDefs (10 entries) in register_builtin_strategies(),yes,docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,Append-only; do not reorder existing entries
+src/intraday/strategies/config_validation.py,source-edit,Add per-strategy validators for Phase19 (10 functions); add shared side_mode validator,yes,docs/CONFIG_CONTRACT.md,Reject unknown side_mode; reject conflicting signal.side + signal.side_mode
+configs/features/pa_brooks_core_v1.yaml,config,Brooks PA bar-core and regime-core feature foundation,yes,docs/FEATURE_CONTRACT.md,Feature_set_v1; market facts only
+configs/features/pa_brooks_range_v1.yaml,config,Brooks PA trading-range feature foundation,yes,same,Feature_set_v1
+configs/features/pa_brooks_opening_v1.yaml,config,Brooks PA opening-window feature foundation,yes (only before strategy 14 ships),same,Feature_set_v1
+configs/features/pa_brooks_reversal_v1.yaml,config,Brooks PA reversal feature foundation,yes (only before strategies 18-20 ship),same,Feature_set_v1
+configs/features/pa_brooks_magnet_v1.yaml,config,Brooks PA magnet/distance feature foundation,no (optional),same,Reserved for future management work
+configs/strategies/base/phase19/pa_second_entry_pullback.yaml,config,Strategy 11 base config (runtime truth),yes,docs/CONFIG_CONTRACT.md,signal.side_mode required
+configs/strategies/base/phase19/pa_trading_range_bls_hs.yaml,config,Strategy 12 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_failed_breakout_trap.yaml,config,Strategy 13 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_opening_reversal_sr.yaml,config,Strategy 14 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_breakout_pullback_continuation.yaml,config,Strategy 15 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_tight_channel_pullback.yaml,config,Strategy 16 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_broad_channel_zone.yaml,config,Strategy 17 base config,yes,same,signal.side_mode required
+configs/strategies/base/phase19/pa_mtr_reversal_diagnostic.yaml,config,Strategy 18 base config,yes,same,metadata.diagnostic_only true
+configs/strategies/base/phase19/pa_wedge_reversal_diagnostic.yaml,config,Strategy 19 base config,yes,same,metadata.diagnostic_only true
+configs/strategies/base/phase19/pa_climax_reversal_diagnostic.yaml,config,Strategy 20 base config,yes,same,metadata.diagnostic_only true
+configs/strategies/metadata/phase19/pa_second_entry_pullback.yaml,config,Strategy 11 metadata (audit only),yes,docs/CONFIG_CONTRACT.md,family pa; default_priority; setup_codes both sides
+configs/strategies/metadata/phase19/pa_trading_range_bls_hs.yaml,config,Strategy 12 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_failed_breakout_trap.yaml,config,Strategy 13 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_opening_reversal_sr.yaml,config,Strategy 14 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_breakout_pullback_continuation.yaml,config,Strategy 15 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_tight_channel_pullback.yaml,config,Strategy 16 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_broad_channel_zone.yaml,config,Strategy 17 metadata,yes,same,Audit only
+configs/strategies/metadata/phase19/pa_mtr_reversal_diagnostic.yaml,config,Strategy 18 metadata,yes,same,Audit only; diagnostic_only true
+configs/strategies/metadata/phase19/pa_wedge_reversal_diagnostic.yaml,config,Strategy 19 metadata,yes,same,Audit only; diagnostic_only true
+configs/strategies/metadata/phase19/pa_climax_reversal_diagnostic.yaml,config,Strategy 20 metadata,yes,same,Audit only; diagnostic_only true
+configs/strategies/grids/phase19/pa_second_entry_pullback_controlled_small.yaml,config,Strategy 11 controlled-small grid (<=24 combos),yes,docs/CONFIG_CONTRACT.md + docs/LAYER1_CONTRACT.md,No prefix slicing; no fixed/grid overlap
+configs/strategies/grids/phase19/pa_trading_range_bls_hs_controlled_small.yaml,config,Strategy 12 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_failed_breakout_trap_controlled_small.yaml,config,Strategy 13 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_opening_reversal_sr_controlled_small.yaml,config,Strategy 14 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_breakout_pullback_continuation_controlled_small.yaml,config,Strategy 15 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_tight_channel_pullback_controlled_small.yaml,config,Strategy 16 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_broad_channel_zone_controlled_small.yaml,config,Strategy 17 controlled-small grid,yes,same,Same
+configs/strategies/grids/phase19/pa_mtr_reversal_diagnostic_controlled_small.yaml,config,Strategy 18 controlled-small grid,yes,same,Diagnostic-only
+configs/strategies/grids/phase19/pa_wedge_reversal_diagnostic_controlled_small.yaml,config,Strategy 19 controlled-small grid,yes,same,Diagnostic-only
+configs/strategies/grids/phase19/pa_climax_reversal_diagnostic_controlled_small.yaml,config,Strategy 20 controlled-small grid,yes,same,Diagnostic-only
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_second_entry_pullback_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 11,yes,docs/LAYER1_CONTRACT.md,No actual grid run
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_trading_range_bls_hs_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 12,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_failed_breakout_trap_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 13,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_opening_reversal_sr_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 14,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_breakout_pullback_continuation_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 15,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_tight_channel_pullback_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 16,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_broad_channel_zone_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 17,yes,same,Same
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_mtr_reversal_diagnostic_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 18,yes,same,Diagnostic-only
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_wedge_reversal_diagnostic_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 19,yes,same,Diagnostic-only
+configs/layer1/phase19_brooks_pa_grid_inspect/qqq_2024h1_pa_climax_reversal_diagnostic_grid_inspect.yaml,config,Layer1 grid-inspect-only config for strategy 20,yes,same,Diagnostic-only
+tests/unit/test_phase19_side_support_contract.py,test,Side-aware SignalMatrix contract tests (Phase19A),yes,docs/STRATEGY_CONTRACT.md,Tests 1-7 in side_support_test_plan.csv
+tests/unit/test_phase19_signal_adapter_short_support.py,test,Signal adapter side-aware tests (Phase19A),yes,docs/STRATEGY_CONTRACT.md + docs/EXECUTION_CONTRACT.md,Tests 8-11
+tests/unit/test_phase19_brooks_features.py,test,Brooks PA feature kernel tests (no-lookahead session reset determinism inf rejection),yes,docs/FEATURE_CONTRACT.md,Per Slice F1/F2/F3
+tests/unit/test_phase19_brooks_strategy_configs.py,test,Phase19 strategy base config validators (10 strategies),yes,docs/CONFIG_CONTRACT.md,Invalid-value table-driven
+tests/unit/test_phase19_brooks_strategy_signals.py,test,Phase19 strategy SignalMatrix generation tests (10 strategies),yes,docs/STRATEGY_CONTRACT.md,Side_mode permutations stop geometry setup codes deterministic signal_hash
+tests/unit/test_phase19_missing_features.py,test,Missing-feature ConfigError tests for Phase19 (10 strategies x feature),yes,docs/FEATURE_CONTRACT.md + docs/STRATEGY_CONTRACT.md,Fail-closed
+tests/unit/test_phase19_no_lookahead.py,test,No-lookahead/session-reset tests for Phase19 strategies (long and short branches),yes,docs/STRATEGY_CONTRACT.md,Perturb future bars
+tests/unit/test_phase19_no_runtime_leakage.py,test,Guardrails: no parquet/cache reads no PnL no execution in strategy modules,yes,docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,Static-import check
+tests/unit/test_phase19_artifact_schema.py,test,Phase19 design artifact schema (required artifacts and CSV/MD only),yes,this design,Asserts presence of all phase19_brooks_pa_design artifacts
+artifacts/phase19_brooks_pa_design/CHATGPT_REVIEW_BUNDLE.md,artifact,Phase19 design review bundle,yes,this design,Generated in design phase
+artifacts/phase19_brooks_pa_design/SOURCE_MAP.csv,artifact,Source map of files read or generated,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/chatgpt_key_tables.csv,artifact,Key metrics table,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/validation_results.csv,artifact,Validation command ledger,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/side_support_design.md,artifact,Phase19A design,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/side_support_test_plan.csv,artifact,Phase19A test plan,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/brooks_pa_feature_foundation_design.md,artifact,Phase19B feature design,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/brooks_pa_feature_audit_matrix.csv,artifact,Phase19B feature audit,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/brooks_pa_strategy_design_matrix.csv,artifact,Phase19C strategy matrix,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/brooks_pa_strategy_specs.md,artifact,Phase19C strategy specs,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/brooks_pa_duplicate_avoidance_matrix.csv,artifact,Phase19C duplicate avoidance,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/phase19_file_plan.csv,artifact,Phase19D file plan,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/phase19_test_plan.csv,artifact,Phase19D test plan,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/phase19_validation_plan.md,artifact,Phase19D validation plan,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/phase19_non_goals.md,artifact,Phase19 non-goals,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/non_promotion_guardrails.md,artifact,Phase19 non-promotion guardrails,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/phase19_design_decision.md,artifact,Phase19 decision,yes,this design,Generated
+artifacts/phase19_brooks_pa_design/artifact_schema_validation.csv,artifact,Phase19 artifact schema audit,yes,this design,Generated

@@ -4,6 +4,15 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-20
 
+### Phase 19 — Design Brooks PA strategies 11-20 with side support
+
+- Design(artifacts): add `artifacts/phase19_brooks_pa_design/` with the Phase19 review bundle, source map, key tables, side-support design and test plan, Brooks PA feature foundation design and audit matrix, strategy design matrix and specs for strategies 11-20, duplicate-avoidance matrix, future implementation file/test/validation plans, non-goals, non-promotion guardrails, decision artifact, and artifact-schema validation.
+- Test(unit): add Phase19 design-only artifact-schema and no-runtime-leakage tests (`tests/unit/test_phase19_design_artifact_schema.py`, `tests/unit/test_phase19_design_no_runtime_leakage.py`).
+- Docs(status): update NEXT_HANDOFF, PROJECT_STATUS, PROGRESS, CHANGES, and docs/PHASE_PLAN for Phase19 design completion.
+- Validation: CLI help/doctor/structure, compileall, Phase19 design tests (18 passed), Phase18D regression tests (8 passed), Ruff check and Ruff format check passed.
+- Decision: `PHASE19_BROOKS_PA_DESIGN_COMPLETE`; provisional next `IMPLEMENT_PHASE19A_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION` (alternative `SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION`) after Codex and ChatGPT Pro review.
+- Explicit non-goals: no runtime implementation, no strategy source files, no feature kernels, no edits to signal_adapter/contracts/execution/current-10, no new Phase19 runtime YAMLs, no actual Layer1 grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no H2 confirmation, no top-row retuning, no economic claims, no QT runtime dependency, and no strategies 21-50.
+
 ### Phase 18D — Current-10 refined readiness and onboarding checklist
 
 - Validate(config): re-run inspect checks for all five v2 feature configs, all 10 v2 strategy configs, all 10 v2 rational grid skeletons, and all 10 Layer1 grid-inspect-only configs.

@@ -1,0 +1,66 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+docs/FEATURE_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/STRATEGY_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/STRATEGY_FAMILY_ONBOARDING_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/CONFIG_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/LAYER1_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/EXECUTION_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/BACKTEST_CONTRACT.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/QT_REFERENCE_POLICY.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/LAYER_FLOW.md,Contract source operationalized by Phase19 design,yes,source,no,Contract docs remain authoritative
+docs/LAYER1_CANDIDATE_SELECTION_CONTRACT.md,Selection doctrine read but not used,yes,source,no,Phase19 does not run select-dry-run
+docs/ARCHITECTURE.md,Architecture source,yes,source,no,Read-only
+docs/DESIGN_BASELINE.md,Baseline source,yes,source,no,Read-only
+intraday_system_design_instructions.txt,Design baseline source,yes,source,no,Read-only
+docs/PHASE_PLAN.md,Phase plan; updated for Phase19 design,yes,source,no,Updated by Phase19 design
+src/intraday/core/types.py,Existing Side/RejectReason/ExitReason enums; design references,yes,source,no,Not modified by Phase19 design
+src/intraday/core/arrays.py,Existing FeatureMatrix/BarMatrix/SignalMatrix; design references,yes,source,no,Not modified by Phase19 design
+src/intraday/strategies/contracts.py,Existing SignalMatrix validator (long-only); design plans uplift,yes,source,no,Not modified by Phase19 design
+src/intraday/backtest/signal_adapter.py,Existing long-only adapter; design plans uplift,yes,source,no,Not modified by Phase19 design
+src/intraday/execution/spec.py,Existing ExecutionSpec.allow_short; design references,yes,source,no,Not modified by Phase19 design
+src/intraday/execution/materialize.py,Existing SHORT_NOT_ALLOWED handling; design references,yes,source,no,Not modified by Phase19 design
+src/intraday/strategies/pa/buy_sell_close_trend.py,Existing PA strategy used as template reference; design references,yes,source,no,Not modified by Phase19 design
+src/intraday/strategies/registry.py,Existing registry; design plans append-only uplift,yes,source,no,Not modified by Phase19 design
+src/intraday/strategies/config_validation.py,Existing validators; design plans append-only uplift,yes,source,no,Not modified by Phase19 design
+configs/features/pa_core_v1.yaml,Existing PA core feature config; design references reuse,yes,source,no,Not modified
+configs/features/pa_core_v2.yaml,Existing PA core v2 feature config; design references reuse,yes,source,no,Not modified
+configs/features/orb_core_v1.yaml,Existing ORB foundation; design references reuse,yes,source,no,Not modified
+configs/features/opening_core_v1.yaml,Existing opening foundation; design references reuse,yes,source,no,Not modified
+configs/features/opening_core_v2.yaml,Existing opening v2; design references reuse,yes,source,no,Not modified
+configs/features/gap_level_core_v1.yaml,Existing levels group; design references reuse,yes,source,no,Not modified
+configs/features/gap_level_core_v2.yaml,Existing levels v2; design references reuse,yes,source,no,Not modified
+configs/features/indicator_core_v1.yaml,Existing indicators; design references reuse,yes,source,no,Not modified
+configs/execution/intraday_default.yaml,Existing default execution config (allow_short false); design preserves,yes,source,no,Not modified
+configs/strategies/base/phase18b/pa_buy_sell_close_trend_v2.yaml,Existing v2 base config; design references shape,yes,source,no,Not modified
+configs/strategies/grids/phase18b/pa_buy_sell_close_trend_v2_rational.yaml,Existing v2 grid skeleton; design references shape,yes,source,no,Not modified
+configs/strategies/metadata/pa_buy_sell_close_trend.yaml,Existing metadata shape; design references,yes,source,no,Not modified
+configs/layer1/phase18b_current10_smoke/qqq_2024h1_pa_buy_sell_close_trend_v2_grid_inspect.yaml,Existing inspect-only layer1 config; design references shape,yes,source,no,Not modified
+artifacts/current10_refined_readiness_phase18d/CHATGPT_REVIEW_BUNDLE.md,Phase18D acceptance source,yes,source,no,Read-only
+artifacts/current10_refined_readiness_phase18d/strategy_onboarding_checklist_v2.md,Phase18D operational checklist read by Phase19 design,yes,source,no,Read-only
+artifacts/current10_refined_readiness_phase18d/phase19_strategy_addition_template.md,Phase18D template read by Phase19 design,yes,source,no,Read-only
+artifacts/current10_refined_readiness_phase18d/phase18d_decision.md,Phase18D decision source,yes,source,no,Read-only
+artifacts/current10_refined_readiness_phase18d/non_promotion_guardrails.md,Phase18D guardrails source,yes,source,no,Read-only
+NEXT_HANDOFF.md,Status doc updated by Phase19 design,yes,source,no,Updated
+PROJECT_STATUS.md,Status doc updated by Phase19 design,yes,source,no,Updated
+PROGRESS.md,Status doc updated by Phase19 design,yes,source,no,Updated
+CHANGES.md,Status doc updated by Phase19 design,yes,source,no,Updated
+artifacts/phase19_brooks_pa_design/CHATGPT_REVIEW_BUNDLE.md,Phase19 design review bundle,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/SOURCE_MAP.csv,Phase19 design source map,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/chatgpt_key_tables.csv,Phase19 design key metrics,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/validation_results.csv,Phase19 design validation ledger,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/side_support_design.md,Phase19A side-support design,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/side_support_test_plan.csv,Phase19A side-support test plan,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/brooks_pa_feature_foundation_design.md,Phase19B feature foundation design,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/brooks_pa_feature_audit_matrix.csv,Phase19B feature audit matrix,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/brooks_pa_strategy_design_matrix.csv,Phase19C strategy design matrix,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/brooks_pa_strategy_specs.md,Phase19C strategy specifications,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/brooks_pa_duplicate_avoidance_matrix.csv,Phase19C duplicate avoidance matrix,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/phase19_file_plan.csv,Phase19D future file plan,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/phase19_test_plan.csv,Phase19D future test plan,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/phase19_validation_plan.md,Phase19D validation plan,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/phase19_non_goals.md,Phase19 non-goals,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/non_promotion_guardrails.md,Phase19 non-promotion guardrails,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/phase19_design_decision.md,Phase19 design decision,yes,generated,no,CSV/MD audit artifact only
+artifacts/phase19_brooks_pa_design/artifact_schema_validation.csv,Phase19 artifact schema audit,yes,generated,no,CSV/MD audit artifact only
+tests/unit/test_phase19_design_artifact_schema.py,Phase19 design artifact schema test (added by Phase19 design),yes,generated,no,Design-only test
+tests/unit/test_phase19_design_no_runtime_leakage.py,Phase19 design no-runtime-leakage test (added by Phase19 design),yes,generated,no,Design-only test

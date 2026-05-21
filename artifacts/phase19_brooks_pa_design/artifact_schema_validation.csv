@@ -1,0 +1,19 @@
+artifact,exists,format,required_for_review,schema_check,notes
+CHATGPT_REVIEW_BUNDLE.md,yes,md,yes,pass,Phase19 review bundle present and parseable
+SOURCE_MAP.csv,yes,csv,yes,pass,Columns file_path purpose required_for_review generated_or_source local_only_dependency notes
+chatgpt_key_tables.csv,yes,csv,yes,pass,Columns section item metric value interpretation; required metrics present
+validation_results.csv,yes,csv,yes,pass,Columns command status notes
+side_support_design.md,yes,md,yes,pass,Phase19A design covering current state side_mode adapter execution tests non-goals
+side_support_test_plan.csv,yes,csv,yes,pass,Columns test_area test_name purpose expected_behavior required_before_strategy_short notes
+brooks_pa_feature_foundation_design.md,yes,md,yes,pass,Phase19B feature foundation design with split plan
+brooks_pa_feature_audit_matrix.csv,yes,csv,yes,pass,Columns feature_group feature_name market_fact no_lookahead_risk session_reset_required requires_new_kernel can_use_existing_feature strategy_specific_label_rejected notes
+brooks_pa_strategy_design_matrix.csv,yes,csv,yes,pass,Columns strategy strategy_number core_or_diagnostic family feature_config side_mode_allowed long_setup_summary short_setup_summary stop_logic_summary target_r_policy setup_code_long setup_code_short duplicate_of_current10 duplicate_avoidance_rationale implementation_allowed_next_phase notes; 10 rows
+brooks_pa_strategy_specs.md,yes,md,yes,pass,10 strategy specifications with side-aware setups stops target_r grids
+brooks_pa_duplicate_avoidance_matrix.csv,yes,csv,yes,pass,Columns proposed_strategy possible_overlap_with_current10 overlap_risk keep_or_reject rationale notes; current-10 duplicates rejected
+phase19_file_plan.csv,yes,csv,yes,pass,Columns future_file_path file_type purpose required_for_phase19_implementation source_contract notes
+phase19_test_plan.csv,yes,csv,yes,pass,Columns test_file test_area strategies_covered required_before_phase_complete notes
+phase19_validation_plan.md,yes,md,yes,pass,Design-phase and implementation-phase command lists; forbidden commands listed
+phase19_non_goals.md,yes,md,yes,pass,Explicit non-goals listed
+non_promotion_guardrails.md,yes,md,yes,pass,Universal design-phase and implementation-phase guardrails
+phase19_design_decision.md,yes,md,yes,pass,Decision PHASE19_BROOKS_PA_DESIGN_COMPLETE; recommended next step recorded
+artifact_schema_validation.csv,yes,csv,yes,pass,Self-referential; lists each required Phase19 design artifact

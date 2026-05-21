@@ -1,0 +1,13 @@
+test_file,test_area,strategies_covered,required_before_phase_complete,notes
+tests/unit/test_phase19_side_support_contract.py,signal_matrix contract / side_mode / stop geometry,all 10 Phase19 strategies + current-10 regression,yes,Phase19A foundation; tests 1-7 + 12-13 + 16 from side_support_test_plan.csv
+tests/unit/test_phase19_signal_adapter_short_support.py,signal adapter side awareness,all 10 Phase19 strategies,yes,Phase19A foundation; tests 8-11 from side_support_test_plan.csv
+tests/unit/test_phase19_brooks_features.py,feature kernels (no-lookahead session reset determinism bounds inf rejection),pa_brooks_core_v1 pa_brooks_range_v1 pa_brooks_opening_v1 pa_brooks_reversal_v1 (and pa_brooks_magnet_v1 if shipped),yes (per slice),Phase19B feature foundation
+tests/unit/test_phase19_brooks_strategy_configs.py,strategy base config validation (invalid value table-driven),strategies 11-20,yes,Phase19C onboarding
+tests/unit/test_phase19_brooks_strategy_signals.py,strategy signal generation (synthetic features + side_mode permutations + setup codes + deterministic signal_hash + stop geometry),strategies 11-20,yes,Phase19C onboarding
+tests/unit/test_phase19_missing_features.py,missing-feature ConfigError for required columns (long and short branches),strategies 11-20,yes,Phase19C onboarding; fail-closed contract test
+tests/unit/test_phase19_no_lookahead.py,no-lookahead and session reset for strategy signals (perturb future bars + two-session BarMatrix),strategies 11-20,yes,Phase19C onboarding
+tests/unit/test_phase19_no_runtime_leakage.py,no parquet/cache reads no execution call no PnL/R in Phase19 strategy modules + artifact directory contains only CSV/MD,strategies 11-20,yes,Phase19D guardrail
+tests/unit/test_phase19_artifact_schema.py,Phase19 design artifact schema (required files exist; key tables match; non-promotion guardrails present),n/a,yes,Phase19D guardrail
+tests/unit/test_phase19_side_mode_default_safe.py,current-10 default execution remains long-only (allow_short=false) + current-10 YAMLs unchanged,current-10 regression,yes,Phase19A backward compatibility
+tests/smoke/test_layer1_phase19_grid_inspect_smoke.py,Layer1 grid-inspect runs for each Phase19 inspect-only config (synthetic features when curated data absent),strategies 11-20,recommended,Inspect-only readiness; no actual grid execution
+tests/parity/(none new),(no new parity tests),(none),no,Execution parity unaffected by Phase19

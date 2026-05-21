@@ -1,0 +1,18 @@
+command,status,notes
+git status --short; git log --oneline -10; git branch --show-current,pass,Branch main at pre-task HEAD cd11ed9; only known untracked local Phase16 runs/ tree present.
+python -m intraday.cli.main --help,pass,CLI help rendered.
+python -m intraday.cli.main doctor,pass,Environment diagnostics passed.
+python -m intraday.cli.main validate structure,pass,Required repo structure present (6 dirs + 34 files).
+python -m compileall -q src tests,pass,Compile passed for src and tests.
+python -m pytest -q tests/unit/test_phase19_design_artifact_schema.py,pass,Phase19 design artifact schema tests passed (after validation_results.csv created).
+python -m pytest -q tests/unit/test_phase19_design_no_runtime_leakage.py,pass,Phase19 design no-runtime-leakage tests passed (after validation_results.csv created and source-edit logic refined).
+python -m pytest -q tests/unit/test_phase18d_artifact_schema.py tests/unit/test_phase18d_no_runtime_leakage.py,pass,Phase18D regression tests 8 passed (no regression from Phase19 design).
+python -m pytest -q tests/unit -x,pass,Full unit suite 563 passed (no regression from Phase19 design).
+python -m ruff check src tests,pass,All checks passed.
+python -m ruff format --check src tests,pass,238 files already formatted after applying ruff format to the two newly added Phase19 design-only tests.
+python -m intraday.cli.main features inspect ...,not_run,Phase19 design-only; no Phase19 feature YAMLs created in this phase.
+python -m intraday.cli.main strategies inspect ...,not_run,Phase19 design-only; no Phase19 strategy YAMLs created in this phase.
+python -m intraday.cli.main layer1 grid-inspect ...,not_run,Phase19 design-only; no Phase19 Layer1 inspect-only configs created in this phase.
+python -m intraday.cli.main layer1 grid ...,not_run,Forbidden in Phase19 (all phases).
+python -m intraday.cli.main layer1 select-dry-run ...,not_run,Forbidden in Phase19 (all phases).
+Layer2 / Layer3 / WFO / live / paper commands,not_run,Forbidden in Phase19; locked until later phases.

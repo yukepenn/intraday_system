@@ -1,0 +1,52 @@
+section,item,metric,value,interpretation
+phase,phase,name,PHASE19_DESIGN_BROOKS_PA_STRATEGIES_11_TO_20_WITH_SIDE_SUPPORT,Phase19 design-only phase
+task_type,scope,task_type,design-only + multi-strategy design + side-support architecture design + Brooks PA feature/strategy design + onboarding plan,No runtime implementation
+pre_task_head,git,sha,cd11ed9,From preflight (HEAD at task start)
+final_commit,git,sha,PENDING,To be filled after commit
+coverage,strategies,strategies_designed_count,10,Strategies 11-20
+coverage,strategies,core_strategy_count,7,Strategies 11-17
+coverage,strategies,diagnostic_strategy_count,3,Strategies 18-20
+coverage,side_support,side_support_design_created,true,side_support_design.md generated
+coverage,side_support,side_mode_values,long_only|short_only|both,Per-strategy YAML key
+coverage,features,brooks_feature_groups_designed,5,bar_core/regime_core/range_core/swing_core/reversal_core (+optional magnet)
+coverage,features,brooks_feature_configs_designed,4,pa_brooks_core_v1 pa_brooks_range_v1 pa_brooks_opening_v1 pa_brooks_reversal_v1 (+optional pa_brooks_magnet_v1)
+coverage,features,brooks_feature_foundation_designed,true,brooks_pa_feature_foundation_design.md generated
+coverage,setup_codes,phase19_long_setup_code_range,7101-7110,Reserved long namespace
+coverage,setup_codes,phase19_short_setup_code_range,7201-7210,Reserved short namespace
+coverage,setup_codes,setup_code_namespace_disjoint_from_current10,true,current-10 uses 1xxx-6xxx
+deliverables,review_bundle,review_bundle_created,true,CHATGPT_REVIEW_BUNDLE.md
+deliverables,source_map,source_map_created,true,SOURCE_MAP.csv
+deliverables,key_tables,key_tables_created,true,chatgpt_key_tables.csv
+deliverables,validation_results,validation_results_created,true,validation_results.csv
+deliverables,side_support,side_support_test_plan_created,true,side_support_test_plan.csv
+deliverables,features,brooks_feature_audit_matrix_created,true,brooks_pa_feature_audit_matrix.csv
+deliverables,strategies,strategy_design_matrix_created,true,brooks_pa_strategy_design_matrix.csv
+deliverables,strategies,strategy_specs_created,true,brooks_pa_strategy_specs.md
+deliverables,strategies,duplicate_avoidance_matrix_created,true,brooks_pa_duplicate_avoidance_matrix.csv
+deliverables,plan,file_plan_created,true,phase19_file_plan.csv
+deliverables,plan,test_plan_created,true,phase19_test_plan.csv
+deliverables,plan,validation_plan_created,true,phase19_validation_plan.md
+deliverables,guardrails,non_goals_created,true,phase19_non_goals.md
+deliverables,guardrails,non_promotion_guardrails_created,true,non_promotion_guardrails.md
+deliverables,decision,decision_artifact_created,true,phase19_design_decision.md
+deliverables,schema,artifact_schema_validation_created,true,artifact_schema_validation.csv
+non_runs,runtime_implementation,implementation_code_written,false,Design-only phase
+non_runs,runtime_configs,runtime_configs_created,false,No runtime YAMLs created in this phase
+non_runs,layer1,actual_layer1_grid_runs,0,Design-only phase
+non_runs,select_dry_run,select_dry_run_run,false,Forbidden in Phase19 design
+non_runs,candidate_yaml,candidate_yaml_created,false,Forbidden in Phase19 design
+non_runs,layer2,layer2_created,false,Locked
+non_runs,layer3,layer3_created,false,Locked
+non_runs,wfo,wfo_run,false,Locked
+non_runs,live_paper,live_paper_run,false,Locked
+non_runs,strategy_source_files,phase19_strategy_source_files_added,false,Design-only phase
+non_runs,feature_kernels,phase19_feature_kernels_added,false,Design-only phase
+non_runs,signal_adapter,signal_adapter_modified,false,Design-only phase
+non_runs,execution,execution_modified,false,Design-only phase
+non_runs,current10,current10_strategies_modified,false,Backward compatibility preserved
+non_runs,h2,h2_confirmation_used,false,H2 remains diagnostic-only
+non_runs,economic_claims,economic_claims_made,false,Inspect output is not alpha evidence
+non_runs,qt,qt_runtime_dependency,false,QT remains read-only reference
+decision,phase19,decision,PHASE19_BROOKS_PA_DESIGN_COMPLETE,Design package complete
+next,roadmap,recommended_next_step,IMPLEMENT_PHASE19A_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION,Provisional after Codex and ChatGPT Pro review
+next,roadmap,split_alternative,SPLIT_PHASE19_IMPLEMENTATION_INTO_SIDE_SUPPORT_AND_BROOKS_FEATURE_FOUNDATION,Use if implementation phase finds bundle too broad

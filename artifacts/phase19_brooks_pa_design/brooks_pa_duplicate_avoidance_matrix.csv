@@ -1,0 +1,27 @@
+proposed_strategy,possible_overlap_with_current10,overlap_risk,keep_or_reject,rationale,notes
+pa_second_entry_pullback,pa_buy_sell_close_trend,low,keep,Current PA is single-bar trend continuation using body/close-position/trend-slope; second-entry pullback requires confirmed two-leg pullback shape and second-entry proxy and is regime-aware (always-in side). Setup codes are disjoint (1001 vs 7101/7201),Keep as distinct core strategy
+pa_trading_range_bls_hs,(none),none,keep,No current-10 strategy uses trading_range_score; BLS/HS is a different entry geometry,Keep
+pa_failed_breakout_trap,failed_orb,medium,keep,failed_orb operates only inside the ORB opening window using ORB high/low. pa_failed_breakout_trap operates on rolling ranges {30/60/90} across the session. Setup codes are disjoint (2003 vs 7103/7203). Feature configs are distinct (opening_core vs pa_brooks_range_v1),Keep with explicit non-overlap of opening window
+pa_opening_reversal_sr,"orb_continuation, orb_retest_continuation, failed_orb, gap_acceptance_failure",medium,keep,Current opening strategies are with-trend (continuation/retest), failed-open, or gap-acceptance failure. None require structural S/R-test plus reversal bar gating. Setup codes disjoint (2001/2002/2003/3001 vs 7104/7204),Keep with explicit S/R-source axis and reversal-bar gating
+pa_breakout_pullback_continuation,"pa_buy_sell_close_trend, orb_continuation",low,keep,PA continuation is single-bar trend; ORB continuation is opening-specific. This strategy uses generic strong-BO-score + pullback features across any session window. Setup codes disjoint,Keep
+pa_tight_channel_pullback,(none),none,keep,No current-10 strategy uses channel scores,Keep
+pa_broad_channel_zone,(none),none,keep,No current-10 strategy uses broad-channel zones,Keep
+pa_mtr_reversal_diagnostic,(none),none,keep (diagnostic-only),Reversal-from-bear-trend setups are not in current-10,Diagnostic-only
+pa_wedge_reversal_diagnostic,(none),none,keep (diagnostic-only),Wedge/three-push reversal not in current-10,Diagnostic-only
+pa_climax_reversal_diagnostic,(none),none,keep (diagnostic-only),Climax reversal not in current-10,Diagnostic-only
+pa_opening_breakout_continuation,orb_continuation,high,reject,Equivalent to current orb_continuation (with-trend opening BO continuation). Refine current strategy instead of duplicating,Do not add
+pa_gap_open_reversal_failure,gap_acceptance_failure,high,reject,Equivalent to current gap_acceptance_failure (gap-open failure). Refine current strategy instead,Do not add
+pa_prior_day_level_trap,prior_day_level_trap,high,reject,Identical name and intent to current prior_day_level_trap,Do not add
+pa_vwap_reclaim_reject,vwap_reclaim_reject,high,reject,Identical name and intent to current vwap_reclaim_reject,Do not add
+pa_orb_retest,orb_retest_continuation,high,reject,Equivalent to current orb_retest_continuation (ORB retest as continuation),Do not add
+pa_orb_continuation,orb_continuation,high,reject,Identical name and intent to current orb_continuation,Do not add
+pa_market_cycle_router,(none),n/a,reject (not a strategy),Routing/cycle behavior belongs in Layer2 router not the strategy layer,Defer to Layer2
+pa_tight_tr_no_trade_filter,(none),n/a,reject (filter not strategy),Filter/feature not a standalone strategy; pa_trading_range_score / pa_tight_trading_range_score already provide the data,Feature/filter only
+pa_final_flag_filter,(none),n/a,reject (filter not strategy),Filter/feature; pa_final_flag_up_proxy / pa_final_flag_down_proxy provide the data,Feature/filter only
+pa_time_of_day_swing_filter,(none),n/a,reject (filter not strategy),Time-of-day windowing is per-strategy config not standalone strategy,Feature/filter only
+pa_measured_move_target_engine,(none),n/a,reject (management not strategy),Target engineering belongs in management/Layer2 not strategy layer; strategies emit target_r only,Defer to management/Layer2
+pa_magnet_target_engine,(none),n/a,reject (management not strategy),Magnet targets are management not strategy,Defer to management/Layer2
+pa_discretionary_scale_in,(none),n/a,reject (discretionary),Brooks scale-in limit-order management is discretionary and not modelable in current execution contract,Do not add
+pa_discretionary_lower_timeframe_early_entry,(none),n/a,reject (discretionary),Lower-timeframe early entry is discretionary and not 1m-supported,Do not add
+pa_eod_close_auction_btc_stc,(none),n/a,reject (out of scope),EOD close-auction BTC/STC is not modelable under current 1m RTH execution contract,Do not add
+pa_complex_nested_pattern_classifier,(none),n/a,reject (out of scope),Complex nested pattern classification is research not a strategy,Do not add

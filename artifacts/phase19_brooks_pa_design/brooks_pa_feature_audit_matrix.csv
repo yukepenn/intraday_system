@@ -1,0 +1,91 @@
+feature_group,feature_name,market_fact,no_lookahead_risk,session_reset_required,requires_new_kernel,can_use_existing_feature,strategy_specific_label_rejected,notes
+pa_brooks_bar_core,strong_bull_close,yes,low (bar-close),no,yes,partial (body_pct/close_position_in_range),no,Top-decile close-in-range proxy
+pa_brooks_bar_core,strong_bear_close,yes,low (bar-close),no,yes,partial,no,Mirror of strong_bull_close
+pa_brooks_bar_core,weak_bull_close,yes,low (bar-close),no,yes,partial,no,Bull close with dominant top tail
+pa_brooks_bar_core,weak_bear_close,yes,low (bar-close),no,yes,partial,no,Mirror
+pa_brooks_bar_core,bull_signal_bar,yes,low (bar-close),no,yes,partial,no,Composite of body+close-position+prior-low
+pa_brooks_bar_core,bear_signal_bar,yes,low (bar-close),no,yes,partial,no,Mirror
+pa_brooks_bar_core,failed_bull_signal_bar,yes,low (uses t-1 and t),no,yes,no,no,Two-bar relation; not outcome label
+pa_brooks_bar_core,failed_bear_signal_bar,yes,low (uses t-1 and t),no,yes,no,no,Mirror
+pa_brooks_bar_core,bull_micro_channel_3,yes,low (last 3 bars),yes,yes,no,no,Consecutive close-above-open guard
+pa_brooks_bar_core,bull_micro_channel_4,yes,low (last 4 bars),yes,yes,no,no,Same
+pa_brooks_bar_core,bull_micro_channel_5,yes,low (last 5 bars),yes,yes,no,no,Same
+pa_brooks_bar_core,bear_micro_channel_3,yes,low (last 3 bars),yes,yes,no,no,Mirror
+pa_brooks_bar_core,bear_micro_channel_4,yes,low (last 4 bars),yes,yes,no,no,Mirror
+pa_brooks_bar_core,bear_micro_channel_5,yes,low (last 5 bars),yes,yes,no,no,Mirror
+pa_brooks_regime_core,pa_regime_label,yes,low (rolling prior-inclusive),yes,yes,no,no,Integer-coded regime from observable scores
+pa_brooks_regime_core,pa_trade_mode,yes,low,yes,yes,no,no,Derived from regime_label
+pa_brooks_regime_core,pa_always_in_side,yes,low,yes,yes,partial (vwap_side),no,Bounded signed proxy +/-1/0
+pa_brooks_regime_core,pa_strong_bull_bo_score,yes,low,yes,yes,partial (rolling_high/atr),no,Scaled breakout magnitude
+pa_brooks_regime_core,pa_strong_bear_bo_score,yes,low,yes,yes,partial,no,Mirror
+pa_brooks_regime_core,pa_tight_bull_channel_score,yes,low,yes,yes,no,no,Tight channel proxy
+pa_brooks_regime_core,pa_tight_bear_channel_score,yes,low,yes,yes,no,no,Mirror
+pa_brooks_regime_core,pa_broad_bull_channel_score,yes,low,yes,yes,no,no,Broad channel proxy
+pa_brooks_regime_core,pa_broad_bear_channel_score,yes,low,yes,yes,no,no,Mirror
+pa_brooks_regime_core,pa_trading_range_score,yes,low,yes,yes,no,no,Range tendency
+pa_brooks_regime_core,pa_late_trend_score,yes,low,yes,yes,no,no,Trend age + extension
+pa_brooks_regime_core,pa_trend_to_tr_transition_score,yes,low,yes,yes,no,no,Recent BO failure score
+pa_brooks_regime_core,pa_limit_order_market_score,yes,low,yes,yes,no,no,Range tightening proxy
+pa_brooks_range_core,pa_tr_high_30,yes,low (prior-exclusive),yes,yes,no,no,Window 30 bars in-session
+pa_brooks_range_core,pa_tr_low_30,yes,low,yes,yes,no,no,Same
+pa_brooks_range_core,pa_tr_mid_30,yes,low,yes,yes,no,no,Derived
+pa_brooks_range_core,pa_tr_upper_third_30,yes,low,yes,yes,no,no,Derived
+pa_brooks_range_core,pa_tr_lower_third_30,yes,low,yes,yes,no,no,Derived
+pa_brooks_range_core,pa_tr_width_atr_30,yes,low,yes,yes,partial (atr_like_20),no,Derived
+pa_brooks_range_core,pa_close_in_lower_third_30,yes,low (bar-close),yes,yes,no,no,Derived
+pa_brooks_range_core,pa_close_in_upper_third_30,yes,low (bar-close),yes,yes,no,no,Derived
+pa_brooks_range_core,pa_range_breakout_up_30,yes,low (bar-close),yes,yes,no,no,Bar-close outside band
+pa_brooks_range_core,pa_range_breakout_down_30,yes,low (bar-close),yes,yes,no,no,Mirror
+pa_brooks_range_core,pa_close_back_inside_range_30,yes,low (uses prior K bars),yes,yes,no,no,Re-entry test
+pa_brooks_range_core,pa_failed_breakout_up_30,yes,low,yes,yes,no,no,Combo of BO + back-inside within K
+pa_brooks_range_core,pa_failed_breakout_down_30,yes,low,yes,yes,no,no,Mirror
+pa_brooks_range_core,pa_failed_breakout_age_30,yes,low,yes,yes,no,no,Bars since last failed BO
+pa_brooks_range_core,pa_tr_*_60,yes,low,yes,yes,no,no,Same pattern at window 60
+pa_brooks_range_core,pa_tr_*_90,yes,low,yes,yes,no,no,Same pattern at window 90
+pa_brooks_swing_core,pa_leg_direction,yes,low (prior-exclusive),yes,yes,no,no,Sign of rolling slope
+pa_brooks_swing_core,pa_leg_age,yes,low (derived),yes,yes,no,no,Bars since last sign flip
+pa_brooks_swing_core,pa_pullback_bar_count,yes,low,yes,yes,no,no,Counter-direction bar count
+pa_brooks_swing_core,pa_pullback_depth_atr,yes,low,yes,yes,partial (atr),no,Signed depth
+pa_brooks_swing_core,pa_two_leg_pullback_down,yes,low (delayed-confirmed),yes,yes,no,no,Confirmed two-leg shape
+pa_brooks_swing_core,pa_two_leg_pullback_up,yes,low (delayed-confirmed),yes,yes,no,no,Mirror
+pa_brooks_swing_core,pa_second_entry_buy_proxy,yes,low (current-bar confirmation),yes,yes,no,no,Second-entry buy
+pa_brooks_swing_core,pa_second_entry_sell_proxy,yes,low,yes,yes,no,no,Mirror
+pa_brooks_swing_core,pa_higher_low_proxy,yes,medium (needs prior-exclusive pivots),yes,yes,no,no,Pivot ordering vs prior pivot
+pa_brooks_swing_core,pa_lower_high_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_swing_core,pa_major_low_proxy,yes,medium,yes,yes,no,no,Major pivot across longer window
+pa_brooks_swing_core,pa_major_high_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_reversal_core,pa_wedge_top_proxy,yes,medium (prior-exclusive pivots),yes,yes,no,no,Three higher highs with contracting band
+pa_brooks_reversal_core,pa_wedge_bottom_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_reversal_core,pa_three_push_up_proxy,yes,medium,yes,yes,no,no,Three confirmed higher pivots
+pa_brooks_reversal_core,pa_three_push_down_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_reversal_core,pa_mtr_top_score,yes,low (rolling),yes,yes,partial,no,Combines late_trend + three_push + trendline_break
+pa_brooks_reversal_core,pa_mtr_bottom_score,yes,low,yes,yes,partial,no,Mirror
+pa_brooks_reversal_core,pa_trendline_break_up_proxy,yes,medium (prior-exclusive trendline),yes,yes,no,no,Cross of rolling lower-channel approx
+pa_brooks_reversal_core,pa_trendline_break_down_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_reversal_core,pa_test_high_proxy,yes,medium,yes,yes,no,no,Revisit of confirmed prior high
+pa_brooks_reversal_core,pa_test_low_proxy,yes,medium,yes,yes,no,no,Mirror
+pa_brooks_reversal_core,pa_climax_up_score,yes,low (bar-close),yes,yes,partial (bar_range/atr),no,Large up bars + extension
+pa_brooks_reversal_core,pa_climax_down_score,yes,low,yes,yes,partial,no,Mirror
+pa_brooks_reversal_core,pa_final_flag_up_proxy,yes,low (rolling),yes,yes,no,no,Tight flag after climax
+pa_brooks_reversal_core,pa_final_flag_down_proxy,yes,low,yes,yes,no,no,Mirror
+pa_brooks_magnet_core,pa_highest_close_so_far,yes,low (session running max),yes,yes,no,no,Optional; not required for strategies 11-20
+pa_brooks_magnet_core,pa_lowest_close_so_far,yes,low,yes,yes,no,no,Optional
+pa_brooks_magnet_core,pa_dist_to_highest_close_atr,yes,low,yes,yes,partial,no,Optional
+pa_brooks_magnet_core,pa_dist_to_lowest_close_atr,yes,low,yes,yes,partial,no,Optional
+pa_brooks_magnet_core,pa_dist_to_prior_high_atr,yes,low,no,yes,yes (levels group),no,Optional; reuse prior session high
+pa_brooks_magnet_core,pa_dist_to_prior_low_atr,yes,low,no,yes,yes (levels group),no,Optional
+pa_brooks_magnet_core,pa_dist_to_prior_close_atr,yes,low,no,yes,yes (levels group),no,Optional
+pa_brooks_magnet_core,pa_dist_to_orb_high_atr,yes,low,no,yes,yes (orb_core_v1),no,Optional
+pa_brooks_magnet_core,pa_dist_to_orb_low_atr,yes,low,no,yes,yes (orb_core_v1),no,Optional
+pa_brooks_magnet_core,pa_dist_to_vwap_atr,yes,low,no,yes,yes (vwap group),no,Optional
+pa_brooks_magnet_core,pa_near_magnet,yes,low,yes,yes,no,no,Optional
+pa_brooks_magnet_core,pa_magnet_reached,yes,low (session cumulative),yes,yes,no,no,Optional
+rejected_strategy_label,pa_should_buy,no,n/a,n/a,n/a,n/a,yes,Trade-decision label
+rejected_strategy_label,pa_should_short,no,n/a,n/a,n/a,n/a,yes,Trade-decision label
+rejected_strategy_label,pa_is_winner,no,n/a,n/a,n/a,n/a,yes,Outcome label
+rejected_strategy_label,pa_winning_setup,no,n/a,n/a,n/a,n/a,yes,Outcome label
+rejected_strategy_label,pa_target_reached_in_5_bars,no,future-bar dependency,n/a,n/a,n/a,yes,Future-bar dependency
+rejected_strategy_label,pa_max_favorable_excursion_atr,no,future-bar dependency,n/a,n/a,n/a,yes,Outcome label
+rejected_strategy_label,pa_optimal_target_r,no,n/a,n/a,n/a,n/a,yes,Target/fill label
+rejected_strategy_label,pa_optimal_stop_atr_mult,no,n/a,n/a,n/a,n/a,yes,Target/fill label
+rejected_strategy_label,pa_perfect_setup_2nd_entry,no,n/a,n/a,n/a,n/a,yes,Strategy-specific signal hack
