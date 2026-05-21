@@ -4,79 +4,83 @@
 
 - Repo: `https://github.com/yukepenn/intraday_system.git`
 - Branch: `main`
-- Latest commit at review time: `35b1fbad44ca5e65c6ed33acc08357af59b0ac58`
-- Target Cursor commit reviewed: `35b1fbad44ca5e65c6ed33acc08357af59b0ac58`
-- Target commit parent: `a6486c75f3611a927f6ca3b442ad36eeded6b191`
-- Substantive repair commit reviewed as current-state context: `a6486c75f3611a927f6ca3b442ad36eeded6b191`
+- Latest commit at review time: `a32ea54250a7f300a9335fd2007ddddb4e162112`
+- Target Cursor commit reviewed: `a32ea54250a7f300a9335fd2007ddddb4e162112`
+- Target commit parent: `d3c8c0ddfb76161b0029f61ca10f6af956d7ba16`
+- Substantive implementation commit reviewed as current-state context: `d3c8c0ddfb76161b0029f61ca10f6af956d7ba16`
 - Cursor handoff reviewed: `NEXT_HANDOFF.md`
-- Phase / task identified: `PHASE19A_REPAIR_LAYER1_SIDE_RUNTIME_WIRING`
-- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/ARCHITECTURE.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `src/intraday/layer1/runner.py`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/config_validation.py`, `src/intraday/backtest/signal_adapter.py`, `src/intraday/execution/spec.py`, `src/intraday/strategies/common.py`, `tests/unit/test_phase19a_layer1_side_runtime_wiring.py`, `tests/unit/test_phase19a_current10_long_only_regression.py`, `artifacts/phase19a_layer1_side_runtime_wiring_repair/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, `side_runtime_test_matrix.csv`, `current10_regression_summary.csv`, `artifact_schema_validation.csv`, and git status / diff metadata.
+- Phase / task identified: `PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_WITH_SIDE_MODE_VALIDATION_GATE`
+- Files / docs / artifacts inspected: `NEXT_HANDOFF.md`, `README.md`, `PROJECT_STATUS.md`, `PROGRESS.md`, `CHANGES.md`, `intraday_system_design_instructions.txt`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `src/intraday/strategies/config_validation.py`, `src/intraday/strategies/registry.py`, `src/intraday/strategies/pa/brooks_common.py`, representative Phase19B strategy modules including `second_entry_pullback.py` and `opening_reversal_sr.py`, all Phase19B strategy file setup-code declarations by search, Phase19B base/grid/metadata YAML samples, Phase19B unit tests, `artifacts/phase19b_core_brooks_pa_strategies/CHATGPT_REVIEW_BUNDLE.md`, `SOURCE_MAP.csv`, `chatgpt_key_tables.csv`, `validation_results.csv`, `core_brooks_strategy_inventory.csv`, and git status / diff metadata.
 
 ## B. Summary Verdict
 
-- PASS_WITH_WARNINGS
+- NEEDS_FIX
 
-The Phase19A repair is directionally correct and narrowly scoped: the latest target commit records the repair hash in handoff artifacts, and the substantive repair commit wires both Layer1 smoke and controlled-grid paths to pass `reference_close=bars.close` into `validate_signal_matrix(...)` and side-mode-derived `allowed_sides` into `build_trade_intents_from_signals(...)`. The repo is ready for ChatGPT final review. The next Cursor prompt may proceed toward Phase19B only after ChatGPT review, with an explicit guardrail to harden side-mode strategy config validation for new Brooks strategies and avoid accidentally enabling `signal.side_mode` semantics on current-10 long-only strategies.
+The Phase19B run broadly matches the intended implementation scope: exactly seven Brooks PA strategies were added, current-10 side-mode validation was hardened, no candidate/promotion/Layer2/WFO/live work was introduced, and the handoff accurately reports the phase at a high level. However, I found two contract-level issues that should be repaired before proceeding: the implemented Phase19B setup-code namespace uses `1101/1102` through `1701/1702`, while the accepted Phase19 design and `docs/PHASE_PLAN.md` reserve `7101-7110` for long and `7201-7210` for short; and Brooks config validation accepts string boolean values that the runtime then interprets with `bool(...)`, making strings such as `"false"` behave as true. The repo is not ready to proceed to the next Cursor prompt as-is. ChatGPT final review can analyze these findings, but the next Cursor action should be a narrow repair, not Phase19C or broader strategy expansion.
 
 ## C. Cursor Run Consistency
 
-- Did the run follow the intended phase? Yes. It repaired the exact Phase19A warning from the prior Codex review without implementing strategies 11-20 or running economic grids.
-- Did it match `NEXT_HANDOFF.md`? Yes. The handoff accurately describes the Layer1 wiring repair, validation ledger, non-runs, and remaining Phase16 local artifact hygiene debt.
-- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? Yes. Status docs now identify the Phase19A repair as complete and keep Phase19B strategy implementation gated on Codex / ChatGPT review.
-- Any scope creep? No blocking scope creep found.
-- Any premature phase movement? No. No strategies 11-17/18-20, strategy runtime YAMLs, candidates, selection, Layer2/3, WFO, live, paper, or economic claims were found.
-- Any skipped prerequisites? One follow-up prerequisite remains for Phase19B: side-aware strategy validators must explicitly accept and constrain `signal.side_mode` for strategies that support it.
-- Any duplicated structure or architecture drift? No major duplication. The runner uses shared contract helpers rather than a separate side mapping.
+- Did the run follow the intended phase? Mostly yes. It implemented Phase19B core Brooks strategies 11-17 plus the side-mode validation gate.
+- Did it match `NEXT_HANDOFF.md`? Mostly yes, with the caveat that `NEXT_HANDOFF.md` accepts the new `1101/1102`-style setup codes and does not call out the mismatch with the Phase19 design namespace.
+- Did it match `PROJECT_STATUS` / `PHASE_PLAN` / prior roadmap? It matches the Phase19B scope, but conflicts with the still-documented Phase19 setup-code namespace in `docs/PHASE_PLAN.md` and the Phase19 design artifacts.
+- Any scope creep? No blocking scope creep found. No strategies 18-20/21-50, actual economic grids, candidate YAMLs, promotion, Layer2/3, WFO, live/paper, or execution truth changes were found.
+- Any premature phase movement? No.
+- Any skipped prerequisites? Yes: the approved setup-code namespace from the Phase19 design was not preserved or explicitly superseded in the source-of-truth docs before implementation.
+- Any duplicated structure or architecture drift? Moderate architecture drift in setup-code ownership: Phase19B source/metadata/artifacts now disagree with the Phase19 design namespace.
 
 ## D. Code / Architecture Findings
 
-- High-risk findings: None found in this lightweight review.
+- High-risk findings: None found that directly changes execution/PnL truth.
 - Medium-risk findings:
-  - Current long-only strategy validators still primarily validate legacy `signal.side`, not `signal.side_mode` (`src/intraday/strategies/config_validation.py`). Because Layer1 now interprets `signal.side_mode` globally, a current-10 YAML with `signal.side_mode: short_only` or `both` could pass some existing long-only validators and then alter adapter filtering despite the strategy not being short-capable. This is not a blocker for the current repair because committed current-10 configs remain long-only, but Phase19B should add explicit side-mode validation per new strategy and forbid non-long side modes in current-10 validators until those strategies are intentionally retrofitted.
+  - Setup-code namespace drift: `docs/PHASE_PLAN.md` and `artifacts/phase19_brooks_pa_design/*` reserve Phase19 codes `7101-7110` and `7201-7210`, but Phase19B code and metadata use `1101/1102` through `1701/1702` (`src/intraday/strategies/pa/*`, `configs/strategies/metadata/phase19/*`, and `artifacts/phase19b_core_brooks_pa_strategies/core_brooks_strategy_inventory.csv`). This is not a numeric collision with current-10 codes, but it breaks the accepted design contract and creates a single-source-of-truth problem before these signals feed Layer1 evidence.
+  - Boolean config coercion mismatch: `validate_brooks_strategy_config(...)` accepts boolean-like strings via `parse_bool_like(...)`, but the strategy generators read those same fields with `bool(sig.get(...))` in files such as `second_entry_pullback.py`, `opening_reversal_sr.py`, `trading_range_bls_hs.py`, `breakout_pullback_continuation.py`, `tight_channel_pullback.py`, and `broad_channel_zone.py`. A config value like `"false"` passes validation but is truthy at runtime.
 - Low-risk findings:
-  - `docs/STRATEGY_CONTRACT.md` still summarizes validation as `validate_signal_matrix(signals, n_bars)`, while the side-specific geometry check depends on callers passing `reference_close`. Layer1 now does so, but the doc should eventually make the normative runtime call explicit.
-- Relevant code paths inspected: Layer1 smoke/grid orchestration, side-mode contract helpers, signal adapter allowed-side filtering, execution short authority, current-10 validation helpers, new synthetic repair tests, and repair artifacts.
+  - The recorded `strategies inspect` validation excerpts show `setup_codes: {}` and `required_feature_columns: []` for the new Phase19B strategies even though metadata/setup codes and feature requirements exist elsewhere. This is not a runtime blocker, but it weakens inspect output as a review artifact.
+- Relevant code paths inspected: side-mode validation helpers, current-10 validator gate, Brooks shared signal builder, representative Brooks strategy signal generation, registry registration, Phase19B base/grid/metadata YAMLs, strategy inspect and grid-inspect validation artifacts, and Phase19B tests.
 - Representative path inspected:
-  - input/config: strategy config `signal.side_mode` via `_allowed_sides_from_strategy_cfg(...)`
-  - runtime logic: `run_layer1_smoke(...)` / `run_layer1_controlled_grid(...)` -> `validate_signal_matrix(..., reference_close=bars.close)` -> `build_trade_intents_from_signals(..., allowed_sides=allowed_sides)`
-  - output artifact/result: `artifacts/phase19a_layer1_side_runtime_wiring_repair/*`
-  - validation/test: `tests/unit/test_phase19a_layer1_side_runtime_wiring.py`
-  - handoff claim: `NEXT_HANDOFF.md` Phase19A repair complete
-- Module-boundary concerns: No PnL/accounting boundary violation found; execution remains the final `allow_short` authority.
-- Single-source-of-truth concerns: No second execution or PnL truth found.
-- Runtime/config/schema alignment concerns: Side-mode runtime interpretation is now broader than current-10 validator enforcement; make this explicit before Phase19B strategy YAMLs arrive.
+  - input/config: `configs/strategies/base/phase19/pa_second_entry_pullback.yaml` and `configs/strategies/grids/phase19/pa_second_entry_pullback_controlled_small.yaml`
+  - runtime logic: `validate_brooks_strategy_config(...)` -> `generate_pa_second_entry_pullback_signals(...)` -> `build_brooks_signal_matrix(...)`
+  - output artifact/result: `artifacts/phase19b_core_brooks_pa_strategies/core_brooks_strategy_inventory.csv` and `validation_results.csv`
+  - validation/test: `tests/unit/test_phase19b_side_mode_validation.py`, `tests/unit/test_phase19b_brooks_strategy_signals.py`, `tests/unit/test_phase19b_artifact_schema.py`
+  - handoff claim: `NEXT_HANDOFF.md` Phase19B onboarding complete
+- Module-boundary concerns: No direct execution or PnL computation was found in the new strategies.
+- Single-source-of-truth concerns: Setup-code namespace is split across old design truth (`7101/7201`) and new implementation/artifacts (`1101/1102` etc.).
+- Runtime/config/schema alignment concerns: Boolean-like strings are validation-accepted but runtime-misinterpreted; strategy inspect output does not expose the new strategy setup codes / feature requirements.
 
 ## E. Validation / Artifact Hygiene
 
-- Validation credibility: Credible for the repair scope from code and artifact inspection. I did not rerun pytest, compileall, Ruff, Layer1, WFO, live, or paper commands.
-- Missing tests or weak tests: The new synthetic tests cover smoke/grid reference-close wiring, allowed-side derivation, short_only/both flow, execution short rejection/acceptance, and current-10 defaults. Missing follow-up coverage: a validator test proving current-10 strategies reject unsupported non-long `signal.side_mode`, and Phase19B tests proving each new Brooks strategy's side modes are validated intentionally.
-- Claims accepted from validation artifacts but not independently rerun: CLI help/doctor/structure, compileall over `src` and `tests`, all pytest commands, smoke tests, Ruff check, and Ruff format check.
-- Artifact hygiene issues: Pre-existing untracked Phase16 `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` remains present.
-- Heavy/raw/cache/parquet/log/generated-file issues: The untracked Phase16 runs tree contains `.csv` and `.md` files in the extension count inspected (`180` CSV, `20` MD); no parquet/npz/log extensions were observed in that tree during this review. No heavy generated files were found in the Phase19A repair bundle.
-- Working tree / git cleanliness: Before review, no tracked modified files or staged files were present; only the untracked Phase16 runs directory was present.
+- Validation credibility: Credible for the narrow tests listed, but I did not rerun pytest, compileall, Ruff, Layer1, WFO, live, or paper commands. Validation results were accepted from `validation_results.csv`.
+- Missing tests or weak tests:
+  - No test asserts the Phase19B implementation preserves the Phase19 design setup-code namespace.
+  - No test covers string boolean values for the Brooks strategy gates after validation, so `"false"` truthiness drift is not caught.
+  - Strategy inspect validation passed despite reporting empty setup-code and required-feature metadata for new strategies.
+- Claims accepted from validation artifacts but not independently rerun: CLI help/doctor/structure validation, compileall, all pytest commands, feature inspect, strategy inspect, Layer1 grid-inspect, smoke tests, Ruff check, and Ruff format check.
+- Artifact hygiene issues: The pre-existing untracked Phase16 `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/` directory remains present and must not be staged.
+- Heavy/raw/cache/parquet/log/generated-file issues: The untracked Phase16 runs tree contains `.csv` and `.md` files (`180` CSV, `20` MD by extension count). No parquet/npz/log files were observed in that tree during this review. The committed Phase19B artifact bundle contains small CSV/MD files only (`14` CSV, `5` MD).
+- Working tree / git cleanliness: Before review, there were no tracked modified files and no staged files; only the untracked Phase16 runs directory was present.
 - Safe local-only untracked artifacts present before review: `artifacts/layer1_10_strategy_rational_expanded_grid_phase16/runs/`
-- Suspicious untracked files present before review: None requiring a stop. The Phase16 run tree is research-output shaped but should be cleaned, ignored, or explicitly curated by Cursor in a future hygiene pass.
-- Review bundle completeness: Complete for this repair: review bundle, source map, key tables, validation ledger, wiring summary, test matrix, current-10 regression summary, guardrails, schema validation, and decision artifact.
-- SOURCE_MAP / key-table completeness if applicable: Present and parseable. The latest target commit updates final commit references from pending / `a6486c7` as expected.
+- Suspicious untracked files present before review: None requiring a stop. The Phase16 runs tree is research-output shaped and should be cleaned, ignored, or explicitly curated in a future hygiene pass.
+- Review bundle completeness: Complete for a medium/large Phase19B implementation task: handoff, bundle, source map, key tables, validation ledger, inventory/matrix CSVs, guardrails, and decision artifact are present.
+- SOURCE_MAP / key-table completeness if applicable: Present. The latest status commit updates final references to `d3c8c0d`.
 
 ## F. Contract / Reproducibility Risks
 
-- Data contract: No data or parquet changes found.
-- Feature contract: No feature work in this repair.
-- Strategy contract: Layer1 now enforces side-specific stop geometry when validating generated signals. Remaining risk is config validation ownership for which strategies may use `short_only` / `both`.
-- Execution/accounting truth: Preserved. `ExecutionSpec.allow_short` remains the final short authority and strategy YAML does not override it.
-- Config/YAML contract: No runtime candidate YAMLs or Phase19 strategy YAMLs were created. Current-10 configs inspected through regression artifacts remain long-only.
-- Timestamp/session/lookahead: No timestamp/session/lookahead changes in this repair.
-- Candidate/promotion contract if relevant: No candidate, promotion, select-dry-run, Layer2/3, WFO, live, or paper work found.
-- Local path / GitHub reproducibility: Committed repair artifacts are repo-relative. The local untracked Phase16 runs directory remains outside the commit.
-- Cache/artifact reproducibility: Repair artifacts are small CSV/MD review outputs. Validation commands were accepted from the ledger, not regenerated.
+- Data contract: No data/parquet changes found.
+- Feature contract: No new feature kernels in Phase19B; strategies rely on Phase19A Brooks feature configs. Missing-feature tests exist.
+- Strategy contract: Main risk is setup-code namespace drift from the Phase19 design contract. Strategies also accept string boolean configs that can execute differently from validation intent.
+- Execution/accounting truth: Preserved. No strategy imports execution or computes PnL/target price; execution remains the trade/PnL authority.
+- Config/YAML contract: Phase19B base/grid/metadata YAMLs exist for exactly seven strategies. No runtime candidate YAMLs were created.
+- Timestamp/session/lookahead: No timestamp/session changes found. No-lookahead/session tests are present, but I did not rerun them.
+- Candidate/promotion contract if relevant: Preserved. No candidate YAML, select-dry-run, promotion, actual Layer1 economic grids, Layer2/3, WFO/live/paper, or economic claims found.
+- Local path / GitHub reproducibility: Phase19B committed artifacts are repo-relative. Validation excerpts include local Windows paths in command output, but not as runtime inputs.
+- Cache/artifact reproducibility: Committed Phase19B artifacts are small CSV/MD review outputs. Validation commands were accepted from the ledger, not regenerated.
 
 ## G. Recommended Next Review or Next Step
 
-- What ChatGPT should analyze next: Confirm the side-mode validation boundary before Phase19B: new Brooks strategy validators should explicitly accept only the intended `side_mode` values, and current-10 long-only validators should reject unsupported non-long `signal.side_mode`.
-- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Proceed after ChatGPT review, with a small schema-validation guardrail included in the Phase19B prompt.
-- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `src/intraday/layer1/runner.py`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/config_validation.py`, `tests/unit/test_phase19a_layer1_side_runtime_wiring.py`, and `artifacts/phase19a_layer1_side_runtime_wiring_repair/CHATGPT_REVIEW_BUNDLE.md`.
-- What must be explicitly forbidden in the next prompt: candidate YAMLs, promotion, select-dry-run, actual Layer1 economic grids, Layer2/3, WFO/live/paper, economic ranking/claims, current-10 short retrofits, execution PnL/R changes, and broad strategy expansion beyond the approved Phase19B core Brooks 11-17 scope.
+- What ChatGPT should analyze next: Decide whether Phase19B must conform to the Phase19 design setup-code namespace (`7101-7110` / `7201-7210`) or whether the design/docs/artifacts should be explicitly revised; then review the boolean coercion bug across the Brooks strategies.
+- Whether the next Cursor prompt should proceed, repair, redesign, or pause: Repair.
+- What files should be read before writing the next prompt: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `artifacts/phase19_brooks_pa_design/side_support_design.md`, `artifacts/phase19_brooks_pa_design/brooks_pa_strategy_design_matrix.csv`, `src/intraday/strategies/pa/brooks_common.py`, all seven Phase19B strategy modules, `configs/strategies/metadata/phase19/*.yaml`, and the Phase19B tests.
+- What must be explicitly forbidden in the next prompt: candidate YAMLs, promotion, select-dry-run, actual Layer1 economic grids, Layer2/3, WFO/live/paper, economic ranking/claims, strategy expansion beyond repairing strategies 11-17, feature semantic changes, and execution/PnL changes.
 - Whether another Codex review should be required after the next Cursor run: Yes.
 
 ## H. Explicit Non-Actions
@@ -95,33 +99,37 @@ The Phase19A repair is directionally correct and narrowly scoped: the latest tar
 ## I. Evidence Quality
 
 - Directly verified:
-  - Latest commit hash and parent.
-  - Target commit only updates `NEXT_HANDOFF.md` and repair `chatgpt_key_tables.csv` commit references.
-  - Substantive repair commit changes `src/intraday/layer1/runner.py`, new repair tests, status docs, and repair artifacts.
-  - Runner smoke/grid paths pass `reference_close=bars.close`.
-  - Runner smoke/grid paths pass side-mode-derived `allowed_sides`.
-  - Signal adapter still defaults long-only unless allowed sides are supplied.
-  - Execution spec keeps `allow_short` as execution-owned truth.
-  - Pre-review dirty state was only the untracked Phase16 runs directory.
+  - latest commit and parent hashes
+  - working tree cleanliness before review
+  - target commit file list and stats
+  - Phase19B implementation file list from `d3c8c0d`
+  - `NEXT_HANDOFF.md`, status docs, Phase plan, strategy contract
+  - side-mode validation helpers and representative Brooks strategy runtime logic
+  - setup-code declarations in the Phase19B strategy modules
+  - setup-code namespace still documented in Phase19 design docs/artifacts
+  - Phase19B artifact bundle presence and extension counts
 - Inferred from Cursor artifacts:
-  - Validation commands passed as recorded in `validation_results.csv`.
-  - Current-10 regression status and non-promotion guardrails.
+  - validation command success and command outputs in `validation_results.csv`
+  - strategy/grid inspect pass claims
+  - no-rerun/no-promotion guardrails
 - Accepted from Codex inspection:
-  - The repair closes the prior Layer1 side-runtime wiring gap for smoke and controlled-grid paths.
-  - The remaining side-mode validator concern is a Phase19B guardrail, not a blocker for this repair.
+  - no direct execution/PnL imports in new strategies from test/source inspection
+  - no suspicious committed heavy artifacts in the Phase19B bundle from extension counts
 - Not verified:
-  - Tests not rerun.
-  - Commands not rerun.
-  - Artifacts not regenerated.
-  - Full repo-wide behavior not exhaustively inspected.
+  - tests not rerun
+  - commands not rerun
+  - artifacts not regenerated
+  - strategy economics not run or evaluated
+  - all seven strategy semantics not exhaustively proven against Brooks intent
 - Claims requiring caution:
-  - "No remaining side-runtime wiring gap" is true for the inspected Layer1 smoke/grid paths, but side-aware strategy config validation still needs deliberate Phase19B treatment.
+  - Strategy inspect passed but reports empty setup-code / feature metadata for new strategies.
+  - Validation accepts boolean-like strings, but runtime does not consume the parsed boolean values.
 
 ## J. Review Depth
 
-- Representative path inspected: strategy config `signal.side_mode` -> Layer1 runner allowed-side helper -> `validate_signal_matrix(..., reference_close=bars.close)` -> adapter intent creation -> execution short authority -> repair tests/artifacts -> `NEXT_HANDOFF.md` claim.
-- Important files inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `docs/EXECUTION_CONTRACT.md`, `src/intraday/layer1/runner.py`, `src/intraday/strategies/contracts.py`, `src/intraday/strategies/config_validation.py`, `src/intraday/backtest/signal_adapter.py`, `src/intraday/execution/spec.py`, repair tests, repair bundle, source map, key tables, validation ledger, and artifact hygiene state.
-- Important files not inspected: Every current-10 strategy source file, every Phase18/19 artifact, full Layer1 report writers, full CLI surfaces, and all historical configs.
-- Reason not inspected: The review was intentionally lightweight and bounded to the latest repair/current-state credibility; user explicitly forbade long commands and test reruns.
-- Areas that should be reviewed by ChatGPT Pro: Side-mode schema policy for current-10 versus new Brooks strategies, Phase19B strategy validator design, and whether `docs/STRATEGY_CONTRACT.md` should require reference-close validation in all runtime runner paths.
-- Areas that should be reviewed by future Codex review: The next Cursor run's Brooks strategy implementation, registry/config/test coverage, no-lookahead behavior, side-mode validation, and artifact hygiene.
+- Representative path inspected: `pa_second_entry_pullback` config/grid -> Brooks validation -> strategy generator -> shared signal builder -> Phase19B signal tests/artifacts -> handoff claim.
+- Important files inspected: `NEXT_HANDOFF.md`, `PROJECT_STATUS.md`, `docs/PHASE_PLAN.md`, `docs/STRATEGY_CONTRACT.md`, `src/intraday/strategies/config_validation.py`, `src/intraday/strategies/registry.py`, `src/intraday/strategies/pa/brooks_common.py`, representative Phase19B strategy modules, Phase19B YAML samples, Phase19B unit tests, and Phase19B review artifacts.
+- Important files not inspected: Every line of every new Phase19B strategy module, all generated artifact CSV row contents, and all upstream feature kernel implementations.
+- Reason not inspected: Review was intentionally lightweight/read-only and bounded; validation was not rerun by user instruction.
+- Areas that should be reviewed by ChatGPT Pro: setup-code namespace decision, Brooks reduced-strategy semantic sufficiency, boolean config coercion policy, and whether strategy inspect should become authoritative for setup codes / required feature columns.
+- Areas that should be reviewed by future Codex review: the narrow repair for setup-code namespace and boolean coercion, plus any updated artifacts/handoff after Cursor repairs.
