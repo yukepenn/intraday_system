@@ -4,7 +4,7 @@
 - **Task type**: validation-only + narrow repair + docs/config consistency + diagnostic tooling repair
 - **Git baseline**: `b3d9f18`
 - **Final commit**: `d45dc45`
-- **Push status**: pending final status backfill push
+- **Push status**: pushed to `origin/main`
 
 Final roadmap decision belongs to ChatGPT Pro + the user after Codex review.
 
