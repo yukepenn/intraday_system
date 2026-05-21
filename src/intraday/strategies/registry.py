@@ -48,7 +48,16 @@ def register_builtin_strategies() -> None:
     from intraday.strategies.orb.continuation import ORB_CONTINUATION_DEF
     from intraday.strategies.orb.failed_orb import FAILED_ORB_DEF
     from intraday.strategies.orb.retest_continuation import ORB_RETEST_CONTINUATION_DEF
+    from intraday.strategies.pa.breakout_pullback_continuation import (
+        PA_BREAKOUT_PULLBACK_CONTINUATION_DEF,
+    )
+    from intraday.strategies.pa.broad_channel_zone import PA_BROAD_CHANNEL_ZONE_DEF
     from intraday.strategies.pa.buy_sell_close_trend import PA_BUY_SELL_CLOSE_TREND_DEF
+    from intraday.strategies.pa.failed_breakout_trap import PA_FAILED_BREAKOUT_TRAP_DEF
+    from intraday.strategies.pa.opening_reversal_sr import PA_OPENING_REVERSAL_SR_DEF
+    from intraday.strategies.pa.second_entry_pullback import PA_SECOND_ENTRY_PULLBACK_DEF
+    from intraday.strategies.pa.tight_channel_pullback import PA_TIGHT_CHANNEL_PULLBACK_DEF
+    from intraday.strategies.pa.trading_range_bls_hs import PA_TRADING_RANGE_BLS_HS_DEF
     from intraday.strategies.stochastic.oversold_cross import STOCHASTIC_OVERSOLD_CROSS_DEF
     from intraday.strategies.vwap.reclaim_reject import VWAP_RECLAIM_REJECT_DEF
     from intraday.strategies.vwap.trend_pullback import VWAP_TREND_PULLBACK_DEF
@@ -64,6 +73,13 @@ def register_builtin_strategies() -> None:
         PRIOR_DAY_LEVEL_TRAP_DEF,
         CCI_EXTREME_SNAPBACK_DEF,
         STOCHASTIC_OVERSOLD_CROSS_DEF,
+        PA_SECOND_ENTRY_PULLBACK_DEF,
+        PA_TRADING_RANGE_BLS_HS_DEF,
+        PA_FAILED_BREAKOUT_TRAP_DEF,
+        PA_OPENING_REVERSAL_SR_DEF,
+        PA_BREAKOUT_PULLBACK_CONTINUATION_DEF,
+        PA_TIGHT_CHANNEL_PULLBACK_DEF,
+        PA_BROAD_CHANNEL_ZONE_DEF,
     ):
         register_strategy(defn)
     _BUILTIN_REGISTERED = True

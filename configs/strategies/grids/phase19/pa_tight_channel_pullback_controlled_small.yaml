@@ -1,0 +1,19 @@
+strategy: pa_tight_channel_pullback
+base_config: configs/strategies/base/phase19/pa_tight_channel_pullback.yaml
+description: Phase19B controlled-small rational grid skeleton for pa_tight_channel_pullback; inspect only.
+diagnostic_only: true
+broad_sweep_allowed: false
+
+fixed:
+  risk.target_mode: fixed_r
+  risk.min_risk_per_share: 0.03
+  risk.max_trades_per_day: 1
+  backtest.quantity: 1.0
+  backtest.commission_per_trade: 0.0
+  backtest.slippage_per_share: 0.01
+  backtest.eod_exit_minute: 389
+
+grid:
+  signal.side_mode: [long_only, short_only, both]
+  risk.target_r: [1.0, 1.2]
+  backtest.max_hold_minutes: [30, 40]

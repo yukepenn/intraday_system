@@ -1,0 +1,9 @@
+item,status,notes
+pa_second_entry_pullback,passed,future perturbation does not alter prior signal
+pa_trading_range_bls_hs,passed,future perturbation does not alter prior signal
+pa_failed_breakout_trap,passed,future perturbation does not alter prior signal
+pa_opening_reversal_sr,passed,future perturbation does not alter prior signal
+pa_breakout_pullback_continuation,passed,future perturbation does not alter prior signal
+pa_tight_channel_pullback,passed,future perturbation does not alter prior signal
+pa_broad_channel_zone,passed,future perturbation does not alter prior signal
+prior_condition_session_reset,passed,prior state resets by session_id

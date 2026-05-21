@@ -1,0 +1,8 @@
+strategy,file_path,status,combo_count,notes
+pa_second_entry_pullback,configs/strategies/base/phase19/pa_second_entry_pullback.yaml,created,,inspect only
+pa_trading_range_bls_hs,configs/strategies/base/phase19/pa_trading_range_bls_hs.yaml,created,,inspect only
+pa_failed_breakout_trap,configs/strategies/base/phase19/pa_failed_breakout_trap.yaml,created,,inspect only
+pa_opening_reversal_sr,configs/strategies/base/phase19/pa_opening_reversal_sr.yaml,created,,inspect only
+pa_breakout_pullback_continuation,configs/strategies/base/phase19/pa_breakout_pullback_continuation.yaml,created,,inspect only
+pa_tight_channel_pullback,configs/strategies/base/phase19/pa_tight_channel_pullback.yaml,created,,inspect only
+pa_broad_channel_zone,configs/strategies/base/phase19/pa_broad_channel_zone.yaml,created,,inspect only

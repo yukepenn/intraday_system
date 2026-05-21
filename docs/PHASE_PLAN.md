@@ -460,9 +460,28 @@ Decision label: **`PHASE19A_LAYER1_SIDE_RUNTIME_WIRING_REPAIR_COMPLETE`**.
 
 Recommended next step: **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review.
 
-## Phase 19B ? Add core Brooks PA strategies 11-17 ? **future**
+## Phase 19B - Add core Brooks PA strategies 11-17 - **complete**
 
-Implement only core Brooks PA strategies 11-17 against Phase19A side-support and Slice F1 feature facts. This is strategy-library onboarding, not candidate promotion. Strategies 18-20 remain deferred until reversal/swing features are stable.
+Goal: enforce the side-mode validation gate before strategy onboarding, then implement only core Brooks PA strategies 11-17 against Phase19A side-support and Slice F1 feature facts.
+
+Status:
+
+- Current-10 validators reject unsupported non-long `signal.side_mode` values while preserving missing/`long_only` behavior.
+- Implemented and registered exactly strategies 11-17:
+  - `pa_second_entry_pullback`
+  - `pa_trading_range_bls_hs`
+  - `pa_failed_breakout_trap`
+  - `pa_opening_reversal_sr`
+  - `pa_breakout_pullback_continuation`
+  - `pa_tight_channel_pullback`
+  - `pa_broad_channel_zone`
+- Added Phase19 base configs, metadata, controlled-small grid skeletons, Layer1 grid-inspect-only configs, focused unit tests, and curated artifacts.
+- Strategy inspect and Layer1 grid-inspect passed for all seven strategies. No actual Layer1 economic grids were run.
+- No strategies 18-20 or 21-50, select-dry-run, candidate YAML, promotion, Layer2/3, WFO/live/paper, current-10 short retrofit, execution truth change, or economic claims.
+
+Decision label: **`PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_ONBOARDED`**.
+
+Recommended next step: **`REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES`** after Codex and ChatGPT Pro review. Phase19C diagnostic strategies 18-20 may be designed only after review; Phase20 should wait.
 
 ## Phase 20 ? Add strategies 21-30 ? **future**
 

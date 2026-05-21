@@ -1,0 +1,13 @@
+strategy: pa_opening_reversal_sr
+family: pa
+phase: phase19b
+status: onboarded_grid_inspect_only
+core_or_diagnostic: core
+side_mode_allowed: [long_only, short_only, both]
+diagnostic_only: true
+broad_sweep_allowed: false
+economic_claims_allowed: false
+setup_codes:
+  long: 1401
+  short: 1402
+notes: Phase19B strategy onboarding artifact; inspect/grid-inspect only, no promotion.

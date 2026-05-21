@@ -130,7 +130,9 @@ Phase **6d** — **`REVIEW_PA_LOGIC_OR_GRID`** — documented axis/interaction d
 
 **Phase 19A repair complete:** **`PHASE19A_REPAIR_LAYER1_SIDE_RUNTIME_WIRING`** wired Layer1 smoke and controlled-grid paths to pass `reference_close=bars.close` into SignalMatrix validation and side-mode-derived `allowed_sides` into the signal adapter. Bundle: `artifacts/phase19a_layer1_side_runtime_wiring_repair/`.
 
-**Next:** **`IMPLEMENT_PHASE19B_CORE_BROOKS_PA_STRATEGIES_11_TO_17`** after Codex and ChatGPT Pro review. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
+**Phase 19B complete:** **`PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_WITH_SIDE_MODE_VALIDATION_GATE`** hardened current-10 side-mode validation and onboarded Brooks PA strategies 11-17 with configs, metadata, grid skeletons, Layer1 grid-inspect-only configs, tests, and curated artifacts. Bundle: `artifacts/phase19b_core_brooks_pa_strategies/`.
+
+**Next:** **`REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES`** with Codex and ChatGPT Pro. This does not mean candidate promotion, candidate YAML generation, select-dry-run, Layer1 economic grids, Layer2, WFO, live, paper, or economic ranking.
 
 See:
 

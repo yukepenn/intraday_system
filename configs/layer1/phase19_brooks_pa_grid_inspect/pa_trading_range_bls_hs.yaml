@@ -1,0 +1,30 @@
+run_id: L1_PHASE19B_QQQ_2024H1_PA_TRADING_RANGE_BLS_HS_GRID_INSPECT_ONLY
+description: Phase19B grid-inspect-only config for pa_trading_range_bls_hs; do not run as an economic grid.
+symbol: QQQ
+asset: equity
+timeframe: 1m
+start: '2024-01-01'
+end: '2024-06-30'
+data:
+  data_root: data/curated/bars_1m_rth
+feature:
+  config: configs/features/pa_brooks_range_v1.yaml
+  use_cache: false
+strategy:
+  name: pa_trading_range_bls_hs
+  base_config: configs/strategies/base/phase19/pa_trading_range_bls_hs.yaml
+  grid: configs/strategies/grids/phase19/pa_trading_range_bls_hs_controlled_small.yaml
+execution:
+  config: configs/execution/intraday_default.yaml
+  mode: reference
+backtest:
+  max_trades_per_session: 1
+  skip_while_trade_open: true
+  count_rejected_intents: true
+  save_row_level_trades: false
+grid:
+  max_combos: 12
+  allow_prefix_slicing: false
+  require_no_fixed_grid_overlap: true
+output:
+  artifact_root: artifacts/phase19b_core_brooks_pa_strategies/grid_inspect_only/pa_trading_range_bls_hs

@@ -1,0 +1,8 @@
+strategy,file_path,status,combo_count,notes
+pa_second_entry_pullback,configs/layer1/phase19_brooks_pa_grid_inspect/pa_second_entry_pullback.yaml,passed,12,inspect only
+pa_trading_range_bls_hs,configs/layer1/phase19_brooks_pa_grid_inspect/pa_trading_range_bls_hs.yaml,passed,12,inspect only
+pa_failed_breakout_trap,configs/layer1/phase19_brooks_pa_grid_inspect/pa_failed_breakout_trap.yaml,passed,12,inspect only
+pa_opening_reversal_sr,configs/layer1/phase19_brooks_pa_grid_inspect/pa_opening_reversal_sr.yaml,passed,12,inspect only
+pa_breakout_pullback_continuation,configs/layer1/phase19_brooks_pa_grid_inspect/pa_breakout_pullback_continuation.yaml,passed,12,inspect only
+pa_tight_channel_pullback,configs/layer1/phase19_brooks_pa_grid_inspect/pa_tight_channel_pullback.yaml,passed,12,inspect only
+pa_broad_channel_zone,configs/layer1/phase19_brooks_pa_grid_inspect/pa_broad_channel_zone.yaml,passed,12,inspect only

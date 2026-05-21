@@ -1,0 +1,4 @@
+item,status,notes
+current10_nonlong_rejection,passed,short_only/both rejected
+brooks_modes,passed,long_only/short_only/both accepted
+strategy_side_filtering,passed,synthetic strategies honor side_mode

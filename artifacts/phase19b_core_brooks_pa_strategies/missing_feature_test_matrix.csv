@@ -1,0 +1,8 @@
+item,status,notes
+pa_second_entry_pullback,passed,missing required feature raises ConfigError
+pa_trading_range_bls_hs,passed,missing required feature raises ConfigError
+pa_failed_breakout_trap,passed,missing required feature raises ConfigError
+pa_opening_reversal_sr,passed,missing required feature raises ConfigError
+pa_breakout_pullback_continuation,passed,missing required feature raises ConfigError
+pa_tight_channel_pullback,passed,missing required feature raises ConfigError
+pa_broad_channel_zone,passed,missing required feature raises ConfigError

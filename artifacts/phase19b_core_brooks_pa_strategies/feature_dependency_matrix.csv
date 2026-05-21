@@ -1,0 +1,8 @@
+strategy,feature_set,feature_scope,notes
+pa_second_entry_pullback,pa_brooks_core_v1,Slice F1 only,no strategy-computed features
+pa_trading_range_bls_hs,pa_brooks_range_v1,Slice F1 only,no strategy-computed features
+pa_failed_breakout_trap,pa_brooks_range_v1,Slice F1 only,no strategy-computed features
+pa_opening_reversal_sr,pa_brooks_range_v1,Slice F1 only,no strategy-computed features
+pa_breakout_pullback_continuation,pa_brooks_core_v1,Slice F1 only,no strategy-computed features
+pa_tight_channel_pullback,pa_brooks_core_v1,Slice F1 only,no strategy-computed features
+pa_broad_channel_zone,pa_brooks_core_v1,Slice F1 only,no strategy-computed features

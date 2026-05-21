@@ -1,0 +1,5 @@
+artifact,status
+SOURCE_MAP.csv,passed
+chatgpt_key_tables.csv,passed
+validation_results.csv,passed
+inventories,passed

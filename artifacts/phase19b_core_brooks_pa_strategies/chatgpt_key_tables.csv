@@ -1,0 +1,23 @@
+section,item,metric,value,interpretation
+phase,phase,label,PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_WITH_SIDE_MODE_VALIDATION_GATE,Phase19B scope
+phase,task_type,value,multi-strategy implementation + validation + strategy onboarding,
+git,pre_task_head,hash,abb1b71,HEAD observed before implementation
+git,final_commit,hash,pending,To be filled after commit
+scope,strategies_implemented_count,count,7,All requested strategies 11-17
+scope,expected_strategies_implemented_count,count,7,Matches requested count
+scope,strategies_18_to_20_implemented,bool,false,Deferred
+scope,strategies_21_to_50_implemented,bool,false,Out of scope
+validation,current10_nonlong_side_mode_rejected,bool,true,Phase19B gate passed
+validation,side_mode_tests_passed,bool,true,54 side-mode tests passed; full Phase19B passed after formatting
+validation,strategy_inspect_passed_count,count,7,All new strategy inspect commands passed
+validation,layer1_grid_inspect_passed_count,count,7,Inspect only; no grid runs
+non_runs,actual_layer1_grid_runs,count,0,Forbidden and not run
+non_runs,candidate_yaml_created,bool,false,Forbidden and not created
+non_runs,select_dry_run_run,bool,false,Forbidden and not run
+non_runs,layer2_created,bool,false,Forbidden
+non_runs,wfo_run,bool,false,Forbidden
+non_runs,live_paper_run,bool,false,Forbidden
+claims,economic_claims_made,bool,false,No economic ranking or claims
+execution,execution_truth_changed,bool,false,No execution semantics changes
+decision,decision,label,PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_ONBOARDED,Inspect-ready onboarding complete
+decision,recommended_next_step,label,REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES,Codex and ChatGPT Pro review next

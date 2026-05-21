@@ -1,0 +1,48 @@
+file_path,purpose,required_for_review,generated_or_source,local_only_dependency,notes
+src/intraday/strategies/config_validation.py,Phase19B shared validation/helper/registry source,true,source,false,
+src/intraday/strategies/pa/brooks_common.py,Phase19B shared validation/helper/registry source,true,source,false,
+src/intraday/strategies/registry.py,Phase19B shared validation/helper/registry source,true,source,false,
+src/intraday/strategies/pa/second_entry_pullback.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_second_entry_pullback.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_second_entry_pullback.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_second_entry_pullback_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_second_entry_pullback.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/trading_range_bls_hs.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_trading_range_bls_hs.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_trading_range_bls_hs.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_trading_range_bls_hs_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_trading_range_bls_hs.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/failed_breakout_trap.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_failed_breakout_trap.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_failed_breakout_trap.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_failed_breakout_trap_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_failed_breakout_trap.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/opening_reversal_sr.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_opening_reversal_sr.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_opening_reversal_sr.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_opening_reversal_sr_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_opening_reversal_sr.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/breakout_pullback_continuation.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_breakout_pullback_continuation.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_breakout_pullback_continuation.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_breakout_pullback_continuation_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_breakout_pullback_continuation.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/tight_channel_pullback.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_tight_channel_pullback.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_tight_channel_pullback.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_tight_channel_pullback_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_tight_channel_pullback.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+src/intraday/strategies/pa/broad_channel_zone.py,Phase19B Brooks strategy source,true,source,false,strategy module
+configs/strategies/base/phase19/pa_broad_channel_zone.yaml,Phase19B base strategy config,true,source,false,runtime YAML
+configs/strategies/metadata/phase19/pa_broad_channel_zone.yaml,Phase19B strategy metadata,true,source,false,audit metadata
+configs/strategies/grids/phase19/pa_broad_channel_zone_controlled_small.yaml,Phase19B controlled-small grid skeleton,true,source,false,inspect only
+configs/layer1/phase19_brooks_pa_grid_inspect/pa_broad_channel_zone.yaml,Layer1 grid-inspect-only config,true,source,false,not an economic grid run
+tests/unit/test_phase19b_side_mode_validation.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_brooks_common.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_brooks_strategy_configs.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_brooks_strategy_signals.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_missing_features.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_no_lookahead_session.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_grid_skeletons.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_no_runtime_leakage.py,Phase19B test coverage,true,source,false,
+tests/unit/test_phase19b_artifact_schema.py,Phase19B test coverage,true,source,false,

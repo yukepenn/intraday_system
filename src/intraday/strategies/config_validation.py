@@ -9,6 +9,7 @@ from typing import Any
 from intraday.core.config import require_keys
 from intraday.core.errors import ConfigError
 from intraday.strategies.base import StrategyDef
+from intraday.strategies.contracts import SIDE_MODE_LONG_ONLY, normalize_side_mode
 
 
 def parse_bool_like(value: Any, field: str) -> bool:
@@ -106,6 +107,28 @@ def validate_strategy_grid(config: Mapping[str, Any]) -> None:
     require_keys(config, ("strategy", "base_config"), where="strategy grid config")
 
 
+def validate_long_only_side_mode(
+    signal_config: Mapping[str, Any], *, where: str = "signal"
+) -> None:
+    """Reject non-long side modes for strategies that are not short-capable."""
+    mode = normalize_side_mode(signal_config, where=where)
+    if mode != SIDE_MODE_LONG_ONLY:
+        raise ConfigError(f"{where}.side_mode must be long_only for this strategy, got {mode!r}")
+
+
+def validate_side_mode_allowed(
+    signal_config: Mapping[str, Any],
+    *,
+    allowed: tuple[str, ...],
+    where: str = "signal",
+) -> str:
+    """Validate a side-aware strategy's configured side mode against an allow-list."""
+    mode = normalize_side_mode(signal_config, where=where)
+    if mode not in allowed:
+        raise ConfigError(f"{where}.side_mode must be one of {sorted(allowed)}, got {mode!r}")
+    return mode
+
+
 def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
     """Validate ``pa_buy_sell_close_trend`` runtime config."""
     strategy = config.get("strategy")
@@ -122,9 +145,7 @@ def validate_pa_buy_sell_close_trend_config(config: Mapping[str, Any]) -> None:
     if not isinstance(sig, Mapping):
         raise ConfigError("signal section required")
 
-    side = sig.get("side", "long_only")
-    if side != "long_only":
-        raise ConfigError(f"signal.side must be long_only, got {side!r}")
+    validate_long_only_side_mode(sig)
 
     es = _as_int(sig.get("entry_start_minute"), "signal.entry_start_minute")
     ee = _as_int(sig.get("entry_end_minute"), "signal.entry_end_minute")
@@ -234,8 +255,7 @@ def validate_long_only_strategy_base(
     sig = config.get("signal")
     if not isinstance(sig, Mapping):
         raise ConfigError("signal section required")
-    if sig.get("side", "long_only") != "long_only":
-        raise ConfigError("signal.side must be long_only")
+    validate_long_only_side_mode(sig)
 
     es = _as_int(sig.get("entry_start_minute"), "signal.entry_start_minute")
     ee = _as_int(sig.get("entry_end_minute"), "signal.entry_end_minute")

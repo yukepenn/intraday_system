@@ -4,6 +4,16 @@ Curated changelog. Follows the spirit of [Keep a Changelog](https://keepachangel
 
 ## [Unreleased] – 2026-05-21
 
+### Phase 19B - Core Brooks PA strategies 11-17
+
+- Fix(strategies): harden current-10 config validation so unsupported non-long `signal.side_mode` values are rejected while missing/`long_only` behavior remains unchanged.
+- Feat(strategies): add shared Brooks PA side-aware helper logic and implement/register exactly strategies 11-17 with SignalMatrix-only output and setup codes 1101/1102 through 1701/1702.
+- Feat(config): add Phase19 base configs, metadata, controlled-small rational grid skeletons, and Layer1 grid-inspect-only configs for the seven Phase19B strategies.
+- Test(unit): add Phase19B side-mode, Brooks helper, config, signal, missing-feature, no-lookahead/session, grid skeleton, runtime-leakage, and artifact-schema coverage.
+- Research(artifacts): add `artifacts/phase19b_core_brooks_pa_strategies/` with review bundle, source map, key tables, validation ledger, inventories, test matrices, guardrails, deferred gaps, schema validation, and decision artifact.
+- Decision: `PHASE19B_CORE_BROOKS_STRATEGIES_11_TO_17_ONBOARDED`; provisional next `REVIEW_PHASE19B_CORE_BROOKS_PA_STRATEGIES`.
+- Explicit non-goals: no strategies 18-20 or 21-50, no actual Layer1 grids, no expanded/full grids, no select-dry-run, no candidate YAML, no promotion, no Layer2/3, no WFO/live/paper, no current-10 short retrofit, no execution PnL/R changes, and no economic claims.
+
 ### Phase 19A Repair - Layer1 side runtime wiring
 
 - Repair(layer1): wire smoke and controlled-grid paths to validate signals with `reference_close=bars.close` and pass side-mode-derived `allowed_sides` into the signal adapter.
