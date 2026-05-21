@@ -2,7 +2,7 @@ section,item,metric,value,interpretation
 phase,phase,name,PHASE19_DESIGN_BROOKS_PA_STRATEGIES_11_TO_20_WITH_SIDE_SUPPORT,Phase19 design-only phase
 task_type,scope,task_type,design-only + multi-strategy design + side-support architecture design + Brooks PA feature/strategy design + onboarding plan,No runtime implementation
 pre_task_head,git,sha,cd11ed9,From preflight (HEAD at task start)
-final_commit,git,sha,PENDING,To be filled after commit
+final_commit,git,sha,20f4c80b437f1989ad1228f5a682ef7e03e65861,Phase19 design commit hash
 coverage,strategies,strategies_designed_count,10,Strategies 11-20
 coverage,strategies,core_strategy_count,7,Strategies 11-17
 coverage,strategies,diagnostic_strategy_count,3,Strategies 18-20
