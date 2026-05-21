@@ -3,7 +3,8 @@
 - **Phase**: PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT
 - **Task type**: repair + infrastructure + validation + controlled side-aware retrofit
 - **Git baseline**: `ca216cb` (origin/main at start of this phase)
-- **Final commit**: filled after commit
+- **Final commit**: `587af5c` (Repair: align setup codes and side-aware strategy contracts)
+- **Push status**: pushed to `origin/main`
 
 > Final roadmap decision belongs to ChatGPT Pro + the user after the
 > subsequent Codex review.

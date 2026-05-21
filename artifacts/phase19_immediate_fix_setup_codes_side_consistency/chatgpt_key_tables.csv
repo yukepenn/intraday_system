@@ -2,7 +2,7 @@ section,item,metric,value,interpretation
 phase,name,phase,PHASE19_IMMEDIATE_FIX_SETUP_CODES_SIDE_CONSISTENCY_AND_CURRENT10_SHORT_RETROFIT,Phase19 immediate fix
 phase,task_type,task_type,repair+infrastructure+validation+controlled side-aware retrofit,Repair + retrofit
 git,pre_task_head,pre_task_head,ca216cb,baseline commit
-git,final_commit,final_commit,TBD,filled after commit
+git,final_commit,final_commit,587af5c,Repair: align setup codes and side-aware strategy contracts
 setup-code,registry_created,setup_code_registry_created,true,setup_codes.py is the authoritative runtime registry
 setup-code,registry_tests_passed,setup_code_registry_tests_passed,true,unique/int16/expected codes/no wrong leak
 phase19b,setup_codes_repaired,phase19b_setup_codes_repaired,true,7101-7107 / 7201-7207 in source + metadata + tests
